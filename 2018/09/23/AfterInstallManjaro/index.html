@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. Manjaro设置国内源1.1. 添加官方镜像源(包括: core, extra, community, multilib)命令执行目录：~12sudo pacman-mirrors -i -c China -m rank &#x2F;&#x2F;更新镜像排名sudo pacman -Syy &#x2F;&#x2F;更新数据源">
+<meta property="og:type" content="article">
+<meta property="og:title" content="配置Manjaro">
+<meta property="og:url" content="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. Manjaro设置国内源1.1. 添加官方镜像源(包括: core, extra, community, multilib)命令执行目录：~12sudo pacman-mirrors -i -c China -m rank &#x2F;&#x2F;更新镜像排名sudo pacman -Syy &#x2F;&#x2F;更新数据源">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AfterInstallManjaro.png">
+<meta property="article:published_time" content="2018-09-23T14:30:45.000Z">
+<meta property="article:modified_time" content="2018-10-26T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AfterInstallManjaro.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/09/23/AfterInstallManjaro/","path":"2018/09/23/AfterInstallManjaro/","title":"配置Manjaro"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>配置Manjaro | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Manjaro%E8%AE%BE%E7%BD%AE%E5%9B%BD%E5%86%85%E6%BA%90"><span class="nav-text">1. Manjaro设置国内源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%B7%BB%E5%8A%A0%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F%E6%BA%90-%E5%8C%85%E6%8B%AC-core-extra-community-multilib"><span class="nav-text">1.1. 添加官方镜像源(包括: core, extra, community, multilib)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%B7%BB%E5%8A%A0archlinxCN%E6%BA%90-%E4%B8%AD%E7%A7%91%E5%A4%A7"><span class="nav-text">1.2. 添加archlinxCN源(中科大)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%B7%BB%E5%8A%A0AUR%E6%BA%90"><span class="nav-text">1.3. 添加AUR源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85Git"><span class="nav-text">2. 安装Git</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85VIM"><span class="nav-text">3. 安装VIM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AE%89%E8%A3%85Node-js"><span class="nav-text">4. 安装Node.js</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%AE%89%E8%A3%85ZSH-%E5%8F%AF%E4%B8%8D%E6%9B%B4%E6%94%B9%EF%BC%8C%E9%BB%98%E8%AE%A4bash%E4%B9%9F%E4%B8%8D%E9%94%99"><span class="nav-text">5. 安装ZSH(可不更改，默认bash也不错)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%AE%89%E8%A3%85IBus%E6%8B%BC%E9%9F%B3%E8%BE%93%E5%85%A5%E6%B3%95"><span class="nav-text">6. 安装IBus拼音输入法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E7%94%A8Terminator%E6%9B%BF%E6%8D%A2%E9%BB%98%E8%AE%A4%E7%9A%84Terminal%E7%BB%88%E7%AB%AF"><span class="nav-text">7. 用Terminator替换默认的Terminal终端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E5%AE%89%E8%A3%85Terminator"><span class="nav-text">7.1. 安装Terminator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-%E8%AE%BE%E7%BD%AETerminator%E5%90%AF%E5%8A%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E3%80%82"><span class="nav-text">7.2. 设置Terminator启动快捷键。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-%E9%85%8D%E7%BD%AETerminator%E9%85%8D%E8%89%B2%E5%8F%8A%E9%80%8F%E6%98%8E%E5%BA%A6%E3%80%82"><span class="nav-text">7.3. 配置Terminator配色及透明度。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-Terminator%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">7.4. Terminator常用快捷键</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85-Gcc-Java-Python"><span class="nav-text">8. 编译环境安装(Gcc, Java, Python)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-%E5%AE%89%E8%A3%85gcc-make-cmake-gdb%E7%8E%AF%E5%A2%83"><span class="nav-text">8.1. 安装gcc make cmake gdb环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-%E5%AE%89%E8%A3%85JAVA%E7%8E%AF%E5%A2%83"><span class="nav-text">8.2. 安装JAVA环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-%E9%80%9A%E8%BF%87%E2%80%99Add-Remove-Software%E2%80%99%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85JAVA%E7%8E%AF%E5%A2%83"><span class="nav-text">8.3. 通过’Add&#x2F;Remove Software’软件自动安装JAVA环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-%E5%AE%89%E8%A3%85Python%E7%8E%AF%E5%A2%83-%E7%B3%BB%E7%BB%9F%E5%B7%B2%E7%BB%8F%E9%A2%84%E8%A3%85Python2-7%E5%92%8CPython3-7-%E9%BB%98%E8%AE%A4"><span class="nav-text">8.4. 安装Python环境(系统已经预装Python2.7和Python3.7(默认))</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-1-%E5%AE%89%E8%A3%85Python3-7"><span class="nav-text">8.4.1. 安装Python3.7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-2-%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%BF%85%E5%A4%87Numpy%E6%A8%A1%E5%9D%97-%E8%BE%83%E9%BA%BB%E7%83%A6%E4%B8%94%E5%AE%B9%E6%98%93%E5%A4%B1%E8%B4%A5%EF%BC%8C%E5%90%8E%E6%96%87%E4%BB%8B%E7%BB%8D%E7%94%A8pip3%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85"><span class="nav-text">8.4.2. 手动安装数据处理必备Numpy模块(较麻烦且容易失败，后文介绍用pip3方式安装)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-3-%E4%BD%BF%E7%94%A8pip3%E5%AE%89%E8%A3%85Numpy%E6%A8%A1%E5%9D%97"><span class="nav-text">8.4.3. 使用pip3安装Numpy模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-text">9. 常用软件安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="nav-text">10. 系统常见问题及解决方案：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-1-Windows%E5%92%8CLinux%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4%E9%97%AE%E9%A2%98"><span class="nav-text">10.1. Windows和Linux双系统时间不一致问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2-%E6%A1%8C%E9%9D%A2%E6%9F%90%E4%BA%9B%E7%BB%84%E5%BB%BA%E4%B8%8D%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E6%97%B6%EF%BC%8C%E9%87%8D%E8%A3%85gnome%E5%8D%B3%E5%8F%AF"><span class="nav-text">10.2. 桌面某些组建不正常显示时，重装gnome即可</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3-%E8%A7%A3%E5%86%B3GitHub%E8%AE%BF%E9%97%AE%E6%85%A2%EF%BC%8C%E4%BF%AE%E6%94%B9host"><span class="nav-text">10.3. 解决GitHub访问慢，修改host</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-4-%E8%A7%A3%E5%86%B3pip3%E5%91%BD%E4%BB%A4%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E9%80%9F%E5%BA%A6%E6%85%A2%EF%BC%8C%E4%BD%BF%E7%94%A8-i%E5%8F%82%E6%95%B0"><span class="nav-text">10.4. 解决pip3命令安装软件速度慢，使用-i参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-5-%E8%A7%A3%E5%86%B3%E6%89%93%E5%BC%80IDEA%E6%97%B6%E5%BC%B9%E5%87%BAJDK%E8%B7%AF%E5%BE%84%E9%94%99%E8%AF%AF"><span class="nav-text">10.5. 解决打开IDEA时弹出JDK路径错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-Linux-%E6%AF%8F%E6%97%A5%E4%B8%80%E7%BB%83"><span class="nav-text">11. Linux 每日一练</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">12. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          配置Manjaro
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-09-23 22:30:45" itemprop="dateCreated datePublished" datetime="2018-09-23T22:30:45+08:00">2018-09-23</time>
+    </span>
+
+  
+    <span id="/2018/09/23/AfterInstallManjaro/" class="post-meta-item leancloud_visitors" data-flag-title="配置Manjaro" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AfterInstallManjaro.png" class="full-image" />
+
+<h1 id="1-Manjaro设置国内源"><a href="#1-Manjaro设置国内源" class="headerlink" title="1. Manjaro设置国内源"></a>1. Manjaro设置国内源</h1><h2 id="1-1-添加官方镜像源-包括-core-extra-community-multilib"><a href="#1-1-添加官方镜像源-包括-core-extra-community-multilib" class="headerlink" title="1.1. 添加官方镜像源(包括: core, extra, community, multilib)"></a>1.1. 添加官方镜像源(包括: core, extra, community, multilib)</h2><figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman-mirrors -i -c China -m rank &#x2F;&#x2F;更新镜像排名</span><br><span class="line">sudo pacman -Syy &#x2F;&#x2F;更新数据源</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="1-2-添加archlinxCN源-中科大"><a href="#1-2-添加archlinxCN源-中科大" class="headerlink" title="1.2. 添加archlinxCN源(中科大)"></a>1.2. 添加archlinxCN源(中科大)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit &#x2F;etc&#x2F;pacman.conf</span><br></pre></td></tr></table></figure>
+<p>以管理员权限修改/etc/pacman.conf，在pacman.conf文件末尾添加以下内容</p>
+<figure class="highlight plain"><figcaption><span>文件位置：/etc/pacman.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># USTC</span><br><span class="line">[archlinuxcn]</span><br><span class="line">SigLevel &#x3D; Optional TrustedOnly</span><br><span class="line">Server &#x3D;https:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;archlinuxcn&#x2F;$arch</span><br></pre></td></tr></table></figure>
+<p>修改配置文件后，执行下面的命令：</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Syy</span><br><span class="line">sudo pacman -Syyu #(可选) 升级系统到最新</span><br><span class="line">sudo pacman -S archlinuxcn-keyring &#x2F;&#x2F;安装导入GPG key</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-添加AUR源"><a href="#1-3-添加AUR源" class="headerlink" title="1.3. 添加AUR源"></a>1.3. 添加AUR源</h2><p>修改/etc/yaourtrc文件，去掉 # AURURL 的注释，添加清华AUR源</p>
+<figure class="highlight plain"><figcaption><span>文件位置：/etc/yaourtrc</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AURURL&#x3D;&quot;https:&#x2F;&#x2F;aur.tuna.tsinghua.edu.cn&quot;  #添加清华AUR源</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-安装Git"><a href="#2-安装Git" class="headerlink" title="2. 安装Git"></a>2. 安装Git</h1><figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S git</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Git配置</li>
+</ul>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config --global user.email &quot;youremail@example.com&quot;</span><br><span class="line">git config --list #查看配置</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编辑配置信息：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit ~&#x2F;.gitconfig</span><br></pre></td></tr></table></figure>
+<p>查看内容是否如下：</p>
+<figure class="highlight plain"><figcaption><span>文件位置：~/.gitconfig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">name &#x3D; Your Name</span><br><span class="line">email &#x3D; youremail@domain.com</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建公钥(一路回车，全部默认)：</li>
+</ul>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -C &#39;you email address@gmail.com&#39; -t rsa</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>复制公钥<br>打开刚刚新建的公钥，并复制文件所有内容 Ctrl + A</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit &#x2F;home&#x2F;eisenhao&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上传公钥到GitHub<br>将复制的代码上传到GitHub，打开 <a target="_blank" rel="noopener" href="https://www.github.com/">GitHub.com</a>，登录后点击界面右上角用户图标，选择 Account Settings ==&gt; SSH Public Keys ==&gt; 粘贴刚刚复制的代码。</p>
+</li>
+<li><p>测试验证</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -v git@github.com</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="3-安装VIM"><a href="#3-安装VIM" class="headerlink" title="3. 安装VIM"></a>3. 安装VIM</h1><ul>
+<li><p>安装vim, ctags<br>打开ADD/REMOVE软件管理包，搜索vim、ctags并安装，或输入以下命令安装</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S vim #vim文本编辑器</span><br><span class="line">sudo pacman -S ctags #generates index tool</span><br></pre></td></tr></table></figure>
+<p>vim已安装完成，以下为导入GitHub大神分享的vim的IDE配置步骤，可调至下一个标题</p>
+</li>
+<li><p>打开终端，执行下面的命令自动下载<a target="_blank" rel="noopener" href="https://github.com/ma6174/vim-deprecated">GitHub上一个做好的IDE式VIM:</a>组件</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- https:&#x2F;&#x2F;raw.github.com&#x2F;ma6174&#x2F;vim&#x2F;master&#x2F;setup.sh | sh -x</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>终端输入:”vim”, 打开vim</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令模式输入:”:BundleInstall”自动安装<br>“Shift” + “;”进入命令模式，在窗口左下角粘贴(Ctrl+Shift+V)以下代码后回车以自动安装组件</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：vim命令模式下</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BundleInstall</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装完成后打开配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~&#x2F;.vimrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加如下配置</p>
+<figure class="highlight plain"><figcaption><span>文件位置：~/.vimrc</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;显示空格 回车符</span><br><span class="line">&quot; set listchars&#x3D;eol:$(行尾),tab:&gt;-(制表符),trail:~(空格),extends:&gt;,precedes:&lt;</span><br><span class="line">set listchars&#x3D;tab:&gt;-,trail:-,extends:&gt;,precedes:&lt;</span><br><span class="line">highlight WhitespaceEOL ctermbg&#x3D;red guibg&#x3D;red</span><br><span class="line">match WhitespaceEOL &#x2F;\s\+$&#x2F;</span><br><span class="line">set list</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="4-安装Node-js"><a href="#4-安装Node-js" class="headerlink" title="4. 安装Node.js"></a>4. 安装Node.js</h1><p>安装 Node.js 的最佳方式是使用 nvm。先卸载系统预装的nvm和nodejs</p>
+<ul>
+<li>卸载预装nvm<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Q | grep nvm</span><br><span class="line">sudo pacman -Rns nvm</span><br></pre></td></tr></table></figure></li>
+<li>卸载预装nodejs<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Q | grep nodejs</span><br><span class="line">sudo pacman -Rns nodejs #</span><br></pre></td></tr></table></figure></li>
+<li>先通过cURL方式安装nvm:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;creationix&#x2F;nvm&#x2F;v0.33.11&#x2F;install.sh | bash</span><br></pre></td></tr></table></figure></li>
+<li>待nvm安装完成后，重启终端 并执行下列命令即可安装 Node.js。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install stable #安装 Node.js</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="5-安装ZSH-可不更改，默认bash也不错"><a href="#5-安装ZSH-可不更改，默认bash也不错" class="headerlink" title="5. 安装ZSH(可不更改，默认bash也不错)"></a>5. <del>安装ZSH</del>(可不更改，默认bash也不错)</h1><p>ZSH可以说是shell中的极品，它的优点太多了，我就不一一写出来，有兴趣的同学可以看这篇文章知乎-为什么说zsh是shell中的极品，参考<a target="_blank" rel="noopener" href="https://me.csdn.net/gatieme">JeanCheng</a>的这篇博文：<a target="_blank" rel="noopener" href="https://blog.csdn.net/gatieme/article/details/52741221">Linux终极shell-Z Shell–用强大的zsh &amp; oh-my-zsh把Bash换掉</a></p>
+<ul>
+<li><p>安装zsh</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置oh-my-zsh</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c &quot;$(curl -fsSL https:&#x2F;&#x2F;raw.github.com&#x2F;robbyrussell&#x2F;oh-my-zsh&#x2F;master&#x2F;tools&#x2F;install.sh)&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取代bash，设为默认shell</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -s &#x2F;bin&#x2F;zsh username1</span><br><span class="line">或者</span><br><span class="line">chsh -s &#x2F;bin&#x2F;zsha</span><br><span class="line">chsh -s &#x2F;bin&#x2F;zsh1</span><br><span class="line">chsh -s &#96;which zsh&#96;1</span><br></pre></td></tr></table></figure>
+<p>Finish，zsh已经安装完了</p>
+</li>
+<li><p>如果要切换回去bash：<br>想知道你的系统有几种shell，可以通过以下命令查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;etc&#x2F;shells</span><br></pre></td></tr></table></figure>
+<p>切换回去bash</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+<p>当然你实在不愿意把zsh当成默认的shell, 而又想使用它, 那么你可以每次进入是都使用<strong>zsh</strong>进入, 而输入exit退出</p>
+</li>
+</ul>
+<h1 id="6-安装IBus拼音输入法"><a href="#6-安装IBus拼音输入法" class="headerlink" title="6. 安装IBus拼音输入法"></a>6. 安装IBus拼音输入法</h1><ul>
+<li><p>搜索安装ibus-pinyin</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S ibus-pinyin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在”系统设置” ==&gt; “语言-配置” 中点击“+”添加刚刚安装的chinese-pinyin输入法</p>
+</li>
+</ul>
+<h1 id="7-用Terminator替换默认的Terminal终端"><a href="#7-用Terminator替换默认的Terminal终端" class="headerlink" title="7. 用Terminator替换默认的Terminal终端"></a>7. 用Terminator替换默认的Terminal终端</h1><h2 id="7-1-安装Terminator"><a href="#7-1-安装Terminator" class="headerlink" title="7.1. 安装Terminator"></a>7.1. 安装Terminator</h2><figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S Terminator</span><br></pre></td></tr></table></figure>
+<h2 id="7-2-设置Terminator启动快捷键。"><a href="#7-2-设置Terminator启动快捷键。" class="headerlink" title="7.2. 设置Terminator启动快捷键。"></a>7.2. 设置Terminator启动快捷键。</h2><p>打开系统设置，依次”Devices” ==&gt; “keyboard” ==&gt; 点击最末’+’ ==&gt; Name:”Open Terminator” ==&gt; Command:”/usr/bin/terminator” ==&gt; 设置启动快捷键(如：Ctrl+Alt+T)。</p>
+<h2 id="7-3-配置Terminator配色及透明度。"><a href="#7-3-配置Terminator配色及透明度。" class="headerlink" title="7.3. 配置Terminator配色及透明度。"></a>7.3. 配置Terminator配色及透明度。</h2><p>右键窗体点击”Preferences” ==&gt; “Colors” ==&gt; Built-in schemes选择配色(如:”Green on black”) ==&gt; “Background” ==&gt; 勾选”Transparent background” ==&gt; 设置透明度Shade transparent background:(推荐0.8)</p>
+<h2 id="7-4-Terminator常用快捷键"><a href="#7-4-Terminator常用快捷键" class="headerlink" title="7.4. Terminator常用快捷键"></a>7.4. Terminator常用快捷键</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Ctrl+Shift+C            #复制选中的内容到剪贴板</span><br><span class="line">Ctrl+Shift+V            #粘贴剪贴板的内容到此处</span><br><span class="line">Ctrl+Shift+O            #上下开新窗口</span><br><span class="line">Ctrl+Shift+Up&#x2F;Down      #分割条向上、下移动（终端上下多开窗口时）</span><br><span class="line">Alt+Up&#x2F;Down             #上、下窗口切换（终端上下多开窗口时）</span><br><span class="line">Ctrl+Shift+W            #关闭当前终端</span><br><span class="line">Ctrl+Shift+F            #搜索</span><br><span class="line">#标签页快捷键</span><br><span class="line">F11                     #全屏开关</span><br><span class="line">Ctrl+Shift+T            #打开一个新的标签</span><br><span class="line">Ctrl+PageDown           #移动到下一个标签</span><br><span class="line">Ctrl+PageUp             #移动到上一个标签</span><br></pre></td></tr></table></figure>
+
+<h1 id="8-编译环境安装-Gcc-Java-Python"><a href="#8-编译环境安装-Gcc-Java-Python" class="headerlink" title="8. 编译环境安装(Gcc, Java, Python)"></a>8. 编译环境安装(Gcc, Java, Python)</h1><h2 id="8-1-安装gcc-make-cmake-gdb环境"><a href="#8-1-安装gcc-make-cmake-gdb环境" class="headerlink" title="8.1. 安装gcc make cmake gdb环境"></a>8.1. 安装gcc make cmake gdb环境</h2><ul>
+<li><p>安装gcc, make, cmake, gdb</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S gcc make cmake gdb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看GCC环境是否配置成功</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="8-2-安装JAVA环境"><a href="#8-2-安装JAVA环境" class="headerlink" title="8.2. 安装JAVA环境"></a>8.2. 安装JAVA环境</h2><ul>
+<li><p><del>在主目录下，创建JAVA环境包存放目录</del>（用更简便方式代替）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~&#x2F;Environment&#x2F;JAVA</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><del>下载JDK <a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JAVA SE下载地址</a>，下载到刚刚创建的目录。选择自己的安装平台，我选择的是”jdk-8u181-linux-x64.tar.gz”，如果下载的不是这个JDK包，后面的涉及JDK包文件时跟换到你的JDK包名就可。</del></p>
+</li>
+<li><p><del>跳转到压缩包目录解压</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;Environment&#x2F;JAVA  #跳转到压缩包目录</span><br><span class="line">tar -xvf jdk-8u181-linux-x64.tar.gz  #解压JDK包</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><del>解压完成后，打开环境配置文件.bashrc(若配置了刚刚的zsh，则打开～/.zshrc)</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~&#x2F;.bashrc</span><br><span class="line">#或</span><br><span class="line">vim ~&#x2F;.zshrc #若刚刚已配置zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><del>添加如下Java环境配置代码到文件末尾</del></p>
+<figure class="highlight plain"><figcaption><span>文件位置：~/.bashrc 或 ~/.zshrc</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#JAVA环境配置</span><br><span class="line">export JAVA_HOME&#x3D;$HOME&#x2F;Environment&#x2F;JAVA&#x2F;jdk1.8.0_181</span><br><span class="line">export JRE_HOME&#x3D;$&#123;JAVA_HOME&#125;&#x2F;jre</span><br><span class="line">export PATH&#x3D;$&#123;JAVA_HOME&#125;&#x2F;bin:$PATH</span><br><span class="line">export CLASSPATH&#x3D;.:$&#123;JAVA_HOME&#125;&#x2F;lib&#x2F;dt.jar:$&#123;JAVA_HOME&#125;&#x2F;lib&#x2F;tools.jar</span><br><span class="line">#IDEA软件需用到</span><br><span class="line">export IDEA_JDK&#x3D;$HOME&#x2F;Environment&#x2F;JAVA&#x2F;jdk1.8.0_181</span><br><span class="line">export IDEA_JDK_64&#x3D;$HOME&#x2F;Environment&#x2F;JAVA&#x2F;jdk1.8.0_181</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><del>生效刚刚配置的JAVA环境：</del></p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source ~&#x2F;.bashrc</span><br><span class="line">或</span><br><span class="line">source ~&#x2F;.zshrc #若刚刚已配置zsh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><del>查看JAVA环境是否配置成功</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="8-3-通过’Add-Remove-Software’软件自动安装JAVA环境"><a href="#8-3-通过’Add-Remove-Software’软件自动安装JAVA环境" class="headerlink" title="8.3. 通过’Add/Remove Software’软件自动安装JAVA环境"></a>8.3. 通过’Add/Remove Software’软件<strong>自动安装JAVA环境</strong></h2><ul>
+<li>删除系统预装的openjdk<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Q | grep opnjdk #删除openjdk,&#39;sudo pacman -Q&#39;为查询已装软件，&#39;| grep&#39; 只显示与&#39;opnjdk&#39;相关内容</span><br><span class="line">sudo pacman -Rns openjdk # sudo pacman -Rns 最小破换性地卸载（推荐），有效防止删除A软件时误删B软件所需的依赖(大致是这意思吧)..</span><br><span class="line">sudo pacman -Rns openjdkheadless #删除openjdk相关</span><br></pre></td></tr></table></figure></li>
+<li>使用’Add/Remove Software’软件智能安装JAVA环境，不需手动配置(推荐)<br>在搜索框中搜索’jdk8’关键字，勾选’jdk8’(Oracle Java 8 Development Kit)’，再点击应用即可安装。</li>
+</ul>
+<h2 id="8-4-安装Python环境-系统已经预装Python2-7和Python3-7-默认"><a href="#8-4-安装Python环境-系统已经预装Python2-7和Python3-7-默认" class="headerlink" title="8.4. 安装Python环境(系统已经预装Python2.7和Python3.7(默认))"></a>8.4. <del>安装Python环境</del>(系统已经预装Python2.7和Python3.7(默认))</h2><h3 id="8-4-1-安装Python3-7"><a href="#8-4-1-安装Python3-7" class="headerlink" title="8.4.1. 安装Python3.7"></a>8.4.1. 安装Python3.7</h3><ul>
+<li>直接在软件管理包中搜索”python  3.7.0-3”手动安装即可</li>
+<li>或用pacman安装安装Python3.7<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S python3.7</span><br></pre></td></tr></table></figure></li>
+<li>查看Python环境是否配置成功<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="8-4-2-手动安装数据处理必备Numpy模块-较麻烦且容易失败，后文介绍用pip3方式安装"><a href="#8-4-2-手动安装数据处理必备Numpy模块-较麻烦且容易失败，后文介绍用pip3方式安装" class="headerlink" title="8.4.2. 手动安装数据处理必备Numpy模块(较麻烦且容易失败，后文介绍用pip3方式安装)"></a>8.4.2. <del>手动安装数据处理必备Numpy模块</del>(较麻烦且容易失败，后文介绍用pip3方式安装)</h3><p><del>参考自<a target="_blank" rel="noopener" href="https://blog.csdn.net/chenyefei/article/details/77289289?utm_source=blogxgwz0">linux下python3安装numpy与scipy</a>，由于numpy依赖于nose，故在需先安装依赖包nose，再安装numpy。</del></p>
+<ul>
+<li><p><del>安装Python的nose模块</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;Downloads</span><br><span class="line">wget https:&#x2F;&#x2F;pypi.python.org&#x2F;packages&#x2F;38&#x2F;96&#x2F;7aa1c2583ddec558a230175d6aeddba796cde7191852bf3e6eb3cfb873e1&#x2F;nose-1.1.2.tar.gz &#x2F;&#x2F;下载nose-1.1.2</span><br><span class="line">tar -zxvf nose-1.1.2.tar.gz &#x2F;&#x2F;解压nose安装包(以实际下载的包名为准)</span><br><span class="line">cd nose-1.1.2 &#x2F;&#x2F;进入刚刚解压的目录</span><br><span class="line">sudo python3 setup.py install &#x2F;&#x2F;执行安装命令以安装nose </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><del>安装Python的atlas模块</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;Downloads</span><br><span class="line">wget https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;3b&#x2F;30&#x2F;a02c60e3a232cfcfdb9910ea2b5b83a567efeb1d3f1cb4622ce3eba63f9d&#x2F;atlas-0.27.0.tar.gz &#x2F;&#x2F;下载atlas-0.27.0</span><br><span class="line">tar -zxvf atlas-0.27.0.tar.gz &#x2F;&#x2F;解压atlas安装包(以实际下载的包名为准)</span><br><span class="line">cd atlas-0.27.0 &#x2F;&#x2F;进入刚刚解压的目录</span><br><span class="line">sudo python3 setup.py install &#x2F;&#x2F;执行安装命令以安装atlas</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><del>安装Python的numpy模块</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;Downloads</span><br><span class="line">wget https:&#x2F;&#x2F;sourceforge.net&#x2F;projects&#x2F;numpy&#x2F;files&#x2F;NumPy&#x2F;1.9.0&#x2F;numpy-1.9.0.zip &#x2F;&#x2F;下载numpy包</span><br><span class="line">unzip numpy-1.9.0.zip &#x2F;&#x2F;解压numpy包</span><br><span class="line">cd numpy-1.9.0 &#x2F;&#x2F;进入刚刚解压的目录</span><br><span class="line">sudo python3 setup.py install &#x2F;&#x2F;执行安装命令安装numpy</span><br></pre></td></tr></table></figure>
+<p>安装完成后可用以下命令测试是否成功安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &#39;import numpy; numpy.test()&#39;</span><br></pre></td></tr></table></figure></li>
+<li><p><del>Python数据处理常用包</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">各个安装包：</span><br><span class="line">scipy-0.19.0  下载：https:&#x2F;&#x2F;github.com&#x2F;scipy&#x2F;scipy</span><br><span class="line">numpy-1.9.0  下载：https:&#x2F;&#x2F;sourceforge.net&#x2F;projects&#x2F;numpy&#x2F;files&#x2F;NumPy&#x2F;1.9.0&#x2F;numpy-1.9.0.zip</span><br><span class="line">nose-1.1.2   下载：https:&#x2F;&#x2F;pypi.python.org&#x2F;packages&#x2F;38&#x2F;96&#x2F;7aa1c2583ddec558a230175d6aeddba796cde7191852bf3e6eb3cfb873e1&#x2F;nose-1.1.2.tar.gz</span><br><span class="line">lapack-3.7.1   下载： www.netlib.org&#x2F;lapack&#x2F;lapack-3.7.1.tgz</span><br><span class="line">atlas-0.27.0   下载： https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;3b&#x2F;30&#x2F;a02c60e3a232cfcfdb9910ea2b5b83a567efeb1d3f1cb4622ce3eba63f9d&#x2F;atlas-0.27.0.tar.gz</span><br><span class="line">Cython-0.26    下载： https:&#x2F;&#x2F;pypi.python.org&#x2F;pypi&#x2F;Cython&#x2F;0.26</span><br><span class="line">依赖关系：scipy 的安装需要依赖于 numpy、lapack、atlas（后两者都是线性代数工具包，而 numpy 和scipy 的测试程序的运行又依赖于 nose，因此，整个安装过程必须要按顺序执行的，否则是无法执行下去的。</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="8-4-3-使用pip3安装Numpy模块"><a href="#8-4-3-使用pip3安装Numpy模块" class="headerlink" title="8.4.3. 使用pip3安装Numpy模块"></a>8.4.3. 使用pip3安装Numpy模块</h3><p>访问<a target="_blank" rel="noopener" href="https://pypi.org/">Python packages</a>网站搜索相应模块(如”Numpy”),本地管理员运行其pip3安装代码<code>pip3 install numpy</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple numpy</span><br></pre></td></tr></table></figure>
+
+<p><strong>同理顺序安装其他模块</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple numpy        &#x2F;&#x2F;安装Numpy库:提供数组支持，以及相应的高效的处理函数</span><br><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple SciPy        &#x2F;&#x2F;安装SciPy库：提供矩阵支持，以及矩阵相关的数值计算模块</span><br><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple matplotlib   &#x2F;&#x2F;安装Matplotlib库：强大的数据可视化工具、作图库</span><br><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple pandas       &#x2F;&#x2F;安装Pandas库：强大、灵活的数据分析和探索工具</span><br><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple statsmodels  &#x2F;&#x2F;安装StatsModels库：统计建模和计量经济学，包括描述统计、统计模型估计和推断</span><br><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple scikit-learn &#x2F;&#x2F;安装Scikit-Learn库：支持回归、分类、聚类等强大的机器学习库</span><br><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple keras        &#x2F;&#x2F;安装Keras库：深度学习库，用于建立神经网络以及深度学习模型</span><br><span class="line">sudo pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple gensim       &#x2F;&#x2F;安装Gensim库：用来做文本主题模型的库，可能用于文本挖掘</span><br></pre></td></tr></table></figure>
+
+<h1 id="9-常用软件安装"><a href="#9-常用软件安装" class="headerlink" title="9. 常用软件安装"></a>9. 常用软件安装</h1><ul>
+<li>工具软件<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S git #代码仓库</span><br><span class="line">sudo pacman -S ctags #generates index tool</span><br><span class="line">sudo pacman -S vim #vim文本编辑器</span><br><span class="line">sudo pacman -S zsh #shell中的极品</span><br><span class="line">sudo pacman -S ibus-pinyin #中文输入法支持</span><br><span class="line">sudo pacman -S python-pip #Python Packages安装工具</span><br><span class="line">sudo pacman -S nvm #Nodejs版本管理器，可以轻松切换Nodejs版本</span><br><span class="line">sudo pacman -S nodejs #Nodejs</span><br><span class="line">sudo pacman -S npm</span><br></pre></td></tr></table></figure></li>
+<li>应用软件<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S google-chrome #谷歌浏览器</span><br><span class="line">sudo pacman -S netease-cloud-music #网易云音乐</span><br><span class="line">sudo pacman -S electronic-wechat #微信</span><br><span class="line">sudo pacman -S typora #Typora,Markdown文档编辑器</span><br><span class="line">sudo pacman -S Shadowsocks-Qt5 #VPN梯子</span><br></pre></td></tr></table></figure></li>
+<li>生产工具<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S gcc make cmake gdb #安装gcc，make, cmake，gdb环境</span><br><span class="line">sudo pacman -S clion #C&#x2F;C++集成IDE开发工具</span><br><span class="line">sudo pacman -S IntelliJ IDEA #Java集成IDE开发工具</span><br><span class="line">sudo pacman -S pycharm-professional #python集成IDE开发工具</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="10-系统常见问题及解决方案："><a href="#10-系统常见问题及解决方案：" class="headerlink" title="10. 系统常见问题及解决方案："></a>10. 系统常见问题及解决方案：</h1><h2 id="10-1-Windows和Linux双系统时间不一致问题"><a href="#10-1-Windows和Linux双系统时间不一致问题" class="headerlink" title="10.1. Windows和Linux双系统时间不一致问题"></a>10.1. Windows和Linux双系统时间不一致问题</h2><p>如何解决 Windows 和 Linux 双系统时间差8小时的问题 ， <a target="_blank" rel="noopener" href="https://blog.csdn.net/aaazz47/article/details/78696899">可参考文章</a></p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo timedatectl set-local-rtc 1</span><br></pre></td></tr></table></figure>
+<p>在系统设置-&gt;Details-&gt;Date &amp; Time 中点击Automatic Date &amp; Time联网更新时间</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo hwclock --localtime --systohc #将时间写入硬件</span><br></pre></td></tr></table></figure>
+<h2 id="10-2-桌面某些组建不正常显示时，重装gnome即可"><a href="#10-2-桌面某些组建不正常显示时，重装gnome即可" class="headerlink" title="10.2. 桌面某些组建不正常显示时，重装gnome即可"></a>10.2. 桌面某些组建不正常显示时，重装gnome即可</h2><p>桌面不正常显示，或某些显示功能不正常可能出现在通过软件管理包卸载软件时卸载部分未知依赖导致出错，如“系统设置未出现“，重新安装gnome所有组建可解决问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S gnome</span><br><span class="line">&#x2F;&#x2F;选择&quot;all&quot;,然后一直确定覆盖安装&quot;y</span><br></pre></td></tr></table></figure>
+<h2 id="10-3-解决GitHub访问慢，修改host"><a href="#10-3-解决GitHub访问慢，修改host" class="headerlink" title="10.3. 解决GitHub访问慢，修改host"></a>10.3. 解决GitHub访问慢，修改host</h2><ul>
+<li><p>修改hosts文件配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;hosts</span><br></pre></td></tr></table></figure></li>
+<li><p>a.手动查询DNS<br>打开 <a target="_blank" rel="noopener" href="http://tool.chinaz.com/dns,%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E6%9F%A5%E8%AF%A2%E5%9F%9F%E5%90%8D%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%B7%A5%E5%85%B7">http://tool.chinaz.com/dns,这是一个查询域名映射关系的工具</a><br>查询 github.global.ssl.fastly.net 和 assets-cdn.github.com 两个地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">github.global.ssl.fastly.net</span><br><span class="line">assets-cdn.github.com</span><br></pre></td></tr></table></figure>
+<p>多查几次，选择一个稳定，延迟较低的 ip 按如下方式添加到host文件</p>
+</li>
+<li><p>b.使用大神分享的, eg:</p>
+<figure class="highlight plain"><figcaption><span>文件位置：/etc/hosts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># Github  直接输入IP，可以让git变得非常快</span><br><span class="line">151.101.44.249 github.global.ssl.fastly.net </span><br><span class="line">192.30.253.113 github.com </span><br><span class="line">103.245.222.133 assets-cdn.github.com </span><br><span class="line">23.235.47.133 assets-cdn.github.com </span><br><span class="line">203.208.39.104 assets-cdn.github.com </span><br><span class="line">204.232.175.78 documentcloud.github.com </span><br><span class="line">204.232.175.94 gist.github.com </span><br><span class="line">107.21.116.220 help.github.com </span><br><span class="line">207.97.227.252 nodeload.github.com </span><br><span class="line">199.27.76.130 raw.github.com </span><br><span class="line">107.22.3.110 status.github.com </span><br><span class="line">204.232.175.78 training.github.com </span><br><span class="line">207.97.227.243 www.github.com </span><br><span class="line">185.31.16.184 github.global.ssl.fastly.net </span><br><span class="line">185.31.18.133 avatars0.githubusercontent.com </span><br><span class="line">185.31.19.133 avatars1.githubusercontent.com</span><br></pre></td></tr></table></figure></li>
+<li><p>刷新DNS</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart NetworkManager</span><br></pre></td></tr></table></figure>
+<p>Finish, 享受飞速GitHub吧!</p>
+</li>
+</ul>
+<h2 id="10-4-解决pip3命令安装软件速度慢，使用-i参数"><a href="#10-4-解决pip3命令安装软件速度慢，使用-i参数" class="headerlink" title="10.4. 解决pip3命令安装软件速度慢，使用-i参数"></a>10.4. 解决pip3命令安装软件速度慢，使用-i参数</h2><p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/wukai0909/article/details/62427437">Python-解决pip3下载安装速度慢</a><br>临时使用：<br>可以在使用pip3的时候加参数-i <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple numpy</span><br><span class="line">#这样就会从清华这边的镜像去安装numpy库。</span><br></pre></td></tr></table></figure>
+<h2 id="10-5-解决打开IDEA时弹出JDK路径错误"><a href="#10-5-解决打开IDEA时弹出JDK路径错误" class="headerlink" title="10.5. 解决打开IDEA时弹出JDK路径错误"></a>10.5. 解决打开IDEA时弹出JDK路径错误</h2><p>错误出现原因，删除原系统open-jdk后手动安装JDK时可能出现未知bug，导致终端JDK配置没问题，致使IDEA的idea.sh启动时并不能正确找到JDK路径。因此我们的解决思路是可以修改idea.sh文件的某些位置，强制设置JDK路径为上一步我们配置的地址。</p>
+<figure class="highlight plain"><figcaption><span>修改文件:/usr/share/idea/bin/idea.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit &#x2F;usr&#x2F;share&#x2F;idea&#x2F;bin&#x2F;idea.sh #打开idea.sh文件</span><br><span class="line"># Ctrl + F 搜索 “JAVA_BIN”</span><br><span class="line">JDK&#x3D;$HOME&#x2F;Environment&#x2F;JAVA&#x2F;jdk1.8.0_181 #待添加强制定义JDK路径代码，将此行代码添加到idea.sh中的“JAVA_BIN&#x3D;&quot;$JDK&#x2F;bin&#x2F;java”代码的上方一行，强制定义JDK路径，问题解决 Done:)</span><br></pre></td></tr></table></figure>
+
+<h1 id="11-Linux-每日一练"><a href="#11-Linux-每日一练" class="headerlink" title="11. Linux 每日一练"></a>11. Linux 每日一练</h1><p>压缩文件／文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">7za a -t7z -r Mytest.7z &#x2F;opt&#x2F;phpMyAdmin-3.3.8.1-all-languages&#x2F;*</span><br><span class="line">7za a -t7z -r eisenhao.github.io_backup20180928.7z &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;*  #压缩本站所有文件</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li>a  代表添加文件／文件夹到压缩包</li>
+<li>-t 是指定压缩类型，这里定为7z，可不指定，因为7za默认压缩类型就是7z。</li>
+<li>-r 表示递归所有的子文件夹</li>
+<li>Mytest.7z 是压缩好后的压缩包名</li>
+<li>/opt/phpMyAdmin-3.3.8.1-all-languages/*：是压缩目标。</li>
+</ul>
+<p>注意：7za不仅仅支持.7z压缩格式，还支持.tar.bz2等压缩类型的。如上所述，用-t指定即可。</p>
+<h1 id="12-参考文档"><a href="#12-参考文档" class="headerlink" title="12. 参考文档"></a>12. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/79dae972b1e9">简书Manjaro安装后配置</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.lulinux.com/archives/category/linux_newbie">系统安装|鲁Linux</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/dp_dp/article/details/80139283">Manjaro安装后配置</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\09\30\howToConvert.rpmPackagesIntoArchPackages\" rel="bookmark">Manjaro系统安装.rpm或.deb软件</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/31/write-a-md-file/" rel="prev" title="基于Hexo的Markdown博文语法简介">
+                  <i class="fa fa-chevron-left"></i> 基于Hexo的Markdown博文语法简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/26/highValueApplicationSoftware/" rel="next" title="高效软件推荐">
+                  高效软件推荐 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/09/23/AfterInstallManjaro/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 安装Docker1.1. 一键安装DockerManjaro系统下pacman命令一键安装Docker 1sudo pacman -S docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker安装及简单应用">
+<meta property="og:url" content="https://eisenhao.cn/2018/11/19/DockerSimpleUsing/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 安装Docker1.1. 一键安装DockerManjaro系统下pacman命令一键安装Docker 1sudo pacman -S docker">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DockerSimpleUsing.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DockerContainerAndHostComparison.png">
+<meta property="article:published_time" content="2018-11-19T04:10:44.000Z">
+<meta property="article:modified_time" content="2019-02-18T02:03:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DockerSimpleUsing.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/11/19/DockerSimpleUsing/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/11/19/DockerSimpleUsing/","path":"2018/11/19/DockerSimpleUsing/","title":"Docker安装及简单应用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Docker安装及简单应用 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85Docker"><span class="nav-text">1. 安装Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85Docker"><span class="nav-text">1.1. 一键安装Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="nav-text">1.2. 配置镜像加速器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E6%96%B0%E5%BB%BA-etc-docker-daemon-json-%E6%96%87%E4%BB%B6"><span class="nav-text">1.2.1. 新建 &#x2F;etc&#x2F;docker&#x2F;daemon.json 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E5%9C%A8%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%A6%82%E4%B8%8B%E5%91%BD%E4%BB%A4"><span class="nav-text">1.2.2. 在文件中添加如下命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E9%87%8D%E6%96%B0%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="nav-text">1.2.3. 重新启动服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-4-%E6%A3%80%E6%9F%A5%E5%8A%A0%E9%80%9F%E5%99%A8%E6%98%AF%E5%90%A6%E7%94%9F%E6%95%88"><span class="nav-text">1.2.4. 检查加速器是否生效</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Docker%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8"><span class="nav-text">2. Docker简单应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%BF%90%E8%A1%8Chello-word%E5%B0%8F%E4%BE%8B%E5%AD%90"><span class="nav-text">2.1. 运行hello-word小例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%8E%B7%E5%8F%96%E9%95%9C%E5%83%8F"><span class="nav-text">2.2. 获取镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E6%8B%89%E5%8F%96Python%E9%95%9C%E5%83%8F"><span class="nav-text">2.2.1. 拉取Python镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E6%8B%89%E5%8F%96Ubuntu16-04%E9%95%9C%E5%83%8F"><span class="nav-text">2.2.2. 拉取Ubuntu16.04镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-%E5%88%97%E5%87%BA%E5%B7%B2%E7%BB%8F%E4%B8%8B%E8%BD%BD%E4%B8%8B%E6%9D%A5%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-text">2.2.3. 列出已经下载下来的镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-4-%E5%88%A0%E9%99%A4%E9%95%9C%E5%83%8F"><span class="nav-text">2.2.4. 删除镜像</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8python%E9%95%9C%E5%83%8F"><span class="nav-text">3. 使用python镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">3.1. 准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8"><span class="nav-text">3.2. 运行容器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8Ubuntu16-04%E9%95%9C%E5%83%8F"><span class="nav-text">4. 使用Ubuntu16.04镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%AE%B9%E5%99%A8%E4%B8%8E%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%AF%B9%E6%AF%94"><span class="nav-text">4.1. 容器与宿主机对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAUbuntu16-04%E5%AE%B9%E5%99%A8%E5%B9%B6%E5%9C%A8%E5%86%85%E8%BF%90%E8%A1%8Cbash%E5%B0%8F%E7%A8%8B%E5%BA%8F"><span class="nav-text">4.2. 创建一个Ubuntu16.04容器并在内运行bash小程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E6%98%BE%E7%A4%BA%E5%BD%93%E5%89%8D%E5%AE%B9%E5%99%A8"><span class="nav-text">4.3. 显示当前容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-%E6%B8%85%E7%90%86%E6%89%80%E6%9C%89%E5%A4%84%E4%BA%8E%E7%BB%88%E6%AD%A2%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="nav-text">4.4. 清理所有处于终止状态的容器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Docker%E9%95%9C%E5%83%8F%E3%80%81%E5%AE%B9%E5%99%A8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">5. Docker镜像、容器常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E6%AF%8F%E6%AC%A1%E5%90%AF%E5%8A%A8docker-%E9%87%8D%E6%96%B0%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="nav-text">5.1. 每次启动docker 重新启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E4%BB%8E-Docker-%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E8%8E%B7%E5%8F%96%E9%95%9C%E5%83%8F%EF%BC%9A"><span class="nav-text">5.2. 从 Docker 镜像仓库获取镜像：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E5%88%97%E5%87%BA%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F%EF%BC%9A"><span class="nav-text">5.3. 列出本地镜像：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E5%88%A0%E9%99%A4%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F%EF%BC%9A"><span class="nav-text">5.4. 删除本地镜像：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%AE%B9%E5%99%A8-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">6. 容器 常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E6%98%BE%E7%A4%BA%E5%BD%93%E5%89%8D%E5%AE%B9%E5%99%A8%EF%BC%9A"><span class="nav-text">6.1. 显示当前容器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E6%96%B0%E5%BB%BA%E5%B9%B6%E5%90%AF%E5%8A%A8"><span class="nav-text">6.2. 新建并启动:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8-d-%E5%8F%82%E6%95%B0%EF%BC%9A"><span class="nav-text">6.3. 后台运行容器 -d 参数：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-%E7%BB%88%E6%AD%A2%E5%AE%B9%E5%99%A8%EF%BC%9A"><span class="nav-text">6.4. 终止容器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="nav-text">6.5. 删除容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8"><span class="nav-text">6.6. 进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-7-%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5%E5%AE%B9%E5%99%A8"><span class="nav-text">6.7. 导出和导入容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-1-%E5%AF%BC%E5%87%BA%E5%AE%B9%E5%99%A8"><span class="nav-text">6.7.1. 导出容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-2-%E5%AF%BC%E5%85%A5%E5%AE%B9%E5%99%A8%E5%BF%AB%E7%85%A7"><span class="nav-text">6.7.2. 导入容器快照</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/11/19/DockerSimpleUsing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker安装及简单应用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-11-19 12:10:44" itemprop="dateCreated datePublished" datetime="2018-11-19T12:10:44+08:00">2018-11-19</time>
+    </span>
+
+  
+    <span id="/2018/11/19/DockerSimpleUsing/" class="post-meta-item leancloud_visitors" data-flag-title="Docker安装及简单应用" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DockerSimpleUsing.png" class="full-image" />
+
+<h1 id="1-安装Docker"><a href="#1-安装Docker" class="headerlink" title="1. 安装Docker"></a>1. 安装Docker</h1><h2 id="1-1-一键安装Docker"><a href="#1-1-一键安装Docker" class="headerlink" title="1.1. 一键安装Docker"></a>1.1. 一键安装Docker</h2><p>Manjaro系统下pacman命令一键安装Docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S docker</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="1-2-配置镜像加速器"><a href="#1-2-配置镜像加速器" class="headerlink" title="1.2. 配置镜像加速器"></a>1.2. 配置镜像加速器</h2><p>国内从 Docker Hub 拉取镜像有时会遇到困难，此时可以配置镜像加速器。Docker 官方和国内很多云服务商都提供了国内加速器服务，例如:</p>
+<ul>
+<li>Docker 官方提供的中国 registry mirror <a target="_blank" rel="noopener" href="https://registry.docker-cn.com/">https://registry.docker-cn.com</a></li>
+<li>七牛云加速器 <a target="_blank" rel="noopener" href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com/</a></li>
+</ul>
+<h3 id="1-2-1-新建-etc-docker-daemon-json-文件"><a href="#1-2-1-新建-etc-docker-daemon-json-文件" class="headerlink" title="1.2.1. 新建 /etc/docker/daemon.json 文件"></a>1.2.1. 新建 /etc/docker/daemon.json 文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo touch &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br><span class="line">sudo vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-2-在文件中添加如下命令"><a href="#1-2-2-在文件中添加如下命令" class="headerlink" title="1.2.2. 在文件中添加如下命令"></a>1.2.2. 在文件中添加如下命令</h3><figure class="highlight plain"><figcaption><span>文件位置：/etc/docker/daemon.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;registry-mirrors&quot;: [</span><br><span class="line">        &quot;https:&#x2F;&#x2F;registry.docker-cn.com&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-3-重新启动服务"><a href="#1-2-3-重新启动服务" class="headerlink" title="1.2.3. 重新启动服务"></a>1.2.3. 重新启动服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-4-检查加速器是否生效"><a href="#1-2-4-检查加速器是否生效" class="headerlink" title="1.2.4. 检查加速器是否生效"></a>1.2.4. 检查加速器是否生效</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker info</span><br></pre></td></tr></table></figure>
+<p>若最后有如下信息，则国内镜像服务（加速器）已生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Registry Mirrors:</span><br><span class="line"> https://registry.docker-cn.com/</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Docker简单应用"><a href="#2-Docker简单应用" class="headerlink" title="2. Docker简单应用"></a>2. Docker简单应用</h1><h2 id="2-1-运行hello-word小例子"><a href="#2-1-运行hello-word小例子" class="headerlink" title="2.1. 运行hello-word小例子"></a>2.1. 运行hello-word小例子</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+<p>运行hello-world容器，尽管此时没有hello-world镜像，docker会自动拉取hello-world的镜像，然后运行hello-world容器。</p>
+<h2 id="2-2-获取镜像"><a href="#2-2-获取镜像" class="headerlink" title="2.2. 获取镜像"></a>2.2. 获取镜像</h2><p>在 <a target="_blank" rel="noopener" href="https://store.docker.com/">Docker Store</a> 上有非常多的高质量的官方镜像</p>
+<h3 id="2-2-1-拉取Python镜像"><a href="#2-2-1-拉取Python镜像" class="headerlink" title="2.2.1. 拉取Python镜像"></a>2.2.1. 拉取Python镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull python:3.5</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-2-拉取Ubuntu16-04镜像"><a href="#2-2-2-拉取Ubuntu16-04镜像" class="headerlink" title="2.2.2. 拉取Ubuntu16.04镜像"></a>2.2.2. 拉取Ubuntu16.04镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull ubuntu:16.04</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-3-列出已经下载下来的镜像"><a href="#2-2-3-列出已经下载下来的镜像" class="headerlink" title="2.2.3. 列出已经下载下来的镜像"></a>2.2.3. 列出已经下载下来的镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image ls</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-4-删除镜像"><a href="#2-2-4-删除镜像" class="headerlink" title="2.2.4. 删除镜像"></a>2.2.4. 删除镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image rm [镜像名/镜像ID]</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-使用python镜像"><a href="#3-使用python镜像" class="headerlink" title="3. 使用python镜像"></a>3. 使用python镜像</h1><h2 id="3-1-准备工作"><a href="#3-1-准备工作" class="headerlink" title="3.1. 准备工作"></a>3.1. 准备工作</h2><p>在宿主操作系统～目录下新建文件夹</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p DockerTest/Pythonapp <span class="comment">#新建Pythonapp文件夹</span></span><br><span class="line">touch helloworld.py <span class="comment">#创建 python程序文件</span></span><br></pre></td></tr></table></figure>
+<p>helloworld.py 文件，代码如下：</p>
+<figure class="highlight plain"><figcaption><span>文件位置：~/DockerTest/Pythonapp/helloworld.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;python</span><br><span class="line"></span><br><span class="line">for i in range(5):</span><br><span class="line">    print(i， &#39; hello world!&#39;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-运行容器"><a href="#3-2-运行容器" class="headerlink" title="3.2. 运行容器"></a>3.2. 运行容器</h2><p>跳转到上一目录~/DockerTest，并执行以下命令运行容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -v <span class="variable">$PWD</span>/Pythonapp:/usr/src/Pythonapp -w /usr/src/Pythonapp python:3.5 python helloworld.py</span><br><span class="line"></span><br><span class="line"><span class="comment">#命令说明：</span></span><br><span class="line"></span><br><span class="line">-v <span class="variable">$PWD</span>/Pythonapp:/usr/src/Pythonapp <span class="comment">#将主机中当前目录下的Pythonapp挂载到容器的/usr/src/Pythonapp</span></span><br><span class="line">-w /usr/src/Pythonapp <span class="comment">#指定容器的/usr/src/Pythonapp目录为工作目录</span></span><br><span class="line">python helloworld.py <span class="comment">#使用容器的python命令来执行工作目录中的helloworld.py文件</span></span><br></pre></td></tr></table></figure>
+<p>执行结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> hello world!</span><br><span class="line"><span class="number">1</span> hello world!</span><br><span class="line"><span class="number">2</span> hello world!</span><br><span class="line"><span class="number">3</span> hello world!</span><br><span class="line"><span class="number">4</span> hello world!</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-使用Ubuntu16-04镜像"><a href="#4-使用Ubuntu16-04镜像" class="headerlink" title="4. 使用Ubuntu16.04镜像"></a>4. 使用Ubuntu16.04镜像</h1><h2 id="4-1-容器与宿主机对比"><a href="#4-1-容器与宿主机对比" class="headerlink" title="4.1. 容器与宿主机对比"></a>4.1. 容器与宿主机对比</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建一个Ubuntu16.04容器并在内运行bash</span></span><br><span class="line">sudo docker run -t -i ubuntu:16.04 /bin/bash</span><br><span class="line"><span class="comment"># 显示当前目录</span></span><br><span class="line"><span class="built_in">pwd</span></span><br><span class="line"><span class="comment"># 显示正在使用的内核版本</span></span><br><span class="line">uname -r</span><br><span class="line"><span class="comment"># 显示Docker的进程</span></span><br><span class="line">ps a | grep docker</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DockerContainerAndHostComparison.png" alt="Docker容器&amp;宿主机对比"></p>
+<p><strong>左图</strong>为Docker运行的Ubuntu16.04容器； <strong>右图</strong>为宿主操作系统</p>
+<p><strong>分析</strong>：执行<strong>pwd</strong> (#显示当前目录)<strong>命令</strong>时可看到容器的当前目录为<code>/</code>，而非运行容器的宿主目录<code>~</code>；均跳转到根目录<code>/</code>后运行<code>ls</code>命令可看到容器与宿主操作系统有两套不同的文件系统。正如前面介绍的那样，Docker会虚拟一整套文件系统。</p>
+<p><strong>分析</strong>：两边执行<code><strong>uname -r</strong></code>&gt;            # 显示正在使用的内核版本<strong>命令</strong>，两边内核版本一致，正如前面介绍的那样，Docker无模拟硬件，无内核。</p>
+<h2 id="4-2-创建一个Ubuntu16-04容器并在内运行bash小程序"><a href="#4-2-创建一个Ubuntu16-04容器并在内运行bash小程序" class="headerlink" title="4.2. 创建一个Ubuntu16.04容器并在内运行bash小程序"></a>4.2. 创建一个Ubuntu16.04容器并在内运行bash小程序</h2><p>小程序功能：每隔一秒输出一次hello world</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run ubuntu:16.04 /bin/sh -c <span class="string">&quot;while true; do echo hello world; sleep 1; done&quot;</span></span><br></pre></td></tr></table></figure>
+<div class="note warning"><p>按 Ctrl + C 可退出小程序循环</p>
+</div>
+
+<h2 id="4-3-显示当前容器"><a href="#4-3-显示当前容器" class="headerlink" title="4.3. 显示当前容器"></a>4.3. 显示当前容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker container ls <span class="comment">#显示当前正在运行的容器</span></span><br><span class="line">sudo docker container ls -a <span class="comment">#显示所有容器，包括终止状态的容器</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-4-清理所有处于终止状态的容器"><a href="#4-4-清理所有处于终止状态的容器" class="headerlink" title="4.4. 清理所有处于终止状态的容器"></a>4.4. 清理所有处于终止状态的容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container prune</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-Docker镜像、容器常用命令"><a href="#5-Docker镜像、容器常用命令" class="headerlink" title="5. Docker镜像、容器常用命令"></a>5. Docker镜像、容器常用命令</h1><h2 id="5-1-每次启动docker-重新启动服务"><a href="#5-1-每次启动docker-重新启动服务" class="headerlink" title="5.1. 每次启动docker 重新启动服务"></a>5.1. 每次启动docker 重新启动服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>##（容器对比）linux命令：<br>显示当前目录:                 pwd<br>显示正在使用的内核版本:        uname -r<br>显示Docker的进程：            ps a | grep docker</p>
+<h2 id="5-2-从-Docker-镜像仓库获取镜像："><a href="#5-2-从-Docker-镜像仓库获取镜像：" class="headerlink" title="5.2. 从 Docker 镜像仓库获取镜像："></a>5.2. 从 Docker 镜像仓库获取镜像：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull ubuntu:16.04</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-3-列出本地镜像："><a href="#5-3-列出本地镜像：" class="headerlink" title="5.3. 列出本地镜像："></a>5.3. 列出本地镜像：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image ls</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-4-删除本地镜像："><a href="#5-4-删除本地镜像：" class="headerlink" title="5.4. 删除本地镜像："></a>5.4. 删除本地镜像：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image rm [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-容器-常用命令"><a href="#6-容器-常用命令" class="headerlink" title="6. 容器 常用命令"></a>6. 容器 常用命令</h1><h2 id="6-1-显示当前容器："><a href="#6-1-显示当前容器：" class="headerlink" title="6.1. 显示当前容器："></a>6.1. 显示当前容器：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container ls <span class="comment">#显示当前正在运行的容器</span></span><br><span class="line">sudo docker container ls -a <span class="comment">#显示所有状态的容器（包括终止状态的容器）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-2-新建并启动"><a href="#6-2-新建并启动" class="headerlink" title="6.2. 新建并启动:"></a>6.2. 新建并启动:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -t -i ubuntu:16.04 /bin/bash <span class="comment"># 创建一个Ubuntu16.04容器并在内运行bash</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-3-后台运行容器-d-参数："><a href="#6-3-后台运行容器-d-参数：" class="headerlink" title="6.3. 后台运行容器 -d 参数："></a>6.3. 后台运行容器 -d 参数：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d ubuntu:16.04 /bin/sh -c <span class="string">&quot;while true; do echo hello world; sleep 1; done&quot;</span>    <span class="comment">#容器会在后台运行并不会把输出的结果 (STDOUT) 打印到宿主机上面</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对比缺少 -d 参数的运行容器</span></span><br><span class="line">sudo docker run ubuntu:16.04 /bin/sh -c <span class="string">&quot;while true; do echo hello world; sleep 1; done&quot;</span>    <span class="comment">#容器会把输出的结果 (STDOUT) 打印到宿主机上面</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-4-终止容器："><a href="#6-4-终止容器：" class="headerlink" title="6.4. 终止容器："></a>6.4. 终止容器：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container stop [容器名/容器ID]</span><br></pre></td></tr></table></figure>
+<p>例如对于上面中只启动了一个ubuntu:16.04终端的容器，用户通过 exit 命令或Ctrl+d 来退出终端时，所创建的容器立刻终止。</p>
+<h2 id="6-5-删除容器"><a href="#6-5-删除容器" class="headerlink" title="6.5. 删除容器"></a>6.5. 删除容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container rm [容器名/容器ID] <span class="comment">#删除一个处于终止状态的容器</span></span><br><span class="line">sudo docker container rm -f [容器名/容器ID] <span class="comment">#删除一个运行中的容器</span></span><br><span class="line">sudo docker container prune <span class="comment">#清理所有处于终止状态的容器</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-6-进入容器"><a href="#6-6-进入容器" class="headerlink" title="6.6. 进入容器"></a>6.6. 进入容器</h2><p>在使用 -d 参数时，容器启动后会进入后台。<br>某些时候需要进入容器进行操作，包括使用 docker attach 命令或 docker exec 命令，推荐大家使用 docker exec 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo docker attach [容器名/容器ID]</span><br><span class="line">sudo docker <span class="built_in">exec</span> -it [容器名/容器ID] bash</span><br><span class="line"></span><br><span class="line"><span class="comment">#eg.</span></span><br><span class="line">sudo docker run -d ubuntu:16.04 <span class="comment">#后台运行ubuntu:16.04容器</span></span><br><span class="line">sudo docker container ls -a <span class="comment">#显示所有状态的容器（包括终止状态的容器）</span></span><br><span class="line">sudo docker <span class="built_in">exec</span> -it [容器名/容器ID] bash <span class="comment">#进入ubuntu:16.04容器，并执行bash</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-7-导出和导入容器"><a href="#6-7-导出和导入容器" class="headerlink" title="6.7. 导出和导入容器"></a>6.7. 导出和导入容器</h2><h3 id="6-7-1-导出容器"><a href="#6-7-1-导出容器" class="headerlink" title="6.7.1. 导出容器"></a>6.7.1. 导出容器</h3><p>如果要导出本地某个容器，可以使用 docker export 命令，将导出容器快照到本地文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container ls -a <span class="comment">#显示所有状态的容器（包括终止状态的容器）</span></span><br><span class="line">sudo docker <span class="built_in">export</span> [容器名/容器ID] &gt; FileName.tar</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-7-2-导入容器快照"><a href="#6-7-2-导入容器快照" class="headerlink" title="6.7.2. 导入容器快照"></a>6.7.2. 导入容器快照</h3><p>可以使用 docker import 从容器快照文件中再导入为镜像，例如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cat FileName.tar | docker import - <span class="built_in">test</span>/FileName:v1.0</span><br><span class="line">sudo docker image ls</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/16/DataMining_ID3/" rel="prev" title="ID3算法——数据挖掘">
+                  <i class="fa fa-chevron-left"></i> ID3算法——数据挖掘
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/03/DataMining_AdaBoost/" rel="next" title="AdaBoost算法——数据挖掘">
+                  AdaBoost算法——数据挖掘 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/11/19/DockerSimpleUsing/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

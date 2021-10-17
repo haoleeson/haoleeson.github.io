@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="众所周知，程序中的变量存放于计算机内存中，程序对这些变量执行特定的赋值和计算等操作以实现某种功能。你是否好奇变量是如何被存储和表示于内存之中呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测试内存中变量的存储方式">
+<meta property="og:url" content="https://eisenhao.cn/2019/07/24/BitPrint/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="众所周知，程序中的变量存放于计算机内存中，程序对这些变量执行特定的赋值和计算等操作以实现某种功能。你是否好奇变量是如何被存储和表示于内存之中呢？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/bitPrint.jpg">
+<meta property="article:published_time" content="2019-07-24T13:44:44.000Z">
+<meta property="article:modified_time" content="2019-07-24T16:31:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/bitPrint.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2019/07/24/BitPrint/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2019/07/24/BitPrint/","path":"2019/07/24/BitPrint/","title":"测试内存中变量的存储方式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>测试内存中变量的存储方式 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%83%8C%E6%99%AF"><span class="nav-text">1. 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%E6%8E%A2%E7%A9%B6"><span class="nav-text">2. 存储方式探究</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%89%93%E5%8D%B0%E5%90%84%E6%AF%94%E7%89%B9%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0"><span class="nav-text">2.1. 打印各比特原理概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E7%BC%96%E7%A0%81%E6%B5%8B%E8%AF%95"><span class="nav-text">2.2. 编码测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-byte-%E5%8F%98%E9%87%8F%E5%90%84%E6%AF%94%E7%89%B9%E4%BD%8D%E6%89%93%E5%8D%B0%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.2.1. byte 变量各比特位打印实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-char-%E5%8F%98%E9%87%8F%E5%90%84%E6%AF%94%E7%89%B9%E7%9A%84%E6%89%93%E5%8D%B0%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.2.2. char 变量各比特的打印实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-int-%E5%8F%98%E9%87%8F%E5%90%84%E6%AF%94%E7%89%B9%E7%9A%84%E6%89%93%E5%8D%B0%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.2.3. int 变量各比特的打印实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%89%A9%E5%B1%95%E5%BB%B6%E4%BC%B8"><span class="nav-text">2.3. 扩展延伸</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E6%89%93%E5%8D%B0-%E4%BB%BB%E6%84%8F-%E5%8F%98%E9%87%8F%E7%9A%84%E5%90%84%E6%AF%94%E7%89%B9"><span class="nav-text">2.3.1. 打印 任意 变量的各比特</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E5%88%A4%E6%96%AD%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%90%A6%E4%B8%BA%E5%A4%A7%E7%AB%AF%E5%AD%97%E8%8A%82%E5%BA%8F"><span class="nav-text">2.3.2. 判断系统是否为大端字节序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90"><span class="nav-text">3. 字节对齐</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%85%88%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E5%8C%85%E5%90%AB%E5%A4%9A%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E7%9A%84%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-text">3.1. 先自定义一个包含多类型变量的结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%A6%81%E6%AD%A2%E7%BC%96%E8%AF%91%E5%99%A8%E8%87%AA%E5%8A%A8%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90"><span class="nav-text">3.2. 禁止编译器自动字节对齐</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%8C%89%E5%AD%97%E8%8A%82%E8%AE%BF%E9%97%AE"><span class="nav-text">4. 按字节访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">5. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/07/24/BitPrint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          测试内存中变量的存储方式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2019-07-24 21:44:44" itemprop="dateCreated datePublished" datetime="2019-07-24T21:44:44+08:00">2019-07-24</time>
+    </span>
+
+  
+    <span id="/2019/07/24/BitPrint/" class="post-meta-item leancloud_visitors" data-flag-title="测试内存中变量的存储方式" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/bitPrint.jpg" class="full-image" />
+
+<p>众所周知，程序中的变量存放于计算机内存中，程序对这些变量执行特定的赋值和计算等操作以实现某种功能。你是否好奇变量是如何被存储和表示于内存之中呢？</p>
+<a id="more"></a>
+
+<p>不同类型的变量所占字节大小不同、相同类型的变量在不同操作系统内所占字节大小也可能不同。而对于超过1字节的变量，根据不同的操作系统，还涉及字节序、字节对齐、大端or小端等其他问题。接下来让我们探究一下变量在内存中的表示与存放吧！</p>
+<p><strong>关键词:</strong> 比特打印、字节序、字节对齐</p>
+<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>一般初学一门编程语言时，最开始了解的就是这门语言支持的基本变量类型、其大小（占多少字节），可表示的数值范围。如在C/C++语言中，char类型的变量占一个字节(一个字节含8bit，为减少内存管理负担，一字节通常也是操作系统内存的最小单位，但应用时各bit可被赋予不同的语义）。char变量有8bit，除去最高位为符号位用于表示数的正负外，剩余的低7位可以表示到(0 ~ 2^7 - 1，即0～127)，加上符号位即 + - (0～127)，又由于”-0”(0x80)与我们常用的数学方式不符，而被译为-128，故在C/C++程序语言中，一个char类型的变量，仅占用一个字节，却被可以表示 -128 ~ 127 的数值范围。</p>
+<h1 id="2-存储方式探究"><a href="#2-存储方式探究" class="headerlink" title="2. 存储方式探究"></a>2. 存储方式探究</h1><h2 id="2-1-打印各比特原理概述"><a href="#2-1-打印各比特原理概述" class="headerlink" title="2.1. 打印各比特原理概述"></a>2.1. 打印各比特原理概述</h2><p>运用C/C++中提供的位操作符和与操作原理“a &amp; 1 = a” 和 “a &amp; 0 = 0”获得各位的0/1值。依次从最高位开始提取，若为1则打印“1”，若为0则打印“0”，然后提取次高位的0/1值并打印，直至提取打印到最低位。至此一个字节的各比特的值都以打印出来。</p>
+<h2 id="2-2-编码测试"><a href="#2-2-编码测试" class="headerlink" title="2.2. 编码测试"></a>2.2. 编码测试</h2><h3 id="2-2-1-byte-变量各比特位打印实现"><a href="#2-2-1-byte-变量各比特位打印实现" class="headerlink" title="2.2.1. byte 变量各比特位打印实现"></a>2.2.1. byte 变量各比特位打印实现</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 byte 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位</span></span><br><span class="line"><span class="comment"> * eg. 0x80  --&gt; [1000 0000]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Byte</span><span class="params">(<span class="keyword">const</span> byte val)</span> </span>&#123;</span><br><span class="line">    byte comp = <span class="number">0x80</span>;<span class="comment">//相当于标尺，当前取最高位</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot; [&quot;</span>;</span><br><span class="line">    <span class="keyword">while</span> (comp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (comp == <span class="number">0x08</span>)</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">if</span> ((val &amp; comp) == comp)</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;0&quot;</span>;</span><br><span class="line">        comp &gt;&gt;= <span class="number">1</span>;<span class="comment">//逻辑右移，依次取各位</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;]&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数0x55时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0101</span> <span class="number">0101</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：<br>由于传入参数0x55其高低字节都为5，二进制中表示为0101，而我们可以看到其在内存中存储结果其高低字节分别为[0101 0101]，与分析相符。</p>
+<h3 id="2-2-2-char-变量各比特的打印实现"><a href="#2-2-2-char-变量各比特的打印实现" class="headerlink" title="2.2.2. char 变量各比特的打印实现"></a>2.2.2. char 变量各比特的打印实现</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 char 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位</span></span><br><span class="line"><span class="comment"> * eg. 0x80  --&gt; [1000 0000]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Char</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;char = &quot;</span> &lt;&lt; val &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    bitPrint_Byte((byte)val);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数’M’时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> = M</span><br><span class="line">Bits: [<span class="number">0100</span> <span class="number">1101</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：<br>char类型与byte类型十分相似，都占用一个字节，但其最高位拥有特殊语义，最高位为0表示正数，最高位为1表示负数。当传入参数为’M’，查询ASCII（美国信息交换标准代码）表可知’M’的为表中第77个字符，用0x4D表示。其中高字节4二进制表示为0100，低字节D二进制表示为1101，且最高位（最左位）为0表示正数，结果与分析一致。</p>
+<h3 id="2-2-3-int-变量各比特的打印实现"><a href="#2-2-3-int-变量各比特的打印实现" class="headerlink" title="2.2.3. int 变量各比特的打印实现"></a>2.2.3. int 变量各比特的打印实现</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 int 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位,</span></span><br><span class="line"><span class="comment"> * 默认从左至右为内存地址的增长方向</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * eg. 0x00001234</span></span><br><span class="line"><span class="comment"> * 小端（正序） [0011 0100] [0001 0010] [0000 0000] [0000 0000]</span></span><br><span class="line"><span class="comment"> * 大端（逆序） [0000 0000] [0000 0000] [0001 0010] [0011 0100]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Int</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">    byte* byteBuf = (byte *) &amp;val;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;int = &quot;</span> &lt;&lt; val &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;IntLen; i++) &#123;</span><br><span class="line">        bitPrint_Byte(byteBuf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数19088743时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> = <span class="number">19088743</span></span><br><span class="line">Bits: [<span class="number">0110</span> <span class="number">0111</span>] [<span class="number">0100</span> <span class="number">0101</span>] [<span class="number">0010</span> <span class="number">0011</span>] [<span class="number">0000</span> <span class="number">0001</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>int变量类型占用四个字节，其最高位拥有特殊语义，最高位为0表示正数，最高位为1表示负数。int变量占四个字节，所以就会引发这样一个问题——“字节在电脑中存放时的序列与输入（输出）时的序列是先到的在前还是后到的在前？”针对此问题，产生两种不同的字节序，即规定多字节变量在内存中连续存放时的顺序是低地址对应高字节or低地址对应低字节。产生了两种字节序：</p>
+<ul>
+<li>小端字节序（正序）：高字节对应内存的高地址</li>
+<li>大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）<br>由于不同的系统采用的字节序不同，正好也可验证下自己的操作系统采用哪种字节序。<br>当传入参数为19088743，其十六进制表示为0x01234567。而分析其执行结果，低地址存放为[0110 0111]，十六进制为0x67，对应int值的低字节；而高地址存放为[0000 0001]，十六进制为0x01，对应int值的高字节。故可得知博主操作系统字节序为小端字节序（正序）。</li>
+</ul>
+<h2 id="2-3-扩展延伸"><a href="#2-3-扩展延伸" class="headerlink" title="2.3. 扩展延伸"></a>2.3. 扩展延伸</h2><h3 id="2-3-1-打印-任意-变量的各比特"><a href="#2-3-1-打印-任意-变量的各比特" class="headerlink" title="2.3.1. 打印 任意 变量的各比特"></a>2.3.1. 打印 任意 变量的各比特</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 任意 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位,</span></span><br><span class="line"><span class="comment"> * 默认从左至右为内存地址的增长方向</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * eg. 0x00001234</span></span><br><span class="line"><span class="comment"> * 小端（正序） [0011 0100] [0001 0010] [0000 0000] [0000 0000]</span></span><br><span class="line"><span class="comment"> * 大端（逆序） [0000 0000] [0000 0000] [0001 0010] [0011 0100]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Element</span><span class="params">(<span class="keyword">void</span> *val, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">    byte* byteBuf = <span class="keyword">new</span> byte[len];<span class="comment">//申请len长度的内存用于存放变量的所有字节</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">memcpy</span>(byteBuf, val, len);<span class="comment">//深拷贝</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++) &#123;</span><br><span class="line">        bitPrint_Byte(byteBuf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span> byteBuf;<span class="comment">//释放byteBuf内存</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数为一个自定义类（或结构体）时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传入参数：学生成绩类的首地址</span></span><br><span class="line"><span class="comment">//学生成绩类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">char</span> id;</span><br><span class="line">    <span class="keyword">int</span> score;</span><br><span class="line">    Student(<span class="keyword">char</span> id, <span class="keyword">int</span> score) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;id = id;</span><br><span class="line">        <span class="keyword">this</span>-&gt;score = score;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//主函数内运行</span></span><br><span class="line">Student* xiaoming = <span class="keyword">new</span> Student(<span class="string">&#x27;A&#x27;</span>, <span class="number">88</span>);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;class = &#123;&quot;</span> &lt;&lt; xiaoming-&gt;id &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; xiaoming-&gt;score &lt;&lt; <span class="string">&quot;&#125;&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">bitPrint-&gt;bitPrint_Element(xiaoming, <span class="keyword">sizeof</span>(Student));</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> =</span> &#123;A, <span class="number">88</span>&#125;</span><br><span class="line">Bits: [<span class="number">0100</span> <span class="number">0001</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0101</span> <span class="number">1000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：<br>从学生成绩类的定义可以看出，此类含有两个属性：char类型的学生编号id 和 int类型的学生成绩score，按理说这个类实例化后分配的内存应该是（1+4）为5个字节，但结果确是8个字节，这是为了方便快速地寻址，编译器会采用字节对齐，将下一个变量地址放置在系统能快速读取的位置（如：32位系统，放在偶地址的变量能够1个读周期取到值，而放在奇地址的变量却需要2个读周期才能取到值，故会存在字节对齐）。所以在第一个char变量后跳过了3个字节，将第二个int变量首地址设置为第5个字节。故此Student类在内存中的存放为：0x41、连续3个0x00对齐字节，4个字节的int变量[0101 1000] [0000 0000] [0000 0000] [0000 0000]，合计8个字节。</p>
+<h3 id="2-3-2-判断系统是否为大端字节序"><a href="#2-3-2-判断系统是否为大端字节序" class="headerlink" title="2.3.2. 判断系统是否为大端字节序"></a>2.3.2. 判断系统是否为大端字节序</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 判断系统是否为大端字节序</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * @Return 是大端字节序（true）；是小端字节序（false）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">BitPrint::isBigEndian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> test = <span class="number">0x01</span>;</span><br><span class="line">    byte* byteBuf = (byte *) &amp;test;</span><br><span class="line">    <span class="comment">//取低地址的一个字节为Byte变量，若其值等于低字节0x01则为正序（小端）</span></span><br><span class="line">    <span class="keyword">return</span> (byteBuf[<span class="number">0</span>] == <span class="number">0x01</span>) ? <span class="literal">false</span> : <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//主函数内运行 main.cpp</span></span><br><span class="line"><span class="comment">//判断系统是否为大端字节序</span></span><br><span class="line"><span class="keyword">if</span> (bitPrint-&gt;isBigEndian()) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;Yes, this system is Big Endian System&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;No, this system is Small Endian System&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line">No, <span class="keyword">this</span> system is Small Endian System</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>通过判断特定的int变量在内存中存放的次序即可判断当前系统采用的字节序。实际操作为取特定值为0x01的int变量的低地址的一个字节为Byte变量，若其值等于低字节0x01则为正序（小端），反之则为大端字节序。</p>
+<h1 id="3-字节对齐"><a href="#3-字节对齐" class="headerlink" title="3. 字节对齐"></a>3. 字节对齐</h1><p>前面分析到为了方便快速地寻址，编译器会采用字节对齐，将下一个变量地址放置在系统能快速读取的位置（如：32位系统，放在偶地址的变量能够1个读周期取到值，而放在奇地址的变量却需要2个读周期才能取到值，故会存在字节对齐）。<br>即对待结构体内的各位元素就像对待sizeof为n的数组一样，从结构体首地址开始依次向后为每个成员寻找第一个满足“addr % N == 0”的地址，如果不够则在前一个成员变量后补空字节使之满足条件。上面的N为对齐参数(N = min(sizeof(第i个成员类型),n))，n，可以设置，在c++中缺省值为8。<br>下面一起来验证一下吧！</p>
+<h2 id="3-1-先自定义一个包含多类型变量的结构体"><a href="#3-1-先自定义一个包含多类型变量的结构体" class="headerlink" title="3.1. 先自定义一个包含多类型变量的结构体"></a>3.1. 先自定义一个包含多类型变量的结构体</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG1</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> ID[<span class="number">16</span>];<span class="comment">// 16</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> type;<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">char</span> flag;<span class="comment">// 1  --&gt;   字节对齐（其后闲置1字节，共占2字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiHashValue;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiDataLen;<span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> contentData[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG0</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> ID[<span class="number">16</span>];<span class="comment">// 16</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> type;<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">char</span> flag; <span class="comment">// 1  --&gt;   字节对齐（其后闲置1字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiHashValue;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiDataLen;<span class="comment">// 4  --&gt;   字节对齐（其后闲置4字节，共占8字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> ulStartTime;<span class="comment">// 8</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> ulEndTime;<span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> contentData[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>定义一个该结构体变量并打印出各成员变量的地址如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MSG1 msg1;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1:\t\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.ID:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.ID &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.ID - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.type:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.type &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.type - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.flag:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.flag &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.flag - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.uiHashValue:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.uiHashValue &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.uiHashValue - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.uiDataLen:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.uiDataLen &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.uiDataLen - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.contentData:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)msg1.contentData &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.contentData - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    MSG0 msg0;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0:\t\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ID:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ID &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ID - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.type:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.type &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.type - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.flag:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.flag &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.flag - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.uiHashValue:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.uiHashValue &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.uiHashValue - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.uiDataLen:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.uiDataLen &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.uiDataLen - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ulStartTime:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ulStartTime &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ulStartTime - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ulEndTime:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ulEndTime &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ulEndTime - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.contentData:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)msg0.contentData &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.contentData - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line">&amp;msg1:				<span class="number">0x7ffeed56a8d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.ID:			<span class="number">0x7ffeed56a8d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.type:			<span class="number">0x7ffeed56a8e8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg1.flag:			<span class="number">0x7ffeed56a8ea</span> , <span class="number">18</span></span><br><span class="line">&amp;msg1.uiHashValue:	<span class="number">0x7ffeed56a8ec</span> , <span class="number">20</span></span><br><span class="line">&amp;msg1.uiDataLen:	<span class="number">0x7ffeed56a8f0</span> , <span class="number">24</span></span><br><span class="line">&amp;msg1.contentData:	<span class="number">0x7ffeed56a8f4</span> , <span class="number">28</span></span><br><span class="line"></span><br><span class="line">&amp;msg0:				<span class="number">0x7ffeecdd38c0</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.ID:			<span class="number">0x7ffeecdd38c0</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.type:			<span class="number">0x7ffeecdd38d0</span> , <span class="number">16</span></span><br><span class="line">&amp;msg0.flag:			<span class="number">0x7ffeecdd38d2</span> , <span class="number">18</span></span><br><span class="line">&amp;msg0.uiHashValue:	<span class="number">0x7ffeecdd38d4</span> , <span class="number">20</span></span><br><span class="line">&amp;msg0.uiDataLen:	<span class="number">0x7ffeecdd38d8</span> , <span class="number">24</span></span><br><span class="line">&amp;msg0.ulStartTime:	<span class="number">0x7ffeecdd38e0</span> , <span class="number">32</span></span><br><span class="line">&amp;msg0.ulEndTime:	<span class="number">0x7ffeecdd38e8</span> , <span class="number">40</span></span><br><span class="line">&amp;msg0.contentData:	<span class="number">0x7ffeecdd38f0</span> , <span class="number">48</span></span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>通过结构体MSG1定义的变量，其成员变量的地址于首地址的偏差可以看出，第三个成员变量flag虽为char类型，只占1字节，但编译器为了访问后续自变量更方便（放在偶地址，若为奇地址需要2个读周期才能取到值），所以编译器将下一个变量uiHashValue的首地址向后挪动一位到偏移地址为20处（偶地址的变量能够1个读周期取到值），相当于第三个成员变量占用2各字节（后一字节闲置）</p>
+<ul>
+<li>第一个成员地址为0，已对齐。</li>
+<li>第二个成员，由于上一个成员大小为16所以当前准地址为：16，N = min(sizeof(unsigned short),8)等于2，满足“addr % N == 0”，已对齐</li>
+<li>第三个成员，由于上一个成员大小为2所以当前准地址为：18，N = min(sizeof(char),8)等于1，满足“addr % N == 0”，已对齐</li>
+<li>第四个成员，由于上一个成员大小为1所以当前准地址为：19，N = min(sizeof(unsigned int),8)等于4，不满足“addr % N == 0”，19%4余1，故在前一个变量后补1个字节，使当前地址20满足“addr % N == 0”</li>
+<li>第五个成员，由于上一个成员大小为4所以当前准地址为：24，N = min(sizeof(unsigned int),8)等于4，满足“addr % N == 0”，已对齐</li>
+<li>第六个成员，由于上一个成员大小为4所以当前准地址为：28，N = min(sizeof(char),8)等于1，满足“addr % N == 0”，已对齐</li>
+</ul>
+<p>同理对结构体MSG0的实际变量定义的变量，齐成员变量的地址于首地址的偏差可看出除了同样在第三个成员变量flag后跳过了1个字节，将下一个变量uiHashValue的首地址向后挪动一位到偏移地址为20处外，还在第5个变量uiDataLen后插入4字节闲置字节{8+8},{2+(1+1)+4},{(4+4)},{8},{8}。</p>
+<ul>
+<li>第一个成员地址为0，已对齐。</li>
+<li>第二个成员，由于上一个成员大小为16所以当前准地址为：16，N = min(sizeof(unsigned short),8)等于2，满足“addr % N == 0”，已对齐</li>
+<li>第三个成员，由于上一个成员大小为2所以当前准地址为：18，N = min(sizeof(char),8)等于1，满足“addr % N == 0”，已对齐</li>
+<li>第四个成员，由于上一个成员大小为1所以当前准地址为：19，N = min(sizeof(unsigned int),8)等于4，不满足“addr % N == 0”，19%4余1，故在前一个成员后补1个字节，使当前地址20满足“addr % N == 0”</li>
+<li>第五个成员，由于上一个成员大小为4所以当前准地址为：24，N = min(sizeof(unsigned int),8)等于4，满足“addr % N == 0”，已对齐</li>
+<li>第六个成员，由于上一个成员大小为4所以当前准地址为：28，N = min(sizeof(unsigned long long int),8)等于8，不满足“addr % N == 0”，28%8余4，故在前一字成员后补4个字节，使当前地址为32满足“addr % N == 0”</li>
+<li>第七个成员，由于上一个成员大小为8所以当前准地址为：40，N = min(sizeof(unsigned int),8)等于8，满足“addr % N == 0”，已对齐</li>
+<li>第八个成员，由于上一个成员大小为8所以当前准地址为：48，N = min(sizeof(char),8)等于1，满足“addr % N == 0”，已对齐</li>
+</ul>
+<h2 id="3-2-禁止编译器自动字节对齐"><a href="#3-2-禁止编译器自动字节对齐" class="headerlink" title="3.2. 禁止编译器自动字节对齐"></a>3.2. 禁止编译器自动字节对齐</h2><p>我们可以在定义结构体上方加一句配置，设置对齐参数为1字节从而实现关闭编译器自动对齐的目的（可能带来性能损失或其他错误）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(1) <span class="comment">// 编译使用1字节对齐，未设置则自动字节对齐</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG1</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG0</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印出各成员变量的地址如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&amp;msg1:				<span class="number">0x7ffee5ce28d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.ID:			<span class="number">0x7ffee5ce28d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.type:			<span class="number">0x7ffee5ce28e8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg1.flag:			<span class="number">0x7ffee5ce28ea</span> , <span class="number">18</span></span><br><span class="line">&amp;msg1.uiHashValue:	<span class="number">0x7ffee5ce28eb</span> , <span class="number">19</span></span><br><span class="line">&amp;msg1.uiDataLen:	<span class="number">0x7ffee5ce28ef</span> , <span class="number">23</span></span><br><span class="line">&amp;msg1.contentData:	<span class="number">0x7ffee5ce28f3</span> , <span class="number">27</span></span><br><span class="line"></span><br><span class="line">&amp;msg0:				<span class="number">0x7ffee5ce28a8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.ID:			<span class="number">0x7ffee5ce28a8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.type:			<span class="number">0x7ffee5ce28b8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg0.flag:			<span class="number">0x7ffee5ce28ba</span> , <span class="number">18</span></span><br><span class="line">&amp;msg0.uiHashValue:	<span class="number">0x7ffee5ce28bb</span> , <span class="number">19</span></span><br><span class="line">&amp;msg0.uiDataLen:	<span class="number">0x7ffee5ce28bf</span> , <span class="number">23</span></span><br><span class="line">&amp;msg0.ulStartTime:	<span class="number">0x7ffee5ce28c3</span> , <span class="number">27</span></span><br><span class="line">&amp;msg0.ulEndTime:	<span class="number">0x7ffee5ce28cb</span> , <span class="number">35</span></span><br><span class="line">&amp;msg0.contentData:	<span class="number">0x7ffee5ce28d3</span> , <span class="number">43</span></span><br></pre></td></tr></table></figure>
+<p>可以看出设置字节对齐参数为1字节后，相当于关闭了字节对齐</p>
+<h1 id="4-按字节访问"><a href="#4-按字节访问" class="headerlink" title="4. 按字节访问"></a>4. 按字节访问</h1><p>所有对结构体成员的指针访问，都可以理解为用特定的类型去解读一个地址。下方为示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MSG1_HEAD_LEN  (offsetof(MSG1,contentData))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MSG0_HEAD_LEN  (offsetof(MSG0,contentData))</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; MSG0_HEAD_LEN &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; MSG1_HEAD_LEN &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    MSG0 msg0;</span><br><span class="line">    msg0.ulStartTime = <span class="number">20181112U</span>LL;</span><br><span class="line">    msg0.ulEndTime = <span class="number">561341235U</span>LL;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span>* p = &amp;msg0;</span><br><span class="line"></span><br><span class="line">    MSG1* msg1Ptr = (MSG1*)p;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>  &lt;&lt; <span class="string">&quot;(msg1Ptr-&gt;contentData): &quot;</span> &lt;&lt; (<span class="keyword">void</span> *)(msg1Ptr-&gt;contentData) &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt;  *(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span>*)(msg1Ptr-&gt;contentData)  &lt;&lt; <span class="string">&quot; ULL&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>  &lt;&lt; <span class="string">&quot;(msg1Ptr-&gt;contentData + 8): &quot;</span> &lt;&lt; (<span class="keyword">void</span> *)(msg1Ptr-&gt;contentData + <span class="number">8</span>)&lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt;  *(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span>*)(msg1Ptr-&gt;contentData + <span class="number">8</span>) &lt;&lt; <span class="string">&quot; ULL&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">43</span></span><br><span class="line"><span class="number">27</span></span><br><span class="line">(msg1Ptr-&gt;contentData): <span class="number">0x7ffeeb5118e3</span>, <span class="number">20181112</span> ULL</span><br><span class="line">(msg1Ptr-&gt;contentData + <span class="number">8</span>): <span class="number">0x7ffeeb5118eb</span>, <span class="number">561341235</span> ULL</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>代码主要是有结构体MSG0定义了一个变量并未其相对于MSG1多出的两个变量赋值，然后实现用MSG1类型的指针访问MSG0中多出的变量（默认没有指针），来例证c++的访问变量的机制为“以特定的类型去解读一个地址”，无论其是否真的被定义成那样（前提条件：该地址是被定义过的且可访问的地址，否则会被认为内存越界）。</p>
+<p>附录：完整代码详见个人git仓库：<a target="_blank" rel="noopener" href="https://github.com/EisenHao/Cpp_Learning/blob/master/BitPrint.cpp">BitPrint.cpp</a>,<a target="_blank" rel="noopener" href="https://github.com/EisenHao/Cpp_Learning/blob/master/BitPrint.h">BitPrint.h</a></p>
+<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/ec9cba000740be1e650e9aa5.html">结构体内存分配分析</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\12\19\CppCompile\" rel="bookmark">C++编译过程总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\08\11\CppConfusedNotes\" rel="bookmark">C++易混淆知识点总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\23\ParkingSimulationSystem\" rel="bookmark">停车场仿真系统</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\14\PolymorphismTest\" rel="bookmark">C++中的四种多态</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/05/CloudComputingNote/" rel="prev" title="云计算学习笔记">
+                  <i class="fa fa-chevron-left"></i> 云计算学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/10/26/gitRevert/" rel="next" title="git撤销已push到远端仓库的提交">
+                  git撤销已push到远端仓库的提交 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2019/07/24/BitPrint/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

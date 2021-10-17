@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. struct 和 union 的区别 结构体struct：把不同类型的数据组合成一个整体，自定义类型。 共同体union：使几个不同类型的变量共同占用一段内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++易混淆知识点总结">
+<meta property="og:url" content="https://eisenhao.cn/2020/08/11/CppConfusedNotes/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. struct 和 union 的区别 结构体struct：把不同类型的数据组合成一个整体，自定义类型。 共同体union：使几个不同类型的变量共同占用一段内存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CppConfusedNotes.png">
+<meta property="article:published_time" content="2020-08-11T10:32:44.000Z">
+<meta property="article:modified_time" content="2021-10-17T11:39:43.767Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CppConfusedNotes.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2020/08/11/CppConfusedNotes/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2020/08/11/CppConfusedNotes/","path":"2020/08/11/CppConfusedNotes/","title":"C++易混淆知识点总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++易混淆知识点总结 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-struct-%E5%92%8C-union-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">1. struct 和 union 的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90"><span class="nav-text">2. 字节对齐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AD%97%E8%8A%82%E5%BA%8F%EF%BC%88%E5%B0%8F%E6%AD%A3%E9%80%86%E5%A4%A7%EF%BC%89"><span class="nav-text">3. 字节序（小正逆大）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-static%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">4. static的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%AF%B9%E6%99%AE%E9%80%9A%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">4.1. 对普通变量的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%AF%B9%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">4.2. 对成员变量的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E5%AF%B9%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">4.3. 对成员函数的作用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-const%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">5. const的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E4%B8%8D%E8%83%BD%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8const%E5%92%8Cstatic%E4%BF%AE%E9%A5%B0%E7%B1%BB%E7%9A%84%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-text">6. 不能同时使用const和static修饰类的成员函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88"><span class="nav-text">7. 指针常量和常量指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">8. 指针和引用的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E5%A4%9A%E6%80%81%E5%8F%8A%E5%85%B6%E7%94%A8%E9%80%94"><span class="nav-text">9. 多态及其用途</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-%E9%87%8D%E8%BD%BD%E3%80%81%E8%A6%86%E7%9B%96%E4%B8%8E%E9%87%8D%E5%86%99%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">10. 重载、覆盖与重写的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-1-Overload-%E9%87%8D%E8%BD%BD"><span class="nav-text">10.1. Overload(重载)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2-Override-%E8%A6%86%E7%9B%96"><span class="nav-text">10.2. Override(覆盖)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3-Overwrite-%E9%87%8D%E5%86%99"><span class="nav-text">10.3. Overwrite(重写)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="nav-text">11. 面向对象的三要素</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-text">12. 纯虚函数与抽象类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">13. 虚函数的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E4%B8%BA%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-text">14. 析构函数定义为虚函数的原因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-%E6%B7%B1%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B5%85%E6%8B%B7%E8%B4%9D%EF%BC%9A"><span class="nav-text">15. 深拷贝与浅拷贝：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#16-vector%E4%B8%ADsize-%E5%92%8Ccapacity-%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%82"><span class="nav-text">16. vector中size()和capacity()的区别。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#17-map%E5%92%8Cset%E9%BB%98%E8%AE%A4%E6%98%AF%E6%8E%92%E5%BA%8F%E7%9A%84"><span class="nav-text">17. map和set默认是排序的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#18-%E5%9C%A8TCP%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B%E4%B8%AD%EF%BC%8C%E8%8B%A5client%E5%8F%91%E9%80%81%E4%BA%86SYN%E6%B6%88%E6%81%AF%E5%90%8E%EF%BC%8Cclient%E3%80%81server%E5%8F%AF%E8%83%BD%E7%8A%B6%E6%80%81"><span class="nav-text">18. 在TCP连接建立过程中，若client发送了SYN消息后，client、server可能状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E4%B8%8D%E6%8E%A8%E8%8D%90%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8"><span class="nav-text">19. 析构函数不推荐抛出异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#20-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B"><span class="nav-text">20. 进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#20-1-%E8%BF%9B%E7%A8%8B"><span class="nav-text">20.1. 进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-2-%E7%BA%BF%E7%A8%8B"><span class="nav-text">20.2. 线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-3-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">20.3. 进程和线程的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#21-%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-text">21. 进程间通信方式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2020/08/11/CppConfusedNotes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++易混淆知识点总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2020-08-11 18:32:44" itemprop="dateCreated datePublished" datetime="2020-08-11T18:32:44+08:00">2020-08-11</time>
+    </span>
+
+  
+    <span id="/2020/08/11/CppConfusedNotes/" class="post-meta-item leancloud_visitors" data-flag-title="C++易混淆知识点总结" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CppConfusedNotes.png" class="full-image" />
+
+<h1 id="1-struct-和-union-的区别"><a href="#1-struct-和-union-的区别" class="headerlink" title="1. struct 和 union 的区别"></a>1. struct 和 union 的区别</h1><ul>
+<li>结构体struct：把不同类型的数据组合成一个整体，自定义类型。</li>
+<li>共同体union：使几个不同类型的变量共同占用一段内存<a id="more"></a>
+
+</li>
+</ul>
+<h1 id="2-字节对齐"><a href="#2-字节对齐" class="headerlink" title="2. 字节对齐"></a>2. 字节对齐</h1><p>许多计算机系统对基本数据类型合法地址做出了一些限制，要求某种类型对象的地址必须是某个值K(通常是2，4或8)的倍数。为了方便快速地寻址，编译器会采用字节对齐，将下一个变量地址放置在系统能快速读取的位置（如：32 位系统，放在偶地址的变量能够 1 个读周期取到值，而放在奇地址的变量却需要 2 个读周期才能取到值，故会存在字节对齐）。</p>
+<p>关于内存对齐，有四个重要的基本概念：</p>
+<ul>
+<li>数据类型自身的对齐值：<br>对于char型数据，其自身对齐值为1，对于short型为2，对于int，float，double类型，其自身对齐值为4，单位字节。</li>
+<li>结构体或者类的自身对齐值：其成员中自身对齐值最大的那个值。</li>
+<li>指定对齐值：#pragma pack(n)，n=1，2，4，8，16改变系统的对齐系数</li>
+<li>数据成员、结构体和类的有效对齐值：自身对齐值和指定对齐值中小的那个值。</li>
+</ul>
+<h1 id="3-字节序（小正逆大）"><a href="#3-字节序（小正逆大）" class="headerlink" title="3. 字节序（小正逆大）"></a>3. 字节序（小正逆大）</h1><ul>
+<li>小端模式：Little-Endian就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。</li>
+<li>大端模式：Big-Endian就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。<br>网络字节顺序(大端)是TCP/IP中规定好的一种数据表示格式，它与具体的CPU类型、操作系统等无关，从而可以保证数据在不同主机之间传输时能够被正确解释。网络字节顺序采用big endian排序方式。</li>
+</ul>
+<h1 id="4-static的作用"><a href="#4-static的作用" class="headerlink" title="4. static的作用"></a>4. static的作用</h1><h2 id="4-1-对普通变量的作用"><a href="#4-1-对普通变量的作用" class="headerlink" title="4.1. 对普通变量的作用"></a>4.1. 对普通变量的作用</h2><ul>
+<li>static修饰局部变量</li>
+</ul>
+<p>它改变了局部变量的存储位置（从原来的栈中存放改为静态存储区）及其生命周期（局部静态变量在离开作用域之后，并没有被销毁，而是仍然驻留在内存当中，直到程序结束，只不过我们不能再对他进行访问），但未改变其作用域。</p>
+<ul>
+<li>static修饰全局变量。</li>
+</ul>
+<p>并未改变其存储位置及生命周期，而是改变了其作用域，使当前文件外的源文件无法访问该变量，好处如下：（1）不会被其他文件所访问修改（2）其他文件中可以使用相同名字的变量，不会发生冲突。</p>
+<h2 id="4-2-对成员变量的作用"><a href="#4-2-对成员变量的作用" class="headerlink" title="4.2. 对成员变量的作用"></a>4.2. 对成员变量的作用</h2><p>用static修饰类的数据成员成为类的全局变量，会被类的所有对象共享，包括派生类的对象。因此，static成员必须在类外进行初始化(初始化格式： int base::var=10; )，而不能在构造函数内进行初始化，不过也可以用const修饰static数据成员在类内初始化。</p>
+<h2 id="4-3-对成员函数的作用"><a href="#4-3-对成员函数的作用" class="headerlink" title="4.3. 对成员函数的作用"></a>4.3. 对成员函数的作用</h2><p>用static修饰成员函数，使这个类只存在这一份函数，所有对象共享该函数，不含this指针。<br>静态成员是可以独立访问的，也就是说，无须创建任何对象实例就可以访问。base::func(5，3)；当static成员函数在类外定义时不需要加static修饰符。<br>在静态成员函数的实现中不能直接引用类中说明的非静态成员，可以引用类中说明的静态成员。因为静态成员函数不含this指针。</p>
+<h1 id="5-const的作用"><a href="#5-const的作用" class="headerlink" title="5. const的作用"></a>5. const的作用</h1><ul>
+<li>限定变量为不可修改。</li>
+<li>限定成员函数不可以修改任何数据成员。</li>
+<li>const与指针：<ul>
+<li>const char *p，不能改变指向的内容；</li>
+<li>char * const p，就是将P声明为常指针，它的地址不能改变，是固定的，但是它的内容可以改变。</li>
+</ul>
+</li>
+</ul>
+<h1 id="6-不能同时使用const和static修饰类的成员函数"><a href="#6-不能同时使用const和static修饰类的成员函数" class="headerlink" title="6. 不能同时使用const和static修饰类的成员函数"></a>6. 不能同时使用const和static修饰类的成员函数</h1><p>static的作用是表示该函数只作用在类型的静态变量上，与类的实例没有关系；而const的作用是确保函数不能修改类的实例的状态，与类型的静态变量没有关系。因此不能同时用它们。</p>
+<h1 id="7-指针常量和常量指针"><a href="#7-指针常量和常量指针" class="headerlink" title="7. 指针常量和常量指针"></a>7. 指针常量和常量指针</h1><ul>
+<li>指针常量（char * const p）：指针变量的值一经初始化（初始化是必要的），不可以改变指向另一个变量（但可以改变已经指向的变量的内容）。</li>
+<li>常量指针（const char *p）：指向常量的指针。不可以改变指向某变量的值，可以改变指向另一个变量。</li>
+</ul>
+<h1 id="8-指针和引用的区别"><a href="#8-指针和引用的区别" class="headerlink" title="8. 指针和引用的区别"></a>8. 指针和引用的区别</h1><ul>
+<li>指针是一个新的变量，只是这个变量存储的是另一个变量的地址，我们通过访问这个地址来修改变量。</li>
+<li>引用只是一个别名，还是变量本身。对引用进行的任何操作就是对变量本身进行操作，因此以达到修改变量的目的。</li>
+<li>引用在定义的时候必须初始化；指针的值在初始化后可以改变，即指向其它的存储单元，而引用在进行初始化后就不会再改变了。</li>
+<li>指针和引用的自增(++)运算意义不一样。</li>
+</ul>
+<h1 id="9-多态及其用途"><a href="#9-多态及其用途" class="headerlink" title="9. 多态及其用途"></a>9. 多态及其用途</h1><ul>
+<li>定义：“一个接口，多种方法”，程序在运行时才决定调用的函数。</li>
+<li>实现：C++多态性主要是通过虚函数实现的，虚函数允许子类重写override(注意和overload的区别，overload是重载，是允许同名函数的表现，这些函数参数列表/类型不同）。</li>
+<li>目的：接口重用。封装可以使得代码模块化，继承可以扩展已存在的代码，他们的目的都是为了代码重用。而多态的目的则是为了接口重用。</li>
+<li>用法：声明基类的指针，利用该指针指向任意一个子类对象，调用相应的虚函数，可以根据指向的子类的不同而实现不同的方法。</li>
+<li>详见：<a href="https://eisenhao.cn/2018/10/14/PolymorphismTest/">C++ 中的四种多态</a></li>
+</ul>
+<h1 id="10-重载、覆盖与重写的区别"><a href="#10-重载、覆盖与重写的区别" class="headerlink" title="10. 重载、覆盖与重写的区别"></a>10. 重载、覆盖与重写的区别</h1><h2 id="10-1-Overload-重载"><a href="#10-1-Overload-重载" class="headerlink" title="10.1. Overload(重载)"></a>10.1. Overload(重载)</h2><p>在C++程序中，可以将语义、功能相似的几个函数用同一个名字表示，但参数或返回值不同（包括类型、顺序不同），即函数重载。</p>
+<ul>
+<li>相同的范围（在同一个类中）；</li>
+<li>函数名字相同；</li>
+<li>参数不同；</li>
+<li>virtual 关键字可有可无。</li>
+</ul>
+<h2 id="10-2-Override-覆盖"><a href="#10-2-Override-覆盖" class="headerlink" title="10.2. Override(覆盖)"></a>10.2. Override(覆盖)</h2><p>是指派生类函数覆盖基类函数，特征是：</p>
+<ul>
+<li>不同的范围（分别位于派生类与基类）；</li>
+<li>函数名字相同；</li>
+<li>参数相同；</li>
+<li>基类函数必须有virtual 关键字。</li>
+</ul>
+<p>注：重写基类虚函数的时候，会自动转换这个函数为virtual函数，不管有没有加virtual，因此重写的时候不加virtual也是可以的，不过为了易读性，还是加上比较好。</p>
+<h2 id="10-3-Overwrite-重写"><a href="#10-3-Overwrite-重写" class="headerlink" title="10.3. Overwrite(重写)"></a>10.3. Overwrite(重写)</h2><p>是指派生类的函数屏蔽了与其同名的基类函数，规则如下：</p>
+<ul>
+<li>如果派生类的函数与基类的函数同名，但是参数不同。此时，不论有无virtual关键字，基类的函数将被隐藏（注意别与重载混淆）。</li>
+<li>如果派生类的函数与基类的函数同名，并且参数也相同，但是基类函数没有virtual关键字。此时，基类的函数被隐藏（注意别与覆盖混淆）。</li>
+</ul>
+<h1 id="11-面向对象的三要素"><a href="#11-面向对象的三要素" class="headerlink" title="11. 面向对象的三要素"></a>11. 面向对象的三要素</h1><p>封装、继承、多态</p>
+<h1 id="12-纯虚函数与抽象类"><a href="#12-纯虚函数与抽象类" class="headerlink" title="12. 纯虚函数与抽象类"></a>12. 纯虚函数与抽象类</h1><p>将函数定义为纯虚函数<code>virtual ReturnType Function() = 0;</code>，纯虚函数不能再在基类中实现，编译器要求在派生类中必须予以重写以实现多态性。同时含有纯虚拟函数的类称为抽象类，它不能生成对象。<br>特点：</p>
+<ul>
+<li>在基类中抽象出一个方法，且该基类只做能被继承，而不能被实例化；（避免类被实例化且在编译时候被发现，可以采用此方法）</li>
+<li>这个方法必须在派生类(derived class)中被实现;目的：使派生类仅仅只是继承函数的接口。</li>
+<li>抽象类只能作为基类来使用，而继承了抽象类的派生类如果没有实现纯虚函数，而只是继承纯虚函数，那么该类仍旧是一个抽象类，如果实现了纯虚函数，就不再是抽象类。</li>
+</ul>
+<h1 id="13-虚函数的作用"><a href="#13-虚函数的作用" class="headerlink" title="13. 虚函数的作用"></a>13. 虚函数的作用</h1><p>实现动态绑定，即运行期绑定</p>
+<h1 id="14-析构函数定义为虚函数的原因"><a href="#14-析构函数定义为虚函数的原因" class="headerlink" title="14. 析构函数定义为虚函数的原因"></a>14. 析构函数定义为虚函数的原因</h1><p>基类指针可以指向派生类的对象（多态性），如果删除该指针delete p；就会调用该指针指向的派生类析构函数，而派生类的析构函数又自动调用基类的析构函数，这样整个派生类的对象完全被释放。</p>
+<p>如果析构函数不被声明成虚函数，则编译器实施静态绑定，在删除基类指针时，只会调用基类的析构函数而不调用派生类析构函数，这样就会造成派生类对象析构不完全。所以，将析构函数声明为虚函数是十分必要的。</p>
+<p>构造函数为什么不能为虚函数（延伸）<br>虚函数对应一个指向虚函数表的指针，而这个指向vtable的指针是存储在对象的内存空间的。假设构造函数是虚的，就需要要通过查询vtable来调用，但是对象还没有实例化，因此也就不存在vtable，所以构造函数不能是虚函数。</p>
+<h1 id="15-深拷贝与浅拷贝："><a href="#15-深拷贝与浅拷贝：" class="headerlink" title="15. 深拷贝与浅拷贝："></a>15. 深拷贝与浅拷贝：</h1><ul>
+<li>浅拷贝，默认的拷贝构造函数只是完成了对象之间的位拷贝，也就是把对象里的值完全复制给另一个对象，如A=B。这时，如果B中有一个成员变量指针已经申请了内存，那A中的那个成员变量也指向同一块内存（并未另申请内存）。这就会导致野指针问题：当B把内存释放了（如：析构），这时A内的指针就是野指针了，出现运行错误。</li>
+<li>深拷贝，自定义复制构造函数需要注意，对象之间发生复制，资源重新分配，即A有5个空间，B也应该有5个空间，而不是指向A的5个空间。</li>
+</ul>
+<h1 id="16-vector中size-和capacity-的区别。"><a href="#16-vector中size-和capacity-的区别。" class="headerlink" title="16. vector中size()和capacity()的区别。"></a>16. vector中size()和capacity()的区别。</h1><ul>
+<li>size()指容器当前拥有的元素个数；</li>
+<li>capacity()指容器在必须分配存储空间之前可以存储的元素总数。</li>
+</ul>
+<h1 id="17-map和set默认是排序的"><a href="#17-map和set默认是排序的" class="headerlink" title="17. map和set默认是排序的"></a>17. map和set默认是排序的</h1><p>map和set的底层实现主要是由红黑树实现的</p>
+<h1 id="18-在TCP连接建立过程中，若client发送了SYN消息后，client、server可能状态"><a href="#18-在TCP连接建立过程中，若client发送了SYN消息后，client、server可能状态" class="headerlink" title="18. 在TCP连接建立过程中，若client发送了SYN消息后，client、server可能状态"></a>18. 在TCP连接建立过程中，若client发送了SYN消息后，client、server可能状态</h1><ul>
+<li>client处于SYN_SENT状态；</li>
+<li>server可能仍处于listen状态（未收到SYN消息），或处于SYN_RCVD状态</li>
+</ul>
+<h1 id="19-析构函数不推荐抛出异常"><a href="#19-析构函数不推荐抛出异常" class="headerlink" title="19. 析构函数不推荐抛出异常"></a>19. 析构函数不推荐抛出异常</h1><p>从语法上面讲，析构函数抛出异常是可以的，C++并没有禁止析构函数引发异常，但是C++不推荐这一做法，从析构函数中抛出异常是及其危险的。</p>
+<p>析构函数可能在对象正常结束生命周期时调用，也可能在有异常发生时从函数堆栈清理时调用。前一种情况抛出异常不会有无法预料的结果，可以正常捕获；但后一种情况下，因为函数发生了异常而导致函数的局部变量的析构函数被调用，析构函数又抛出异常，本来局部对象抛出的异常应该是由它所在的函数负责捕获的，现在函数既然已经发生了异常，必定不能捕获，因此，异常处理机制只能调用terminate()。</p>
+<h1 id="20-进程和线程"><a href="#20-进程和线程" class="headerlink" title="20. 进程和线程"></a>20. 进程和线程</h1><h2 id="20-1-进程"><a href="#20-1-进程" class="headerlink" title="20.1. 进程"></a>20.1. 进程</h2><p>是并发执行的程序在执行过程中分配和管理资源的基本单位，每一个进程都有一个自己的地址空间，即进程空间或（虚空间）。进程至少有 5 种基本状态，它们是：初始态，执行态，等待状态，就绪状态，终止状态。</p>
+<h2 id="20-2-线程"><a href="#20-2-线程" class="headerlink" title="20.2. 线程"></a>20.2. 线程</h2><p>是进程的一个实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。线程自己基本上不拥有系统资源，只拥有一点在运行中必不可少的资源(如程序计数器，一组寄存器和栈)，但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源。一个线程可以创建和撤销另一个线程；同一个进程中的多个线程之间可以并发执行。</p>
+<h2 id="20-3-进程和线程的区别"><a href="#20-3-进程和线程的区别" class="headerlink" title="20.3. 进程和线程的区别"></a>20.3. 进程和线程的区别</h2><p>进程和线程都是由操作系统所体会的程序运行的基本单元，系统利用该基本单元实现系统对应用的并发性。进程和线程的区别在于：</p>
+<ul>
+<li>地址空间：线程是进程内的一个执行单元；一个程序至少有一个进程，一个进程至少有一个线程；它们共享进程的地址空间；而各个进程有自己独立的地址空间；</li>
+<li>资源拥有：进程是资源分配和拥有的单位，同一个进程内的线程共享进程的资源</li>
+<li>划分尺度：线程的划分尺度小于进程，使得多线程程序的并发性高（进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率。）</li>
+<li>执行过程：每个独立的线程有一个程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制。</li>
+<li>线程是处理器调度的基本单位，而进程不是</li>
+<li>管理与分配：多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看做多个独立的应用，来实现进程的调度和管理以及资源分配。这就是进程和线程的重要区别。</li>
+</ul>
+<h1 id="21-进程间通信方式"><a href="#21-进程间通信方式" class="headerlink" title="21. 进程间通信方式"></a>21. 进程间通信方式</h1><ul>
+<li>管道（pipe）：管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。</li>
+<li>命名管道（FIFO）：有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间的通信。</li>
+<li>消息队列（MessageQueue）：消息队列是由消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li>
+<li>共享内存（SharedMemory）：共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号两，配合使用，来实现进程间的同步和通信。</li>
+<li>信号量（Semaphore）：信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</li>
+<li>套接字（Socket）：套解口也是一种进程间通信机制，与其他通信机制不同的是，它可用于不同及其间的进程通信。</li>
+<li>信号（sinal）： 信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\07\24\BitPrint\" rel="bookmark">测试内存中变量的存储方式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\12\19\CppCompile\" rel="bookmark">C++编译过程总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\23\ParkingSimulationSystem\" rel="bookmark">停车场仿真系统</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\14\PolymorphismTest\" rel="bookmark">C++中的四种多态</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/25/SparkDevAndTestEnvInWin10/" rel="prev" title="基于 Win10 和 IDEA 的 Spark 开发&测试环境搭建">
+                  <i class="fa fa-chevron-left"></i> 基于 Win10 和 IDEA 的 Spark 开发&测试环境搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/04/ImplementationOfBTreeBasedOnCpp/" rel="next" title="基于C++的B树的数据结构设计与编码实现">
+                  基于C++的B树的数据结构设计与编码实现 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2020/08/11/CppConfusedNotes/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

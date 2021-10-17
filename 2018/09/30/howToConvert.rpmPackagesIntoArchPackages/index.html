@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="尽管AUR被称为这个星球上最大的软件资源库，但不可避免的，我们有时会遇到在AUR库中没有待装软件，而待装软件官网只提供.rpm或.deb软件包的情况。本文将介绍如何利用.rpm或.deb软件包资源创建一个Arch软件包，然后在Manjaro系统下安装这些软件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Manjaro系统安装.rpm或.deb软件">
+<meta property="og:url" content="https://eisenhao.cn/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="尽管AUR被称为这个星球上最大的软件资源库，但不可避免的，我们有时会遇到在AUR库中没有待装软件，而待装软件官网只提供.rpm或.deb软件包的情况。本文将介绍如何利用.rpm或.deb软件包资源创建一个Arch软件包，然后在Manjaro系统下安装这些软件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/howToConvert.rpmPackagesIntoArchPackages.jpg">
+<meta property="article:published_time" content="2018-09-30T07:39:45.000Z">
+<meta property="article:modified_time" content="2018-09-30T08:34:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/howToConvert.rpmPackagesIntoArchPackages.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/","path":"2018/09/30/howToConvert.rpmPackagesIntoArchPackages/","title":"Manjaro系统安装.rpm或.deb软件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Manjaro系统安装.rpm或.deb软件 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87-deb%E5%8C%85%E5%AE%89%E8%A3%85-%E6%8E%A8%E8%8D%90"><span class="nav-text">1. 通过.deb包安装(推荐)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-deb%E5%8C%85%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B%E7%AE%80%E8%BF%B0%EF%BC%9A"><span class="nav-text">1.1. .deb包安装流程简述：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%EF%BC%9A"><span class="nav-text">1.2. 准备工作：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C%E5%8F%8A%E4%BB%A3%E7%A0%81"><span class="nav-text">1.3. 实际操作及代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E9%80%9A%E8%BF%87-rpm%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85"><span class="nav-text">2. 通过.rpm软件包安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-rpm%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B%E7%AE%80%E8%BF%B0%EF%BC%9A"><span class="nav-text">2.1. .rpm安装流程简述：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%EF%BC%9A"><span class="nav-text">2.2. 准备工作：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C%E5%8F%8A%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="nav-text">2.3. 实际操作及代码：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Linux%E6%AF%8F%E6%97%A5%E4%B8%80%E7%BB%83"><span class="nav-text">3. Linux每日一练</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">4. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Manjaro系统安装.rpm或.deb软件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-09-30 15:39:45" itemprop="dateCreated datePublished" datetime="2018-09-30T15:39:45+08:00">2018-09-30</time>
+    </span>
+
+  
+    <span id="/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/" class="post-meta-item leancloud_visitors" data-flag-title="Manjaro系统安装.rpm或.deb软件" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/howToConvert.rpmPackagesIntoArchPackages.jpg" class="full-image" />
+
+<p>尽管AUR被称为这个星球上最大的软件资源库，但不可避免的，我们有时会遇到在AUR库中没有待装软件，而待装软件官网只提供.rpm或.deb软件包的情况。本文将介绍如何利用.rpm或.deb软件包资源创建一个Arch软件包，然后在Manjaro系统下安装这些软件。</p>
+<a id="more"></a>
+
+<h1 id="1-通过-deb包安装-推荐"><a href="#1-通过-deb包安装-推荐" class="headerlink" title="1. 通过.deb包安装(推荐)"></a>1. 通过.deb包安装(推荐)</h1><h2 id="1-1-deb包安装流程简述："><a href="#1-1-deb包安装流程简述：" class="headerlink" title="1.1. .deb包安装流程简述："></a>1.1. .deb包安装流程简述：</h2><ul>
+<li>用一个叫“Debtap”的软件将.deb软件包转换成Arch软件包</li>
+<li>用我们熟悉的<code>pacman</code>命令安装上一步创建的Arch软件包</li>
+</ul>
+<h2 id="1-2-准备工作："><a href="#1-2-准备工作：" class="headerlink" title="1.2. 准备工作："></a>1.2. 准备工作：</h2><ul>
+<li>确保系统已安装<code>debtap</code>，可通过以下命令查询</li>
+</ul>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debtap -v #查询debtap安装的版本号</span><br></pre></td></tr></table></figure>
+<p>若没安装也可通过（<code>pacaur</code>、<code>packer</code>、<code>yaourt</code>）三种方式下载debtap源码文件然后安装debtap，以下是通过<code>yaourt</code>安装debtap的示例。<code>yaourt -S debtap</code>命令会下载debtap源码文件压缩包及<code>PKGBUILD</code>配置文件，我们只需要在下载完成后编译并安装debtap即可:</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S yaourt #安装yaourt</span><br><span class="line">yaourt -S debtap</span><br><span class="line"></span><br><span class="line">#不用更改下载配置文件，一路No</span><br><span class="line">Edit PKGBUILD ? [Y&#x2F;n] --&gt; N</span><br><span class="line">Edit debtap.install ? --&gt; N</span><br><span class="line">Continue building debtap ? [Y&#x2F;n] --&gt; Y</span><br><span class="line"></span><br><span class="line">#安装过程中访问&#x2F;var目录会询问一次管理员密码</span><br><span class="line">Continue installing debtap ? [Y&#x2F;n] --&gt; Y</span><br><span class="line">Proceed with installation? [Y&#x2F;n] --&gt; Y</span><br><span class="line">debtap -v #查询debtap安装的版本号</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>确保系统已安装<code>bash</code>, <code>binutils</code>, <code>pkgfile</code>和<code>fakeroot</code><br>一般情况均已安装。安装Debtap和所有上述依赖项后，运行以下命令来创建/更新pkgfile和debtap数据库（至少执行一次）。</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo debtap -u</span><br><span class="line"># 等待。。。创建&#x2F;更新pkgfile和debtap数据库。当看到下列信息时，表明debtap已安装完毕。</span><br><span class="line">&#x3D;&#x3D;&gt; Generating base group packages list...</span><br><span class="line">&#x3D;&#x3D;&gt; All steps successfully completed!</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>去待安装软件官网下载与你系统相匹配的(64位或32位)<code>.deb</code>软件包，推荐下载到<code>~/Downloads</code>目录</p>
+</li>
+</ul>
+<h2 id="1-3-实际操作及代码"><a href="#1-3-实际操作及代码" class="headerlink" title="1.3. 实际操作及代码"></a>1.3. 实际操作及代码</h2><ol>
+<li><p>跳转到.deb软件包的下载目录：<br>如果准备工作中<code>.deb软件包</code>下载到<code>~/Downloads</code>目录的话</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;Downloads</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用<code>debtap</code>命令转换.deb软件包为arch软件包</p>
+<figure class="highlight plain"><figcaption><span>执行命令目录：你下载的.deb文件目录 eg:~/Download</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">debtap EasyConnect_x64.deb</span><br><span class="line"></span><br><span class="line"># 如果您不想在程序包转换期间回答任何问题，可使用-q标志绕过所有问题</span><br><span class="line">debtap -q EasyConnect_x64.deb(建议)</span><br><span class="line"></span><br><span class="line"># 或使用-Q标志绕过所有问题（不建议使用）</span><br><span class="line">debtap -Q EasyConnect_x64.deb</span><br></pre></td></tr></table></figure>
+<p>系统将要求您输入软件包维护者和许可证的名称。 只需输入它们并按ENTER键即可开始转换过程。软件包转换需要几秒钟到几分钟，具体取决于您的CPU速度。期间可以喝杯咖啡休息一下</p>
+<figure class="highlight plain"><figcaption><span>若标志绕过所有问题，则不需要以下操作</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:: Enter Packager name: --&gt; EasyConnect</span><br><span class="line">:: Enter package license: --&gt; 填&#39;GPL&#39;或&#39;unknow&#39;</span><br><span class="line">:: If you want to edit: --&gt; Enter(跳过编辑)</span><br></pre></td></tr></table></figure>
+<p>转换完成后会在当前目录生成一个Arch软件包：<code>packagename.pkg.tar.xz</code>形式的文件(eg:<code>easyconnect-7.6.3.0.86415-1-x86_64.pkg.tar.xz</code>)</p>
+</li>
+<li><p>用熟悉的<code>pacman</code>命令安装刚创建的Arch软件包</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：刚刚转换Arch包的文件目录</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#安装刚创建的Arch软件包</span><br><span class="line">sudo pacman -U easyconnect-7.6.3.0.86415-1-x86_64.pkg.tar.xz</span><br></pre></td></tr></table></figure>
+<p>恭喜，至此已顺利安装软件。</p>
+</li>
+<li><p>若安装失败或想卸载该软件，执行以下命令即可</p>
+</li>
+</ol>
+<figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -R easyconnect</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-通过-rpm软件包安装"><a href="#2-通过-rpm软件包安装" class="headerlink" title="2. 通过.rpm软件包安装"></a>2. 通过.rpm软件包安装</h1><h2 id="2-1-rpm安装流程简述："><a href="#2-1-rpm安装流程简述：" class="headerlink" title="2.1. .rpm安装流程简述："></a>2.1. .rpm安装流程简述：</h2><ul>
+<li>新建一个文件夹作为软件安装目录，并将待安装软件<code>.rpm</code>软件包移动到该文件夹内</li>
+<li>在安装文件夹内创建并配置<code>PKGBUILD</code>文件</li>
+<li>在待装软件文件夹内运行<code>makepkg</code>，然后创建Arch软件包</li>
+<li>用我们熟悉的<code>pacman</code>命令安装上一步创建的Arch软件包</li>
+</ul>
+<h2 id="2-2-准备工作："><a href="#2-2-准备工作：" class="headerlink" title="2.2. 准备工作："></a>2.2. 准备工作：</h2><ul>
+<li>确保系统已安装<code>rpmextract</code><figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S rpmextract #安装rpmextract</span><br></pre></td></tr></table></figure></li>
+<li>去待安装软件官网下载与你系统相匹配的(64位或32位)<code>.rpm</code>软件包</li>
+</ul>
+<h2 id="2-3-实际操作及代码："><a href="#2-3-实际操作及代码：" class="headerlink" title="2.3. 实际操作及代码："></a>2.3. 实际操作及代码：</h2><ol>
+<li><p>新建一个软件的安装文件夹，并将待安装软件<code>.rpm</code>包移动到该文件夹内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir package #新建待安装软件文件夹，取名尽量具有可读性</span><br><span class="line">cd package #跳转到该文件夹</span><br><span class="line">#将待安装软件.rpm包复制到该文件夹内</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在待装软件文件夹内创建并配置<code>PKGBUILD</code>文件<br>这个<code>PKGBUILD</code>文件包含有关我们将要创建的包的所有配置信息，而Manjaro系统自带原生的<code>PKGBUILD</code>文件模板，所以直接复制到本目录再配置一下便可，可参考：<a target="_blank" rel="noopener" href="https://jlk.fjfi.cvut.cz/arch/manpages/man/PKGBUILD.5">官方PKGBUILD文件配置说明</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp &#x2F;usr&#x2F;share&#x2F;pacman&#x2F;PKGBUILD.proto PKGBUILD #复制系统自带的原生PKGBUILD文件模板到待安装软件目录</span><br><span class="line">gedit PKGBUILD #配置PKGBUILD文件</span><br></pre></td></tr></table></figure>
+<p>我的<code>PKGBUILD</code>文件最终配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pkgname&#x3D;google-musicmanager-beta</span><br><span class="line">pkgver&#x3D;current</span><br><span class="line">pkgrel&#x3D;1</span><br><span class="line">pkgdesc&#x3D;&quot;Add a simple disprection.&quot;</span><br><span class="line">arch&#x3D;(&#39;x86_64&#39;)</span><br><span class="line">url&#x3D;&quot;https:&#x2F;&#x2F;music.google.com&#x2F;&quot;</span><br><span class="line">license&#x3D;(&#39;unknown&#39;)</span><br><span class="line">depends&#x3D;(&#39;libidn&#39;)</span><br><span class="line">makedepends&#x3D;(&#39;rpmextract&#39;)</span><br><span class="line">options&#x3D;(&#39;emptydirs&#39;)</span><br><span class="line">source&#x3D;(&quot;http:&#x2F;&#x2F;dl.google.com&#x2F;linux&#x2F;direct&#x2F;google-musicmanager-beta_current_x86_64.rpm&quot;)</span><br><span class="line">md5sums&#x3D;(&#39;6c05f087f9cd77563b7d001584e3b2d8&#39;)</span><br><span class="line"></span><br><span class="line">build() &#123;</span><br><span class="line">cd &quot;$pkgdir&quot;</span><br><span class="line">rpmextract.sh ..&#x2F;google-musicmanager-beta_current_x86_64.rpm</span><br><span class="line">&#125;</span><br><span class="line">package() &#123;</span><br><span class="line">cd $srcdir</span><br><span class="line">rsync -ruDq $srcdir $pkgdir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>PKGBUILD</code>文件中代码说明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">程序名称（强制格式：小写，无空格等）</span><br><span class="line">版本（默认“current”吧）</span><br><span class="line">内部版本号，对于包的每次更改都应增加1</span><br><span class="line">简短描述（少于约80个字符）</span><br><span class="line">架构（i686，x86_64，两者任意一种，或都支持）</span><br><span class="line">包的官方网站的URL（可选）</span><br><span class="line">许可证（GPL，BSD，unknown等）</span><br><span class="line">程序可能具有的任何依赖项（若多个以空格分隔，而不是逗号）</span><br><span class="line">只需要构建但不运行程序的依赖关系(&#39;rpmextract optipng&#39;或&#39;rpmextract&#39;)</span><br><span class="line">任意选项（在这种情况下，提取后有一些空目录，我发现不必要，所以我使用了emptydirs选项）</span><br><span class="line">源文件列表（如果是URL，则会在安装时下载这些.rpm文件，但也可以直接将.rpm软件包放在与PKGBUILD文件相同的文件夹中）</span><br><span class="line">文件的md5sums列表（您可以通过在包含文件的文件夹中运行“makepkg -g”来获取这些文件的md5sums）。</span><br><span class="line">最后是构建脚本进行提取</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在待装软件文件夹内运行<code>makepkg</code>创建Arch软件包<br>首先，在待装软件文件夹内运行<code>makepkg -g</code>。其次，待下载PKGBUILD文件中指定文件并返回一行<code>md5sum</code>，并复制<code>md5sum</code>到PKGBUILD文件中 。再次，再根据提示安装依赖项。最后，用<code>makepkg</code>创建最终的Arch软件包(即：<code>pkgname.pkg.tar.xz</code>文件)</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：待装软件文件夹内</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">makepkg -g #该命令将下载PKGBUILD文件中指定文件并返回一md5sum行</span><br><span class="line">gedit PKGBUILD #再次编辑PKGBUILD文件，将返回的md5sums行复制到md5sums&#x3D;(&#39;&#39;)中</span><br><span class="line">makepkg #创建Arch包，可能会提示存在尚未安装的依赖项，按提示安装所需依赖项</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用熟悉的<code>pacman</code>命令安装刚创建的Arch软件包</p>
+<figure class="highlight plain"><figcaption><span>命令执行目录：刚刚转换Arch包的文件目录</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -U pkgname.pkg.tar.xz</span><br></pre></td></tr></table></figure>
+<p>恭喜，至此已顺利安装软件。</p>
+</li>
+<li><p><strong>若安装失败或想卸载该软件</strong>，执行以下命令即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -R pkgname #其中pkgname为PKGBUILD文件中配置的软件名</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="3-Linux每日一练"><a href="#3-Linux每日一练" class="headerlink" title="3. Linux每日一练"></a>3. Linux每日一练</h1><p>在Linux系统中搜索文件命令<code>find</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo find &#x2F; -name *example*.*</span><br><span class="line"></span><br><span class="line">#其中</span><br><span class="line">&#39;&#x2F;&#39;表示搜索路径为&#x2F;根目录，也可自定</span><br><span class="line">&#39;-name&#39;表示搜索条件为名称</span><br><span class="line">&#39;\*&#39; 表不确定内容，可搜索文件或文件夹</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-参考文档"><a href="#4-参考文档" class="headerlink" title="4. 参考文档"></a>4. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://nemrod.se/guides/install-rpm-packages-on-arch-linux/">Install RPM packages on Arch Linux</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Creating_packages">Creating packages</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/PKGBUILD">PKGBUILD</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\09\23\AfterInstallManjaro\" rel="bookmark">配置Manjaro</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/27/DataMining_Introduction/" rel="prev" title="数据挖掘简介与发展动向">
+                  <i class="fa fa-chevron-left"></i> 数据挖掘简介与发展动向
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/09/functionPointerAndPointerfunction/" rel="next" title="函数指针 & 指针函数">
+                  函数指针 & 指针函数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 实现K-means算法对无噪声的waveform数据集进行分割1.1. K-means算法简介 k均值聚类是一种矢量量化方法，最初来自信号处理，是数据挖掘中聚类分析的常用方法。 k均值聚类的目的是将n个观测值划分为k个聚类，其中每个观测值属于具有最近均值的聚类，作为聚类的原型。这导致数据空间划分为Voronoi单元。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kmeans算法——数据挖掘">
+<meta property="og:url" content="https://eisenhao.cn/2018/10/24/DataMining_Kmeans/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 实现K-means算法对无噪声的waveform数据集进行分割1.1. K-means算法简介 k均值聚类是一种矢量量化方法，最初来自信号处理，是数据挖掘中聚类分析的常用方法。 k均值聚类的目的是将n个观测值划分为k个聚类，其中每个观测值属于具有最近均值的聚类，作为聚类的原型。这导致数据空间划分为Voronoi单元。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=3_iteration=20.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=8_iteration=20.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=3_iteration=50.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=8_iteration=50.png">
+<meta property="article:published_time" content="2018-10-24T11:20:44.000Z">
+<meta property="article:modified_time" content="2019-02-18T07:03:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据挖掘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/10/24/DataMining_Kmeans/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/10/24/DataMining_Kmeans/","path":"2018/10/24/DataMining_Kmeans/","title":"Kmeans算法——数据挖掘"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kmeans算法——数据挖掘 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%9E%E7%8E%B0K-means%E7%AE%97%E6%B3%95%E5%AF%B9%E6%97%A0%E5%99%AA%E5%A3%B0%E7%9A%84waveform%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%88%86%E5%89%B2"><span class="nav-text">1. 实现K-means算法对无噪声的waveform数据集进行分割</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-K-means%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. K-means算法简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Python%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0K-means%E7%AE%97%E6%B3%95"><span class="nav-text">1.2. Python编程实现K-means算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E7%BC%96%E5%86%99Python%E7%A8%8B%E5%BA%8F%E5%AE%9E%E7%8E%B0K-means%E7%AE%97%E6%B3%95%E5%AF%B9UCI%E7%9A%84waveform%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%843%E4%B8%AA%E7%B1%BB%E4%B8%AD%E6%AF%8F%E7%B1%BB%E6%95%B0%E6%8D%AE%E5%8F%96100%E4%B8%AA%E7%9A%84%E5%88%86%E5%89%B2"><span class="nav-text">1.3. 编写Python程序实现K-means算法对UCI的waveform数据集的3个类中每类数据取100个的分割</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E7%A8%8B%E5%BA%8F%E5%8A%A0%E8%BD%BDwaveform-data%E6%95%B0%E6%8D%AE"><span class="nav-text">1.3.1. 程序加载waveform.data数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E5%9C%A8%E7%AC%AC0-2%E7%B1%BB%E4%B8%AD%EF%BC%8C%E6%AF%8F%E7%B1%BB%E6%8F%90%E5%8F%96100%E4%B8%AA%E6%95%B0%E6%8D%AE"><span class="nav-text">1.3.2. 在第0~2类中，每类提取100个数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3-%E7%94%A8K-means%E7%AE%97%E6%B3%95%E5%AF%B9UCI%E7%9A%84waveform%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%AD%E7%AD%9B%E9%80%89%E5%87%BA%E7%9A%84300%E4%B8%AA%E6%A0%B7%E6%9C%AC%E8%BF%9B%E8%A1%8C%E5%88%86%E5%89%B2"><span class="nav-text">1.3.3. 用K-means算法对UCI的waveform数据集中筛选出的300个样本进行分割</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-K-means%E7%AE%97%E6%B3%95%E5%AF%B9%E4%B8%80%E5%89%AF%E6%97%A0%E5%99%AA%E5%9B%BE%E5%83%8F%E8%BF%9B%E8%A1%8C%E5%88%86%E5%89%B2"><span class="nav-text">2. K-means算法对一副无噪图像进行分割</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%BD%BF%E7%94%A8K-means%E7%AE%97%E6%B3%95%E5%AF%B9%E4%B8%80%E5%89%AF%E6%97%A0%E5%99%AA%E5%9B%BE%E5%83%8F%E8%BF%9B%E8%A1%8C%E5%88%86%E5%89%B2%E5%AE%8C%E6%95%B4%E4%B8%BB%E7%A8%8B%E5%BA%8F"><span class="nav-text">2.1. 使用K-means算法对一副无噪图像进行分割完整主程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-K-means%E7%AE%97%E6%B3%95%E5%88%86%E5%89%B2%E5%9B%BE%E7%89%87%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="nav-text">2.2. K-means算法分割图片效果图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%BD%93%E6%9C%80%E5%A4%A7%E8%BF%AD%E4%BB%A3%E6%AC%A1%E6%95%B0%E9%99%90%E5%88%B6%E4%B8%BA20%E6%AC%A1%E6%97%B6%EF%BC%9A"><span class="nav-text">2.2.1. 当最大迭代次数限制为20次时：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%BD%93%E6%9C%80%E5%A4%A7%E8%BF%AD%E4%BB%A3%E6%AC%A1%E6%95%B0%E9%99%90%E5%88%B6%E4%B8%BA50%E6%AC%A1%E6%97%B6%EF%BC%9A"><span class="nav-text">2.2.2. 当最大迭代次数限制为50次时：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-text">结论</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/24/DataMining_Kmeans/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kmeans算法——数据挖掘
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-10-24 19:20:44" itemprop="dateCreated datePublished" datetime="2018-10-24T19:20:44+08:00">2018-10-24</time>
+    </span>
+
+  
+    <span id="/2018/10/24/DataMining_Kmeans/" class="post-meta-item leancloud_visitors" data-flag-title="Kmeans算法——数据挖掘" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans.png" class="full-image" />
+
+<h1 id="1-实现K-means算法对无噪声的waveform数据集进行分割"><a href="#1-实现K-means算法对无噪声的waveform数据集进行分割" class="headerlink" title="1. 实现K-means算法对无噪声的waveform数据集进行分割"></a>1. 实现K-means算法对无噪声的waveform数据集进行分割</h1><h2 id="1-1-K-means算法简介"><a href="#1-1-K-means算法简介" class="headerlink" title="1.1. K-means算法简介"></a>1.1. K-means算法简介</h2><ul>
+<li>k均值聚类是一种矢量量化方法，最初来自信号处理，是数据挖掘中聚类分析的常用方法。</li>
+<li>k均值聚类的目的是将n个观测值划分为k个聚类，其中每个观测值属于具有最近均值的聚类，作为聚类的原型。这导致数据空间划分为Voronoi单元。</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li>这个问题在计算上很困难（NP难）；然而，有效的启发式算法快速收敛到局部最优。这些通常类似于通过k均值和高斯混合建模所采用的迭代细化方法的高斯分布混合的期望最大化算法。他们都使用集群中心来建模数据;然而，k均值聚类倾向于找到具有可比空间范围的聚类，而期望最大化机制允许聚类具有不同的形状。</li>
+<li>该算法与k-最近邻分类器具有松散的关系，这是一种流行的分类机器学习技术，由于名称的原因常常与k-means混淆。应用1最近邻分类器，通过k均值获得的聚类中心将新数据分类到现有聚类中。这被称为最近的质心分类器或Rocchio算法。</li>
+</ul>
+<h2 id="1-2-Python编程实现K-means算法"><a href="#1-2-Python编程实现K-means算法" class="headerlink" title="1.2. Python编程实现K-means算法"></a>1.2. Python编程实现K-means算法</h2><p><strong>K-means算法主要分为以下步骤实现</strong>：</p>
+<ul>
+<li>S1. 随机生成 k 个 “种子”</li>
+<li>S2. 依次求解当前(第i个)元素对k个’种子’的最小欧式距离，得到距当前(第i个)元素欧式距离最小的(‘种子’)集群</li>
+<li>S3. 如果当前(第i个)元素的与k个‘种子’(集群)的最小欧式距离所对应的【种子编号】遇上一次记录不一致 ==&gt; (第i个)元素所属集群发生改变，更新所属集群</li>
+<li>S4. 重新计算k个(‘种子’)集群的各属性值的平均值，得到新的k个(‘种子’)集群</li>
+<li>S5. 若S2～S4的运行过程中，至少1个元素的所属‘种子’(集群)发生改变，则不断重复运行S2~S5过程,直至没有元素所属‘种子’(集群)发生改变视为聚类成功(也可限定最大迭代次数)跳转S6</li>
+<li>S6. 结束迭代，返回k个集群的中心值centroids, 及每个集群所包含的元素数组clusterAssment</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment"># Pandas库：强大、灵活的数据分析和探索工具</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算欧式距离:</span></span><br><span class="line"><span class="comment"># 将&#x27;vector1&#x27;与&#x27;vector2&#x27;中所有对应属性值之差的平方求和，再求平方根</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caclEucDistance</span>(<span class="params">vector1, vector2</span>):</span></span><br><span class="line">    distance = np.sqrt(np.<span class="built_in">sum</span>(np.square(vector2 - vector1)))</span><br><span class="line">    <span class="keyword">return</span> distance</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机生成 k 个 “种子”</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initCentroids</span>(<span class="params">dataSet, k</span>):</span></span><br><span class="line">    numSamples, dim = dataSet.shape</span><br><span class="line">    centroids = np.zeros((k, dim)) <span class="comment">#创建大小为：&#x27;k x 元素属性列值&#x27; 的全0矩阵，用于存放k个‘种子’（集群）</span></span><br><span class="line">    <span class="comment"># 随机生成 k 个 “种子”</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        index = <span class="built_in">int</span>(random.uniform(<span class="number">0</span>, numSamples))</span><br><span class="line">        centroids[i, :] = dataSet[index, :] <span class="comment">#在数据集中取 k 个值</span></span><br><span class="line">    <span class="keyword">return</span> centroids</span><br><span class="line"></span><br><span class="line"><span class="comment"># k-means 算法实现</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kmeans</span>(<span class="params">dataSet, k</span>):</span></span><br><span class="line">    numSamples = dataSet.shape[<span class="number">0</span>]</span><br><span class="line">    clusterAssment = np.mat(np.zeros((numSamples, <span class="number">2</span>)))</span><br><span class="line">    <span class="comment"># clusterAssment &#x27;元素属性值行 x 2列矩阵&#x27;</span></span><br><span class="line">    <span class="comment"># 第一列：存储此示例所属的(&#x27;种子&#x27;)集群</span></span><br><span class="line">    <span class="comment"># 第二列：存储当前(第i个)元素与其所属的(&#x27;种子&#x27;)集群的欧式距离</span></span><br><span class="line">    clusterChanged = <span class="literal">True</span></span><br><span class="line">    <span class="comment"># clusterChanged：在迭代时&#x27;种子&#x27;是否改变标志</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">## 随机生成 k 个 “种子”</span></span><br><span class="line">    centroids = initCentroids(dataSet, k)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 一直迭代直到没有1个&#x27;种子&#x27;的所属(&#x27;种子&#x27;)集群发生改变</span></span><br><span class="line">    <span class="keyword">while</span> clusterChanged:</span><br><span class="line">   </span><br><span class="line">        <span class="comment"># 迭代前为&#x27;种子&#x27;是否改变标志赋初值(False:未改变，如果执行完循环体后仍未False,视作迭代完成，退出迭代)</span></span><br><span class="line">        clusterChanged = <span class="literal">False</span> </span><br><span class="line">                </span><br><span class="line">        <span class="comment">## 依次求解每个元素对k个&#x27;种子&#x27;的最小距离</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numSamples):</span><br><span class="line">            minDist = <span class="number">100000.0</span></span><br><span class="line">            minIndex = <span class="number">0</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">#比较当前(第i个)元素 对应 k个&#x27;种子&#x27; 的欧式距离，求出最小（存于minDist），并记录对应种子编号（存于minIndex）</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">                distance = caclEucDistance(centroids[j, :], dataSet[i, :])</span><br><span class="line">                <span class="keyword">if</span> distance &lt; minDist:</span><br><span class="line">                    minDist = distance</span><br><span class="line">                    minIndex = j</span><br><span class="line"></span><br><span class="line">            <span class="comment">## 如果当前(第i个)元素的与k个‘种子’(集群)的最小欧式距离所对应的【种子编号】遇上一次记录不一致 ==&gt; (第i个)元素所属集群发生改变</span></span><br><span class="line">            <span class="keyword">if</span> clusterAssment[i, <span class="number">0</span>] != minIndex:</span><br><span class="line">            	<span class="comment"># 该变标志置&#x27;True&#x27; , 更新当前(第i个)元素的所属集群编号</span></span><br><span class="line">                clusterChanged = <span class="literal">True</span></span><br><span class="line">                clusterAssment[i, :] = minIndex, minDist ** <span class="number">2</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">## 重新计算各个集群的中心点，并更新</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">            pointsInCluster = dataSet[np.nonzero(clusterAssment[:, <span class="number">0</span>].A == j)[<span class="number">0</span>]]</span><br><span class="line">            centroids[j, :] = np.mean(pointsInCluster, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 此处表示退出迭代 ==&gt; 聚类成功</span></span><br><span class="line">    print(<span class="string">&#x27;Congratulations, cluster complete!&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> centroids, clusterAssment</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-编写Python程序实现K-means算法对UCI的waveform数据集的3个类中每类数据取100个的分割"><a href="#1-3-编写Python程序实现K-means算法对UCI的waveform数据集的3个类中每类数据取100个的分割" class="headerlink" title="1.3. 编写Python程序实现K-means算法对UCI的waveform数据集的3个类中每类数据取100个的分割"></a>1.3. 编写Python程序实现K-means算法对UCI的waveform数据集的3个类中每类数据取100个的分割</h2><p>从UCI获取<a target="_blank" rel="noopener" href="http://archive.ics.uci.edu/ml/datasets/waveform+database+generator+(version+2)">Waveform Database Generator (Version 2) Data Set</a>数据集。由网页介绍可知该数据集中，数据量为：5000，属性数为：40(实际21列), waves数据的类为：3。</p>
+<h3 id="1-3-1-程序加载waveform-data数据"><a href="#1-3-1-程序加载waveform-data数据" class="headerlink" title="1.3.1. 程序加载waveform.data数据"></a>1.3.1. 程序加载waveform.data数据</h3><p>通过以下代码读取Waveform Database Generator (Version 2) Data Set中’waveform.data’文件内的所有数据，可看到数据的最后一列为类属性的标识号，由网页介绍可知，waves数据共有3类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据加载</span></span><br><span class="line">print(<span class="string">&#x27;数据加载...\n&#x27;</span>)</span><br><span class="line">data = pd.read_csv(<span class="string">&#x27;waveform.data&#x27;</span>, sep=<span class="string">&#x27;,&#x27;</span>, engine=<span class="string">&#x27;python&#x27;</span>, header=<span class="literal">None</span>, skiprows=<span class="number">0</span>, names=<span class="literal">None</span>) <span class="comment"># waveform.data</span></span><br><span class="line">print(data[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-2-在第0-2类中，每类提取100个数据"><a href="#1-3-2-在第0-2类中，每类提取100个数据" class="headerlink" title="1.3.2. 在第0~2类中，每类提取100个数据"></a>1.3.2. 在第0~2类中，每类提取100个数据</h3><p>在3类中每类取100个数据使用上一步实现的K-means算法的进行聚类,其中每类取100个样本，并将这300个样本拼接到一个列表，将这个操作封装成函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在data中，第0~2类，每获取100个数据并简单拼接</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">geteveryClass3Data100Samples</span>(<span class="params">data</span>):</span></span><br><span class="line">    data_class0 = data[data[<span class="number">21</span>]==<span class="number">0</span>].head(<span class="number">100</span>) <span class="comment">#取第0类数据前100个</span></span><br><span class="line">    data_class1 = data[data[<span class="number">21</span>]==<span class="number">1</span>].head(<span class="number">100</span>) <span class="comment">#取第1类数据前100个</span></span><br><span class="line">    data_class2 = data[data[<span class="number">21</span>]==<span class="number">2</span>].head(<span class="number">100</span>) <span class="comment">#取第2类数据前100个</span></span><br><span class="line">    data_3x100 = pd.concat([data_class0, data_class1, data_class2]) <span class="comment">#简单拼接到一起</span></span><br><span class="line">    data_3x100 = data_3x100.sort_index() <span class="comment">#将这300个样本，按原文件的索引从小到大排序(打乱第0~2类的数据)</span></span><br><span class="line">    data_3x100 = data_3x100.reset_index(drop=<span class="literal">True</span>) <span class="comment">#重新建立索引</span></span><br><span class="line">    <span class="keyword">return</span> data_3x100</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-3-用K-means算法对UCI的waveform数据集中筛选出的300个样本进行分割"><a href="#1-3-3-用K-means算法对UCI的waveform数据集中筛选出的300个样本进行分割" class="headerlink" title="1.3.3. 用K-means算法对UCI的waveform数据集中筛选出的300个样本进行分割"></a>1.3.3. 用K-means算法对UCI的waveform数据集中筛选出的300个样本进行分割</h3><p>设置’种子’(集群)个数为:5, 运行k-means算法进行迭代分割</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data_3x100 = np.mat(data_3x100)</span><br><span class="line">k = <span class="number">5</span></span><br><span class="line">centroids, clusterAssment = kmeans(data_3x100, k)</span><br></pre></td></tr></table></figure>
+<p>设置分割’种子’(集群)个数为:5时，k-means分割（集群中心点）如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">centroids:</span><br><span class="line">[[-<span class="number">0.07813559</span>  <span class="number">0.40762712</span> -<span class="number">0.00067797</span>  <span class="number">0.27966102</span>  <span class="number">0.30101695</span>  <span class="number">0.99237288</span></span><br><span class="line">   <span class="number">2.17169492</span>  <span class="number">2.86677966</span>  <span class="number">3.79711864</span>  <span class="number">4.43864407</span>  <span class="number">5.55898305</span>  <span class="number">4.80983051</span></span><br><span class="line">   <span class="number">3.42457627</span>  <span class="number">3.19677966</span>  <span class="number">2.29627119</span>  <span class="number">1.22847458</span>  <span class="number">0.41711864</span>  <span class="number">0.37355932</span></span><br><span class="line">   <span class="number">0.1579661</span>   <span class="number">0.04322034</span>  <span class="number">0.28288136</span>  <span class="number">1.54237288</span>]</span><br><span class="line"> [-<span class="number">0.09621622</span>  <span class="number">0.93040541</span>  <span class="number">1.7172973</span>   <span class="number">2.41486486</span>  <span class="number">3.45162162</span>  <span class="number">4.06337838</span></span><br><span class="line">   <span class="number">5.0372973</span>   <span class="number">4.08067568</span>  <span class="number">3.61054054</span>  <span class="number">2.96756757</span>  <span class="number">2.16027027</span>  <span class="number">1.42175676</span></span><br><span class="line">   <span class="number">0.93310811</span>  <span class="number">0.84135135</span>  <span class="number">0.76283784</span>  <span class="number">0.67040541</span>  <span class="number">0.5422973</span>   <span class="number">0.45581081</span></span><br><span class="line">   <span class="number">0.01040541</span>  <span class="number">0.13513514</span>  <span class="number">0.15216216</span>  <span class="number">0.43243243</span>]</span><br><span class="line"> [-<span class="number">0.0027027</span>   <span class="number">0.50324324</span>  <span class="number">0.90378378</span>  <span class="number">1.23</span>        <span class="number">1.77783784</span>  <span class="number">1.97189189</span></span><br><span class="line">   <span class="number">2.92</span>        <span class="number">2.16405405</span>  <span class="number">1.71540541</span>  <span class="number">1.70378378</span>  <span class="number">1.92513514</span>  <span class="number">2.20432432</span></span><br><span class="line">   <span class="number">2.42216216</span>  <span class="number">2.71108108</span>  <span class="number">3.4572973</span>   <span class="number">2.60216216</span>  <span class="number">2.22405405</span>  <span class="number">1.64891892</span></span><br><span class="line">   <span class="number">1.4772973</span>   <span class="number">0.91378378</span> -<span class="number">0.10621622</span>  <span class="number">0.</span>        ]</span><br><span class="line"> [ <span class="number">0.11701149</span> -<span class="number">0.04942529</span>  <span class="number">0.15103448</span>  <span class="number">0.2254023</span>   <span class="number">0.02505747</span>  <span class="number">0.53701149</span></span><br><span class="line">   <span class="number">0.52448276</span>  <span class="number">0.95298851</span>  <span class="number">1.39574713</span>  <span class="number">2.04942529</span>  <span class="number">2.98126437</span>  <span class="number">3.51758621</span></span><br><span class="line">   <span class="number">3.88402299</span>  <span class="number">4.27816092</span>  <span class="number">4.94563218</span>  <span class="number">3.90206897</span>  <span class="number">2.75586207</span>  <span class="number">2.2708046</span></span><br><span class="line">   <span class="number">1.31091954</span>  <span class="number">0.7808046</span>  -<span class="number">0.05574713</span>  <span class="number">1.56321839</span>]</span><br><span class="line"> [ <span class="number">0.16418605</span>  <span class="number">0.40674419</span>  <span class="number">0.60651163</span>  <span class="number">1.61302326</span>  <span class="number">1.84697674</span>  <span class="number">2.77744186</span></span><br><span class="line">   <span class="number">4.06790698</span>  <span class="number">3.94511628</span>  <span class="number">4.00023256</span>  <span class="number">4.18767442</span>  <span class="number">4.25465116</span>  <span class="number">3.05651163</span></span><br><span class="line">   <span class="number">2.0372093</span>   <span class="number">1.23186047</span>  <span class="number">0.92744186</span>  <span class="number">0.74837209</span> -<span class="number">0.07837209</span> -<span class="number">0.14767442</span></span><br><span class="line">   <span class="number">0.1255814</span>  -<span class="number">0.0727907</span>  -<span class="number">0.06697674</span>  <span class="number">0.95348837</span>]]</span><br></pre></td></tr></table></figure>
+<p>设置分割’种子’(集群)个数为:10时，k-means分割（集群中心点）如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">centroids:</span><br><span class="line"> [[ <span class="number">0.05916667</span>  <span class="number">0.48</span>        <span class="number">0.4125</span>      <span class="number">1.08</span>        <span class="number">1.20388889</span>  <span class="number">2.09888889</span></span><br><span class="line">   <span class="number">3.15527778</span>  <span class="number">3.62388889</span>  <span class="number">4.28333333</span>  <span class="number">4.35555556</span>  <span class="number">5.08</span>        <span class="number">3.77861111</span></span><br><span class="line">   <span class="number">2.64166667</span>  <span class="number">1.89805556</span>  <span class="number">1.35138889</span>  <span class="number">0.85166667</span> -<span class="number">0.05416667</span>  <span class="number">0.03388889</span></span><br><span class="line">   <span class="number">0.08083333</span>  <span class="number">0.07666667</span>  <span class="number">0.16888889</span>  <span class="number">1.</span>        ]</span><br><span class="line"> [-<span class="number">0.48290323</span>  <span class="number">0.64677419</span>  <span class="number">1.51258065</span>  <span class="number">2.13935484</span>  <span class="number">3.30935484</span>  <span class="number">3.56096774</span></span><br><span class="line">   <span class="number">4.61419355</span>  <span class="number">3.29774194</span>  <span class="number">3.21</span>        <span class="number">2.65354839</span>  <span class="number">1.97225806</span>  <span class="number">1.4</span></span><br><span class="line">   <span class="number">1.31290323</span>  <span class="number">1.58870968</span>  <span class="number">1.15967742</span>  <span class="number">1.19612903</span>  <span class="number">1.1016129</span>   <span class="number">0.96290323</span></span><br><span class="line">   <span class="number">0.39032258</span>  <span class="number">0.47419355</span>  <span class="number">0.21322581</span>  <span class="number">0.16129032</span>]</span><br><span class="line"> [-<span class="number">0.57913043</span>  <span class="number">0.70695652</span>  <span class="number">0.55217391</span>  <span class="number">0.59521739</span>  <span class="number">1.11130435</span>  <span class="number">0.91608696</span></span><br><span class="line">   <span class="number">1.8326087</span>   <span class="number">0.71521739</span>  <span class="number">1.23130435</span>  <span class="number">1.29086957</span>  <span class="number">1.73695652</span>  <span class="number">3.23869565</span></span><br><span class="line">   <span class="number">3.33608696</span>  <span class="number">3.50521739</span>  <span class="number">4.50695652</span>  <span class="number">3.38652174</span>  <span class="number">2.71173913</span>  <span class="number">1.58913043</span></span><br><span class="line">   <span class="number">1.32434783</span>  <span class="number">1.0573913</span>   <span class="number">0.06608696</span>  <span class="number">0.52173913</span>]</span><br><span class="line"> [ <span class="number">0.56333333</span>  <span class="number">0.22777778</span>  <span class="number">1.39777778</span>  <span class="number">1.62666667</span>  <span class="number">1.97166667</span>  <span class="number">2.52888889</span></span><br><span class="line">   <span class="number">3.37111111</span>  <span class="number">2.64666667</span>  <span class="number">2.01611111</span>  <span class="number">1.95</span>        <span class="number">1.60555556</span>  <span class="number">1.56888889</span></span><br><span class="line">   <span class="number">2.40555556</span>  <span class="number">2.01555556</span>  <span class="number">2.97277778</span>  <span class="number">2.33055556</span>  <span class="number">2.20944444</span>  <span class="number">1.59333333</span></span><br><span class="line">   <span class="number">1.20611111</span>  <span class="number">0.66777778</span>  <span class="number">0.08222222</span>  <span class="number">0.</span>        ]</span><br><span class="line"> [-<span class="number">0.35111111</span>  <span class="number">0.43777778</span>  <span class="number">0.35111111</span>  <span class="number">0.60111111</span>  <span class="number">1.68888889</span>  <span class="number">1.59</span></span><br><span class="line">   <span class="number">2.60777778</span>  <span class="number">2.73111111</span>  <span class="number">1.46444444</span>  <span class="number">1.9</span>         <span class="number">2.70111111</span>  <span class="number">2.50222222</span></span><br><span class="line">   <span class="number">1.77888889</span>  <span class="number">2.82777778</span>  <span class="number">3.32111111</span>  <span class="number">2.25111111</span>  <span class="number">1.80444444</span>  <span class="number">1.69111111</span></span><br><span class="line">   <span class="number">1.83777778</span>  <span class="number">1.02333333</span> -<span class="number">0.81777778</span>  <span class="number">0.</span>        ]</span><br><span class="line"> [ <span class="number">0.13974359</span>  <span class="number">0.03769231</span> -<span class="number">0.19538462</span> -<span class="number">0.03897436</span>  <span class="number">0.06948718</span>  <span class="number">0.30487179</span></span><br><span class="line">   <span class="number">0.94025641</span>  <span class="number">1.81025641</span>  <span class="number">2.21564103</span>  <span class="number">2.92897436</span>  <span class="number">4.26564103</span>  <span class="number">4.30051282</span></span><br><span class="line">   <span class="number">3.85358974</span>  <span class="number">3.62333333</span>  <span class="number">3.78410256</span>  <span class="number">2.80692308</span>  <span class="number">1.69282051</span>  <span class="number">1.52538462</span></span><br><span class="line">   <span class="number">1.12794872</span>  <span class="number">0.55102564</span> -<span class="number">0.08230769</span>  <span class="number">2.</span>        ]</span><br><span class="line"> [ <span class="number">0.27111111</span> -<span class="number">0.21111111</span>  <span class="number">0.24088889</span>  <span class="number">0.47222222</span> -<span class="number">0.22355556</span>  <span class="number">0.66466667</span></span><br><span class="line">   <span class="number">0.25977778</span>  <span class="number">0.54777778</span>  <span class="number">1.01555556</span>  <span class="number">1.72822222</span>  <span class="number">2.55888889</span>  <span class="number">3.07777778</span></span><br><span class="line">   <span class="number">3.85911111</span>  <span class="number">4.78444444</span>  <span class="number">5.672</span>       <span class="number">4.64822222</span>  <span class="number">3.32355556</span>  <span class="number">2.85711111</span></span><br><span class="line">   <span class="number">1.46044444</span>  <span class="number">0.83622222</span>  <span class="number">0.00777778</span>  <span class="number">1.42222222</span>]</span><br><span class="line"> [ <span class="number">0.38176471</span>  <span class="number">0.59882353</span>  <span class="number">0.895</span>       <span class="number">2.25941176</span>  <span class="number">2.44352941</span>  <span class="number">3.32911765</span></span><br><span class="line">   <span class="number">4.81647059</span>  <span class="number">4.02794118</span>  <span class="number">3.63352941</span>  <span class="number">3.83470588</span>  <span class="number">3.34117647</span>  <span class="number">2.41088235</span></span><br><span class="line">   <span class="number">1.30147059</span>  <span class="number">0.83588235</span>  <span class="number">0.90970588</span>  <span class="number">0.585</span>       <span class="number">0.13470588</span> -<span class="number">0.05617647</span></span><br><span class="line">   <span class="number">0.10294118</span> -<span class="number">0.23382353</span> -<span class="number">0.06294118</span>  <span class="number">0.82352941</span>]</span><br><span class="line"> [-<span class="number">0.084</span>       <span class="number">1.168</span>       <span class="number">2.10333333</span>  <span class="number">2.54066667</span>  <span class="number">3.858</span>       <span class="number">4.87866667</span></span><br><span class="line">   <span class="number">5.49433333</span>  <span class="number">4.91</span>        <span class="number">4.08633333</span>  <span class="number">3.16633333</span>  <span class="number">2.175</span>       <span class="number">1.17433333</span></span><br><span class="line">   <span class="number">0.554</span>       <span class="number">0.12933333</span>  <span class="number">0.15466667</span>  <span class="number">0.12266667</span>  <span class="number">0.01733333</span>  <span class="number">0.14733333</span></span><br><span class="line">  -<span class="number">0.47633333</span>  <span class="number">0.00633333</span>  <span class="number">0.173</span>       <span class="number">0.63333333</span>]</span><br><span class="line"> [-<span class="number">0.10057143</span>  <span class="number">0.44885714</span>  <span class="number">0.00542857</span>  <span class="number">0.09514286</span>  <span class="number">0.19742857</span>  <span class="number">0.86142857</span></span><br><span class="line">   <span class="number">1.98857143</span>  <span class="number">2.93914286</span>  <span class="number">3.95371429</span>  <span class="number">4.702</span>       <span class="number">5.82428571</span>  <span class="number">5.14028571</span></span><br><span class="line">   <span class="number">3.702</span>       <span class="number">3.64314286</span>  <span class="number">2.28428571</span>  <span class="number">1.14228571</span>  <span class="number">0.34742857</span>  <span class="number">0.16857143</span></span><br><span class="line">   <span class="number">0.04457143</span> -<span class="number">0.09171429</span>  <span class="number">0.222</span>       <span class="number">1.65714286</span>]]</span><br></pre></td></tr></table></figure>
+
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>待处理文件</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/waveform.data">waveform.data</a><br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/kmeans.py">kmeans.py</a></p>
+</div>
+
+
+<h1 id="2-K-means算法对一副无噪图像进行分割"><a href="#2-K-means算法对一副无噪图像进行分割" class="headerlink" title="2. K-means算法对一副无噪图像进行分割"></a>2. K-means算法对一副无噪图像进行分割</h1><p><strong>加载图片数据</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取图片的rgb列表</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getImageRGB</span>(<span class="params">file</span>):</span></span><br><span class="line">    image = img.imread(file)</span><br><span class="line">    width, height, x = image.shape</span><br><span class="line">    <span class="comment"># 创建与照片像素规模同大小rgb列表，存rgb数据</span></span><br><span class="line">    rgb = np.zeros((width, height, x))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            rgb[i][j] = image[i, j]</span><br><span class="line">    <span class="keyword">return</span> rgb</span><br></pre></td></tr></table></figure>
+<p><strong>修改k个随机种子生成函数，使返回k个随机像素点坐标</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 随机生成k个种子，返回k个随机像素点坐标</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initCentroids</span>(<span class="params">imageRGB, k</span>):</span></span><br><span class="line">    center = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        x, y = random.randint(<span class="number">0</span>, imageRGB.shape[<span class="number">0</span>]), random.randint(<span class="number">0</span>, imageRGB.shape[<span class="number">1</span>])</span><br><span class="line">        center += [[x, y]]</span><br><span class="line">    <span class="keyword">return</span> center</span><br></pre></td></tr></table></figure>
+<p><strong>修改欧式距离的计算公式，按对第一步随机产生的k个变量的欧式距离分簇</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caclEucDistance</span>(<span class="params">imageRGB, centers</span>):</span></span><br><span class="line">    region = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">0</span>]): <span class="comment">#行</span></span><br><span class="line">        x = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">1</span>]): <span class="comment">#列</span></span><br><span class="line">            temp = []</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(centers)): <span class="comment">#计算k个像素点与k个中心点的欧式距离</span></span><br><span class="line">                dist = np.sqrt(np.<span class="built_in">sum</span>(np.square(imageRGB[i, j] - imageRGB[centers[k][<span class="number">0</span>], centers[k][<span class="number">1</span>]])))</span><br><span class="line">                temp += [dist] <span class="comment">#添加到temp临时数组中</span></span><br><span class="line">            x.append(np.argmin(temp)) <span class="comment">#距离最小的集群的下标，按距离分簇</span></span><br><span class="line">        region.append(x)</span><br><span class="line">    <span class="keyword">return</span> region <span class="comment">#返回与数组同大小的 像素与簇对应关系</span></span><br></pre></td></tr></table></figure>
+<p><strong>迭代循环中计算每个像素点与k个簇平均值的欧式距离，并分簇</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loopCaclEucDistance</span>(<span class="params">imageRGB, CalCentercolor</span>):</span></span><br><span class="line">    region = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">0</span>]): <span class="comment">#行</span></span><br><span class="line">        x = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">1</span>]): <span class="comment">#列</span></span><br><span class="line">            temp = []</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(CalCentercolor)): <span class="comment">#计算k个像素点与k个中心点的欧式距离</span></span><br><span class="line">                dist = np.sqrt(np.<span class="built_in">sum</span>(np.square(imageRGB[i, j] - CalCentercolor[k])))</span><br><span class="line">                temp += [dist] <span class="comment">#添加到temp临时数组中</span></span><br><span class="line">            x.append(np.argmin(temp))  <span class="comment">#距离最小的集群的下标，按距离分簇</span></span><br><span class="line">        region.append(x)</span><br><span class="line">    <span class="keyword">return</span> region <span class="comment">#返回与数组同大小的 像素与簇对应关系</span></span><br></pre></td></tr></table></figure>
+<p><strong>计算集群内所有样本的平均值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calNewCenter</span>(<span class="params">features, imageRGB, k</span>):</span></span><br><span class="line">    temp = [] <span class="comment">#一位数组</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> features:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> i:</span><br><span class="line">            temp.append(j)</span><br><span class="line">    centercolor = [<span class="number">0</span>] * k</span><br><span class="line">    <span class="comment"># 累加 每个集群中所包含的 像素点的RGB值</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(features)): <span class="comment">#Rows</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(features[i])): <span class="comment">#Columns</span></span><br><span class="line">            centercolor[features[i][j]] += imageRGB[i, j]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(centercolor)):</span><br><span class="line">        centercolor[i] /= temp.count(i) <span class="comment">#求每个集群的RGB 均值</span></span><br><span class="line">        <span class="comment"># 将求得的均值[取整]</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(centercolor[i])):  <span class="comment">#Columns</span></span><br><span class="line">            centercolor[i][j] = <span class="built_in">int</span>(centercolor[i][j])</span><br><span class="line">    <span class="keyword">return</span> centercolor</span><br></pre></td></tr></table></figure>
+<p><strong>显示分割前后对比图程序</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">showImage</span>(<span class="params">imageRGB, centercolor, features, k, iteration</span>):</span></span><br><span class="line">    NewImage = np.empty((<span class="built_in">len</span>(features), <span class="built_in">len</span>(features[<span class="number">0</span>]), <span class="number">3</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(features)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(features[i])):</span><br><span class="line">            NewImage[i, j] = centercolor[features[i][j]]</span><br><span class="line">    <span class="comment"># 绘制图片</span></span><br><span class="line">    fig = plt.figure(figsize=(<span class="number">10</span>, <span class="number">4</span>), facecolor=<span class="string">&#x27;white&#x27;</span>)</span><br><span class="line">    fig.suptitle(<span class="string">&#x27;k=&#x27;</span>+<span class="built_in">str</span>(k)+<span class="string">&#x27;, iteration=&#x27;</span>+<span class="built_in">str</span>(iteration), fontsize=<span class="number">12</span>, color=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line">    fig.gca().xaxis.set_major_locator(plt.NullLocator())</span><br><span class="line">    fig.gca().yaxis.set_major_locator(plt.NullLocator())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建子图1: 绘制原图</span></span><br><span class="line">    ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">    ax1.axis(<span class="string">&#x27;off&#x27;</span>) <span class="comment"># 关闭坐标轴显示</span></span><br><span class="line">    ax1.imshow(imageRGB / <span class="number">255</span>)</span><br><span class="line">    ax1.set_title(<span class="string">&#x27;Original image&#x27;</span>, fontsize=<span class="number">10</span>, color=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建子图2: 绘制分割图</span></span><br><span class="line">    ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">    ax2.axis(<span class="string">&#x27;off&#x27;</span>) <span class="comment"># 关闭坐标轴显示</span></span><br><span class="line">    ax2.imshow(NewImage / <span class="number">255</span>)</span><br><span class="line">    ax2.set_title(<span class="string">&#x27;Split graph&#x27;</span>, fontsize=<span class="number">10</span>, color=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 显示绘制图像</span></span><br><span class="line">    pylab.show()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-1-使用K-means算法对一副无噪图像进行分割完整主程序"><a href="#2-1-使用K-means算法对一副无噪图像进行分割完整主程序" class="headerlink" title="2.1. 使用K-means算法对一副无噪图像进行分割完整主程序"></a>2.1. 使用K-means算法对一副无噪图像进行分割完整主程序</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="comment">#加载图片数据</span></span><br><span class="line">    imageRGB = getImageRGB(<span class="string">&#x27;picture.jpg&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;Finish load image RGB data...&#x27;</span>)</span><br><span class="line">    <span class="comment">#设置集群数：k=3</span></span><br><span class="line">    k = <span class="number">3</span></span><br><span class="line">    <span class="comment"># 生成k个随机像素点坐标</span></span><br><span class="line">    InitialCenter = initCentroids(imageRGB, k)</span><br><span class="line">    <span class="comment"># 计算样本中每个像素点与k个中心点的欧式距离，并重新分类</span></span><br><span class="line">    features = caclEucDistance(imageRGB, InitialCenter)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#设置k-means算法执行的最大迭代次数：iteration = 20</span></span><br><span class="line">    iteration = <span class="number">20</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(iteration, <span class="number">0</span>, -<span class="number">1</span>):</span><br><span class="line">        print(<span class="string">&#x27;iteration = &#x27;</span>, i)</span><br><span class="line">        CalCentercolor = calNewCenter(features, imageRGB, k) <span class="comment"># 得到每个簇的均值</span></span><br><span class="line">        <span class="comment"># 根据簇中的新均值，并重新分簇</span></span><br><span class="line">        features = loopCaclEucDistance(imageRGB, CalCentercolor)</span><br><span class="line">        print(<span class="string">&#x27;\n&#x27;</span>+<span class="string">&#x27;Center[k] = &#x27;</span>, CalCentercolor, <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#显示分割前后对比图</span></span><br><span class="line">    showImage(imageRGB, CalCentercolor, features, k, iteration)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-K-means算法分割图片效果图"><a href="#2-2-K-means算法分割图片效果图" class="headerlink" title="2.2. K-means算法分割图片效果图"></a>2.2. K-means算法分割图片效果图</h2><h3 id="2-2-1-当最大迭代次数限制为20次时："><a href="#2-2-1-当最大迭代次数限制为20次时：" class="headerlink" title="2.2.1. 当最大迭代次数限制为20次时："></a>2.2.1. 当最大迭代次数限制为20次时：</h3><ul>
+<li><p><strong>k=3时的效果图如下</strong>：<br>（只用“平均后”的3种颜色替代原图）<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=3_iteration=20.png" alt="iteration=20,k=3时的效果图"></p>
+</li>
+<li><p><strong>k=8时的效果图如下</strong>：<br>（只用“平均后”的8种颜色替代原图）<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=8_iteration=20.png" alt="iteration=20,k=8时的效果图"></p>
+</li>
+</ul>
+<h3 id="2-2-2-当最大迭代次数限制为50次时："><a href="#2-2-2-当最大迭代次数限制为50次时：" class="headerlink" title="2.2.2. 当最大迭代次数限制为50次时："></a>2.2.2. 当最大迭代次数限制为50次时：</h3><ul>
+<li><p><strong>k=3时的效果图如下</strong>：<br>（只用“平均后”的3种颜色替代原图）<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=3_iteration=50.png" alt="iteration=50,k=3时的效果图"></p>
+</li>
+<li><p><strong>k=8时的效果图如下</strong>：<br>（只用“平均后”的8种颜色替代原图）<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Kmeans_result_k=8_iteration=50.png" alt="iteration=50,k=8时的效果图"></p>
+</li>
+</ul>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><ul>
+<li>通过反复测试，得出在一定的迭代次数限制下，设置的种子数越多，图像分割越明显，细节越丰富；</li>
+<li>在一定种子数范围内，最大迭代次数越多，图像分割效果并不一定更好。</li>
+<li>并且程序的运行时间会随着集群k、最大迭代次数iteration的增加而增加。</li>
+</ul>
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>待聚类图片</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/KmeansTestPicture.jpg">KmeansTestPicture.jpg</a><br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/kmeansPicture.py">kmeansPicture.py</a></p>
+</div>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\03\DataMining_AdaBoost\" rel="bookmark">AdaBoost算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\10\DataMining_Apriori\" rel="bookmark">Apriori算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\10\DataMining_DBSCAN\" rel="bookmark">DBSCAN算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\16\DataMining_ID3\" rel="bookmark">ID3算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\26\DataMining_PAM\" rel="bookmark">PAM算法——数据挖掘</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag"><i class="fa fa-tag"></i> 数据挖掘</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/23/QuickSort/" rel="prev" title="QuickSort">
+                  <i class="fa fa-chevron-left"></i> QuickSort
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/26/DataMining_PAM/" rel="next" title="PAM算法——数据挖掘">
+                  PAM算法——数据挖掘 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/10/24/DataMining_Kmeans/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 在Linux系统安装Python及数据处理所需的numpy、pandas库之前尝试手动下载numpy库，解压，然后按提示安装，却发现numpy库依赖上级库nose,又下载nose库，但在手动安装pandas库时出错…后发现可通过pip的简单方式安装，自动解决依赖，相比于需要手动下载安装上级依赖的手动安装方式更方便，安装代码如下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="预处理——数据挖掘">
+<meta property="og:url" content="https://eisenhao.cn/2018/10/21/DataMining_DataPreprocess/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 在Linux系统安装Python及数据处理所需的numpy、pandas库之前尝试手动下载numpy库，解压，然后按提示安装，却发现numpy库依赖上级库nose,又下载nose库，但在手动安装pandas库时出错…后发现可通过pip的简单方式安装，自动解决依赖，相比于需要手动下载安装上级依赖的手动安装方式更方便，安装代码如下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess.jpg">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Item_Weight.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Item_Visibility.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Item_MRP.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Outlet_Establishment_Year.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Output_Train_afterProprecess.png">
+<meta property="article:published_time" content="2018-10-21T11:20:44.000Z">
+<meta property="article:modified_time" content="2019-02-18T05:43:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="数据挖掘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/10/21/DataMining_DataPreprocess/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/10/21/DataMining_DataPreprocess/","path":"2018/10/21/DataMining_DataPreprocess/","title":"预处理——数据挖掘"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>预处理——数据挖掘 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9C%A8Linux%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Python%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%89%80%E9%9C%80%E7%9A%84numpy%E3%80%81pandas%E5%BA%93"><span class="nav-text">1. 在Linux系统安装Python及数据处理所需的numpy、pandas库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD"><span class="nav-text">2. 数据加载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%B2%97%E7%95%A5%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A7%84%E6%A8%A1%E5%88%86%E5%B8%83%E7%AD%89%E4%BF%A1%E6%81%AF"><span class="nav-text">3. 粗略查看数据规模分布等信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="nav-text">4. 数据清洗</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-text">4.1. 缺失值处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%BC%82%E5%B8%B8%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-text">5. 异常值处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E4%BA%A7%E5%93%81%E9%87%8D%E9%87%8F%E2%80%99Item-Weight%E2%80%99"><span class="nav-text">5.1. 产品重量’Item_Weight’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E5%88%86%E9%85%8D%E7%BB%99%E7%89%B9%E5%AE%9A%E4%BA%A7%E5%93%81%E7%9A%84%E5%95%86%E5%BA%97%E4%B8%AD%E6%89%80%E6%9C%89%E4%BA%A7%E5%93%81%E7%9A%84%E6%80%BB%E6%98%BE%E7%A4%BA%E5%8C%BA%E5%9F%9F%E7%9A%84%E7%99%BE%E5%88%86%E6%AF%94%E2%80%99Item-Visibility%E2%80%99"><span class="nav-text">5.2. 分配给特定产品的商店中所有产品的总显示区域的百分比’Item_Visibility’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E4%BA%A7%E5%93%81%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9B%B6%E5%94%AE%E4%BB%B7%E2%80%99Item-MRP%E2%80%99"><span class="nav-text">5.3. 产品的最大零售价’Item_MRP’</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-1-%E5%95%86%E5%BA%97%E6%88%90%E7%AB%8B%E5%B9%B4%E4%BB%BD%E2%80%99Outlet-Establishment-Year%E2%80%99"><span class="nav-text">5.3.1. 商店成立年份’Outlet_Establishment_Year’</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2"><span class="nav-text">6. 数据转换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E4%BA%A7%E5%93%81%E6%98%AF%E5%90%A6%E4%BD%8E%E8%84%82%E8%82%AA%E2%80%99Item-Fat-Content%E2%80%99"><span class="nav-text">6.1. 产品是否低脂肪’Item_Fat_Content’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E4%BA%A7%E5%93%81%E6%89%80%E5%B1%9E%E7%9A%84%E7%B1%BB%E5%88%AB-%E2%80%98Item-Type%E2%80%99"><span class="nav-text">6.2. 产品所属的类别 ‘Item_Type’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-%E5%94%AF%E4%B8%80%E5%95%86%E5%BA%97ID-%E2%80%98Outlet-Identifier%E2%80%99"><span class="nav-text">6.3. 唯一商店ID ‘Outlet_Identifier’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-%E5%95%86%E5%BA%97%E7%9A%84%E9%9D%A2%E7%A7%AF%E8%A6%86%E7%9B%96%E9%9D%A2%E7%A7%AF-%E2%80%98Outlet-Size%E2%80%99"><span class="nav-text">6.4. 商店的面积覆盖面积 ‘Outlet_Size’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-%E5%95%86%E5%BA%97%E6%89%80%E5%9C%A8%E7%9A%84%E5%9F%8E%E5%B8%82%E7%B1%BB%E5%9E%8B-%E2%80%98Outlet-Location-Type%E2%80%99"><span class="nav-text">6.5. 商店所在的城市类型 ‘Outlet_Location_Type’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-%E5%87%BA%E5%8F%A3%E6%98%AF%E4%B8%80%E5%AE%B6%E6%9D%82%E8%B4%A7%E5%BA%97%E8%BF%98%E6%98%AF%E6%9F%90%E7%A7%8D%E8%B6%85%E5%B8%82-%E2%80%98Outlet-Type%E2%80%99"><span class="nav-text">6.6. 出口是一家杂货店还是某种超市 ‘Outlet_Type’</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96"><span class="nav-text">7. 数据归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E4%BA%A7%E5%93%81%E9%87%8D%E9%87%8F%E2%80%99Item-Weight%E2%80%99"><span class="nav-text">7.1. 产品重量’Item_Weight’</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/21/DataMining_DataPreprocess/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          预处理——数据挖掘
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-10-21 19:20:44" itemprop="dateCreated datePublished" datetime="2018-10-21T19:20:44+08:00">2018-10-21</time>
+    </span>
+
+  
+    <span id="/2018/10/21/DataMining_DataPreprocess/" class="post-meta-item leancloud_visitors" data-flag-title="预处理——数据挖掘" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess.jpg" class="full-image" />
+
+<h1 id="1-在Linux系统安装Python及数据处理所需的numpy、pandas库"><a href="#1-在Linux系统安装Python及数据处理所需的numpy、pandas库" class="headerlink" title="1. 在Linux系统安装Python及数据处理所需的numpy、pandas库"></a>1. 在Linux系统安装Python及数据处理所需的numpy、pandas库</h1><p>之前尝试手动下载numpy库，解压，然后按提示安装，却发现numpy库依赖上级库nose,又下载nose库，但在手动安装pandas库时出错…后发现可通过pip的简单方式安装，自动解决依赖，相比于需要手动下载安装上级依赖的手动安装方式更方便，安装代码如下</p>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy        //安装Numpy库:提供数组支持，以及相应的高效的处理函数</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple SciPy        //安装SciPy库：提供矩阵支持，以及矩阵相关的数值计算模块</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib   //安装Matplotlib库：强大的数据可视化工具、作图库</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas       //安装Pandas库：强大、灵活的数据分析和探索工具</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple statsmodels  //安装StatsModels库：统计建模和计量经济学，包括描述统计、统计模型估计和推断</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple scikit-learn //安装Scikit-Learn库：支持回归、分类、聚类等强大的机器学习库</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple keras        //安装Keras库：深度学习库，用于建立神经网络以及深度学习模型</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple gensim       //安装Gensim库：用来做文本主题模型的库，可能用于文本挖掘</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-数据加载"><a href="#2-数据加载" class="headerlink" title="2. 数据加载"></a>2. 数据加载</h1><p>使用python的pandas库提供的数据处理支持，读取特定文件中庞大数据到到程序的运行内存中以便进行处理。如读取存放于“Train_UWu5bXk.csv”文件中的Bigmart销售数据到变量data中，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment"># Pandas库：强大、灵活的数据分析和探索工具</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据加载</span></span><br><span class="line">print(<span class="string">&quot;数据加载:\n&quot;</span>)</span><br><span class="line"><span class="comment"># 定义销售数据12个列名</span></span><br><span class="line">variables=[<span class="string">&#x27;Item_Identifier&#x27;</span>, <span class="string">&#x27;Item_Weight&#x27;</span>, <span class="string">&#x27;Item_Fat_Content&#x27;</span>, <span class="string">&#x27;Item_Visibility&#x27;</span>, <span class="string">&#x27;Item_Type&#x27;</span>, <span class="string">&#x27;Item_MRP&#x27;</span>, <span class="string">&#x27;Outlet_Identifier&#x27;</span>, <span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>, <span class="string">&#x27;Outlet_Size&#x27;</span>, <span class="string">&#x27;Outlet_Location_Type&#x27;</span>, <span class="string">&#x27;Outlet_Type&#x27;</span>, <span class="string">&#x27;Item_Outlet_Sales&#x27;</span>] <span class="comment"># Train_UWu5bXk.csv</span></span><br><span class="line">data = pd.read_csv(<span class="string">&#x27;Train_UWu5bXk.csv&#x27;</span>, sep=<span class="string">&#x27;,&#x27;</span>, engine=<span class="string">&#x27;python&#x27;</span>, header=<span class="literal">None</span>, skiprows=<span class="number">1</span>, names=variables) <span class="comment"># Train_UWu5bXk.csv</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-粗略查看数据规模分布等信息"><a href="#3-粗略查看数据规模分布等信息" class="headerlink" title="3. 粗略查看数据规模分布等信息"></a>3. 粗略查看数据规模分布等信息</h1><p>通过上一步数据加载已经成功加载了Bigmart销售数据，接下来先粗略了解Bigmart销售数据的矩阵规模信息，然后再根据信息对销售数据有粗略认识，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据粗略查看</span></span><br><span class="line">print(<span class="string">&quot;\n查看各字段的信息&quot;</span>)</span><br><span class="line">data.info()     <span class="comment">#查看各字段的信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#最小值、最大值、四分位数和数值型变量的均值，以及因子向量和逻辑型向量的频数统计</span></span><br><span class="line">print(<span class="string">&#x27;\n数据粗略查看:&#x27;</span>)</span><br><span class="line">list_view = data.describe()    <span class="comment">#使用describe函数输出计算结果</span></span><br><span class="line">list_view.loc[<span class="string">&#x27;jicha&#x27;</span>] = list_view.loc[<span class="string">&#x27;max&#x27;</span>] - list_view.loc[<span class="string">&#x27;min&#x27;</span>]    <span class="comment">#求极差</span></span><br><span class="line">list_view.loc[<span class="string">&#x27;bianyixishu&#x27;</span>] = list_view.loc[<span class="string">&#x27;std&#x27;</span>]/list_view.loc[<span class="string">&#x27;mean&#x27;</span>]    <span class="comment">#变异系数</span></span><br><span class="line">list_view.loc[<span class="string">&#x27;sifenweijianju&#x27;</span>] = list_view.loc[<span class="string">&#x27;75%&#x27;</span>] - list_view.loc[<span class="string">&#x27;25%&#x27;</span>]    <span class="comment">#四分位间距</span></span><br><span class="line">print(list_view)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询丢失信息</span></span><br><span class="line">print(<span class="string">&#x27;\n输出每个列丢失值也即值为NaN的数据和，并从多到少排序：&#x27;</span>)</span><br><span class="line">total = data.isnull().<span class="built_in">sum</span>().sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line">percent =(data.isnull().<span class="built_in">sum</span>()/data.isnull().count()).sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line">missing_data = pd.concat([total, percent], axis=<span class="number">1</span>, keys=[<span class="string">&#x27;Total&#x27;</span>, <span class="string">&#x27;Percent&#x27;</span>])</span><br><span class="line">print(missing_data)</span><br></pre></td></tr></table></figure>
+<p>显示“Train_UWu5bXk.csv”文件中的Bigmart销售数据粗略信息如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">查看各字段的信息</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>&#x27;&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">8523</span> entries, <span class="number">0</span> to <span class="number">8522</span></span><br><span class="line">Data columns (total <span class="number">12</span> columns):</span><br><span class="line">Item_Identifier              <span class="number">8523</span> non-null <span class="built_in">object</span></span><br><span class="line">Item_Weight                  <span class="number">7060</span> non-null float64</span><br><span class="line">Item_Fat_Content             <span class="number">8523</span> non-null <span class="built_in">object</span></span><br><span class="line">Item_Visibility              <span class="number">8523</span> non-null float64</span><br><span class="line">Item_Type                    <span class="number">8523</span> non-null <span class="built_in">object</span></span><br><span class="line">Item_MRP                     <span class="number">8523</span> non-null float64</span><br><span class="line">Outlet_Identifier            <span class="number">8523</span> non-null <span class="built_in">object</span></span><br><span class="line">Outlet_Establishment_Year    <span class="number">8523</span> non-null int64</span><br><span class="line">Outlet_Size                  <span class="number">6113</span> non-null <span class="built_in">object</span></span><br><span class="line">Outlet_Location_Type         <span class="number">8523</span> non-null <span class="built_in">object</span></span><br><span class="line">Outlet_Type                  <span class="number">8523</span> non-null <span class="built_in">object</span></span><br><span class="line">Item_Outlet_Sales            <span class="number">8523</span> non-null float64</span><br><span class="line">dtypes: float64(<span class="number">4</span>), int64(<span class="number">1</span>), <span class="built_in">object</span>(<span class="number">7</span>)</span><br><span class="line">memory usage: <span class="number">799.1</span>+ KB</span><br><span class="line"></span><br><span class="line">数据粗略查看:</span><br><span class="line">                Item_Weight  Item_Visibility     Item_MRP  Outlet_Establishment_Year  Item_Outlet_Sales</span><br><span class="line">count           <span class="number">7060.000000</span>      <span class="number">8523.000000</span>  <span class="number">8523.000000</span>                <span class="number">8523.000000</span>        <span class="number">8523.000000</span></span><br><span class="line">mean              <span class="number">12.857645</span>         <span class="number">0.066132</span>   <span class="number">140.992782</span>                <span class="number">1997.831867</span>        <span class="number">2181.288914</span></span><br><span class="line">std                <span class="number">4.643456</span>         <span class="number">0.051598</span>    <span class="number">62.275067</span>                   <span class="number">8.371760</span>        <span class="number">1706.499616</span></span><br><span class="line"><span class="built_in">min</span>                <span class="number">4.555000</span>         <span class="number">0.000000</span>    <span class="number">31.290000</span>                <span class="number">1985.000000</span>          <span class="number">33.290000</span></span><br><span class="line"><span class="number">25</span>%                <span class="number">8.773750</span>         <span class="number">0.026989</span>    <span class="number">93.826500</span>                <span class="number">1987.000000</span>         <span class="number">834.247400</span></span><br><span class="line"><span class="number">50</span>%               <span class="number">12.600000</span>         <span class="number">0.053931</span>   <span class="number">143.012800</span>                <span class="number">1999.000000</span>        <span class="number">1794.331000</span></span><br><span class="line"><span class="number">75</span>%               <span class="number">16.850000</span>         <span class="number">0.094585</span>   <span class="number">185.643700</span>                <span class="number">2004.000000</span>        <span class="number">3101.296400</span></span><br><span class="line"><span class="built_in">max</span>               <span class="number">21.350000</span>         <span class="number">0.328391</span>   <span class="number">266.888400</span>                <span class="number">2009.000000</span>       <span class="number">13086.964800</span></span><br><span class="line">jicha             <span class="number">16.795000</span>         <span class="number">0.328391</span>   <span class="number">235.598400</span>                  <span class="number">24.000000</span>       <span class="number">13053.674800</span></span><br><span class="line">bianyixishu        <span class="number">0.361144</span>         <span class="number">0.780224</span>     <span class="number">0.441690</span>                   <span class="number">0.004190</span>           <span class="number">0.782335</span></span><br><span class="line">sifenweijianju     <span class="number">8.076250</span>         <span class="number">0.067596</span>    <span class="number">91.817200</span>                  <span class="number">17.000000</span>        <span class="number">2267.049000</span></span><br><span class="line"></span><br><span class="line">输出每个列丢失值也即值为NaN的数据和，并从多到少排序：</span><br><span class="line">                           Total   Percent</span><br><span class="line">Outlet_Size                 <span class="number">2410</span>  <span class="number">0.282764</span></span><br><span class="line">Item_Weight                 <span class="number">1463</span>  <span class="number">0.171653</span></span><br><span class="line">Item_Outlet_Sales              <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Outlet_Type                    <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Outlet_Location_Type           <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Outlet_Establishment_Year      <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Outlet_Identifier              <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Item_MRP                       <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Item_Type                      <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Item_Visibility                <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Item_Fat_Content               <span class="number">0</span>  <span class="number">0.000000</span></span><br><span class="line">Item_Identifier                <span class="number">0</span>  <span class="number">0.000000</span></span><br></pre></td></tr></table></figure>
+<p>从以上信息我们可初步了解到”Train_UWu5bXk.csv”文件中的数据的规模为：8523x12。且可看出在12列属性中有些列的数据有缺失如：’产品重量Item_Weight’列（7060，缺失1463, 占17.2%）和’商店覆盖面积Outlet_Size’列（6113，缺失2410, 占28.3%）。对于数据的分布情况，从中可看出：</p>
+<ul>
+<li>产品重量’Item_Weight’变量：值集为4.555～21.35，均值为：12.857645，方差为4.643456，变异系数为0.361144，四分位间距为8.076250，说明分布较为均匀但数据较分散，存在缺失项（占17.2%）。</li>
+<li>分配给特定产品的商店中所有产品的总显示区域的百分比’Item_Visibility’变量：值集为0～0.328391,均值为0.066132，方差为0.051598，变异系数为0.780224，四分位间距为0.067596，说明数据较为集中在平均值附近，数据较为紧凑，无缺项。</li>
+<li>产品的最大零售价’Item_MRP’变量：值集为31.29～266.8884，均值为140.992782，方差为62.275067，变异系数为0.441690，四分位间距为91.817200，数据较分散，无缺项。</li>
+<li>商店开店年份’Outlet_Establishment_Year’变量：值集为1985～2009，均值为1997.831867，方差为8.371760，变异系数为0.004190，四分位间距为17，数据较紧凑，且无缺项。</li>
+<li>在特定商店销售产品’Item_Outlet_Sales’(这是要预测的结果变量)</li>
+</ul>
+<h1 id="4-数据清洗"><a href="#4-数据清洗" class="headerlink" title="4. 数据清洗"></a>4. 数据清洗</h1><h2 id="4-1-缺失值处理"><a href="#4-1-缺失值处理" class="headerlink" title="4.1. 缺失值处理"></a>4.1. 缺失值处理</h2><p><strong>判断缺失值的分布情况：</strong><br>从上一步粗略查看已知’产品重量Item_Weight’、’商店覆盖面积utlet_Size’两列的数据有缺失。而缺失值处理常用的方法有以下几种：1.直接删除、2.使用一个全局常量填充、3.使用均值或中位数代替、4.插补法（包括：随机插补法、多重插补法、热平台插补、拉格朗日差值法和牛顿插值法）、5.建模法。</p>
+<ul>
+<li>由数据粗略查看知,’Item_Weight’分布较为均匀但数据较分散,存在缺失项,故决定缺失内容采用均值填补</li>
+<li>对于商店覆盖面积’Outlet_Size’变量：为有限个字符串变量，故对缺失内容采用出现次数最多的值填补<br>代码如下：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用平均数填补 Item_Weight</span></span><br><span class="line">Item_Weight_mean = data[<span class="string">&#x27;Item_Weight&#x27;</span>].mean() <span class="comment">#计算&#x27;Item_Weight&#x27;平均值</span></span><br><span class="line">data[<span class="string">&#x27;Item_Weight&#x27;</span>] = data[<span class="string">&#x27;Item_Weight&#x27;</span>].fillna(Item_Weight_mean) <span class="comment">#用&#x27;Item_Weight&#x27;平均值填充缺失值</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用出现次数最多的值填补 utlet_Size</span></span><br><span class="line">utlet_Size_mode = data[<span class="string">&#x27;utlet_Size&#x27;</span>].mode() <span class="comment">#获取&#x27;utlet_Size&#x27;众数</span></span><br><span class="line">data[<span class="string">&#x27;utlet_Size&#x27;</span>] = data[<span class="string">&#x27;utlet_Size&#x27;</span>].fillna(utlet_Size_mode[<span class="number">0</span>]) <span class="comment">#用&#x27;utlet_Size&#x27;出现最多的值填充缺失值</span></span><br></pre></td></tr></table></figure>
+对于此Train_UWu5bXk.csv数据，执行上放代码后会用’Item_Weight’平均值12.857645184135976填充’Item_Weight’缺失值，用’utlet_Size’出现最多的值’Medium’填充缺失值。</li>
+</ul>
+<h1 id="5-异常值处理"><a href="#5-异常值处理" class="headerlink" title="5. 异常值处理"></a>5. 异常值处理</h1><p>调用matplotlib库将各个数据可视化（python中的pyplot），观察异常值</p>
+<h2 id="5-1-产品重量’Item-Weight’"><a href="#5-1-产品重量’Item-Weight’" class="headerlink" title="5.1. 产品重量’Item_Weight’"></a>5.1. 产品重量’Item_Weight’</h2><p>打印’Item_Weight’数据分布散点图代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Plot Item_Weight</span></span><br><span class="line">x = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Item_Weight&#x27;</span>])))</span><br><span class="line">y_Item_Weight = data[<span class="string">&#x27;Item_Weight&#x27;</span>]</span><br><span class="line">plt.scatter(x, y_Item_Weight, s=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#设置标题并加上轴标签</span></span><br><span class="line">plt.title(<span class="string">&quot;Item_Weight&quot;</span>, fontsize=<span class="number">24</span>)</span><br><span class="line"><span class="comment">#设置刻度标记的大小</span></span><br><span class="line">plt.tick_params(axis=<span class="string">&#x27;both&#x27;</span>, which=<span class="string">&#x27;major&#x27;</span>, labelsize=<span class="number">14</span>)</span><br><span class="line"><span class="comment">#设置每个坐标的取值范围</span></span><br><span class="line">plt.axis([<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Item_Weight&#x27;</span>]), <span class="built_in">min</span>(data[<span class="string">&#x27;Item_Weight&#x27;</span>]), <span class="built_in">max</span>(data[<span class="string">&#x27;Item_Weight&#x27;</span>])])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Item_Weight.png" alt="&#39;Item_Weight&#39;数据分布散点图"></p>
+<p>从图中可看出’Item_Weight’分布较为均匀（5.5～21之间），未发现异常值</p>
+<h2 id="5-2-分配给特定产品的商店中所有产品的总显示区域的百分比’Item-Visibility’"><a href="#5-2-分配给特定产品的商店中所有产品的总显示区域的百分比’Item-Visibility’" class="headerlink" title="5.2. 分配给特定产品的商店中所有产品的总显示区域的百分比’Item_Visibility’"></a>5.2. 分配给特定产品的商店中所有产品的总显示区域的百分比’Item_Visibility’</h2><p>打印’Item_Visibility’数据分布散点图代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Plot Item_Visibility</span></span><br><span class="line">x = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Item_Visibility&#x27;</span>])))</span><br><span class="line">y_Item_Visibility = data[<span class="string">&#x27;Item_Visibility&#x27;</span>]</span><br><span class="line">plt.scatter(x, y_Item_Visibility, s=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#设置标题并加上轴标签</span></span><br><span class="line">plt.title(<span class="string">&quot;Item_Visibility&quot;</span>, fontsize=<span class="number">24</span>)</span><br><span class="line"><span class="comment">#设置刻度标记的大小</span></span><br><span class="line">plt.tick_params(axis=<span class="string">&#x27;both&#x27;</span>, which=<span class="string">&#x27;major&#x27;</span>, labelsize=<span class="number">14</span>)</span><br><span class="line"><span class="comment">#设置每个坐标的取值范围</span></span><br><span class="line">plt.axis([<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Item_Visibility&#x27;</span>]), <span class="built_in">min</span>(data[<span class="string">&#x27;Item_Visibility&#x27;</span>]), <span class="built_in">max</span>(data[<span class="string">&#x27;Item_Visibility&#x27;</span>])])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Item_Visibility.png" alt="&#39;Item_Visibility&#39;数据分布散点图"></p>
+<p>从图中可看出’Item_Visibility’分布主要集中于0～0.2区间内，分布随着值增加逐渐稀疏，未发现异常值</p>
+<h2 id="5-3-产品的最大零售价’Item-MRP’"><a href="#5-3-产品的最大零售价’Item-MRP’" class="headerlink" title="5.3. 产品的最大零售价’Item_MRP’"></a>5.3. 产品的最大零售价’Item_MRP’</h2><p>打印’Item_MRP’数据分布散点图代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Plot Item_MRP</span></span><br><span class="line">x = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Item_MRP&#x27;</span>])))</span><br><span class="line">y_Item_MRP = data[<span class="string">&#x27;Item_MRP&#x27;</span>]</span><br><span class="line">plt.scatter(x, y_Item_MRP, s=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#设置标题并加上轴标签</span></span><br><span class="line">plt.title(<span class="string">&quot;Item_MRP&quot;</span>, fontsize=<span class="number">24</span>)</span><br><span class="line">    <span class="comment">#设置刻度标记的大小</span></span><br><span class="line">plt.tick_params(axis=<span class="string">&#x27;both&#x27;</span>, which=<span class="string">&#x27;both&#x27;</span>, labelsize=<span class="number">14</span>)</span><br><span class="line"><span class="comment">#设置每个坐标的取值范围</span></span><br><span class="line">plt.axis([<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Item_MRP&#x27;</span>]), <span class="built_in">min</span>(data[<span class="string">&#x27;Item_MRP&#x27;</span>]), <span class="built_in">max</span>(data[<span class="string">&#x27;Item_MRP&#x27;</span>])])</span><br><span class="line">plt.psd(y_Item_MRP, <span class="number">10</span>, <span class="number">10</span>) <span class="comment">#Draw Grid</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Item_MRP.png" alt="&#39;Item_MRP&#39;数据分布散点图"></p>
+<p>从图中可看出’Item_MRP’分布较为阶梯型分布，大致可分为4段(31<del>70, 70</del>135, 135~200, &gt;200)，未发现异常值</p>
+<h3 id="5-3-1-商店成立年份’Outlet-Establishment-Year’"><a href="#5-3-1-商店成立年份’Outlet-Establishment-Year’" class="headerlink" title="5.3.1. 商店成立年份’Outlet_Establishment_Year’"></a>5.3.1. 商店成立年份’Outlet_Establishment_Year’</h3><p>打印’Outlet_Establishment_Year’数据分布散点图代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Plot Outlet_Establishment_Year</span></span><br><span class="line">x = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>])))</span><br><span class="line">y_Outlet_Establishment_Year = data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>]</span><br><span class="line">plt.scatter(x, y_Outlet_Establishment_Year, s=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#设置标题并加上轴标签</span></span><br><span class="line">plt.title(<span class="string">&quot;Outlet_Establishment_Year&quot;</span>, fontsize=<span class="number">24</span>)</span><br><span class="line">    <span class="comment">#设置刻度标记的大小</span></span><br><span class="line">plt.tick_params(axis=<span class="string">&#x27;both&#x27;</span>, which=<span class="string">&#x27;both&#x27;</span>, labelsize=<span class="number">14</span>)</span><br><span class="line"><span class="comment">#设置每个坐标的取值范围</span></span><br><span class="line">plt.axis([<span class="number">0</span>, <span class="built_in">len</span>(data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>]), <span class="built_in">min</span>(data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>]), <span class="built_in">max</span>(data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>])])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Outlet_Establishment_Year.png" alt="&#39;Outlet_Establishment_Year&#39;数据分布散点图"></p>
+<p>从图中可看出’Outlet_Establishment_Year’值集仅有有限几个，值集为1985～2009，未发现异常值</p>
+<h1 id="6-数据转换"><a href="#6-数据转换" class="headerlink" title="6. 数据转换"></a>6. 数据转换</h1><p>将数据中字符串数据映射为数字</p>
+<h2 id="6-1-产品是否低脂肪’Item-Fat-Content’"><a href="#6-1-产品是否低脂肪’Item-Fat-Content’" class="headerlink" title="6.1. 产品是否低脂肪’Item_Fat_Content’"></a>6.1. 产品是否低脂肪’Item_Fat_Content’</h2><p>打印’Item_Fat_Content’数据情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data[<span class="string">&#x27;Item_Fat_Content&#x27;</span>].value_counts())</span><br></pre></td></tr></table></figure>
+<p>显示’Item_Fat_Content’数据情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Low Fat    5089</span><br><span class="line">Regular    2889</span><br><span class="line">LF          316</span><br><span class="line">reg         117</span><br><span class="line">low fat     112</span><br></pre></td></tr></table></figure>
+<p>以下代码将’Item_Fat_Content’的字符串值:’Low Fat’,’LF’,’low fat’映射成数字2; 将字符串值:’Regular’, ‘reg’映射成数字1。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Item_Fat_Content</span></span><br><span class="line">Item_Fat_Content_mapping = &#123;<span class="string">&#x27;Regular&#x27;</span>:<span class="built_in">int</span>(<span class="number">1</span>), <span class="string">&#x27;reg&#x27;</span>:<span class="built_in">int</span>(<span class="number">1</span>), <span class="string">&#x27;Low Fat&#x27;</span>:<span class="built_in">int</span>(<span class="number">2</span>), <span class="string">&#x27;LF&#x27;</span>:<span class="built_in">int</span>(<span class="number">2</span>), <span class="string">&#x27;low fat&#x27;</span>:<span class="built_in">int</span>(<span class="number">2</span>)&#125;</span><br><span class="line">data[<span class="string">&#x27;Item_Fat_Content&#x27;</span>] = data[<span class="string">&#x27;Item_Fat_Content&#x27;</span>].<span class="built_in">map</span>(Item_Fat_Content_mapping)</span><br><span class="line">data[<span class="string">&#x27;Item_Fat_Content&#x27;</span>] = data[<span class="string">&#x27;Item_Fat_Content&#x27;</span>].fillna(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-2-产品所属的类别-‘Item-Type’"><a href="#6-2-产品所属的类别-‘Item-Type’" class="headerlink" title="6.2. 产品所属的类别 ‘Item_Type’"></a>6.2. 产品所属的类别 ‘Item_Type’</h2><p>打印’Item_Type’数据情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data[<span class="string">&#x27;Item_Type&#x27;</span>].value_counts())</span><br></pre></td></tr></table></figure>
+<p>显示’Item_Type’数据情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Fruits and Vegetables    1232</span><br><span class="line">Snack Foods              1200</span><br><span class="line">Household                 910</span><br><span class="line">Frozen Foods              856</span><br><span class="line">Dairy                     682</span><br><span class="line">Canned                    649</span><br><span class="line">Baking Goods              648</span><br><span class="line">Health and Hygiene        520</span><br><span class="line">Soft Drinks               445</span><br><span class="line">Meat                      425</span><br><span class="line">Breads                    251</span><br><span class="line">Hard Drinks               214</span><br><span class="line">Others                    169</span><br><span class="line">Starchy Foods             148</span><br><span class="line">Breakfast                 110</span><br><span class="line">Seafood                    64</span><br></pre></td></tr></table></figure>
+<p>以下代码将’Item_Type’按照出现字符串次数，正序将字符串映射成数字1～16。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Item_Type</span></span><br><span class="line">Item_Type_mapping = &#123;<span class="string">&#x27;Seafood&#x27;</span>:<span class="built_in">int</span>(<span class="number">1</span>),</span><br><span class="line">                     <span class="string">&#x27;Breakfast&#x27;</span>:<span class="built_in">int</span>(<span class="number">2</span>),</span><br><span class="line">                     <span class="string">&#x27;Starchy Foods&#x27;</span>:<span class="built_in">int</span>(<span class="number">3</span>),</span><br><span class="line">                     <span class="string">&#x27;Others&#x27;</span>:<span class="built_in">int</span>(<span class="number">4</span>),</span><br><span class="line">                     <span class="string">&#x27;Hard Drinks&#x27;</span>:<span class="built_in">int</span>(<span class="number">5</span>),</span><br><span class="line">                     <span class="string">&#x27;Breads&#x27;</span>:<span class="built_in">int</span>(<span class="number">6</span>),</span><br><span class="line">                     <span class="string">&#x27;Meat&#x27;</span>:<span class="built_in">int</span>(<span class="number">7</span>),</span><br><span class="line">                     <span class="string">&#x27;Soft Drinks&#x27;</span>:<span class="built_in">int</span>(<span class="number">8</span>),</span><br><span class="line">                     <span class="string">&#x27;Health and Hygiene&#x27;</span>:<span class="built_in">int</span>(<span class="number">9</span>),</span><br><span class="line">                     <span class="string">&#x27;Baking Goods&#x27;</span>:<span class="built_in">int</span>(<span class="number">10</span>),</span><br><span class="line">                     <span class="string">&#x27;Canned&#x27;</span>:<span class="built_in">int</span>(<span class="number">11</span>),</span><br><span class="line">                     <span class="string">&#x27;Dairy&#x27;</span>:<span class="built_in">int</span>(<span class="number">12</span>),</span><br><span class="line">                     <span class="string">&#x27;Frozen Foods&#x27;</span>:<span class="built_in">int</span>(<span class="number">13</span>),</span><br><span class="line">                     <span class="string">&#x27;Household&#x27;</span>:<span class="built_in">int</span>(<span class="number">14</span>),</span><br><span class="line">                     <span class="string">&#x27;Snack Foods&#x27;</span>:<span class="built_in">int</span>(<span class="number">15</span>),</span><br><span class="line">                     <span class="string">&#x27;Fruits and Vegetables&#x27;</span>:<span class="built_in">int</span>(<span class="number">16</span>)&#125;</span><br><span class="line">data[<span class="string">&#x27;Item_Type&#x27;</span>] = data[<span class="string">&#x27;Item_Type&#x27;</span>].<span class="built_in">map</span>(Item_Type_mapping)</span><br><span class="line">data[<span class="string">&#x27;Item_Type&#x27;</span>] = data[<span class="string">&#x27;Item_Type&#x27;</span>].fillna(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-3-唯一商店ID-‘Outlet-Identifier’"><a href="#6-3-唯一商店ID-‘Outlet-Identifier’" class="headerlink" title="6.3. 唯一商店ID ‘Outlet_Identifier’"></a>6.3. 唯一商店ID ‘Outlet_Identifier’</h2><p>打印’Outlet_Identifier’数据情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data[<span class="string">&#x27;Outlet_Identifier&#x27;</span>].value_counts())</span><br></pre></td></tr></table></figure>
+<p>显示’Outlet_Identifier’数据情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">OUT027    935</span><br><span class="line">OUT013    932</span><br><span class="line">OUT035    930</span><br><span class="line">OUT046    930</span><br><span class="line">OUT049    930</span><br><span class="line">OUT045    929</span><br><span class="line">OUT018    928</span><br><span class="line">OUT017    926</span><br><span class="line">OUT010    555</span><br><span class="line">OUT019    528</span><br></pre></td></tr></table></figure>
+<p>以下代码将’Outlet_Identifier’值的字符串中提取数字，并覆盖原先str变量为int。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#自定义函数清理数据:去除&#x27;OUT&#x27;并将剩余str转换为数字</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert_currency</span>(<span class="params">var</span>):</span></span><br><span class="line">    new_value = var.replace(<span class="string">&#x27;OUT&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="comment">#new_value = var[3:6]</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(new_value)</span><br><span class="line"></span><br><span class="line">data[<span class="string">&#x27;Outlet_Identifier&#x27;</span>] = data[<span class="string">&#x27;Outlet_Identifier&#x27;</span>].apply(convert_currency)</span><br></pre></td></tr></table></figure>
+<p>转换后数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">27    935</span><br><span class="line">13    932</span><br><span class="line">46    930</span><br><span class="line">35    930</span><br><span class="line">49    930</span><br><span class="line">45    929</span><br><span class="line">18    928</span><br><span class="line">17    926</span><br><span class="line">10    555</span><br><span class="line">19    528</span><br><span class="line">Name: Outlet_Identifier, dtype: int64</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-4-商店的面积覆盖面积-‘Outlet-Size’"><a href="#6-4-商店的面积覆盖面积-‘Outlet-Size’" class="headerlink" title="6.4. 商店的面积覆盖面积 ‘Outlet_Size’"></a>6.4. 商店的面积覆盖面积 ‘Outlet_Size’</h2><p>打印’Outlet_Size’数据情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data[<span class="string">&#x27;Outlet_Size&#x27;</span>].value_counts())</span><br></pre></td></tr></table></figure>
+<p>显示’Outlet_Size’数据情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Medium    5203</span><br><span class="line">Small     2388</span><br><span class="line">High       932</span><br></pre></td></tr></table></figure>
+<p>以下代码将’Outlet_Size’的字符串值:’Small’映射成数字1; ‘Medium’映射成数字2; 将字符串值:’High’映射成数字3。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Outlet_Size</span></span><br><span class="line">Outlet_Size_mapping = &#123;<span class="string">&#x27;Small&#x27;</span>:<span class="built_in">int</span>(<span class="number">1</span>), <span class="string">&#x27;Medium&#x27;</span>:<span class="built_in">int</span>(<span class="number">2</span>), <span class="string">&#x27;High&#x27;</span>:<span class="built_in">int</span>(<span class="number">3</span>)&#125;</span><br><span class="line">data[<span class="string">&#x27;Outlet_Size&#x27;</span>] = data[<span class="string">&#x27;Outlet_Size&#x27;</span>].<span class="built_in">map</span>(Outlet_Size_mapping)</span><br><span class="line">data[<span class="string">&#x27;Outlet_Size&#x27;</span>] = data[<span class="string">&#x27;Outlet_Size&#x27;</span>].fillna(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-5-商店所在的城市类型-‘Outlet-Location-Type’"><a href="#6-5-商店所在的城市类型-‘Outlet-Location-Type’" class="headerlink" title="6.5. 商店所在的城市类型 ‘Outlet_Location_Type’"></a>6.5. 商店所在的城市类型 ‘Outlet_Location_Type’</h2><p>打印’Outlet_Location_Type’数据情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data[<span class="string">&#x27;Outlet_Location_Type&#x27;</span>].value_counts())</span><br></pre></td></tr></table></figure>
+<p>显示’Outlet_Location_Type’数据情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Tier 3    3350</span><br><span class="line">Tier 2    2785</span><br><span class="line">Tier 1    2388</span><br></pre></td></tr></table></figure>
+<p>以下代码将’Outlet_Location_Type’的字符串值:’Tier 1’映射成数字1; ‘Tier 2’映射成数字2; 将字符串值:’Tier 3’映射成数字3。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Outlet_Location_Type</span></span><br><span class="line">Outlet_Location_Type_mapping = &#123;<span class="string">&#x27;Tier 1&#x27;</span>:<span class="built_in">int</span>(<span class="number">1</span>), <span class="string">&#x27;Tier 2&#x27;</span>:<span class="built_in">int</span>(<span class="number">2</span>), <span class="string">&#x27;Tier 3&#x27;</span>:<span class="built_in">int</span>(<span class="number">3</span>)&#125;</span><br><span class="line">data[<span class="string">&#x27;Outlet_Location_Type&#x27;</span>] = data[<span class="string">&#x27;Outlet_Location_Type&#x27;</span>].<span class="built_in">map</span>(Outlet_Location_Type_mapping)</span><br><span class="line">data[<span class="string">&#x27;Outlet_Location_Type&#x27;</span>] = data[<span class="string">&#x27;Outlet_Location_Type&#x27;</span>].fillna(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-6-出口是一家杂货店还是某种超市-‘Outlet-Type’"><a href="#6-6-出口是一家杂货店还是某种超市-‘Outlet-Type’" class="headerlink" title="6.6. 出口是一家杂货店还是某种超市 ‘Outlet_Type’"></a>6.6. 出口是一家杂货店还是某种超市 ‘Outlet_Type’</h2><p>打印’Outlet_Type’数据情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(data[<span class="string">&#x27;Outlet_Type&#x27;</span>].value_counts())</span><br></pre></td></tr></table></figure>
+<p>显示’Outlet_Type’数据情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Supermarket Type1    5577</span><br><span class="line">Grocery Store        1083</span><br><span class="line">Supermarket Type3     935</span><br><span class="line">Supermarket Type2     928</span><br></pre></td></tr></table></figure>
+<p>以下代码将’Outlet_Type’的字符串值:’Supermarket Type1’映射成数字1; ‘Supermarket Type2’映射成数字2; ‘Supermarket Type3’映射成数字3; ‘Grocery Store’映射成数字4。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Outlet_Type</span></span><br><span class="line">Outlet_Type_mapping = &#123;<span class="string">&#x27;Supermarket Type1&#x27;</span>:<span class="built_in">int</span>(<span class="number">1</span>), <span class="string">&#x27;Supermarket Type2&#x27;</span>:<span class="built_in">int</span>(<span class="number">2</span>), <span class="string">&#x27;Supermarket Type3&#x27;</span>:<span class="built_in">int</span>(<span class="number">3</span>), <span class="string">&#x27;Grocery Store&#x27;</span>:<span class="built_in">int</span>(<span class="number">4</span>)&#125;</span><br><span class="line">data[<span class="string">&#x27;Outlet_Type&#x27;</span>] = data[<span class="string">&#x27;Outlet_Type&#x27;</span>].<span class="built_in">map</span>(Outlet_Type_mapping)</span><br><span class="line">data[<span class="string">&#x27;Outlet_Type&#x27;</span>] = data[<span class="string">&#x27;Outlet_Type&#x27;</span>].fillna(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-数据归一化"><a href="#7-数据归一化" class="headerlink" title="7. 数据归一化"></a>7. 数据归一化</h1><h2 id="7-1-产品重量’Item-Weight’"><a href="#7-1-产品重量’Item-Weight’" class="headerlink" title="7.1. 产品重量’Item_Weight’"></a>7.1. 产品重量’Item_Weight’</h2><p>由前几步可看出’Item_Weight’分布较为均匀（5.5～21之间），故规范化时采用最小-最大规范化。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Item_Weight_min = data[<span class="string">&#x27;Item_Weight&#x27;</span>].<span class="built_in">min</span>()</span><br><span class="line">Item_Weight_max = data[<span class="string">&#x27;Item_Weight&#x27;</span>].<span class="built_in">max</span>()</span><br><span class="line">data[<span class="string">&#x27;Item_Weight&#x27;</span>] = (data[<span class="string">&#x27;Item_Weight&#x27;</span>] - Item_Weight_min) / (Item_Weight_max - Item_Weight_min)</span><br></pre></td></tr></table></figure>
+<p>类似的适合数据归一化的还有:’Item_Visibility’, ‘Item_MRP’, ‘Outlet_Establishment_Year’, ‘Outlet_Size’,将这些变量也进行归一化处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 分配给特定产品的商店中所有产品的总显示区域的百分比&#x27;Item_Visibility&#x27;</span></span><br><span class="line">Item_Visibility_min = data[<span class="string">&#x27;Item_Visibility&#x27;</span>].<span class="built_in">min</span>()</span><br><span class="line">Item_Visibility_max = data[<span class="string">&#x27;Item_Visibility&#x27;</span>].<span class="built_in">max</span>()</span><br><span class="line">data[<span class="string">&#x27;Item_Visibility&#x27;</span>] = (data[<span class="string">&#x27;Item_Visibility&#x27;</span>] - Item_Visibility_min) / (Item_Visibility_max - Item_Visibility_min)</span><br><span class="line"><span class="comment">## 产品的最大零售价 &#x27;Item_MRP&#x27;</span></span><br><span class="line">Item_MRP_min = data[<span class="string">&#x27;Item_MRP&#x27;</span>].<span class="built_in">min</span>()</span><br><span class="line">Item_MRP_max = data[<span class="string">&#x27;Item_MRP&#x27;</span>].<span class="built_in">max</span>()</span><br><span class="line">data[<span class="string">&#x27;Item_MRP&#x27;</span>] = (data[<span class="string">&#x27;Item_MRP&#x27;</span>] - Item_MRP_min) / (Item_MRP_max - Item_MRP_min)</span><br><span class="line"><span class="comment">## 商店成立的年份 &#x27;Outlet_Establishment_Year&#x27;</span></span><br><span class="line">Outlet_Establishment_Year_min = data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>].<span class="built_in">min</span>()</span><br><span class="line">Outlet_Establishment_Year_max = data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>].<span class="built_in">max</span>()</span><br><span class="line">data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>] = (data[<span class="string">&#x27;Outlet_Establishment_Year&#x27;</span>] - Outlet_Establishment_Year_min) / (Outlet_Establishment_Year_max - Outlet_Establishment_Year_min)</span><br><span class="line"><span class="comment">## 商店的面积覆盖面积 &#x27;Outlet_Size&#x27;</span></span><br><span class="line">Outlet_Size_min = data[<span class="string">&#x27;Outlet_Size&#x27;</span>].<span class="built_in">min</span>()</span><br><span class="line">Outlet_Size_max = data[<span class="string">&#x27;Outlet_Size&#x27;</span>].<span class="built_in">max</span>()</span><br><span class="line">data[<span class="string">&#x27;Outlet_Size&#x27;</span>] = (data[<span class="string">&#x27;Outlet_Size&#x27;</span>] - Outlet_Size_min) / (Outlet_Size_max - Outlet_Size_min)</span><br></pre></td></tr></table></figure>
+<p>数据预处理后如下：</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess_Output_Train_afterProprecess.png" alt="“Train_UWu5bXk.csv”文件中的Bigmart销售数据预处理后"></p>
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>待处理文件</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/Test_u94Q5KV.csv">Test_u94Q5KV.csv</a>、<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/Train_UWu5bXk.csv">Train_UWu5bXk.csv</a><br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/datapreprocess.py">datapreprocess.py</a></p>
+</div>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\03\DataMining_AdaBoost\" rel="bookmark">AdaBoost算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\10\DataMining_Apriori\" rel="bookmark">Apriori算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\10\DataMining_DBSCAN\" rel="bookmark">DBSCAN算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\16\DataMining_ID3\" rel="bookmark">ID3算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\09\27\DataMining_Introduction\" rel="bookmark">数据挖掘简介与发展动向</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag"><i class="fa fa-tag"></i> 数据挖掘</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/16/MinHeapAndMaxHeap/" rel="prev" title="最小堆与最大堆">
+                  <i class="fa fa-chevron-left"></i> 最小堆与最大堆
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/23/QuickSort/" rel="next" title="QuickSort">
+                  QuickSort <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/10/21/DataMining_DataPreprocess/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="排序作为常用的解决实际问题的计算方法，被广泛应用于生活中的方方面面。而处理实际问题的数据规模常常十分庞大，同一个计算任务选用不同的算法，其执行效率可能相差几百倍，几千倍甚至更高，因此效率常被作入为评判一个算法优劣的重要指标。博主对七种常见的排序算法进行编码实现，和以处理同规模数据所耗时长为指标进行了性能比较（冒泡、选择、插入、希尔、堆、归并和快排）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典排序算法的C++编码实现与性能对比">
+<meta property="og:url" content="https://eisenhao.cn/2019/11/17/SortFuncCompare/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="排序作为常用的解决实际问题的计算方法，被广泛应用于生活中的方方面面。而处理实际问题的数据规模常常十分庞大，同一个计算任务选用不同的算法，其执行效率可能相差几百倍，几千倍甚至更高，因此效率常被作入为评判一个算法优劣的重要指标。博主对七种常见的排序算法进行编码实现，和以处理同规模数据所耗时长为指标进行了性能比较（冒泡、选择、插入、希尔、堆、归并和快排）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture_size100.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture_size1000.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture_size100000.png">
+<meta property="article:published_time" content="2019-11-17T11:26:44.000Z">
+<meta property="article:modified_time" content="2019-12-15T05:51:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2019/11/17/SortFuncCompare/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2019/11/17/SortFuncCompare/","path":"2019/11/17/SortFuncCompare/","title":"经典排序算法的C++编码实现与性能对比"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>经典排序算法的C++编码实现与性能对比 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%B5%8B%E8%AF%95%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4%E6%96%B9%E6%B3%95"><span class="nav-text">1. 测试排序函数运行时间方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%B5%8B%E8%AF%95%E5%87%BD%E6%95%B0"><span class="nav-text">2. 测试函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%B8%83%E7%A7%8D%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84C-%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">3. 七种经典排序算法的C++编码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-text">3.1. 冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-text">3.2. 选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-text">3.3. 插入排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F"><span class="nav-text">3.4. 希尔排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="nav-text">3.5. 堆排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="nav-text">3.6. 归并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="nav-text">3.7. 快速排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%97%B6%E8%80%97%E6%B5%8B%E8%AF%95"><span class="nav-text">4. 时耗测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%88%86%E6%9E%90"><span class="nav-text">4.1. 分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%AD%A4%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%94%B6%E8%8E%B7"><span class="nav-text">4.2. 此次实验收获</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E9%99%84%E4%BB%B6"><span class="nav-text">5. 附件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/11/17/SortFuncCompare/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          经典排序算法的C++编码实现与性能对比
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2019-11-17 19:26:44" itemprop="dateCreated datePublished" datetime="2019-11-17T19:26:44+08:00">2019-11-17</time>
+    </span>
+
+  
+    <span id="/2019/11/17/SortFuncCompare/" class="post-meta-item leancloud_visitors" data-flag-title="经典排序算法的C++编码实现与性能对比" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture.png" class="full-image" />
+
+<p>排序作为常用的解决实际问题的计算方法，被广泛应用于生活中的方方面面。而处理实际问题的数据规模常常十分庞大，同一个计算任务选用不同的算法，其执行效率可能相差几百倍，几千倍甚至更高，因此效率常被作入为评判一个算法优劣的重要指标。<br>博主对七种常见的排序算法进行编码实现，和以处理同规模数据所耗时长为指标进行了性能比较（冒泡、选择、插入、希尔、堆、归并和快排）。</p>
+<a id="more"></a>
+
+<h1 id="1-测试排序函数运行时间方法"><a href="#1-测试排序函数运行时间方法" class="headerlink" title="1. 测试排序函数运行时间方法"></a>1. 测试排序函数运行时间方法</h1><p>运行排序算法前后打点，取前后两次打点的差值，再除以打点的频率得到函数的运行时长。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试排序函数运行时间</span></span><br><span class="line"><span class="comment"> * @param pFunction 排序函数的函数指针</span></span><br><span class="line"><span class="comment"> * @Return 运行时长（秒）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">SortFuncCompare::testRunTime</span><span class="params">(<span class="keyword">void</span> (*pFunction)(ElementType *))</span> </span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> start, stop;</span><br><span class="line">    <span class="keyword">double</span> runTime;</span><br><span class="line">    start = clock();</span><br><span class="line">    (*pFunction)(m_array);</span><br><span class="line">    stop = clock();</span><br><span class="line">    runTime = ((<span class="keyword">double</span>)stop - (<span class="keyword">double</span>)start) / CLOCKS_PER_SEC;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;run time = &quot; &lt;&lt; runTime &lt;&lt; &quot; s&quot; &lt;&lt; endl;</span></span><br><span class="line">    <span class="keyword">return</span> runTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-测试函数"><a href="#2-测试函数" class="headerlink" title="2. 测试函数"></a>2. 测试函数</h1><p>定义排序函数的函数指针数组，size为7，逐一将七种static函数地址赋值到函数指针数组，然后循环执行七种函数对相同规模的随机数组的排序操作，便可得到各排序算法在各规模数据下的运行时长。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*func[NUM_OF_SORT_FUNC])(ElementType*);<span class="comment">// 定义函数指针数组</span></span><br><span class="line">func[<span class="number">0</span>] = Bubble_Sort;      <span class="comment">// 1.冒泡排序</span></span><br><span class="line">func[<span class="number">1</span>] = Selection_Sort;   <span class="comment">// 2.选择排序</span></span><br><span class="line">func[<span class="number">2</span>] = Insertion_Sort;   <span class="comment">// 3.插入排序</span></span><br><span class="line">func[<span class="number">3</span>] = Shell_Sort;       <span class="comment">// 4.希尔排序</span></span><br><span class="line">func[<span class="number">4</span>] = Heap_Sort;        <span class="comment">// 5.堆排序</span></span><br><span class="line">func[<span class="number">5</span>] = Merge_Sort;       <span class="comment">// 6.归并排序</span></span><br><span class="line">func[<span class="number">6</span>] = Quick_Sort;       <span class="comment">// 7.快速排序</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::testFuncRuntime</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> *runTime = <span class="keyword">new</span> <span class="keyword">double</span>[NUM_OF_SORT_FUNC];<span class="comment">// Record the running time</span></span><br><span class="line">    <span class="comment">// Size of random array:10 ～ 100,000</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">int</span> size = MIN_NUM_OF_RAND_ARRAY; size &lt;= MAX_NUM_OF_RAND_ARRAY; size *= <span class="number">10</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NUM_OF_SORT_FUNC; ++i) &#123;</span><br><span class="line">            <span class="comment">// Generate a random array</span></span><br><span class="line">            refreshArray(size);</span><br><span class="line">            <span class="comment">// Execute and record the running time</span></span><br><span class="line">            *(runTime + i) = testRunTime(func[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Output time consuming</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Num of Array = &quot;</span> &lt;&lt; size &lt;&lt; <span class="string">&quot;\t: &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; NUM_OF_SORT_FUNC - <span class="number">1</span>; ++j) &#123;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; *(runTime + j) &lt;&lt; <span class="string">&quot;, &quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *(runTime + NUM_OF_SORT_FUNC - <span class="number">1</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span>[] runTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="3-七种经典排序算法的C-编码实现"><a href="#3-七种经典排序算法的C-编码实现" class="headerlink" title="3. 七种经典排序算法的C++编码实现"></a>3. 七种经典排序算法的C++编码实现</h1><h2 id="3-1-冒泡排序"><a href="#3-1-冒泡排序" class="headerlink" title="3.1. 冒泡排序"></a>3.1. 冒泡排序</h2><p>时间复杂度:O(N^2)，空间复杂度:O(1)，原地，稳定</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::Bubble_Sort</span><span class="params">(ElementType* pArray)</span> </span>&#123;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;Bubble Sort&quot; &lt;&lt; endl;</span></span><br><span class="line">    <span class="keyword">bool</span> swapFlag;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = m_uiSizeOfArray - <span class="number">1</span>; i &gt; <span class="number">0</span>; --i) &#123;</span><br><span class="line">        swapFlag = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (*(pArray + j) COMPARE *(pArray + j + <span class="number">1</span>)) &#123;</span><br><span class="line">                swapTwoNum(pArray + j, pArray + j + <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">if</span> (!swapFlag)</span><br><span class="line">                    swapFlag = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!swapFlag)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-选择排序"><a href="#3-2-选择排序" class="headerlink" title="3.2. 选择排序"></a>3.2. 选择排序</h2><p>时间复杂度:O(N^2)，空间复杂度:O(1)，原地，稳定</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::Selection_Sort</span><span class="params">(ElementType *pArray)</span> </span>&#123;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;Selection Sort&quot; &lt;&lt; endl;</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m_uiSizeOfArray - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; m_uiSizeOfArray; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (*(pArray + i) COMPARE *(pArray + j))</span><br><span class="line">                swapTwoNum(pArray + i, pArray + j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-插入排序"><a href="#3-3-插入排序" class="headerlink" title="3.3. 插入排序"></a>3.3. 插入排序</h2><p>时间复杂度:O(N^2)，空间复杂度:O(1)，原地，稳定</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::Insertion_Sort</span><span class="params">(ElementType *pArray)</span> </span>&#123;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;Insert Sort&quot; &lt;&lt; endl;</span></span><br><span class="line">    ElementType tmp;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; m_uiSizeOfArray; ++i) &#123;</span><br><span class="line">        tmp = *(pArray + i);</span><br><span class="line">        <span class="keyword">for</span> (j = i; j &gt; <span class="number">0</span> &amp;&amp; *(pArray + j - <span class="number">1</span>) COMPARE tmp; --j) &#123;</span><br><span class="line">            *(pArray + j) = *(pArray + j - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        *(pArray + j) = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-希尔排序"><a href="#3-4-希尔排序" class="headerlink" title="3.4. 希尔排序"></a>3.4. 希尔排序</h2><p>时间复杂度:O(N^1.25 ～N^1.5)，空间复杂度:O(1)，原地，非稳定</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::Shell_Sort</span><span class="params">(ElementType *pArray)</span> </span>&#123;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;Shell Sort&quot; &lt;&lt; endl;</span></span><br><span class="line">    ElementType tmp;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> D = m_uiSizeOfArray / <span class="number">2</span>; D &gt; <span class="number">0</span>; D /= <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="comment">// like Insert sort whose step is D</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = D; i &lt; m_uiSizeOfArray; ++i) &#123;</span><br><span class="line">            tmp = *(pArray + i);</span><br><span class="line">            <span class="keyword">for</span> (j = i; j &gt;= D &amp;&amp; *(pArray + j - D) COMPARE tmp; j -= D) &#123;</span><br><span class="line">                *(pArray + j) = *(pArray + j - D);</span><br><span class="line">            &#125;</span><br><span class="line">            *(pArray + j) = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-5-堆排序"><a href="#3-5-堆排序" class="headerlink" title="3.5. 堆排序"></a>3.5. 堆排序</h2><p>时间复杂度:O(NlogN)，空间复杂度:O(1)，原地，非稳定</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::Heap_Sort</span><span class="params">(ElementType *pArray)</span> </span>&#123;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;Heap Sort&quot; &lt;&lt; endl;</span></span><br><span class="line">    <span class="comment">// build big root heap</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = m_uiSizeOfArray / <span class="number">2</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">        heapDown(pArray, i, m_uiSizeOfArray);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// choose biggest to end--</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = m_uiSizeOfArray - <span class="number">1</span>; j &gt;= <span class="number">1</span>; --j) &#123;</span><br><span class="line">        swapTwoNum(pArray, pArray + j);</span><br><span class="line">        heapDown(pArray, <span class="number">0</span>, j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::heapDown</span><span class="params">(ElementType *pArray, <span class="keyword">int</span> fatherIndex, <span class="keyword">int</span> maxIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sonIndex = <span class="number">2</span> * fatherIndex + <span class="number">1</span>;<span class="comment">// default left son</span></span><br><span class="line">    <span class="keyword">if</span> (sonIndex &lt; maxIndex) &#123;</span><br><span class="line">        <span class="comment">// choose the bigger son</span></span><br><span class="line">        <span class="keyword">if</span> (sonIndex + <span class="number">1</span> &lt; maxIndex &amp;&amp; *(pArray + sonIndex + <span class="number">1</span>) COMPARE *(pArray + sonIndex))</span><br><span class="line">            ++sonIndex;</span><br><span class="line">        <span class="comment">// if the bigger son is bigger than its father, then swap</span></span><br><span class="line">        <span class="keyword">if</span> (*(pArray + sonIndex) COMPARE *(pArray + fatherIndex))</span><br><span class="line">            swapTwoNum(pArray + sonIndex, pArray + fatherIndex);</span><br><span class="line">        heapDown(pArray, sonIndex, maxIndex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-6-归并排序"><a href="#3-6-归并排序" class="headerlink" title="3.6. 归并排序"></a>3.6. 归并排序</h2><p>时间复杂度:O(NlogN), 空间复杂度:O(n)，非原地，非稳定</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::Merge_Sort</span><span class="params">(ElementType *pArray)</span> </span>&#123;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;Merge Sort&quot; &lt;&lt; endl;</span></span><br><span class="line">    ElementType* tmpA = <span class="keyword">new</span> ElementType[m_uiSizeOfArray];</span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> != tmpA) &#123;</span><br><span class="line">        mergeSort(pArray, tmpA, <span class="number">0</span>, m_uiSizeOfArray - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">delete</span>[] tmpA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::mergeSort</span><span class="params">(ElementType *pArray, ElementType *tmpA, <span class="keyword">int</span> leftIndex, <span class="keyword">int</span> rightIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (leftIndex &lt; rightIndex) &#123;</span><br><span class="line">        <span class="keyword">int</span> middleIndex = (leftIndex + rightIndex) / <span class="number">2</span>;</span><br><span class="line">        mergeSort(pArray, tmpA, leftIndex, middleIndex);</span><br><span class="line">        mergeSort(pArray, tmpA, middleIndex + <span class="number">1</span>, rightIndex);</span><br><span class="line">        merge(pArray, tmpA, leftIndex, middleIndex + <span class="number">1</span>, rightIndex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::merge</span><span class="params">(ElementType *pArray, ElementType *tmpA,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="keyword">int</span> leftIndex, <span class="keyword">int</span> middleIndex, <span class="keyword">int</span> rightIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> leftSubIndex = leftIndex;</span><br><span class="line">    <span class="keyword">int</span> rightSubIndex = middleIndex;</span><br><span class="line">    <span class="keyword">int</span> tmpIndex = leftIndex;</span><br><span class="line">    <span class="comment">// compare</span></span><br><span class="line">    <span class="keyword">while</span> (leftSubIndex &lt; middleIndex &amp;&amp; rightSubIndex &lt;= rightIndex) &#123;</span><br><span class="line">        *(tmpA + tmpIndex++) = (*(pArray + leftSubIndex) COMPARE *(pArray + rightSubIndex)) ?</span><br><span class="line">                               *(pArray + rightSubIndex++) : *(pArray + leftSubIndex++);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// copy the left rest (if remain)</span></span><br><span class="line">    <span class="keyword">while</span> (leftSubIndex &lt; middleIndex) &#123;</span><br><span class="line">        *(tmpA + tmpIndex++) = *(pArray + leftSubIndex++);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// copy the right rest (if remain)</span></span><br><span class="line">    <span class="keyword">while</span> (rightSubIndex &lt;= rightIndex) &#123;</span><br><span class="line">        *(tmpA + tmpIndex++) = *(pArray + rightSubIndex++);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// write the result from tmpA to pArray</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = leftIndex; i &lt;= rightIndex; ++i) &#123;</span><br><span class="line">        *(pArray + i) = *(tmpA + i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-7-快速排序"><a href="#3-7-快速排序" class="headerlink" title="3.7. 快速排序"></a>3.7. 快速排序</h2><p>时间复杂度:O(NlogN ~ N^2)，空间复杂度:O(1)，原地，非稳定</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::Quick_Sort</span><span class="params">(ElementType *pArray)</span> </span>&#123;</span><br><span class="line"><span class="comment">//    cout &lt;&lt; &quot;Quick Sort&quot; &lt;&lt; endl;</span></span><br><span class="line">    quickSort(pArray, <span class="number">0</span>, m_uiSizeOfArray - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MIN_NUM_OF_CUTOFF 32 <span class="comment">// when the length of subarray small than MIN_NUM_OF_CUTOFF, choose the insert sort</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SortFuncCompare::quickSort</span><span class="params">(ElementType *pArray, <span class="keyword">int</span> leftIndex, <span class="keyword">int</span> rightIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (rightIndex - leftIndex &gt; MIN_NUM_OF_CUTOFF) &#123;</span><br><span class="line">        <span class="keyword">int</span> i = leftIndex;</span><br><span class="line">        <span class="keyword">int</span> j = rightIndex - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// choose middle pivot</span></span><br><span class="line">        ElementType middlePivot = choosePivot(pArray, leftIndex, rightIndex);</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">while</span> (middlePivot COMPARE *(pArray + ++i)) &#123;&#125;</span><br><span class="line">            <span class="keyword">while</span> (*(pArray + --j) COMPARE middlePivot) &#123;&#125;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; j) &#123;</span><br><span class="line">                swapTwoNum(pArray + i, pArray + j);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// put the middle pivot into the middle index</span></span><br><span class="line">        swapTwoNum(pArray + i, pArray + rightIndex - <span class="number">1</span>);</span><br><span class="line">        quickSort(pArray, leftIndex, i - <span class="number">1</span>);</span><br><span class="line">        quickSort(pArray, i + <span class="number">1</span>, rightIndex);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Insert sort</span></span><br><span class="line">        ElementType tmp;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = leftIndex + <span class="number">1</span>; i &lt;= rightIndex; ++i) &#123;</span><br><span class="line">            tmp = *(pArray + i);</span><br><span class="line">            <span class="keyword">for</span> (j = i; j &gt; leftIndex &amp;&amp; *(pArray + j - <span class="number">1</span>) COMPARE tmp; --j) &#123;</span><br><span class="line">                *(pArray + j) = *(pArray + j - <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            *(pArray + j) = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ElementType <span class="title">SortFuncCompare::choosePivot</span><span class="params">(ElementType *pArray, <span class="keyword">int</span> leftIndex, <span class="keyword">int</span> rightIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> middleIndex = (leftIndex + rightIndex) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (*(pArray + leftIndex) COMPARE *(pArray + middleIndex)) &#123;</span><br><span class="line">        swapTwoNum(pArray + leftIndex, pArray + middleIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (*(pArray + leftIndex) COMPARE *(pArray + rightIndex)) &#123;</span><br><span class="line">        swapTwoNum(pArray + leftIndex, pArray + rightIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (*(pArray + middleIndex) COMPARE *(pArray + rightIndex)) &#123;</span><br><span class="line">        swapTwoNum(pArray + middleIndex, pArray + rightIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    swapTwoNum(pArray + middleIndex, pArray + rightIndex - <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// return the middle value</span></span><br><span class="line">    <span class="keyword">return</span> *(pArray + rightIndex - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="4-时耗测试"><a href="#4-时耗测试" class="headerlink" title="4. 时耗测试"></a>4. 时耗测试</h1><p>各排序算法在各个数据规模下排序所耗时长（秒）。</p>
+<table>
+<thead>
+<tr>
+<th align="left">数据规模</th>
+<th align="left">冒泡</th>
+<th align="left">选择</th>
+<th align="left">插入</th>
+<th align="left">希尔</th>
+<th align="left">堆</th>
+<th align="left">归并</th>
+<th align="left">快排</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">十</td>
+<td align="left">2e-06</td>
+<td align="left">1e-06</td>
+<td align="left">1e-06</td>
+<td align="left">1e-06</td>
+<td align="left">2e-06</td>
+<td align="left">1e-06</td>
+<td align="left">1e-06</td>
+</tr>
+<tr>
+<td align="left">百</td>
+<td align="left">3.3e-05</td>
+<td align="left">3.3e-05</td>
+<td align="left">8e-06</td>
+<td align="left">8e-06</td>
+<td align="left">1.1e-05</td>
+<td align="left">1e-05</td>
+<td align="left">5e-06</td>
+</tr>
+<tr>
+<td align="left">千</td>
+<td align="left">0.003153</td>
+<td align="left">0.003</td>
+<td align="left">0.000627</td>
+<td align="left">0.000164</td>
+<td align="left">0.00016</td>
+<td align="left">0.000118</td>
+<td align="left">6.9e-05</td>
+</tr>
+<tr>
+<td align="left">万</td>
+<td align="left">0.365065</td>
+<td align="left">0.387825</td>
+<td align="left">0.060752</td>
+<td align="left">0.001938</td>
+<td align="left">0.002096</td>
+<td align="left">0.001431</td>
+<td align="left">0.00089</td>
+</tr>
+<tr>
+<td align="left">十万</td>
+<td align="left">38.2601</td>
+<td align="left">35.2071</td>
+<td align="left">7.63559</td>
+<td align="left">0.034236</td>
+<td align="left">0.031059</td>
+<td align="left">0.019387</td>
+<td align="left">0.01238</td>
+</tr>
+<tr>
+<td align="left">百万</td>
+<td align="left">9708.16</td>
+<td align="left">3736.74</td>
+<td align="left">1643.99</td>
+<td align="left">0.93</td>
+<td align="left">0.98</td>
+<td align="left">0.5</td>
+<td align="left">0.3</td>
+</tr>
+</tbody></table>
+<h2 id="4-1-分析"><a href="#4-1-分析" class="headerlink" title="4.1. 分析"></a>4.1. 分析</h2><ul>
+<li><p>数据规模不超过一百时</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture_size100.png" class="full-image" />
+当数据规模较小时，各排序算法所耗时长区别并不明显，但当数据规模为一百时已有明显区别，最快的排序算法与最满的排序算法效率相差一个数量级。
+</li>
+<li><p>数据规模为一千时</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture_size1000.png" class="full-image" />
+除了冒泡和选择排序耗时三十几毫秒，其他排序算法耗时均在一毫秒内，此时各排序算法最快与最满效率比值已达为四十多倍
+</li>
+<li><p>数据规模为十万时</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SortFuncComparePicture_size100000.png" class="full-image" />
+当排序数据规模达到十万时，可以发现排序最快的算法是快排仅12毫秒，效率是最慢的冒泡排序(38秒)的三千多倍，性能差异已十分明显。
+</li>
+<li><p>数据规模为百万时<br>当排序数据规模达到百万时，可以发现排序最快的算法是快排仅0.3秒，效率是最慢的冒泡排序(9708.16秒，约2.7小时)的三万多倍，性能差异已非常巨大。而且已知快排的平均时间复杂度为O(N*logN)，可进一步推测当数据规模为千万级别时，快排算法在此平台下耗时仅需3秒多，而时间复杂度为O(N^2)的冒泡排序在此平台下预计耗时将达到11天，两种算法的效率显现出天壤之别。</p>
+</li>
+</ul>
+<h2 id="4-2-此次实验收获"><a href="#4-2-此次实验收获" class="headerlink" title="4.2. 此次实验收获"></a>4.2. 此次实验收获</h2><ul>
+<li>各种排序算法在数规模小于一百时还没有太大差距，此时选实现较简单的就好</li>
+<li>当数据达到一定规模后，不同算法执行效率差异巨大，此时追求算法效率显得十分重要</li>
+</ul>
+<h1 id="5-附件"><a href="#5-附件" class="headerlink" title="5. 附件"></a>5. 附件</h1><p>本次实验源代码详见博主的个人git仓库:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/EisenHao/Cpp_Learning/blob/master/SortFuncCompare.h">SortFuncCompare.h</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/EisenHao/Cpp_Learning/blob/master/SortFuncCompare.cpp">SortFuncCompare.cpp</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\03\AnalysisOfAlgorithmsLesson\" rel="bookmark">算法分析与设计练习</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\03\DataMining_AdaBoost\" rel="bookmark">AdaBoost算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\10\DataMining_Apriori\" rel="bookmark">Apriori算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\10\DataMining_DBSCAN\" rel="bookmark">DBSCAN算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\16\DataMining_ID3\" rel="bookmark">ID3算法——数据挖掘</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/04/SelfgrowthPlanning/" rel="prev" title="成长规划">
+                  <i class="fa fa-chevron-left"></i> 成长规划
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/11/18/RefreshForkRepositorie/" rel="next" title="Fork仓库同步官方源仓库的更新">
+                  Fork仓库同步官方源仓库的更新 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2019/11/17/SortFuncCompare/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

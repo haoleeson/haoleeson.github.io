@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. md文件预定义参数1.1. 预定义参数以下是预先定义的参数，您可在模板中使用这些参数值并加以利用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Hexo的Markdown博文语法简介">
+<meta property="og:url" content="https://eisenhao.cn/2018/08/31/write-a-md-file/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. md文件预定义参数1.1. 预定义参数以下是预先定义的参数，您可在模板中使用这些参数值并加以利用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/write-a-md-file.jpg">
+<meta property="og:image" content="https://cdn.wfolio.ru/w/4b318a3da2f7d3a89fa5957a8dd9a00dd2609616/m_limit%2Cw_1920/sites/181/assets/1524794399_7fc3ff.jpg">
+<meta property="article:published_time" content="2018-08-31T04:10:44.000Z">
+<meta property="article:modified_time" content="2018-10-04T11:15:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/write-a-md-file.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/08/31/write-a-md-file/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/08/31/write-a-md-file/","path":"2018/08/31/write-a-md-file/","title":"基于Hexo的Markdown博文语法简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基于Hexo的Markdown博文语法简介 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-md%E6%96%87%E4%BB%B6%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%82%E6%95%B0"><span class="nav-text">1. md文件预定义参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%82%E6%95%B0"><span class="nav-text">1.1. 预定义参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%9C%AC%E6%96%87%E7%9A%84md%E6%96%87%E4%BB%B6%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%82%E6%95%B0"><span class="nav-text">1.2. 本文的md文件预定义参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Hexo%E4%B8%8B%E7%9A%84Markdown%E8%AF%AD%E6%B3%95"><span class="nav-text">2. Hexo下的Markdown语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%AF%AD%E6%B3%95%E7%AE%80%E6%98%8E%E6%8F%8F%E8%BF%B0"><span class="nav-text">2.1. 语法简明描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%BC%95%E7%94%A8%E5%B5%8C%E5%A5%97"><span class="nav-text">2.2. 引用嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%88%97%E8%A1%A8"><span class="nav-text">2.3. 列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="nav-text">2.3.1. 无序列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="nav-text">2.3.2. 有序列表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E5%88%86%E5%89%B2%E7%BA%BF"><span class="nav-text">2.4. 分割线</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%86%85%E7%BD%AE%E6%A0%87%E7%AD%BE"><span class="nav-text">3. 内置标签</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%96%87%E6%9C%AC%E5%B1%85%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8"><span class="nav-text">3.1. 文本居中的引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-HTML%E5%BC%95%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">3.1.1. HTML引用方式:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E6%A0%87%E7%AD%BE%E5%BC%95%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">3.1.2. 标签引用方式:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%AA%81%E7%A0%B4%E5%AE%B9%E5%99%A8%E5%AE%BD%E5%BA%A6%E9%99%90%E5%88%B6%E7%9A%84%E5%9B%BE%E7%89%87%E5%BC%95%E7%94%A8"><span class="nav-text">3.2. 突破容器宽度限制的图片引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-HTML%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E6%96%B9%E5%BC%8F"><span class="nav-text">3.2.1. HTML引用图片方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Bootstrap-Callout"><span class="nav-text">4. Bootstrap Callout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E4%B8%BB%E9%A2%98%E8%87%AA%E5%B8%A6%E6%A0%B7%E5%BC%8F-label-%E6%A0%87%E7%AD%BE"><span class="nav-text">5. 主题自带样式 label 标签</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-NexT%E4%B8%BB%E9%A2%98%E8%87%AA%E5%B8%A6%E6%A0%B7%E5%BC%8F-tabs-%E6%A0%87%E7%AD%BE"><span class="nav-text">6. NexT主题自带样式 tabs 标签</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E4%B8%BB%E9%A2%98%E8%87%AA%E5%B8%A6%E6%A0%B7%E5%BC%8F%E2%80%93%E6%8C%89%E9%92%AE"><span class="nav-text">7. 主题自带样式–按钮</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90"><span class="nav-text">8. 插入音乐</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-%E6%96%B9%E6%B3%951%EF%BC%9A%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E7%94%A8-HTML-%E7%9A%84%E6%A0%87%E7%AD%BE%EF%BC%8C%E5%86%99%E6%B3%95%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-text">8.1. 方法1：可以直接用 HTML 的标签，写法如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-%E6%96%B9%E6%B3%952%EF%BC%9A%E7%94%A8%E6%8F%92%E4%BB%B6%EF%BC%8C%E6%9C%89%E6%98%BE%E7%A4%BA%E6%AD%8C%E8%AF%8D%E5%8A%9F%E8%83%BD%EF%BC%8C%E4%B9%9F%E7%BE%8E%E8%A7%82%EF%BC%8C%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8%E8%BF%99%E7%A7%8D%E6%96%B9%E6%B3%95%E3%80%82"><span class="nav-text">8.2. 方法2：用插件，有显示歌词功能，也美观，建议使用这种方法。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-%E4%B8%8B%E6%96%B9%E6%B5%8B%E8%AF%95%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90"><span class="nav-text">8.3. 下方测试插入音乐</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-1-%E6%96%B9%E5%BC%8F1%EF%BC%9AHTML%E7%9A%84%E6%A0%87%E7%AD%BE%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90%EF%BC%88%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%EF%BC%89"><span class="nav-text">8.3.1. 方式1：HTML的标签插入音乐（网易云音乐）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-2-%E6%96%B9%E5%BC%8F2%EF%BC%9A%E7%94%A8hexo-tag-aplayer%E6%8F%92%E4%BB%B6%E9%9F%B3%E4%B9%90"><span class="nav-text">8.3.2. 方式2：用hexo-tag-aplayer插件音乐</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-%E4%B8%8B%E6%96%B9%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90%EF%BC%88%E6%97%A0%E6%AD%8C%E8%AF%8D%EF%BC%8Clrc%E6%96%B9%E5%BC%8F%E6%AD%8C%E8%AF%8D%E5%A4%B1%E6%95%88%EF%BC%89%EF%BC%9A"><span class="nav-text">8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-5-%E4%B8%8B%E6%96%B9%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6%E6%8F%92%E5%85%A5%E5%86%85%E5%B5%8C%E9%9F%B3%E4%B9%90%E6%AD%8C%E8%AF%8D%EF%BC%9A"><span class="nav-text">8.5. 下方测试插件插入内嵌音乐歌词：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E6%8F%92%E5%85%A5%E8%A7%86%E9%A2%91"><span class="nav-text">9. 插入视频</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1-%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E7%94%A8-HTML-%E7%9A%84%E6%A0%87%E7%AD%BE%EF%BC%8C%E5%86%99%E6%B3%95%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-text">9.1. 可以直接用 HTML 的标签，写法如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2-%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E8%A7%86%E9%A2%91%E7%BD%91%E7%AB%99%E6%8F%90%E4%BE%9B%E7%9A%84%E5%B5%8C%E5%85%A5%E5%BC%8F%E4%BB%A3%E7%A0%81"><span class="nav-text">9.2. 用第三方视频网站提供的嵌入式代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-3-%E7%94%A8%E6%8F%92%E4%BB%B6%EF%BC%8C%E5%8A%9F%E8%83%BD%E6%9B%B4%E5%8A%A0%E5%BC%BA%E5%A4%A7%EF%BC%8C%E6%AF%94%E5%A6%82%E5%8F%AF%E4%BB%A5%E5%BC%B9%E5%B9%95%EF%BC%8C%E9%9D%9E%E5%B8%B8%E5%BB%BA%E8%AE%AE%E9%A3%9F%E7%94%A8%E3%80%82"><span class="nav-text">9.3. 用插件，功能更加强大，比如可以弹幕，非常建议食用。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-Linux-%E6%8A%80%E5%B7%A7%E6%AF%8F%E6%97%A5%E4%B8%80%E7%BB%83%EF%BC%9Acp%E5%91%BD%E4%BB%A4"><span class="nav-text">10. Linux 技巧每日一练：cp命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-1-%E9%80%89%E9%A1%B9%E5%8F%82%E6%95%B0%E5%8F%8A%E8%AF%B4%E6%98%8E"><span class="nav-text">10.1. 选项参数及说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">11. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/08/31/write-a-md-file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于Hexo的Markdown博文语法简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-08-31 12:10:44" itemprop="dateCreated datePublished" datetime="2018-08-31T12:10:44+08:00">2018-08-31</time>
+    </span>
+
+  
+    <span id="/2018/08/31/write-a-md-file/" class="post-meta-item leancloud_visitors" data-flag-title="基于Hexo的Markdown博文语法简介" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/write-a-md-file.jpg" class="full-image" />
+
+<h1 id="1-md文件预定义参数"><a href="#1-md文件预定义参数" class="headerlink" title="1. md文件预定义参数"></a>1. md文件预定义参数</h1><h2 id="1-1-预定义参数"><a href="#1-1-预定义参数" class="headerlink" title="1.1. 预定义参数"></a>1.1. 预定义参数</h2><p>以下是预先定义的参数，您可在模板中使用这些参数值并加以利用。</p>
+<a id="more"></a>
+
+<p>layout|布局|post<br>title|标题|<br>date|建立日期|文件建立日期<br>updated|更新日期|文件更新日期<br>comments|开启文章的评论功能|true<br>tags|标签（不适用于分页）|<br>categories|分类（不适用于分页）|<br>permalink|覆盖文章网址|</p>
+<h2 id="1-2-本文的md文件预定义参数"><a href="#1-2-本文的md文件预定义参数" class="headerlink" title="1.2. 本文的md文件预定义参数"></a>1.2. 本文的md文件预定义参数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">layout: post</span><br><span class="line">title: Markdown文章写作格式＆语法</span><br><span class="line">date: 2018&#x2F;8&#x2F;31 12:10:44</span><br><span class="line">updated: 2018&#x2F;9&#x2F;1 19:24:45</span><br><span class="line">comments: true</span><br><span class="line">tags:</span><br><span class="line">- Markdown</span><br><span class="line">- Hexo</span><br><span class="line">categories:</span><br><span class="line">- Markdown</span><br><span class="line"></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Hexo下的Markdown语法"><a href="#2-Hexo下的Markdown语法" class="headerlink" title="2. Hexo下的Markdown语法"></a>2. Hexo下的Markdown语法</h1><h2 id="2-1-语法简明描述"><a href="#2-1-语法简明描述" class="headerlink" title="2.1. 语法简明描述"></a>2.1. 语法简明描述</h2><ol>
+<li><strong>分段：</strong> <code>两个回车</code></li>
+<li><strong>换行：</strong> <code>两个空格 + 回车</code></li>
+<li><strong>标题：</strong> # ~ ######，#号的个数表示几级标题，即表示一～六级标题。(eg: <code>### 三级标题</code>)</li>
+<li><strong>强调：</strong> <em>倾斜</em>(<code>*倾斜*</code>) 、 <strong>加粗</strong>(<code>**加粗**</code> or <code>__加粗__</code>) 、**<em>倾斜加粗**</em>(<code>***倾斜加粗***</code>) 、 <del>删除线</del>(<code>~~删除线~~</code>) 、 <code>标记</code>  (<code>`标记`</code>)</li>
+<li><strong>列表：</strong> <code>* </code> 、<code>+ </code> 、<code>- </code> 、<code>数字序号. </code>(有序)  选其中之一，注意后面都紧跟一个空格</li>
+<li><strong>引用：</strong> <code>&gt; </code> ，注意&gt;后面紧跟一个空格(eg: <code>&gt; 引用文字</code>)，结束引用时输入<code>两个回车</code>以结束引用</li>
+<li><strong>图片：</strong> 在需要添加图片的位置<code>![图片](图片地址)</code>便可，图片地址可以是本地路径，或网络地址</li>
+<li><strong>表格：</strong> - 和 | 分割行和列 ，<code>:</code>与<code>-</code>的相对位置控制当前列的左对齐、居中对齐、右对齐方式(<code>:----|:----:|----:</code>)，表格代码段可能需要与上部分代码空一行</li>
+<li><strong>代码块：</strong> 每行代码前加四个空格(不显示行号)，或 使用<code>```代码内容```</code>(显示行号，<code>`</code>为键盘Esc下方按键)</li>
+<li><strong>文本链接：</strong> [文字链接名称](链接地址)，eg: <a target="_blank" rel="noopener" href="https://eisenhao.github.io/">我的博客</a> (<code>[我的博客](<a target="_blank" rel="noopener" href="https://eisenhao.github.io/">https://eisenhao.github.io/</a></code>)</li>
+<li><strong>小型文本：</strong> <small>小型文本</small><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;small&gt;小型文本&lt;&#x2F;small&gt;</span><br></pre></td></tr></table></figure></li>
+<li><strong>高亮：</strong> 比如<code>突出背景色</code>来显示强调效果<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;code&gt;突出背景色&lt;&#x2F;code&gt;</span><br></pre></td></tr></table></figure></li>
+<li><strong>代码注释：</strong> 注释内容有助于理解代码，而不会被编译<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 注释内容 --&gt;</span><br></pre></td></tr></table></figure></li>
+<li><strong>网址链接：</strong> &lt;网址链接&gt;，eg: 我的博客:<a href="https://eisenhao.cn/">https://eisenhao.cn/</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我的博客:&lt;https:&#x2F;&#x2F;eisenhao.cn&#x2F;&gt;</span><br></pre></td></tr></table></figure></li>
+<li><strong>阅读全文：</strong> 常用于文章过长，只显示文章前半部分，结合Hexo实现文章截断，点击阅读更多后显示全文<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure></li>
+<li><strong>文本右对齐：</strong><br>正常文本<div align = center>文本居中</div>
+<div align = right>文本右对齐</div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">正常文本</span><br><span class="line">&lt;div align &#x3D; center&gt;文本居中&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div align &#x3D; right&gt;文本右对齐&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure></li>
+<li><strong>代码块高级用法</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 请忽视&quot;&#96;\&#96;&#96;&quot;中的转移符&quot;\&quot;</span><br><span class="line">&#96;\&#96;&#96;[language] [title] [url] [link-text]</span><br><span class="line">代码块内容</span><br><span class="line">&#96;\&#96;&#96;</span><br><span class="line">[language] 是代码语言的名称，用来设置代码块颜色高亮，非必须；</span><br><span class="line">[title] 是顶部左边的说明，非必须；</span><br><span class="line">[url] 是顶部右边的超链接地址，非必须；</span><br><span class="line">[link text] 如它的字面意思，超链接的名称，非必须。</span><br></pre></td></tr></table></figure>
+亲测这 4 项应该是根据空格来分隔，而不是[]，故请不要加[]。除非如果你想写后面两个，但不想写前面两个，那么就必须加[]了，要这样写：[] [] [url] [link text]，更多关于代码块的高级用法可参考文档：<a target="_blank" rel="noopener" href="https://www.ofind.cn/blog/HEXO/HEXO%E4%B8%8B%E7%9A%84%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE%E6%8B%93%E5%B1%95%E4%BF%AE%E6%94%B9.html">HEXO下的语法高亮拓展修改</a>。<br>例如以下代码:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 请忽视&quot;&#96;\&#96;&#96;&quot;中的转移符&quot;\&quot;</span><br><span class="line">&#96;\&#96;&#96;c++ 文件位置：~&#x2F;GitHub&#x2F;Cpp_Learning&#x2F;Cpp_demo.cpp</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main(void) &#123;</span><br><span class="line">    cout &lt;&lt; &quot;Hello World!&quot; &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">&#96;\&#96;&#96;</span><br></pre></td></tr></table></figure>
+效果如下:<figure class="highlight c++"><figcaption><span>文件位置：~/GitHub/Cpp_Learning/Cpp_demo.cpp</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Hello World!&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="2-2-引用嵌套"><a href="#2-2-引用嵌套" class="headerlink" title="2.2. 引用嵌套"></a>2.2. 引用嵌套</h2><p>引用的嵌套使用，注意引用字段结束后输入两个回车结束</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; 植物</span><br><span class="line">&gt;&gt; 陆生植物</span><br><span class="line">&gt;&gt;&gt; 树</span><br><span class="line">&gt;&gt;&gt; 草</span><br><span class="line">&gt;&gt;&gt;&gt; 苹果树</span><br><span class="line">&gt;&gt;&gt;&gt; 梨树</span><br><span class="line">&gt;&gt;橘子树 &#x2F;&#x2F;由于没有用没有空行间隔，忽略降级引用标记</span><br><span class="line">香蕉树 &#x2F;&#x2F;由于没有用没有空行间隔，忽略降级引用标记</span><br><span class="line"></span><br><span class="line">&gt;&gt; 水生植物</span><br><span class="line">&gt;&gt;&gt; 藻</span><br><span class="line">海草</span><br><span class="line"></span><br><span class="line">共输入两个回车，结束引用</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>植物</p>
+<blockquote>
+<p>陆生植物</p>
+<blockquote>
+<p>树<br>草</p>
+<blockquote>
+<p>苹果树<br>梨树<br>橘子树 //由于没有用没有空行间隔，忽略降级引用标记<br>香蕉树 //由于没有用没有空行间隔，忽略降级引用标记</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>水生植物</p>
+<blockquote>
+<p>藻<br>海草</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>共输入两个回车，结束引用</p>
+<h2 id="2-3-列表"><a href="#2-3-列表" class="headerlink" title="2.3. 列表"></a>2.3. 列表</h2><h3 id="2-3-1-无序列表"><a href="#2-3-1-无序列表" class="headerlink" title="2.3.1. 无序列表"></a>2.3.1. 无序列表</h3><p><code>* </code>、<code>+ </code>、<code>- </code>三种方式都能表示无序列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 无序列表1</span><br><span class="line">+ 无序列表2</span><br><span class="line">- 无序列表3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>无序列表1</li>
+</ul>
+<ul>
+<li>无序列表2</li>
+</ul>
+<ul>
+<li>无序列表3</li>
+</ul>
+<h3 id="2-3-2-有序列表"><a href="#2-3-2-有序列表" class="headerlink" title="2.3.2. 有序列表"></a>2.3.2. 有序列表</h3><p>只取第一个列表的数字序号，序号依次增加，与接下来的数字序号无关</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3. 有序列表3</span><br><span class="line">9. 有序列表9</span><br><span class="line">2. 有序列表2</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>有序列表3</li>
+<li>有序列表9</li>
+<li>有序列表2</li>
+</ol>
+<h2 id="2-4-分割线"><a href="#2-4-分割线" class="headerlink" title="2.4. 分割线"></a>2.4. 分割线</h2><p>分割线可以由<code>*</code>、<code>-</code>、<code>_</code>这3种符号每种至少3个来表示(不必严格连续)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- * *</span><br><span class="line">-- -</span><br><span class="line">_ _ _</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对应效果:</p>
+<ul>
+<li><ul>
+<li>*</li>
+</ul>
+</li>
+</ul>
+<hr>
+<hr>
+<h1 id="3-内置标签"><a href="#3-内置标签" class="headerlink" title="3. 内置标签"></a>3. 内置标签</h1><p>标签(Tag Plugin)是Hexo提供的一种快速生成特定内容的方式。例如，在标准Markdown语法中，我们无法指定图片的大小。这种情景，我们即可使用标签来解决。Hexo内置来许多标签来帮助写作者可以更快的书写，参考Hexo的<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/tag-plugins.html">完整的标签列表</a>。Hexo也开放来接口给主题，使提供给写作者更简便的写作方法成为可能。</p>
+<h2 id="3-1-文本居中的引用"><a href="#3-1-文本居中的引用" class="headerlink" title="3.1. 文本居中的引用"></a>3.1. 文本居中的引用</h2><p>此标签将生成一个带上下分割线的引用，同时引用内文本将自动居中。文本居中时，多行文本若长度不等，视觉上会显得不对称，因此建议在引用单行文本的场景下使用。例如作为文章开篇引用或者结束语之前的总结引用。</p>
+<h3 id="3-1-1-HTML引用方式"><a href="#3-1-1-HTML引用方式" class="headerlink" title="3.1.1. HTML引用方式:"></a>3.1.1. HTML引用方式:</h3><p>使用HTML方式：直接在Markdown文件中编写HTML来调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- HTML方式: 直接在 Markdown 文件中编写 HTML 来调用 --&gt;</span><br><span class="line">&lt;!-- 其中 class&#x3D;&quot;blockquote-center&quot; 是必须的 --&gt;</span><br><span class="line">&lt;blockquote class&#x3D;&quot;blockquote-center&quot;&gt;HTML引用方式&lt;&#x2F;blockquote&gt;</span><br></pre></td></tr></table></figure>
+<!-- HTML方式: 直接在 Markdown 文件中编写 HTML 来调用 -->
+<!-- 其中 class="blockquote-center" 是必须的 -->
+<blockquote class="blockquote-center">HTML引用方式</blockquote>
+
+<h3 id="3-1-2-标签引用方式"><a href="#3-1-2-标签引用方式" class="headerlink" title="3.1.2. 标签引用方式:"></a>3.1.2. 标签引用方式:</h3><p>使用<code>centerquote</code>或者<code>cq</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 标签 方式，要求版本在0.4.5或以上 --&gt;</span><br><span class="line">&#123;% centerquote %&#125;标签引用方式1&#123;% endcenterquote %&#125;</span><br><span class="line">&lt;!-- 标签别名 --&gt;</span><br><span class="line">&#123;% cq %&#125;标签引用方式2&#123;% endcq %&#125;</span><br></pre></td></tr></table></figure>
+<!-- 标签 方式，要求版本在0.4.5或以上 -->
+<blockquote class="blockquote-center">
+<p>标签引用方式1</p>
+
+</blockquote>
+<!-- 标签别名 -->
+<blockquote class="blockquote-center">
+<p>标签引用方式2</p>
+
+</blockquote>
+
+<h2 id="3-2-突破容器宽度限制的图片引用"><a href="#3-2-突破容器宽度限制的图片引用" class="headerlink" title="3.2. 突破容器宽度限制的图片引用"></a>3.2. 突破容器宽度限制的图片引用</h2><p>当使用此标签引用图片时，图片将自动扩大26%，并突破文章容器的宽度。此标签使用于需要突出显示的图片,图片的扩大与容器的偏差从视觉上提升图片的吸引力。此标签有两种调用方式（详细参看底下示例）：</p>
+<h3 id="3-2-1-HTML引用图片方式"><a href="#3-2-1-HTML引用图片方式" class="headerlink" title="3.2.1. HTML引用图片方式"></a>3.2.1. HTML引用图片方式</h3><p>使用这种方式时，为<code>img</code>添加属性<code>class="full-image"</code>即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- HTML引用图片方式: 直接在 Markdown 文件中编写 HTML 来调用 --&gt;</span><br><span class="line">&lt;!-- 其中 class&#x3D;&quot;full-image&quot; 是必须的 --&gt;</span><br><span class="line">&lt;img src&#x3D;&quot;https:&#x2F;&#x2F;cdn.wfolio.ru&#x2F;w&#x2F;4b318a3da2f7d3a89fa5957a8dd9a00dd2609616&#x2F;m_limit%2Cw_1920&#x2F;sites&#x2F;181&#x2F;assets&#x2F;1524794399_7fc3ff.jpg&quot; class&#x3D;&quot;full-image&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<!-- HTML引用图片方式: 直接在 Markdown 文件中编写 HTML 来调用 -->
+<!-- 其中 class="full-image" 是必须的 -->
+
+<img data-src="https://cdn.wfolio.ru/w/4b318a3da2f7d3a89fa5957a8dd9a00dd2609616/m_limit%2Cw_1920/sites/181/assets/1524794399_7fc3ff.jpg" class="full-image" />
+
+
+<h1 id="4-Bootstrap-Callout"><a href="#4-Bootstrap-Callout" class="headerlink" title="4. Bootstrap Callout"></a>4. Bootstrap Callout</h1><p>这些样式出现在<a target="_blank" rel="noopener" href="http://getbootstrap.com/">Bootstrap官方文档</a>中。</p>
+<p><strong>使用方式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% note class_name %&#125; Content (md partial supported) &#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，<code>class_name</code>可以是以下一个值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default</span><br><span class="line">primary</span><br><span class="line">success</span><br><span class="line">info</span><br><span class="line">warning</span><br><span class="line">danger</span><br></pre></td></tr></table></figure>
+<p>代码实例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% note default %&#125;1.default效果&#123;% endnote %&#125;</span><br><span class="line">&#123;% note primary %&#125;2.primary效果&#123;% endnote %&#125;</span><br><span class="line">&#123;% note success %&#125;3.success效果&#123;% endnote %&#125;</span><br><span class="line">&#123;% note info %&#125;4.info效果&#123;% endnote %&#125;</span><br><span class="line">&#123;% note warning %&#125;5.warning效果&#123;% endnote %&#125;</span><br><span class="line">&#123;% note danger %&#125;6.danger效果&#123;% endnote %&#125;</span><br></pre></td></tr></table></figure>
+<div class="note default"><p>1.default效果</p>
+</div>
+<div class="note primary"><p>2.primary效果</p>
+</div>
+<div class="note success"><p>3.success效果</p>
+</div>
+<div class="note info"><p>4.info效果</p>
+</div>
+<div class="note warning"><p>5.warning效果</p>
+</div>
+<div class="note danger"><p>6.danger效果</p>
+</div>
+
+<h1 id="5-主题自带样式-label-标签"><a href="#5-主题自带样式-label-标签" class="headerlink" title="5. 主题自带样式 label 标签"></a>5. 主题自带样式 label 标签</h1><p>首先需要在主题配置文件中有配置，需要配置下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gedit &#x2F;你的Hexo站点目录&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br><span class="line"># Label tag.</span><br><span class="line">label: true</span><br></pre></td></tr></table></figure>
+<p>效果如下：(目前存在一个 bug，如果把它加在一段文字的段首，则会有点问题，issue 页面。)</p>
+<mark class="label default">default</mark>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% label default@default %&#125;</span><br></pre></td></tr></table></figure>
+<mark class="label primary">primary</mark>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% label primary@primary %&#125;</span><br></pre></td></tr></table></figure>
+<mark class="label success">success</mark>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% label success@success %&#125;</span><br></pre></td></tr></table></figure>
+<mark class="label info">info</mark>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% label info@info %&#125;</span><br></pre></td></tr></table></figure>
+<mark class="label warning">warning</mark>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% label warning@warning %&#125;</span><br></pre></td></tr></table></figure>
+<mark class="label danger">danger</mark>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% label danger@danger %&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="6-NexT主题自带样式-tabs-标签"><a href="#6-NexT主题自带样式-tabs-标签" class="headerlink" title="6. NexT主题自带样式 tabs 标签"></a>6. NexT主题自带样式 tabs 标签</h1><p>在主题配置文件中有配置，需要配置下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gedit &#x2F;你的Hexo站点目录&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br><span class="line"># Tabs tag.</span><br><span class="line">tabs:</span><br><span class="line">  enable: true</span><br><span class="line">  transition:</span><br><span class="line">    tabs: true</span><br><span class="line">    labels: true</span><br><span class="line">  border_radius: 0</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<div class="tabs" id="选项卡"><ul class="nav-tabs"><li class="tab"><a href="#选项卡-1">选项卡 1</a></li><li class="tab active"><a href="#选项卡-2">选项卡 2</a></li><li class="tab"><a href="#选项卡-3">选项卡 3</a></li></ul><div class="tab-content"><div class="tab-pane" id="选项卡-1"><p><strong>这是选项卡 1</strong> 呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈……</p></div><div class="tab-pane active" id="选项卡-2"><p><strong>这是选项卡 2</strong></p></div><div class="tab-pane" id="选项卡-3"><p><strong>这是选项卡 3</strong> 哇，你找到我了!</p></div></div></div>
+
+<p>源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tabs 选项卡, 2 %&#125;</span><br><span class="line">&lt;!-- tab --&gt;</span><br><span class="line">**这是选项卡 1** 呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈……</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&lt;!-- tab --&gt;</span><br><span class="line">**这是选项卡 2**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&lt;!-- tab --&gt;</span><br><span class="line">**这是选项卡 3** 哇，你找到我了！φ(≧ω≦*)♪～</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&#123;% endtabs %&#125;</span><br></pre></td></tr></table></figure>
+<p>然后上面源码中, 2表示一开始在第二个选项卡，非必须，若数值为-1则隐藏选项卡内容。更多用法请查看 <a target="_blank" rel="noopener" href="https://almostover.ru/2016-01/hexo-theme-next-test/#Tab-tag-test">这个页面</a>。</p>
+<h1 id="7-主题自带样式–按钮"><a href="#7-主题自带样式–按钮" class="headerlink" title="7. 主题自带样式–按钮"></a>7. 主题自带样式–<strong>按钮</strong></h1><p>效果：</p>
+<a class="btn" target="_blank" rel="noopener" href="https://www.baidu.com"><i class="fa fa-download fa-lg fa-fw"></i>点击下载百度</a>
+<p>源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% btn https:&#x2F;&#x2F;www.baidu.com, 点击下载百度, download fa-lg fa-fw %&#125;</span><br></pre></td></tr></table></figure>
+<p>关于按钮的更多使用可以前往 <a target="_blank" rel="noopener" href="https://almostover.ru/2016-01/hexo-theme-next-test/#Button-tag-test">这个网页</a>查看。</p>
+<h1 id="8-插入音乐"><a href="#8-插入音乐" class="headerlink" title="8. 插入音乐"></a>8. 插入音乐</h1><p>音乐的话，网易云音乐的外链很好用，不仅有可以单曲，还能有歌单，有兴趣的自己去网易云音乐找首歌尝试。但是有一些音乐因为版权原因放不了，还有就是不完全支持 https，导致小绿锁不见了。要解决这些缺点，就需要安装插件alien。</p>
+<h2 id="8-1-方法1：可以直接用-HTML-的标签，写法如下："><a href="#8-1-方法1：可以直接用-HTML-的标签，写法如下：" class="headerlink" title="8.1. 方法1：可以直接用 HTML 的标签，写法如下："></a>8.1. 方法1：可以直接用 HTML 的标签，写法如下：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;audio src&#x3D;&quot;https:&#x2F;&#x2F;什么什么什么.mp3&quot; style&#x3D;&quot;max-height :100%; max-width: 100%; display: block; margin-left: auto; margin-right: auto;&quot; controls&#x3D;&quot;controls&quot; loop&#x3D;&quot;loop&quot; preload&#x3D;&quot;meta&quot;&gt;Your browser does not support the audio tag.&lt;&#x2F;audio&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-2-方法2：用插件，有显示歌词功能，也美观，建议使用这种方法。"><a href="#8-2-方法2：用插件，有显示歌词功能，也美观，建议使用这种方法。" class="headerlink" title="8.2. 方法2：用插件，有显示歌词功能，也美观，建议使用这种方法。"></a>8.2. 方法2：用插件，有显示歌词功能，也美观，建议使用这种方法。</h2><p>首先在<code>站点</code>文件夹根目录安装插件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-tag-aplayer --save</span><br></pre></td></tr></table></figure>
+
+<p>然后文章中的写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayer &quot;歌曲名&quot; &quot;歌手名&quot; &quot;https:&#x2F;&#x2F;什么什么什么.mp3&quot; &quot;https:&#x2F;&#x2F;封面图.jpg&quot; &quot;lrc:https:&#x2F;&#x2F;歌词.lrc&quot; %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>另外可以支持歌单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayerlist %&#125;</span><br><span class="line">&#123;</span><br><span class="line">    &quot;autoplay&quot;: false,</span><br><span class="line">    &quot;showlrc&quot;: 3,</span><br><span class="line">    &quot;mutex&quot;: true,</span><br><span class="line">    &quot;music&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;title&quot;: &quot;歌曲名&quot;,</span><br><span class="line">            &quot;author&quot;: &quot;歌手名&quot;,</span><br><span class="line">            &quot;url&quot;: &quot;https:&#x2F;&#x2F;什么什么什么.mp3&quot;,</span><br><span class="line">            &quot;pic&quot;: &quot;https:&#x2F;&#x2F;封面图.jpg&quot;,</span><br><span class="line">            &quot;lrc&quot;: &quot;https:&#x2F;&#x2F;歌词.lrc&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;title&quot;: &quot;歌曲名&quot;,</span><br><span class="line">            &quot;author&quot;: &quot;歌手名&quot;,</span><br><span class="line">            &quot;url&quot;: &quot;https:&#x2F;&#x2F;什么什么什么.mp3&quot;,</span><br><span class="line">            &quot;pic&quot;: &quot;https:&#x2F;&#x2F;封面图.jpg&quot;,</span><br><span class="line">            &quot;lrc&quot;: &quot;https:&#x2F;&#x2F;歌词.lrc&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">&#123;% endaplayerlist %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果可以见<a target="_blank" rel="noopener" href="https://reuixiy.github.io/uncategorized/2010/01/01/test.html">易象辞的 Hello World</a>，里面的详细参数见<a target="_blank" rel="noopener" href="https://github.com/MoePlayer/hexo-tag-aplayer">README</a> 和这插件的“母亲” Aplayer 的<a target="_blank" rel="noopener" href="https://aplayer.js.org/">官方文档</a>。</p>
+<h2 id="8-3-下方测试插入音乐"><a href="#8-3-下方测试插入音乐" class="headerlink" title="8.3. 下方测试插入音乐"></a>8.3. 下方测试插入音乐</h2><h3 id="8-3-1-方式1：HTML的标签插入音乐（网易云音乐）"><a href="#8-3-1-方式1：HTML的标签插入音乐（网易云音乐）" class="headerlink" title="8.3.1. 方式1：HTML的标签插入音乐（网易云音乐）"></a>8.3.1. 方式1：HTML的标签插入音乐（网易云音乐）</h3><p>网易云音乐 -&gt; 生成外链播放器 -&gt; 复制代码 -&gt; 粘贴到md文档</p>
+<p>网易云iframe插件：</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=414611053&auto=1&height=66"></iframe>
+
+<p>网易云flash插件：</p>
+<p><embed src="//music.163.com/style/swf/widget.swf?sid=414611053&type=2&auto=1&width=320&height=66" width="340" height="86"  allowNetworking="all"></embed></p>
+<h3 id="8-3-2-方式2：用hexo-tag-aplayer插件音乐"><a href="#8-3-2-方式2：用hexo-tag-aplayer插件音乐" class="headerlink" title="8.3.2. 方式2：用hexo-tag-aplayer插件音乐"></a>8.3.2. 方式2：用hexo-tag-aplayer插件音乐</h3><p>巧取网易云音乐mp3外链方法，不知到现在有没有被禁<br>例如：在网易云网页版点击”陈芳语-爱你”，从浏览器地址栏发现”陈芳语-爱你”的id为：22852057，则将下方代码’id=’后的数字更改为‘22852057’之后就是”陈芳语-爱你”mp3格式的外链，新建标签页粘贴该地址可直接播放，应用在博客里插入外链还是很方便的（ps:在网易云还没禁用此bug之前）。</p>
+<p>将歌词文件放在“hexo站点文件夹/source/uploads/”文件夹内，封面图、歌词文件引用地址为：<br>“<a target="_blank" rel="noopener" href="https://eisenhao.github.io/uploads/%E5%B0%81%E9%9D%A2%E5%9B%BE.jpg&quot;%E3%80%81&quot;https://eisenhao.github.io/uploads/%E6%AD%8C%E8%AF%8D.lrc&quot;">https://eisenhao.github.io/uploads/封面图.jpg&quot;、&quot;https://eisenhao.github.io/uploads/歌词.lrc&quot;</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 网易云网页版关于&quot;陈芳语-爱你&quot;的歌曲id&#x3D;22852057</span><br><span class="line">http:&#x2F;&#x2F;music.163.com&#x2F;song&#x2F;media&#x2F;outer&#x2F;url?id&#x3D;22852057.mp3 #可直接播放外链（已失效）</span><br><span class="line">https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;loveYou.jpg #封面图</span><br><span class="line">https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc #歌词 &#x2F;&#x2F;暂时无法添加lrc歌词，只能内嵌歌词</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）："><a href="#8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）：" class="headerlink" title="8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）："></a>8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayer &quot;爱你&quot; &quot;陈芳语&quot; &quot;https:&#x2F;&#x2F;eisenhao.coding.net&#x2F;p&#x2F;eisenhao&#x2F;d&#x2F;eisenhao&#x2F;git&#x2F;raw&#x2F;master&#x2F;uploads&#x2F;22852057.mp3&quot; &quot;https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;loveYou.jpg&quot; &quot;lrc:https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc&quot; %&#125;</span><br></pre></td></tr></table></figure>
+
+
+        <div id="aplayer-bYlAokGr" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-bYlAokGr"),
+            narrow: false,
+            autoplay: false,
+            showlrc: 3,
+            music: {
+              title: "爱你",
+              author: "陈芳语",
+              url: "https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/22852057.mp3",
+              pic: "https://eisenhao.github.io/uploads/loveYou.jpg",
+              lrc: "https://eisenhao.github.io/uploads/fangyuchen_loveyou.lrc"
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<h2 id="8-5-下方测试插件插入内嵌音乐歌词："><a href="#8-5-下方测试插件插入内嵌音乐歌词：" class="headerlink" title="8.5. 下方测试插件插入内嵌音乐歌词："></a>8.5. 下方测试插件插入内嵌音乐歌词：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayerlrc &quot;爱你&quot; &quot;陈芳语&quot; &quot;https:&#x2F;&#x2F;eisenhao.coding.net&#x2F;p&#x2F;eisenhao&#x2F;d&#x2F;eisenhao&#x2F;git&#x2F;raw&#x2F;master&#x2F;uploads&#x2F;22852057.mp3&quot; &quot;https:&#x2F;&#x2F;eisenhao.coding.net&#x2F;p&#x2F;eisenhao&#x2F;d&#x2F;eisenhao&#x2F;git&#x2F;raw&#x2F;master&#x2F;uploads&#x2F;loveYou.jpg&quot; %&#125;</span><br><span class="line">[00:00.25]Kimberley(陈芳语) - 爱你[00:06.43]我闭上眼睛 贴着你心跳呼吸[00:13.42]而此刻地球 只剩我们而已[00:20.16]你微笑的唇型 总勾着我的心[00:26.73]每一秒初吻 我每一秒都想要吻你[00:36.11]就这样 爱你 爱你 爱你 随时都要一起[00:42.43]我喜欢 爱你 外套 味道 还有你的怀里[00:49.11]把我们 衣服 钮扣 互扣 那就不用分离[00:56.49]美好爱情 我就爱这样贴近 因为你[01:16.85]有时没生气 故意闹脾气[01:23.42]你的紧张在意 让我觉得安心[01:30.04]从你某个角度 我总看见自己[01:36.76]到底你懂我 或其时我本来就像你[01:46.17]就这样 爱你 爱你 爱你 随时都要一起[01:52.70]我喜欢 爱你 外套 味道 还有你的怀里[01:59.28]把我们 衣服 钮扣 互扣 那就不用分离[02:06.80]美好爱情 我就爱这样贴近 因为你[02:17.73]想变成你的氧气 溜进你身体里[02:31.49]好好看看在你心里 你有多麽宝贝 我爱你[02:44.44]就这样 爱你 爱你 爱你 随时都要一起 （爱你）[02:49.27]我喜欢 爱你 外套 味道 还有你的怀里[02:55.92]把我们 衣服 钮扣 互扣 那就不用分离[03:03.50]美好爱情 我就爱这样贴近 因为你[03:10.28]我们爱情 会一直没有距离 最美丽</span><br><span class="line">&#123;% endaplayerlrc %&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="aplayer-MLxoqGox" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+				<pre class="aplayer-lrc-content">[00:00.25]Kimberley(陈芳语) - 爱你[00:06.43]我闭上眼睛 贴着你心跳呼吸[00:13.42]而此刻地球 只剩我们而已[00:20.16]你微笑的唇型 总勾着我的心[00:26.73]每一秒初吻 我每一秒都想要吻你[00:36.11]就这样 爱你 爱你 爱你 随时都要一起[00:42.43]我喜欢 爱你 外套 味道 还有你的怀里[00:49.11]把我们 衣服 钮扣 互扣 那就不用分离[00:56.49]美好爱情 我就爱这样贴近 因为你[01:16.85]有时没生气 故意闹脾气[01:23.42]你的紧张在意 让我觉得安心[01:30.04]从你某个角度 我总看见自己[01:36.76]到底你懂我 或其时我本来就像你[01:46.17]就这样 爱你 爱你 爱你 随时都要一起[01:52.70]我喜欢 爱你 外套 味道 还有你的怀里[01:59.28]把我们 衣服 钮扣 互扣 那就不用分离[02:06.80]美好爱情 我就爱这样贴近 因为你[02:17.73]想变成你的氧气 溜进你身体里[02:31.49]好好看看在你心里 你有多麽宝贝 我爱你[02:44.44]就这样 爱你 爱你 爱你 随时都要一起 （爱你）[02:49.27]我喜欢 爱你 外套 味道 还有你的怀里[02:55.92]把我们 衣服 钮扣 互扣 那就不用分离[03:03.50]美好爱情 我就爱这样贴近 因为你[03:10.28]我们爱情 会一直没有距离 最美丽</pre>
+			</div>
+			<script>
+				var ap = new APlayer({
+					element: document.getElementById("aplayer-MLxoqGox"),
+					narrow: false,
+					autoplay: false,
+					showlrc: 2,
+					music: {
+						title: "爱你",
+						author: "陈芳语",
+						url: "https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/22852057.mp3",
+						pic: "https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/loveYou.jpg",
+					}
+				});
+				window.aplayers || (window.aplayers = []);
+				window.aplayers.push(ap);
+			</script>
+
+<h1 id="9-插入视频"><a href="#9-插入视频" class="headerlink" title="9. 插入视频"></a>9. 插入视频</h1><h2 id="9-1-可以直接用-HTML-的标签，写法如下："><a href="#9-1-可以直接用-HTML-的标签，写法如下：" class="headerlink" title="9.1. 可以直接用 HTML 的标签，写法如下："></a>9.1. 可以直接用 HTML 的标签，写法如下：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;video poster&#x3D;&quot;https:&#x2F;&#x2F;封面图.jpg&quot; src&#x3D;&quot;https:&#x2F;&#x2F;什么什么什么.mp4&quot; style&#x3D;&quot;max-height :100%; max-width: 100%; display: block; margin-left: auto; margin-right: auto;&quot; controls&#x3D;&quot;controls&quot; loop&#x3D;&quot;loop&quot; preload&#x3D;&quot;meta&quot;&gt;Your browser does not support the video tag.&lt;&#x2F;video&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-2-用第三方视频网站提供的嵌入式代码"><a href="#9-2-用第三方视频网站提供的嵌入式代码" class="headerlink" title="9.2. 用第三方视频网站提供的嵌入式代码"></a>9.2. 用第三方视频网站提供的嵌入式代码</h2><p>如bilibili提供的iframe插件，可在博客md文件中插入以下代码插入视频。获取iframe代码简诉：</p>
+<ul>
+<li>找到想要分享的视频</li>
+<li>点击视频右上角三个竖点按钮 -&gt; 点击功能窗口 -&gt; 点击分享 -&gt; 复制视频的唯一嵌入代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src&#x3D;&quot;&#x2F;&#x2F;player.bilibili.com&#x2F;player.html?aid&#x3D;26361000&amp;cid&#x3D;49053680&amp;page&#x3D;1&amp;season_type&#x3D;1&quot; scrolling&#x3D;&quot;no&quot; border&#x3D;&quot;0&quot; frameborder&#x3D;&quot;no&quot; framespacing&#x3D;&quot;0&quot; allowfullscreen&#x3D;&quot;true&quot;&gt;&lt;&#x2F;iframe&gt;</span><br></pre></td></tr></table></figure>
+<iframe src="//player.bilibili.com/player.html?aid=26361000&cid=49053680&page=1&season_type=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+</li>
+</ul>
+<h2 id="9-3-用插件，功能更加强大，比如可以弹幕，非常建议食用。"><a href="#9-3-用插件，功能更加强大，比如可以弹幕，非常建议食用。" class="headerlink" title="9.3. 用插件，功能更加强大，比如可以弹幕，非常建议食用。"></a>9.3. 用插件，功能更加强大，比如可以弹幕，非常建议食用。</h2><p>首先在站点文件夹根目录安装插件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-tag-dplayer --save</span><br></pre></td></tr></table></figure>
+<p>然后文章中的写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% dplayer &quot;url&#x3D;https:&#x2F;&#x2F;什么什么什么.mp4&quot; &quot;https:&#x2F;&#x2F;封面图.jpg&quot; &quot;api&#x3D;https:&#x2F;&#x2F;api.prprpr.me&#x2F;dplayer&#x2F;&quot; &quot;id&#x3D;&quot; &quot;loop&#x3D;false&quot; %&#125;</span><br></pre></td></tr></table></figure>
+<p>要使用弹幕，必须有<code>api</code>和<code>id</code>两项，并且若使用的是官方的api地址（即上面的），id的值不能与<a target="_blank" rel="noopener" href="https://api.prprpr.me/dplayer/list">这个列表</a>的值一样。id的值自己随便取，唯一要求就是前面这点。</p>
+<p>如果唯一要求难倒了你，可以使用<a target="_blank" rel="noopener" href="http://tool.oschina.net/encrypt?type=2">这个工具</a>将一段与众不同的文字joy生成一段看起来毫无意义的哈希值，这样看起来是不是好多了。</p>
+<p>效果，在这<a target="_blank" rel="noopener" href="https://reuixiy.github.io/tags/video/">易象辞的博客的video</a>标签里自己找一篇文章看看。</p>
+<p>当然，这个插件的功能还有很多，可以去<a target="_blank" rel="noopener" href="https://github.com/MoePlayer/hexo-tag-dplayer">README</a>和这插件的“母亲” Dplayer 的<a target="_blank" rel="noopener" href="https://dplayer.js.org/">官方文档</a>看看。</p>
+<ul>
+<li><ul>
+<li>*</li>
+</ul>
+</li>
+</ul>
+<h1 id="10-Linux-技巧每日一练：cp命令"><a href="#10-Linux-技巧每日一练：cp命令" class="headerlink" title="10. Linux 技巧每日一练：cp命令"></a>10. Linux 技巧每日一练：cp命令</h1><blockquote>
+<p>cp命令。用来将一个或多个源文件或者目录复制到指定的目的文件或目录。它可以将单个源文件复制成一个指定文件名的具体的文件或一个已经存在的目录下。cp命令还支持同时复制多个文件，当一次复制多个文件时，目标文件参数必须是一个已经存在的目录，否则将出现错误。</p>
+</blockquote>
+<blockquote>
+<p>cp语法: cp(选项)(参数)</p>
+</blockquote>
+<p>复制Folder文件夹所有文件到Backup文件夹，并显示所有改动的文件，常用于文件备份</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -ruv Folder&#x2F;* Backup</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-1-选项参数及说明"><a href="#10-1-选项参数及说明" class="headerlink" title="10.1. 选项参数及说明"></a>10.1. 选项参数及说明</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-a    此参数的效果和同时指定&quot;-dpR&quot;参数相同；</span><br><span class="line">-d    当复制符号连接时，把目标文件或目录也建立为符号连接，并指向与源文件或目录连接的原始文件或目录；</span><br><span class="line">-f    强行复制文件或目录，不论目标文件或目录是否已存在；</span><br><span class="line">-i    覆盖既有文件之前先询问用户；</span><br><span class="line">-l    对源文件建立硬连接，而非复制文件；</span><br><span class="line">-p    保留源文件或目录的属性；</span><br><span class="line">-R&#x2F;r  递归处理，将指定目录下的所有文件与子目录一并处理；</span><br><span class="line">-s    对源文件建立符号连接，而非复制文件；</span><br><span class="line">-u    使用这项参数后只会在源文件的更改时间较目标文件更新时或是名称相互对应的目标文件并不存在时，才复制文件；</span><br><span class="line">-S    在备份文件时，用指定的后缀“SUFFIX”代替文件的默认后缀；</span><br><span class="line">-b    覆盖已存在的文件目标前将目标文件备份；</span><br><span class="line">-v    详细显示命令执行的操作。</span><br></pre></td></tr></table></figure>
+
+<h1 id="11-参考文档"><a href="#11-参考文档" class="headerlink" title="11. 参考文档"></a>11. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://reuixiy.github.io/technology/computer/computer-aided-art/2017/06/09/hexo-next-optimization.html#%E6%9B%B4%E6%96%B0%E4%B8%BB%E9%A2%98">reuixiy</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/WilliamZ98/article/details/81074219">Hexo 使用 Markdown 编辑技巧大全</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/chwshuang/article/details/52350551">Hexo在Github中搭建博客系统(5)Markdown语法</a></li>
+<li><a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/tag-plugins.html">Next-内置标签</a></li>
+<li><a target="_blank" rel="noopener" href="http://man.linuxde.net/cp">Linux命令大全</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\08\29\post-debugging-steps\" rel="bookmark">基于Hexo的博文编写调试发布流程简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/29/post-debugging-steps/" rel="prev" title="基于Hexo的博文编写调试发布流程简介">
+                  <i class="fa fa-chevron-left"></i> 基于Hexo的博文编写调试发布流程简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/23/AfterInstallManjaro/" rel="next" title="配置Manjaro">
+                  配置Manjaro <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/08/31/write-a-md-file/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

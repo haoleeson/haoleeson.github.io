@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. Bigtable————分布式结构化数据表1.1. Bigtable特点  数据种类繁多，满足一系列Google产品的存储要求 吞吐量大，响应海量的服务请求 高可用性，几乎所有情况下的系统均可用 高扩展性，可根据需要随时加入或撤销服务器 简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单">
+<meta property="og:type" content="article">
+<meta property="og:title" content="云计算学习笔记">
+<meta property="og:url" content="https://eisenhao.cn/2019/07/05/CloudComputingNote/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. Bigtable————分布式结构化数据表1.1. Bigtable特点  数据种类繁多，满足一系列Google产品的存储要求 吞吐量大，响应海量的服务请求 高可用性，几乎所有情况下的系统均可用 高扩展性，可根据需要随时加入或撤销服务器 简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/cloudComputing.jpg">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617095713134.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618161018598.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617100822880.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617104500323.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617104904894.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617110037290.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618161124154.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618161816332.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618163837063.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618171208831.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618171436506.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618171942921.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618172138062.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618172312027.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190710111630677.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190710111819223.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-Dremel.png">
+<meta property="og:image" content="https://eisenhao.cn/Users/eisenhao/Documents/CloudComputing/CloudComputing-20190710154540235.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190710161656740.png">
+<meta property="article:published_time" content="2019-07-05T07:10:44.000Z">
+<meta property="article:modified_time" content="2019-07-15T15:01:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="云计算">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/cloudComputing.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2019/07/05/CloudComputingNote/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2019/07/05/CloudComputingNote/","path":"2019/07/05/CloudComputingNote/","title":"云计算学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>云计算学习笔记 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Bigtable%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E5%88%86%E5%B8%83%E5%BC%8F%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="nav-text">1. Bigtable————分布式结构化数据表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Bigtable%E7%89%B9%E7%82%B9"><span class="nav-text">1.1. Bigtable特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Bigtable%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-text">1.2. Bigtable存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E8%A1%8C%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%88Row-Key%EF%BC%89"><span class="nav-text">1.2.1. 行关键字（Row Key）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E5%88%97%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%88Column-Key%EF%BC%89"><span class="nav-text">1.2.2. 列关键字（Column Key）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E6%97%B6%E9%97%B4%E6%88%B3%EF%BC%88Time-Stamp%EF%BC%89"><span class="nav-text">1.2.3. 时间戳（Time Stamp）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-4-Bigtable%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8F%8A%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-text">1.2.4. Bigtable数据存储及读写操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-1-%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C%E6%9C%89%E5%BE%88%E5%A4%A7%E5%B7%AE%E5%BC%82"><span class="nav-text">1.2.4.1. 读写操作有很大差异</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Bigtable%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84"><span class="nav-text">1.3. Bigtable基本架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E5%85%B6%E4%B8%ADChubby%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">1.3.1. 其中Chubby的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E5%85%B6%E4%B8%AD%E4%B8%BB%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">1.3.2. 其中主服务器的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3-%E5%85%B6%E4%B8%AD%E5%AD%90%E8%A1%A8%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">1.3.3. 其中子表服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-1-%E5%AD%90%E8%A1%A8SSTable-Sorted-String-Table"><span class="nav-text">1.3.3.1. 子表SSTable(Sorted String Table)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-2-%E5%AD%90%E8%A1%A8%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-text">1.3.3.2. 子表的组成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-3-%E5%AD%90%E8%A1%A8%E5%9C%B0%E5%9D%80"><span class="nav-text">1.3.3.3. 子表地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-4-%E4%B8%89%E7%A7%8D%E5%BD%A2%E5%BC%8F%E5%8E%8B%E7%BC%A9%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">1.3.3.4. 三种形式压缩之间的关系</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-Bigtable%E4%B8%AD%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-text">1.4. Bigtable中的性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-%E5%B1%80%E9%83%A8%E6%80%A7%E7%BE%A4%E7%BB%84"><span class="nav-text">1.4.1. 局部性群组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-%E5%8E%8B%E7%BC%A9"><span class="nav-text">1.4.2. 压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-3-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">1.4.3. 布隆过滤器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Megastore%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F"><span class="nav-text">2. Megastore————分布式存储系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0%EF%BC%88%E4%B8%9A%E5%8A%A1%E9%A9%B1%E5%8A%A8%EF%BC%89%EF%BC%9A"><span class="nav-text">2.1. 产生原因（业务驱动）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%B4%E6%98%8E"><span class="nav-text">2.2. 说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Megastore%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-text">2.3. Megastore数据模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-Megastore%E7%B4%A2%E5%BC%95"><span class="nav-text">2.4. Megastore索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E5%9C%A8Bigtable%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%83%85%E5%86%B5"><span class="nav-text">2.5. 在Bigtable中的存储情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-Megastore%E4%B8%AD%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%8F%8A%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-text">2.6. Megastore中的事务及并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-1-%E8%AF%BB%E6%93%8D%E4%BD%9C"><span class="nav-text">2.6.1. 读操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-2-%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BA%8B%E7%89%A9%E5%91%A8%E6%9C%9F"><span class="nav-text">2.6.2. 完整的事物周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-3-Megastore%E4%B8%AD%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6"><span class="nav-text">2.6.3. Megastore中的事务机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-Megastore%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84"><span class="nav-text">2.7. Megastore基本架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-8-%E5%BF%AB%E9%80%9F%E8%AF%BB%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%86%99"><span class="nav-text">2.8. 快速读与快速写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-1-%E5%BF%AB%E9%80%9F%E8%AF%BB"><span class="nav-text">2.8.1. 快速读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-2-%E5%BF%AB%E9%80%9F%E5%86%99"><span class="nav-text">2.8.2. 快速写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-9-Megastore%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E2%80%93%E5%A4%8D%E5%88%B6"><span class="nav-text">2.9. Megastore核心技术–复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-1-%E5%A4%8D%E5%88%B6%E7%9A%84%E6%97%A5%E5%BF%97"><span class="nav-text">2.9.1. 复制的日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-2-%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-text">2.9.2. 读取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-3-%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-text">2.9.3. 写入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-4-%E5%8D%8F%E8%B0%83%E8%80%85%E7%9A%84%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="nav-text">2.9.4. 协调者的可用性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Dapper%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E5%A4%A7%E8%A7%84%E6%A8%A1%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%9B%91%E6%8E%A7%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84"><span class="nav-text">3. Dapper————大规模分布式系统的监控基础架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">3.1. 三个基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%9B%91%E6%8E%A7%E4%BF%A1%E6%81%AF%E7%9A%84%E6%B1%87%E6%80%BB"><span class="nav-text">3.2. 监控信息的汇总</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%85%B3%E9%94%AE%E6%80%A7%E6%8A%80%E6%9C%AF"><span class="nav-text">3.3. 关键性技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E5%BA%93"><span class="nav-text">3.3.1. 轻量级核心功能库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E4%BA%8C%E6%AC%A1%E6%8A%BD%E6%A0%B7%E6%8A%80%E6%9C%AF"><span class="nav-text">3.3.2. 二次抽样技术</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-Dapper%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97"><span class="nav-text">3.4. Dapper使用心得</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Dremel%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="nav-text">4. Dremel————海量数据的交互式分析工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Dremel%E6%94%AF%E6%8C%81%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8"><span class="nav-text">4.1. Dremel支持的典型应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Dremel%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-text">5. Dremel的数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-0-1-%E4%B8%A4%E6%96%B9%E9%9D%A2%E7%9A%84%E6%8A%80%E6%9C%AF%E6%94%AF%E6%92%91"><span class="nav-text">5.0.1. 两方面的技术支撑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-0-2-%E9%9D%A2%E5%90%91%E8%AE%B0%E5%BD%95%E5%92%8C%E9%9D%A2%E5%90%91%E5%88%97%E7%9A%84%E5%AD%98%E5%82%A8"><span class="nav-text">5.0.2. 面向记录和面向列的存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-0-3-Dremel%E5%B0%8F%E7%BB%93"><span class="nav-text">5.0.3. Dremel小结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-PowerDrill%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E5%86%85%E5%AD%98%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E7%BB%9F"><span class="nav-text">6. PowerDrill————内存大数据分析系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-PowerDrill%E4%BA%A7%E7%94%9F%E8%83%8C%E6%99%AF%E4%B8%8E%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="nav-text">6.1. PowerDrill产生背景与设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-ProwerDrill%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90"><span class="nav-text">6.2. ProwerDrill系统组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-PowerDrill%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">6.3. PowerDrill数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-PowerDrill%E9%87%87%E7%94%A8%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-text">6.4. PowerDrill采用的性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-1-%E6%95%B0%E6%8D%AE%E5%88%86%E5%9D%97"><span class="nav-text">6.4.1. 数据分块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-2-%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-text">6.4.2. 数据编码的优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-3-%E5%85%A8%E5%B1%80%E5%AD%97%E5%85%B8%E4%BC%98%E5%8C%96"><span class="nav-text">6.4.3. 全局字典优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-4-%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95"><span class="nav-text">6.4.4. 压缩算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-5-%E8%A1%8C%E7%9A%84%E9%87%8D%E6%8E%92"><span class="nav-text">6.4.5. 行的重排</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-PowerDrill%E4%B8%8EDremel%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-text">6.5. PowerDrill与Dremel的对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-Google%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%BC%95%E6%93%8E"><span class="nav-text">7. Google应用程序引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-Google-App-Engine%E7%9A%84%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-text">7.1. Google App Engine的整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%8E%AF%E5%A2%83%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-text">7.2. 应用程序环境的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-%E6%B2%99%E7%9B%92%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-text">7.3. 沙盒的限制</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/07/05/CloudComputingNote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          云计算学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2019-07-05 15:10:44" itemprop="dateCreated datePublished" datetime="2019-07-05T15:10:44+08:00">2019-07-05</time>
+    </span>
+
+  
+    <span id="/2019/07/05/CloudComputingNote/" class="post-meta-item leancloud_visitors" data-flag-title="云计算学习笔记" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/cloudComputing.jpg" class="full-image" />
+
+<h1 id="1-Bigtable————分布式结构化数据表"><a href="#1-Bigtable————分布式结构化数据表" class="headerlink" title="1. Bigtable————分布式结构化数据表"></a>1. Bigtable————分布式结构化数据表</h1><h2 id="1-1-Bigtable特点"><a href="#1-1-Bigtable特点" class="headerlink" title="1.1. Bigtable特点"></a>1.1. Bigtable特点</h2><ul>
+<li> 数据种类繁多，满足一系列Google产品的存储要求</li>
+<li>吞吐量大，响应海量的服务请求</li>
+<li>高可用性，几乎所有情况下的系统均可用</li>
+<li>高扩展性，可根据需要随时加入或撤销服务器</li>
+<li>简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单</li>
+</ul>
+<a id="more"></a>
+<h2 id="1-2-Bigtable存储结构"><a href="#1-2-Bigtable存储结构" class="headerlink" title="1.2. Bigtable存储结构"></a>1.2. Bigtable存储结构</h2><p>Bigtable是一个分布式多维映射表，表中的数据通过一个行关键字（Row Key）、一个列关键字（Column Key）以及一个时间戳（Time Stamp）进行索引</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617095713134.png" alt="CloudComputing-20190617095713134"></p>
+<h3 id="1-2-1-行关键字（Row-Key）"><a href="#1-2-1-行关键字（Row-Key）" class="headerlink" title="1.2.1. 行关键字（Row Key）"></a>1.2.1. 行关键字（Row Key）</h3><ul>
+<li>可为任意字符串，最大64KB</li>
+<li>表中数据根据行关键字排序（词典序）</li>
+<li>同一地址域的网页关键字会存储在表中连续位置</li>
+<li>压缩倒排以提高压缩率</li>
+</ul>
+<h3 id="1-2-2-列关键字（Column-Key）"><a href="#1-2-2-列关键字（Column-Key）" class="headerlink" title="1.2.2. 列关键字（Column Key）"></a>1.2.2. 列关键字（Column Key）</h3><ul>
+<li>列的关键字应有其意义</li>
+<li>列的簇名同时也是Bigtable中ACL访问控制的基本单元</li>
+</ul>
+<h3 id="1-2-3-时间戳（Time-Stamp）"><a href="#1-2-3-时间戳（Time-Stamp）" class="headerlink" title="1.2.3. 时间戳（Time Stamp）"></a>1.2.3. 时间戳（Time Stamp）</h3><ul>
+<li>相同的内容需要保存不同时刻的数据版本（eg.网页检索数据、用户个性化设置数据）</li>
+<li>64位整形存储，用户自定义赋值方式和意义</li>
+</ul>
+<h3 id="1-2-4-Bigtable数据存储及读写操作"><a href="#1-2-4-Bigtable数据存储及读写操作" class="headerlink" title="1.2.4. Bigtable数据存储及读写操作"></a>1.2.4. Bigtable数据存储及读写操作</h3><ul>
+<li>较新的数据存储在内存中称为内存表（Memtable）的有序缓冲里</li>
+<li>较旧的数据以SSTable格式保存在GFS中</li>
+</ul>
+<h4 id="1-2-4-1-读写操作有很大差异"><a href="#1-2-4-1-读写操作有很大差异" class="headerlink" title="1.2.4.1. 读写操作有很大差异"></a>1.2.4.1. 读写操作有很大差异</h4><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618161018598.png" alt="CloudComputing-20190618161018598"></p>
+<h2 id="1-3-Bigtable基本架构"><a href="#1-3-Bigtable基本架构" class="headerlink" title="1.3. Bigtable基本架构"></a>1.3. Bigtable基本架构</h2><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617100822880.png" alt="CloudComputing-20190617100822880"></p>
+<h3 id="1-3-1-其中Chubby的作用"><a href="#1-3-1-其中Chubby的作用" class="headerlink" title="1.3.1. 其中Chubby的作用"></a>1.3.1. 其中Chubby的作用</h3><ul>
+<li>保证一致性（使所有子表服务器选取唯一一个主服务器）</li>
+<li>获取子表服务器列表。扫描并发现目前活跃的子表服务器列表</li>
+<li>保存Bigtable的模式信息和ACL访问控制列表。与所有活跃的子表服务器联系，并获取所有子表的分配情况；通过扫描元数据表发现未分配的子表，并将其分配到合适的子表服务器</li>
+</ul>
+<h3 id="1-3-2-其中主服务器的作用"><a href="#1-3-2-其中主服务器的作用" class="headerlink" title="1.3.2. 其中主服务器的作用"></a>1.3.2. 其中主服务器的作用</h3><ul>
+<li>新子表分配。当新子表产生时，主服务器通过一个加载命令将新子表分配给一个拥有足够空间的子表服务器，子表服务器分割完成后会向主服务器返回一个通知（创建新表、合并表、大表分裂都会产生一个或多个子表）</li>
+<li>子表服务器集群的状态监控。主服务器对子表服务器状态进行监控，以便于及时监测到服务器的加入和撤销</li>
+<li>子表服务器之间的负载均衡</li>
+</ul>
+<h3 id="1-3-3-其中子表服务器"><a href="#1-3-3-其中子表服务器" class="headerlink" title="1.3.3. 其中子表服务器"></a>1.3.3. 其中子表服务器</h3><h4 id="1-3-3-1-子表SSTable-Sorted-String-Table"><a href="#1-3-3-1-子表SSTable-Sorted-String-Table" class="headerlink" title="1.3.3.1. 子表SSTable(Sorted String Table)"></a>1.3.3.1. 子表SSTable(Sorted String Table)</h4><p>每个子表服务器上保存几十～几千哥子表。SSTable是Google为Bigtable设计的内部数据存储格式。所有的SSTable文件都存储在GFS上，用户可以通过键来查询相应的值。</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617104500323.png" alt="CloudComputing-20190617104500323"></p>
+<h4 id="1-3-3-2-子表的组成"><a href="#1-3-3-2-子表的组成" class="headerlink" title="1.3.3.2. 子表的组成"></a>1.3.3.2. 子表的组成</h4><ul>
+<li>不同子表的SSTable可以共享</li>
+<li>每个子表服务器上仅保存一个日志文件</li>
+<li>日志内容按照键值排序</li>
+<li>每个子表服务器上保存几十～几千个子表（平均100个子表）</li>
+</ul>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617104904894.png" alt="CloudComputing-20190617104904894"></p>
+<h4 id="1-3-3-3-子表地址"><a href="#1-3-3-3-子表地址" class="headerlink" title="1.3.3.3. 子表地址"></a>1.3.3.3. 子表地址</h4><p>Bigtable系统内部采用的是一种类似B+树的三层查询体系</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617110037290.png" alt="CloudComputing-20190617110037290"></p>
+<h4 id="1-3-3-4-三种形式压缩之间的关系"><a href="#1-3-3-4-三种形式压缩之间的关系" class="headerlink" title="1.3.3.4. 三种形式压缩之间的关系"></a>1.3.3.4. 三种形式压缩之间的关系</h4><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618161124154.png" alt="CloudComputing-20190618161124154"></p>
+<h2 id="1-4-Bigtable中的性能优化"><a href="#1-4-Bigtable中的性能优化" class="headerlink" title="1.4. Bigtable中的性能优化"></a>1.4. Bigtable中的性能优化</h2><h3 id="1-4-1-局部性群组"><a href="#1-4-1-局部性群组" class="headerlink" title="1.4.1. 局部性群组"></a>1.4.1. 局部性群组</h3><p>Bigtable允许用户将存储在不同区域的数据组织在一个单独的SSTable中（以列簇为单位），以构成一个局部性群组。（类似数据库中两个表的自然连接）</p>
+<ul>
+<li>可筛选在意的数据内容（类似数据库中投影）</li>
+<li>改善经常被读取的局部数据的访问速率</li>
+</ul>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618161816332.png" alt="CloudComputing-20190618161816332"></p>
+<h3 id="1-4-2-压缩"><a href="#1-4-2-压缩" class="headerlink" title="1.4.2. 压缩"></a>1.4.2. 压缩</h3><p>Bigtable中广泛应用压缩（eg.用于构成局部性群组的SSTable中）</p>
+<ul>
+<li>利用Bentley &amp; McIlroy方式（BMDiff）在大的扫描窗口将常见的长串进行压缩</li>
+<li>采取Zippy技术进行快速压缩，它在一个16KB大小的扫描窗口内寻找重复数据，这个过程非常快</li>
+</ul>
+<h3 id="1-4-3-布隆过滤器"><a href="#1-4-3-布隆过滤器" class="headerlink" title="1.4.3. 布隆过滤器"></a>1.4.3. 布隆过滤器</h3><p>巴顿·布隆于1970年提出，它实际上是一个很长的二进制向量和一系列随机映射函数。在Bigtable中用于读写操作中确定子表位置</p>
+<p>优点：</p>
+<ul>
+<li>速度快，省空间</li>
+<li>不会将一个子表误判成不存在</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>某些情况下，会将不存在的子表误判成存在</li>
+</ul>
+<h1 id="2-Megastore————分布式存储系统"><a href="#2-Megastore————分布式存储系统" class="headerlink" title="2. Megastore————分布式存储系统"></a>2. Megastore————分布式存储系统</h1><h2 id="2-1-产生原因（业务驱动）："><a href="#2-1-产生原因（业务驱动）：" class="headerlink" title="2.1. 产生原因（业务驱动）："></a>2.1. 产生原因（业务驱动）：</h2><ul>
+<li>高负载的交互式应用，传统关系型数据库通过连接（join）提升性能代价过于高昂</li>
+<li>业务需求中读操作远远大于写操作</li>
+<li>基于Bigtable这样的key/value存储系统之上，设计存储和查询级联数据的分布式存储系统非常方便</li>
+</ul>
+<h2 id="2-2-说明"><a href="#2-2-说明" class="headerlink" title="2.2. 说明"></a>2.2. 说明</h2><ul>
+<li>介于传统关系型数据库和NoSQL之间的存储技术，并尽可能地实现高可用性和高可扩展性的统一。</li>
+<li>对于高可用性，Megastore实现了一个同步的、容错的、适合远距离传输的<strong>复制机制</strong></li>
+<li>对高扩展性，Megastore将数据分割成很多小数据分区（存放于NoSQL数据库中）</li>
+</ul>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618163837063.png" alt="CloudComputing-20190618163837063"></p>
+<ul>
+<li>在Megastore中，这些小的数据分区被称为实体组集（Entity Groups）</li>
+<li>每个实体组集包含若干的实体组（Entity Group，相当于分区中表的概念）</li>
+<li>一个实体组中包含很多的实体（Entity，相当于表中记录的概念）</li>
+</ul>
+<p>性能</p>
+<ul>
+<li>平均读取延迟在<strong>万分之一毫秒</strong>之内，平均写入延迟在<strong>100至400毫秒</strong>之间 </li>
+</ul>
+<h2 id="2-3-Megastore数据模型"><a href="#2-3-Megastore数据模型" class="headerlink" title="2.3. Megastore数据模型"></a>2.3. Megastore数据模型</h2><ul>
+<li>同关系型数据库一样，Megastore的数据模型是在模式（schema）中定义的且是强类型的（strongly typed）</li>
+<li>每个模式都由一系列的表（tables）构成，表又包含有一系列的实体（entities），每实体中包含一系列属性（properties）</li>
+<li>属性是命名的且具有类型，这些类型包括字符型（strings）、数字类型（numbers）或者Google的Protocol Buffers。</li>
+</ul>
+<h2 id="2-4-Megastore索引"><a href="#2-4-Megastore索引" class="headerlink" title="2.4. Megastore索引"></a>2.4. Megastore索引</h2><ul>
+<li>局部索引。定义在单个实体组中，作用域仅限于单个实体组（ 如PhotosByTime ）</li>
+<li>全局索引。可以横跨多个实体组集进行数据读取操作（ 如PhotosByTag ）</li>
+<li>额外索引。STORING子句、可重复的索引、内联索引</li>
+</ul>
+<h2 id="2-5-在Bigtable中的存储情况"><a href="#2-5-在Bigtable中的存储情况" class="headerlink" title="2.5. 在Bigtable中的存储情况"></a>2.5. 在Bigtable中的存储情况</h2><table>
+<thead>
+<tr>
+<th>行键（Row Key）</th>
+<th><strong>User.name</strong></th>
+<th><strong>Photo.time</strong></th>
+<th><strong>Photo.tag</strong></th>
+<th><strong>Photo._**</strong>url**</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>John</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>101,500</td>
+<td></td>
+<td>12:30:01</td>
+<td>Dinner,   Paris</td>
+<td>…</td>
+</tr>
+<tr>
+<td>101,502</td>
+<td></td>
+<td>12:15:22</td>
+<td>Betty, Paris</td>
+<td>…</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Mary</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Bigtable的列名实际上是表名和属性名结合在一起得到，不同表中实体可存储在同一个Bigtable行中</p>
+<h2 id="2-6-Megastore中的事务及并发控制"><a href="#2-6-Megastore中的事务及并发控制" class="headerlink" title="2.6. Megastore中的事务及并发控制"></a>2.6. Megastore中的事务及并发控制</h2><h3 id="2-6-1-读操作"><a href="#2-6-1-读操作" class="headerlink" title="2.6.1. 读操作"></a>2.6.1. 读操作</h3><ul>
+<li>current。总是在单个实体组中完成</li>
+<li>snapshot。总是在单个实体组中完成、系统取出已知的最后一个完整提交的事务的时间戳，接着从这个位置读数据</li>
+<li>inconsistent。忽略日志的状态直接读取最新的值</li>
+</ul>
+<h3 id="2-6-2-完整的事物周期"><a href="#2-6-2-完整的事物周期" class="headerlink" title="2.6.2. 完整的事物周期"></a>2.6.2. 完整的事物周期</h3><ul>
+<li><p>读。获取最后一次提交的事务的时间戳和日志位置</p>
+</li>
+<li><p>应用逻辑。从Bigtable读取且聚集数据到日志入口</p>
+</li>
+<li><p>提交。使用Paxos协议达成一致性，将一个入口追加到日志</p>
+</li>
+<li><p>生效。将数据更新到Bigtable中的实体和索引中</p>
+</li>
+<li><p>清除。清除不需要的数据</p>
+</li>
+</ul>
+<h3 id="2-6-3-Megastore中的事务机制"><a href="#2-6-3-Megastore中的事务机制" class="headerlink" title="2.6.3. Megastore中的事务机制"></a>2.6.3. Megastore中的事务机制</h3><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618171208831.png" alt="CloudComputing-20190618171208831"></p>
+<h2 id="2-7-Megastore基本架构"><a href="#2-7-Megastore基本架构" class="headerlink" title="2.7. Megastore基本架构"></a>2.7. Megastore基本架构</h2><p>在Megastore中共有三种副本：</p>
+<ul>
+<li>完整副本（Full Replica）</li>
+<li>见证者副本（Witness Replica）</li>
+<li>只读副本（Read-only Replica）</li>
+</ul>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618171436506.png" alt="CloudComputing-20190618171436506"></p>
+<h2 id="2-8-快速读与快速写"><a href="#2-8-快速读与快速写" class="headerlink" title="2.8. 快速读与快速写"></a>2.8. 快速读与快速写</h2><h3 id="2-8-1-快速读"><a href="#2-8-1-快速读" class="headerlink" title="2.8.1. 快速读"></a>2.8.1. 快速读</h3><ul>
+<li>利用本地读取实现快速读，带来更好的用户体验及更低的延迟</li>
+<li>关键是保证选择的副本上数据是最新的</li>
+<li>协调者是一个服务，该服务分布在每个副本的数据中心里面。它的主要作用就是跟踪一个实体组集合</li>
+<li>协调者的状态是由写算法来保证 </li>
+</ul>
+<h3 id="2-8-2-快速写"><a href="#2-8-2-快速写" class="headerlink" title="2.8.2. 快速写"></a>2.8.2. 快速写</h3><ul>
+<li>如果一次写成功，那么下一次写的时候就跳过准备过程，直接进入接受阶段</li>
+<li>Megastore没有使用专门的主服务器，而是使用leaders </li>
+<li>leader主要是来裁决哪个写入的值可以获取0号提议</li>
+<li>客户端、网络及Bigtable的故障都会导致一个写操作处于不确定的状态 </li>
+</ul>
+<h2 id="2-9-Megastore核心技术–复制"><a href="#2-9-Megastore核心技术–复制" class="headerlink" title="2.9. Megastore核心技术–复制"></a>2.9. Megastore核心技术–复制</h2><h3 id="2-9-1-复制的日志"><a href="#2-9-1-复制的日志" class="headerlink" title="2.9.1. 复制的日志"></a>2.9.1. 复制的日志</h3><ul>
+<li><p>每个副本都存有记录所有更新的数据</p>
+</li>
+<li><p>Megastore允许副本不按顺序接受日志，这些日志将独立的存储在Bigtable中</p>
+</li>
+</ul>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618171942921.png" alt="CloudComputing-20190618171942921"></p>
+<h3 id="2-9-2-读取数据"><a href="#2-9-2-读取数据" class="headerlink" title="2.9.2. 读取数据"></a>2.9.2. 读取数据</h3><p>本地查询 -&gt; 发现位置 -&gt; 追赶 -&gt; 验证 -&gt; 查询数据</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618172138062.png" alt="CloudComputing-20190618172138062"></p>
+<h3 id="2-9-3-写入数据"><a href="#2-9-3-写入数据" class="headerlink" title="2.9.3. 写入数据"></a>2.9.3. 写入数据</h3><p>接收leader -&gt; 准备 -&gt; 接收 -&gt; 失效 -&gt; 生效</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190618172312027.png" alt="CloudComputing-20190618172312027"></p>
+<h3 id="2-9-4-协调者的可用性"><a href="#2-9-4-协调者的可用性" class="headerlink" title="2.9.4. 协调者的可用性"></a>2.9.4. 协调者的可用性</h3><ul>
+<li>协调者在系统中是比较重要的——协调者的进程运行在每个数据中心。每次的写操作中都要涉及协调者，因此协调者的故障将会导致系统的不可用</li>
+<li>Megastore使用了Chubby锁服务，为了处理请求，一个协调者必须持有多数锁。一旦因为出现问题导致它丢失了大部分锁，协调者就会恢复到一个默认保守状态</li>
+<li>除了可用性问题，对于协调者的读写协议必须满足一系列的竞争条件 </li>
+</ul>
+<h1 id="3-Dapper————大规模分布式系统的监控基础架构"><a href="#3-Dapper————大规模分布式系统的监控基础架构" class="headerlink" title="3. Dapper————大规模分布式系统的监控基础架构"></a>3. Dapper————大规模分布式系统的监控基础架构</h1><h2 id="3-1-三个基本概念"><a href="#3-1-三个基本概念" class="headerlink" title="3.1. 三个基本概念"></a>3.1. 三个基本概念</h2><ul>
+<li>监控树（Trace Tree）。一个同特定事件相关的所有消息</li>
+<li>区间（Span）。实际上就是一条记录</li>
+<li>注释（Annotation）。主要用来辅助推断区间关系，也可以包含一些自定义的内容</li>
+</ul>
+<h2 id="3-2-监控信息的汇总"><a href="#3-2-监控信息的汇总" class="headerlink" title="3.2. 监控信息的汇总"></a>3.2. 监控信息的汇总</h2><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190710111630677.png" alt="CloudComputing-20190710111630677"></p>
+<h2 id="3-3-关键性技术"><a href="#3-3-关键性技术" class="headerlink" title="3.3. 关键性技术"></a>3.3. 关键性技术</h2><h3 id="3-3-1-轻量级核心功能库"><a href="#3-3-1-轻量级核心功能库" class="headerlink" title="3.3.1. 轻量级核心功能库"></a>3.3.1. 轻量级核心功能库</h3><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190710111819223.png" alt="CloudComputing-20190710111819223"></p>
+<ul>
+<li>最关键的代码基础是——基本RPC、线程和控制流函数库的实现</li>
+<li>主要功能是——实现区间创建、抽样和在本地磁盘上记录日志。</li>
+<li>将复杂的功能实现限制在一个轻量级的核心功能库中——保证了Dapper的监控过程基本对应用层透明。</li>
+</ul>
+<h3 id="3-3-2-二次抽样技术"><a href="#3-3-2-二次抽样技术" class="headerlink" title="3.3.2. 二次抽样技术"></a>3.3.2. 二次抽样技术</h3><p>利用二次抽样技术成功地解决了<strong>低开销及广泛可部署性</strong>的问题。</p>
+<ol>
+<li>第一次抽样。实践中，设计人员发现当抽样率低至1/1024时也能够产生足够多的有效监控数据，即在1024个请求中抽取1个进行监控也是可行的，从而可以捕获有效数据</li>
+<li>第二次抽样。发生在数据写入Bigtable前，具体方法是将监控id散列成一个标量z（0≤z≤1），如果某个区间的z小于事先定义好的汇总抽样系数，则保留这个区间并将它写入Bigtable，否则丢弃 </li>
+</ol>
+<h2 id="3-4-Dapper使用心得"><a href="#3-4-Dapper使用心得" class="headerlink" title="3.4. Dapper使用心得"></a>3.4. Dapper使用心得</h2><ol>
+<li>新服务部署中Dapper的使用。利用Dapper对系统延迟情况进行一系列的跟踪，进而发现存在的问题</li>
+<li>定位长尾延迟（Addressing Long Tail Latency）。端到端性能和关键路径上的网络延迟有着极大的关系</li>
+<li>推断服务间的依存关系（Inferring Service Dependencies）。Google的“服务依存关系”项目使用监控注释和DPAI的MapReduce接口实现了服务依存关系确定的自动化</li>
+<li>确定不同服务的网络使用情况。利用Dapper平台构建了一个连续不断更新的控制台，用来显示内部集群网络通信中最活跃的应用层终端</li>
+<li>分层的共享式存储系统。没有Dapper之类的工具的情况下对于这种共享式服务资源的争用也同样难以调试</li>
+<li>利用Dapper进行“火拼”（Firefighting with Dapper）。Dapper用户可以通过和Dapper守护进程的直接通信，将所需的最新数据汇总在一起 </li>
+</ol>
+<h1 id="4-Dremel————海量数据的交互式分析工具"><a href="#4-Dremel————海量数据的交互式分析工具" class="headerlink" title="4. Dremel————海量数据的交互式分析工具"></a>4. Dremel————海量数据的交互式分析工具</h1><h2 id="4-1-Dremel支持的典型应用"><a href="#4-1-Dremel支持的典型应用" class="headerlink" title="4.1. Dremel支持的典型应用"></a>4.1. Dremel支持的典型应用</h2><ul>
+<li>Web文档的分析</li>
+<li>Android市场的应用安装数据的跟踪</li>
+<li>Google产品的错误报告</li>
+<li>Google图书的光学字符识别</li>
+<li>欺诈信息的分析</li>
+<li>Google地图的调试</li>
+<li>Bigtable实例上的tablet迁移</li>
+<li>Google分布式构建系统的测试结果分析</li>
+<li>磁盘I/O信息的统计</li>
+<li>Google数据中心上运行任务的资源监控</li>
+<li>Google代码库的符号和依赖关系分析</li>
+</ul>
+<h1 id="5-Dremel的数据模型"><a href="#5-Dremel的数据模型" class="headerlink" title="5. Dremel的数据模型"></a>5. Dremel的数据模型</h1><h3 id="5-0-1-两方面的技术支撑"><a href="#5-0-1-两方面的技术支撑" class="headerlink" title="5.0.1. 两方面的技术支撑"></a>5.0.1. 两方面的技术支撑</h3><ul>
+<li>一方面：统一的存储平台<br>实现高效的数据存储，Dremel使用的底层数据存储平台是GFS</li>
+<li>另一方面：统一的数据存储格式<br>存储的数据才可以被不同的平台所使用</li>
+</ul>
+<h3 id="5-0-2-面向记录和面向列的存储"><a href="#5-0-2-面向记录和面向列的存储" class="headerlink" title="5.0.2. 面向记录和面向列的存储"></a>5.0.2. 面向记录和面向列的存储</h3><p>Google的Dremel是第一个在嵌套数据模型基础上实现列存储的系统。</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-Dremel.png" alt="Dremel面向记录和面向列的存储"></p>
+<p>优势：</p>
+<ul>
+<li>处理时只需要使用涉及的列数据</li>
+<li>列存储更利于数据的压缩</li>
+</ul>
+<h3 id="5-0-3-Dremel小结"><a href="#5-0-3-Dremel小结" class="headerlink" title="5.0.3. Dremel小结"></a>5.0.3. Dremel小结</h3><ul>
+<li>Dremel和MapReduce并不是互相替代，而是相互补充的技术。在不同的应用场景下各有其用武之地。</li>
+<li>Drill的设计目标就是复制一个开源的Dremel，但是从目前来看，该项目无论是进展还是影响力都达不到Hadoop的高度。</li>
+<li>希望未来能出现一个真正有影响力的开源系统实现Dremel的主要功能并被广泛采用。</li>
+</ul>
+<h1 id="6-PowerDrill————内存大数据分析系统"><a href="#6-PowerDrill————内存大数据分析系统" class="headerlink" title="6. PowerDrill————内存大数据分析系统"></a>6. PowerDrill————内存大数据分析系统</h1><h2 id="6-1-PowerDrill产生背景与设计目标"><a href="#6-1-PowerDrill产生背景与设计目标" class="headerlink" title="6.1. PowerDrill产生背景与设计目标"></a>6.1. PowerDrill产生背景与设计目标</h2><p>现象：</p>
+<ul>
+<li>在查询过程中，平均<strong>92.41%**的数据被略去</strong>5.02%<strong>的数据会直接被缓存命中，一般仅须扫描</strong>2.66%**的数据即可得到查询结果</li>
+<li>超过<strong>70%**的查询是不需要从磁盘访问任何数据的这些查询的平均访问延迟大约是</strong>25秒<strong>，</strong>96.5%<strong>的查询需要访问的磁盘量不超过</strong>1GB**</li>
+</ul>
+<p>背景：</p>
+<ul>
+<li>绝大多数的查询是类似和一致的；</li>
+<li>存储系统中的表只有一小部分是经常被使用的，绝大部分的表使用频率不高。</li>
+</ul>
+<p>目的：</p>
+<ul>
+<li>尽可能在查询中略去不需要的数据分块；</li>
+<li>尽可能地减少数据在内存中的占用。（越少的内存占用意味着内存中可加载和处理的数据越多）</li>
+</ul>
+<h2 id="6-2-ProwerDrill系统组成"><a href="#6-2-ProwerDrill系统组成" class="headerlink" title="6.2. ProwerDrill系统组成"></a>6.2. ProwerDrill系统组成</h2><ul>
+<li>Web UI</li>
+<li>一个抽象层</li>
+<li>列式存储</li>
+</ul>
+<h2 id="6-3-PowerDrill数据结构"><a href="#6-3-PowerDrill数据结构" class="headerlink" title="6.3. PowerDrill数据结构"></a>6.3. PowerDrill数据结构</h2><p>PowerDrill采用的是一个双层数据字典结构</p>
+<p><img data-src="/Users/eisenhao/Documents/CloudComputing/CloudComputing-20190710154540235.png" alt="CloudComputing-20190710154540235"></p>
+<h2 id="6-4-PowerDrill采用的性能优化"><a href="#6-4-PowerDrill采用的性能优化" class="headerlink" title="6.4. PowerDrill采用的性能优化"></a>6.4. PowerDrill采用的性能优化</h2><h3 id="6-4-1-数据分块"><a href="#6-4-1-数据分块" class="headerlink" title="6.4.1. 数据分块"></a>6.4.1. 数据分块</h3><ul>
+<li>背景：传统的索引对于PowerDrill的查询场景作用不是很大，因此一个很自然的考虑就是对数据进行分块，过滤查询中不需要的数据块来减少数据量</li>
+<li>分块方法：常见的分区方法有范围分区、散列分区等。PowerDrill实际采用的是一种组合范围分区方法。</li>
+<li>分块步骤：a. 领域专家确定若干个划分的域；b. 利用这几个域对数据进行划分；c. 每个块的行数达到阈值时就停止划分。</li>
+<li>局限性：域的确定需要领域专家（需要经验划分域）</li>
+</ul>
+<h3 id="6-4-2-数据编码的优化"><a href="#6-4-2-数据编码的优化" class="headerlink" title="6.4.2. 数据编码的优化"></a>6.4.2. 数据编码的优化</h3><ul>
+<li>对于不同的块，如果我们可以确定块中不同值的数量，那么就可以根据这个数量值来选择可变的比特位来记录块id</li>
+<li>有一个专有名词用于统计一组数中不同值的个数，称为“基数估计”</li>
+<li>对于小规模的数据集，可以比较容易地统计出精确的基数。但是在大数据的环境下，精确的基数统计非常耗时，因此能保证一定精度的基数估计就可以满足实际的需求</li>
+<li>基数估计的方法很多，大多利用了散列函数的一些特性，Google内部使用的是一种称为Hyperloglog的基数估计方法的变种</li>
+</ul>
+<h3 id="6-4-3-全局字典优化"><a href="#6-4-3-全局字典优化" class="headerlink" title="6.4.3. 全局字典优化"></a>6.4.3. 全局字典优化</h3><p>特性：</p>
+<ul>
+<li>全局字典是有序的</li>
+<li>排序后的数据常常有共同的前缀</li>
+</ul>
+<p>备注：</p>
+<ul>
+<li>实际使用中为了进一步减少查询中需要加载到内存的全局字典，对全局字典又进行了分块</li>
+<li>对每个全局字典块还会维护一个布隆过滤器（bloom filter）来快速确定某个值是否在字典中</li>
+</ul>
+<h3 id="6-4-4-压缩算法"><a href="#6-4-4-压缩算法" class="headerlink" title="6.4.4. 压缩算法"></a>6.4.4. 压缩算法</h3><p>不管压缩算法的解压速度多快，总会消耗一定的物理资源与时间。对此PowerDrill采用了一种<strong>冷热数据</strong>分别对待的策略。</p>
+<p>在冷热数据切换策略中，比较常用的是LRU算法。PowerDrill开发团队采用了<strong>启发式的缓存策略</strong>来代替原始的LRU算法。</p>
+<h3 id="6-4-5-行的重排"><a href="#6-4-5-行的重排" class="headerlink" title="6.4.5. 行的重排"></a>6.4.5. 行的重排</h3><p>PowerDrill在实际生产环境中对数据分块时选定的那几个域按照字典序进行排序来得到重排的结果。数据压缩的算法有很多，比较常用的一种称为游程编码（Run-Length Encoding，RLE），又称行程长度编码，其好处是压缩和解压缩都非常快。</p>
+<h2 id="6-5-PowerDrill与Dremel的对比"><a href="#6-5-PowerDrill与Dremel的对比" class="headerlink" title="6.5. PowerDrill与Dremel的对比"></a>6.5. PowerDrill与Dremel的对比</h2><table>
+<thead>
+<tr>
+<th><strong>设计目标</strong></th>
+<th><strong>处理非常大量的数据集</strong></th>
+<th><strong>分析少量的核心数据集</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>设计理念</strong></td>
+<td>处理的数据来自外存</td>
+<td>处理的数据尽可能地存于内存</td>
+</tr>
+<tr>
+<td></td>
+<td>未进行数据分区，分析时要扫描所有需要的列</td>
+<td>使用了组合范围分区，分析时可以跳过很多不需要的分区</td>
+</tr>
+<tr>
+<td></td>
+<td>数据通常不需要加载，增加数据很方便</td>
+<td>数据需要加载，增加数据相对不便</td>
+</tr>
+</tbody></table>
+<h1 id="7-Google应用程序引擎"><a href="#7-Google应用程序引擎" class="headerlink" title="7. Google应用程序引擎"></a>7. Google应用程序引擎</h1><p>Google App Engine是一个由Python应用服务器群、Bigtable数据库及GFS数据存储服务组成的平台，它能为开发者提供一体化的可自动升级的在线应用服务。</p>
+<p>特点：</p>
+<ul>
+<li>Google App Engine可以让开发人员在Google的基础架构上运行网络应用程序。</li>
+<li>在Google App Engine中，用户可以使用appspot.com域上的免费域名为应用程序提供服务，也可以使用Google企业应用套件从自己的域为它提供服务。</li>
+<li>可以免费使用Google App Engine。注册一个免费账户即可开发和发布应用程序，而且不需要承担任何费用和责任。</li>
+</ul>
+<h2 id="7-1-Google-App-Engine的整体架构"><a href="#7-1-Google-App-Engine的整体架构" class="headerlink" title="7.1. Google App Engine的整体架构"></a>7.1. Google App Engine的整体架构</h2><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190710161656740.png" alt="CloudComputing-20190710161656740"></p>
+<h2 id="7-2-应用程序环境的特性"><a href="#7-2-应用程序环境的特性" class="headerlink" title="7.2. 应用程序环境的特性"></a>7.2. 应用程序环境的特性</h2><ul>
+<li><strong>动态网络服务</strong>功能。能够完全支持常用的网络技术。</li>
+<li>具有<strong>持久存储的空间</strong>。在这个空间里平台可以支持一些基本操作，如查询、分类和事务的操作。</li>
+<li>具有自主平衡网络和系统的负载、自动进行<strong>扩展</strong>的功能。</li>
+<li>可以对用户的<strong>身份进行验证</strong>，并且支持使用Google账户发送邮件。</li>
+<li>有一个功能完整的<strong>本地开发环境</strong>，可以在自身的计算机上模拟Google          App Engine环境。</li>
+<li>支持在指定时间或定期触发事件的<strong>计划任务</strong>。</li>
+</ul>
+<h2 id="7-3-沙盒的限制"><a href="#7-3-沙盒的限制" class="headerlink" title="7.3. 沙盒的限制"></a>7.3. 沙盒的限制</h2><ul>
+<li>用户的应用程序只能通过Google App Engine提供的网址抓取API和电子邮件服务API来访问互联网中其他的计算机，其他计算机如请求与该应用程序相连接，只能在标准接口上通过HTTP或HTTPS进行</li>
+<li>应用程序无法对Google App Engine的文件系统进行写入操作，只能读取应用程序代码上的文件，并且该应用程序必须使用Google App Engine的Data Store数据库来存储应用程序运行期间持续存在的数据</li>
+<li>应用程序只有在响应网络请求时才运行，并且这个响应时间必须极短，在几秒之内必须完成。与此同时，请求处理的程序不能在自己的响应发送后产生子进程或执行代码</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag"><i class="fa fa-tag"></i> 云计算</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/30/webCrawlerSimpleTest/" rel="prev" title="Python简单网页爬虫练习">
+                  <i class="fa fa-chevron-left"></i> Python简单网页爬虫练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/24/BitPrint/" rel="next" title="测试内存中变量的存储方式">
+                  测试内存中变量的存储方式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2019/07/05/CloudComputingNote/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

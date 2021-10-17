@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Data mining, the science of extracting useful knowledge from such huge data repositories, has emerged as a young and interdisciplinary field in computer science.  – by KDD    1. 数据挖掘简介">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据挖掘简介与发展动向">
+<meta property="og:url" content="https://eisenhao.cn/2018/09/27/DataMining_Introduction/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="Data mining, the science of extracting useful knowledge from such huge data repositories, has emerged as a young and interdisciplinary field in computer science.  – by KDD    1. 数据挖掘简介">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Introduction.jpg">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AdvantagesAndDisadvantagesOfClassificationAlgorithm.png">
+<meta property="article:published_time" content="2018-09-27T11:20:44.000Z">
+<meta property="article:modified_time" content="2019-02-18T05:21:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="数据挖掘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Introduction.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/09/27/DataMining_Introduction/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/09/27/DataMining_Introduction/","path":"2018/09/27/DataMining_Introduction/","title":"数据挖掘简介与发展动向"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据挖掘简介与发展动向 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 数据挖掘简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-text">1.1. 数据挖掘的意义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%9C%80%E6%96%B0%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%8F%91%E5%B1%95%E5%8A%A8%E5%90%91"><span class="nav-text">2. 最新技术与发展动向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E6%9C%80%E6%96%B0%E6%8A%80%E6%9C%AF"><span class="nav-text">2.1. 数据挖掘最新技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%8A%80%E6%9C%AF"><span class="nav-text">2.1.1. 数据预处理技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E3%80%81OLAP%E3%80%81%E6%95%B0%E6%8D%AE%E7%AB%8B%E6%96%B9%E4%BD%93%E6%8A%80%E6%9C%AF"><span class="nav-text">2.1.2. 数据仓库、OLAP、数据立方体技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-Apriori%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%8F%98%E5%BD%A2"><span class="nav-text">2.1.3. Apriori算法及其变形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-%E5%9F%BA%E4%BA%8E%E7%BA%A6%E6%9D%9F%E6%A8%A1%E5%BC%8F%E6%8C%96%E6%8E%98%E5%92%8C%E6%8C%96%E6%8E%98%E8%BF%91%E4%BC%BC%E6%A8%A1%E5%BC%8F"><span class="nav-text">2.1.4. 基于约束模式挖掘和挖掘近似模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-5-%E5%88%86%E7%B1%BB"><span class="nav-text">2.1.5. 分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-5-1-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E4%B8%AD%E7%9A%84%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95%E5%AF%B9%E6%AF%94"><span class="nav-text">2.1.5.1. 数据挖掘中的分类算法对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-6-%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90"><span class="nav-text">2.1.6. 聚类分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-7-%E5%9F%BA%E4%BA%8E%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9%E9%80%89%E9%A1%B9%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-text">2.1.7. 基于随机选择选项的算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-8-%E6%B5%81%E7%AE%97%E6%B3%95"><span class="nav-text">2.1.8. 流算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-9-%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98"><span class="nav-text">2.1.9. 分布式数据挖掘</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E5%8F%91%E5%B1%95%E5%8A%A8%E5%90%91"><span class="nav-text">2.2. 数据挖掘发展动向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E4%B8%8E%E7%89%A9%E8%81%94%E7%BD%91%E7%9B%B8%E7%BB%93%E5%90%88"><span class="nav-text">2.2.1. 与物联网相结合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%9F%BA%E4%BA%8E%E4%BA%91%E8%AE%A1%E7%AE%97%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E6%9B%B4%E4%BD%8E%E6%88%90%E6%9C%AC"><span class="nav-text">2.2.2. 基于云计算的数据挖掘更低成本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-%E4%B8%8E%E7%BB%9F%E8%AE%A1%E4%B8%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%BB%93%E5%90%88"><span class="nav-text">2.2.3. 与统计与机器学习结合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-4-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E5%AE%9E%E7%8E%B0%E7%9A%84%E9%9B%86%E6%88%90%E5%BA%93%E5%8F%8A%E5%B9%B3%E5%8F%B0%E5%8C%96"><span class="nav-text">2.2.4. 数据挖掘实现的集成库及平台化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%BA%94%E7%94%A8%E9%A2%86%E5%9F%9F%E5%8F%8A%E8%A1%8C%E4%B8%9A%E5%BA%94%E7%94%A8"><span class="nav-text">3. 应用领域及行业应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%BA%94%E7%94%A8%E9%A2%86%E5%9F%9F"><span class="nav-text">3.1. 应用领域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%A1%8C%E4%B8%9A%E5%BA%94%E7%94%A8"><span class="nav-text">3.2. 行业应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90%E7%9A%84%E6%96%B0%E9%97%BB%E8%AF%86%E5%88%AB"><span class="nav-text">3.2.1. 动态资源的新闻识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E6%95%99%E8%82%B2%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98-EDM-%E9%A2%86%E5%9F%9F"><span class="nav-text">3.2.2. 教育数据挖掘(EDM)领域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E7%A7%91%E5%AD%A6%E5%92%8C%E9%81%A5%E6%84%9F%E6%96%B9%E9%9D%A2"><span class="nav-text">3.2.3. 地理信息科学和遥感方面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-4-%E5%8C%BB%E7%96%97%E5%A4%A7%E6%95%B0%E6%8D%AE"><span class="nav-text">3.2.4. 医疗大数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-5-%E8%83%BD%E6%BA%90%E8%AF%84%E4%BC%B0"><span class="nav-text">3.2.5. 能源评估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-6-%E4%B8%9A%E5%8A%A1%E8%BF%90%E8%90%A5%E5%92%8C%E9%A3%8E%E9%99%A9%E7%AE%A1%E7%90%86"><span class="nav-text">3.2.6. 业务运营和风险管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-7-%E7%94%A8%E4%BA%8E%E4%BF%9D%E9%99%A9%E8%A1%8C%E4%B8%9A"><span class="nav-text">3.2.7. 用于保险行业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-8-%E7%94%A8%E4%BA%8E%E6%94%BF%E5%BA%9C%E6%9C%BA%E6%9E%84"><span class="nav-text">3.2.8. 用于政府机构</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/09/27/DataMining_Introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据挖掘简介与发展动向
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-09-27 19:20:44" itemprop="dateCreated datePublished" datetime="2018-09-27T19:20:44+08:00">2018-09-27</time>
+    </span>
+
+  
+    <span id="/2018/09/27/DataMining_Introduction/" class="post-meta-item leancloud_visitors" data-flag-title="数据挖掘简介与发展动向" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Introduction.jpg" class="full-image" />
+
+<blockquote class="blockquote-center">
+<p>Data mining, the science of extracting useful knowledge from such huge data repositories, has emerged as a young and interdisciplinary field in computer science.  – by <strong>KDD</strong></p>
+
+</blockquote>
+
+<h1 id="1-数据挖掘简介"><a href="#1-数据挖掘简介" class="headerlink" title="1. 数据挖掘简介"></a>1. 数据挖掘简介</h1><a id="more"></a>
+
+<ul>
+<li>数据挖掘是一个动态的、强势快速扩展的领域。可简要将数据挖掘研究的主要问题分为五组：挖掘方法、用户交互、有效性与可伸缩性、数据类型的多样性、数据挖掘与社会。</li>
+<li>数据挖掘吸纳了诸如<strong>统计学</strong>、<strong>机器学习</strong>、<strong>模式识别</strong>、<strong>数据库和数据仓库</strong>、<strong>信息检索</strong>、<strong>可视化</strong>、<strong>算法</strong>、<strong>高性能计算</strong>和许多应用领域的大量技术。</li>
+</ul>
+<h2 id="1-1-数据挖掘的意义"><a href="#1-1-数据挖掘的意义" class="headerlink" title="1.1. 数据挖掘的意义"></a>1.1. 数据挖掘的意义</h2><ul>
+<li>利用大数据帮助做出<strong>预测</strong>或<strong>决策</strong></li>
+<li>发现数据中潜在的<strong>有趣模式</strong>或<strong>知识</strong></li>
+</ul>
+<h1 id="2-最新技术与发展动向"><a href="#2-最新技术与发展动向" class="headerlink" title="2. 最新技术与发展动向"></a>2. 最新技术与发展动向</h1><h2 id="2-1-数据挖掘最新技术"><a href="#2-1-数据挖掘最新技术" class="headerlink" title="2.1. 数据挖掘最新技术"></a>2.1. 数据挖掘最新技术</h2><ul>
+<li>超越传统技术和数据分析工具的能力的数据集催生了许多新的技术和工具–by<a target="_blank" rel="noopener" href="https://link.springer.com/content/pdf/10.1007/978-3-319-08254-7.pdf">Information granularity, big data, and computational intelligence</a></li>
+</ul>
+<p>面对数据挖掘中3V的挑战（即：超大数据量、多样化的数据种类、处理数据的速度要求），如大型零售商的客户交易，天气监测，情报收集等数据集快速超越传统技术和数据分析工具的能力等问题，驱使数据可视化，采集和序列化中诞生了许多新的技术和工具。</p>
+<h3 id="2-1-1-数据预处理技术"><a href="#2-1-1-数据预处理技术" class="headerlink" title="2.1.1. 数据预处理技术"></a>2.1.1. 数据预处理技术</h3><p>数据清理、数据集成、数据归约、数据变换和数据离散化。</p>
+<ul>
+<li>Deren Li methods 2015，为了揭示空间数据挖掘的各向异性，挖掘视图方法利用尺度、层次和粒度来区分不同的需求。Deren Li方法对数据进行预处理，为进一步的知识发现做准备，方法是选择一个权重进行迭代，以便尽可能多地清理观察到的空间数据。–by<a target="_blank" rel="noopener" href="https://link.springer.com/content/pdf/10.1007/978-3-662-48538-5.pdf">Spatial data mining</a></li>
+</ul>
+<h3 id="2-1-2-数据仓库、OLAP、数据立方体技术"><a href="#2-1-2-数据仓库、OLAP、数据立方体技术" class="headerlink" title="2.1.2. 数据仓库、OLAP、数据立方体技术"></a>2.1.2. 数据仓库、OLAP、数据立方体技术</h3><p><strong>数据仓库</strong>：是一种数据库，它与单位的操作数据库分别维护。数据仓库的建立为工商企业主管提供了体系结构和工具，以便他们系统地组织、理解和使用数据进行决策。</p>
+<p><strong>OLAP</strong>：OLAP是在线分析处理的缩写。OLAP实现业务数据的多维分析，并提供复杂计算、趋势分析和复杂数据建模的能力。</p>
+<p><strong>数据立方体</strong>：一种多维数据模型。数据立方体创建了灵活而强有力的手段，对数据的子集分组和聚集。它们使得用户可以在多维组合和变化的聚集粒度上探索数据。这种能力极大地开阔了分析的范围，有助于从数据中有效地发现有趣的模式和知识。</p>
+<h3 id="2-1-3-Apriori算法及其变形"><a href="#2-1-3-Apriori算法及其变形" class="headerlink" title="2.1.3. Apriori算法及其变形"></a>2.1.3. Apriori算法及其变形</h3><p>Apriori是一种用于在事务数据库上进行频繁项集挖掘和关联规则学习的算法。 它通过识别数据库中的频繁单个项目并将它们扩展到越来越大的项目集来进行，只要这些项目集在数据库中经常出现。</p>
+<h3 id="2-1-4-基于约束模式挖掘和挖掘近似模式"><a href="#2-1-4-基于约束模式挖掘和挖掘近似模式" class="headerlink" title="2.1.4. 基于约束模式挖掘和挖掘近似模式"></a>2.1.4. 基于约束模式挖掘和挖掘近似模式</h3><p>一种好的启发式方法是让用户说明他们对挖掘导致的有趣模式的直观或期望，作为限制搜索空间的约束条件。这种策略称为基于约束的挖掘。</p>
+<h3 id="2-1-5-分类"><a href="#2-1-5-分类" class="headerlink" title="2.1.5. 分类"></a>2.1.5. 分类</h3><p><strong>基本分类方法</strong>：包括决策树归纳、贝叶斯分类和基于规则的分类。</p>
+<p><strong>高级分类方法</strong>：贝叶斯信念网络、后向传播的神经网络技术、支持向量机、使用频繁模式的分类、k-最邻近分类、基于案例的推理、遗传算法、模糊集方法、多类分类、半监督分类、主动学习和迁移学习。</p>
+<h4 id="2-1-5-1-数据挖掘中的分类算法对比"><a href="#2-1-5-1-数据挖掘中的分类算法对比" class="headerlink" title="2.1.5.1. 数据挖掘中的分类算法对比"></a>2.1.5.1. 数据挖掘中的分类算法对比</h4><p>分类是一种重要的数据挖掘技术，具有广泛的应用前景。分类用于找出在给定数据集中每个数据实例在哪个组中相关。分类算法主要有：<strong>C4.5</strong>、<strong>ID3</strong>、<strong>k近邻分类器</strong>、<strong>朴素贝叶斯</strong>、<strong>SVM</strong>、<strong>ANN</strong>等。分类技术一般采用统计方法、机器学习方法和神经网络方法进行分类。Nikam对不同的分类算法及其特点和局限性进行了全面的综述。</p>
+<p>– <a target="_blank" rel="noopener" href="https://pdfs.semanticscholar.org/7c97/57ee09afa570db37f04e3b6cc4da0e2f3571.pdf">A comparative study of classification techniques in data mining algorithms</a></p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AdvantagesAndDisadvantagesOfClassificationAlgorithm.png" alt="AdvantagesAndDisadvantagesOfClassificationAlgorithm"></p>
+<ul>
+<li>基于<strong>神经网络</strong>和<strong>遗传算法</strong>的数据挖掘技术</li>
+</ul>
+<p><strong>Ali, Sayyed Muzammil</strong>概述了常见的知识发现任务以及解决这些任务的方法。总结了数据挖掘的概念，阐述了数据挖掘对其方法论的意义。详细研究了基于神经网络和遗传算法的数据挖掘技术，综述了实现神经网络和遗传算法数据挖掘的关键技术和方法。</p>
+<p>– <a target="_blank" rel="noopener" href="http://www.academia.edu/download/33555810/V3I4201499a89.pdf">data mining Techniques</a></p>
+<h3 id="2-1-6-聚类分析"><a href="#2-1-6-聚类分析" class="headerlink" title="2.1.6. 聚类分析"></a>2.1.6. 聚类分析</h3><p><strong>基本聚类分析</strong>：</p>
+<ul>
+<li>k-均值和k-中心点划分算法、凝聚的与分裂的层次聚类算法、</li>
+<li>基于密度的DBSCAN、OPTICS、DENCLUE聚类分析</li>
+<li>基于网络的STING、CLIQUE聚类分析</li>
+</ul>
+<p><strong>高级聚类分析</strong>：</p>
+<ul>
+<li><p>基于概率模型的模糊簇、期望最大化算法的聚类分析</p>
+</li>
+<li><p>子空间聚类方法、双聚类（聚类高维数据）</p>
+</li>
+<li><p>SCAN算法（用于聚类图数据）</p>
+</li>
+<li><p>具有约束的COP-k-均值算法</p>
+</li>
+<li><p>数据挖掘问题的<strong>多目标进化算法</strong>的最新进展</p>
+</li>
+</ul>
+<p><strong>Mukhopadhyay, Anirban</strong>对数据挖掘问题的多目标进化算法的最新进展进行了全面的综述。本文第一部分给出了多目标优化和数据挖掘的一些基本概念。随后，对两大数据挖掘任务特征选择和分类的多目标演化方法进行了研究。在本文的第二部分中，我们调查了用于聚类、关联规则挖掘等多个数据挖掘任务的不同多目标进化算法，并对该领域未来的研究范围进行了一般性讨论。</p>
+<p>– <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/iel7/4235/4358751/06658835.pdf">A Survey of Multiobjective Evolutionary Algorithms for data mining: Part I.</a></p>
+<h3 id="2-1-7-基于随机选择选项的算法"><a href="#2-1-7-基于随机选择选项的算法" class="headerlink" title="2.1.7. 基于随机选择选项的算法"></a>2.1.7. 基于随机选择选项的算法</h3><p>有时基于<strong>随机选择选项</strong>的算法收效良好。在数据挖掘和控制领域，当一个问题需要“蛮力”选择选项时，基于<strong>随机选择选项</strong>的算法在有限的时间内提供了一定概率的良好结果，并显著减少了操作量。</p>
+<p>– <a target="_blank" rel="noopener" href="https://pdfs.semanticscholar.org/7c97/57ee09afa570db37f04e3b6cc4da0e2f3571.pdf">A comparative study of classification techniques in data mining algorithms</a></p>
+<h3 id="2-1-8-流算法"><a href="#2-1-8-流算法" class="headerlink" title="2.1.8. 流算法"></a>2.1.8. 流算法</h3><ul>
+<li><strong>APSO加速粒子群优化算法</strong></li>
+</ul>
+<p><strong>Fong, Simon</strong>为解决当涉及到在高维数据上的挖掘时，获得最优特征子集的搜索空间以指数级增长，这导致了计算上的一个棘手需求这一问题，<strong>提出了一种新的轻量级特征选择方法</strong>。该特征选择是为了实时挖掘流数据，采用加速粒子群优化算法(APSO)，在合理的处理时间内提高了分析精度。</p>
+<p>– <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/iel7/4629386/4629387/07115942.pdf">Accelerated PSO swarm search feature selection for data stream mining big data</a></p>
+<h3 id="2-1-9-分布式数据挖掘"><a href="#2-1-9-分布式数据挖掘" class="headerlink" title="2.1.9. 分布式数据挖掘"></a>2.1.9. 分布式数据挖掘</h3><p><strong>Le-Khac, Nhien-An</strong>提出了一个新的框架，开发新的和创新的数据挖掘技术，以处理非常大的分布式异构数据集在商业和学术应用。详细介绍了其中的主要组件及其接口，允许用户在Globus ToolKit、DGET等网格平台上高效地开发和实现其数据挖掘应用程序技术。</p>
+<p> – <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1703.09756">ADMIRE framework: Distributed data mining on data grid platforms</a></p>
+<p><strong>Janez Kranjc</strong>介绍了一种分布式计算平台，利用最新的软件技术和计算范式开发出了支持大数据挖掘的平台。这个平台称为ClowdFlows，它是一个基于云的web应用程序，具有图形用户界面，支持数据挖掘工作流的构建和执行，其中包括作为工作流组件使用的web服务。</p>
+<p> – <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0167739X16302709">ClowdFlows: Online workflows for distributed big data mining</a></p>
+<h2 id="2-2-数据挖掘发展动向"><a href="#2-2-数据挖掘发展动向" class="headerlink" title="2.2. 数据挖掘发展动向"></a>2.2. 数据挖掘发展动向</h2><h3 id="2-2-1-与物联网相结合"><a href="#2-2-1-与物联网相结合" class="headerlink" title="2.2.1. 与物联网相结合"></a>2.2.1. 与物联网相结合</h3><p>对许多人来说，物联网生成或捕获的海量数据被认为具有非常有用和有价值的信息。数据挖掘无疑将在使这种系统足够智能以提供更方便的服务和环境方面发挥关键作用。<br><strong>Chun-Wei Tsai</strong>从物联网开始讨论，简要回顾了“物联网数据”和“物联网数据挖掘”的特点，最后，讨论了该领域的变化、潜力、开放问题和未来趋势。</p>
+<p>– <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/iel7/9739/6734839/06674155.pdf">data mining for Internet of Things: A survey.</a></p>
+<h3 id="2-2-2-基于云计算的数据挖掘更低成本"><a href="#2-2-2-基于云计算的数据挖掘更低成本" class="headerlink" title="2.2.2. 基于云计算的数据挖掘更低成本"></a>2.2.2. 基于云计算的数据挖掘更低成本</h3><p>数据挖掘技术和应用程序可以有效地用于云计算范式。云计算是一种能够支持广泛应用的通用技术。基于云计算的数据挖掘技术的实现将允许用户从几乎集成的数据仓库中检索有意义的信息，从而**降低基础设施和存储的成本，并且可以从云检索有用的和潜在的信息。</p>
+<p>– <a target="_blank" rel="noopener" href="http://ijrise.org/asset/archive/15SANKALP1.pdf">A review on data mining based cloud computing</a></p>
+<h3 id="2-2-3-与统计与机器学习结合"><a href="#2-2-3-与统计与机器学习结合" class="headerlink" title="2.2.3. 与统计与机器学习结合"></a>2.2.3. 与统计与机器学习结合</h3><p>– <a target="_blank" rel="noopener" href="https://books.google.com/books?hl=en&lr=&id=ETwuDwAAQBAJ&oi=fnd&pg=PR19&dq=data+mining+Development+trend&ots=2NWgjl2RLK&sig=sQBatbtbXqXyebsmDBRzPVYNL_8">Data mining for business analytics: concepts, techniques, and applications in R</a></p>
+<h3 id="2-2-4-数据挖掘实现的集成库及平台化"><a href="#2-2-4-数据挖掘实现的集成库及平台化" class="headerlink" title="2.2.4. 数据挖掘实现的集成库及平台化"></a>2.2.4. 数据挖掘实现的集成库及平台化</h3><ul>
+<li><strong>SPMF——一个开源数据挖掘库</strong> 2014</li>
+</ul>
+<p><strong>Fournier-Viger</strong>提供了一个用Java实现的跨平台库——<strong>SPMF</strong>，一个开源数据挖掘库**，提供了超过55种数据挖掘算法的实现。<br>SPMF专门用于发现事务和序列数据库中的模式，如频繁项目集、关联规则和顺序模式。<br>源代码可以集成到其他Java程序中。<br>此外，SPMF还提供了命令行界面和简单的图形界面来进行快速测试。</p>
+<p>– <a target="_blank" rel="noopener" href="http://www.jmlr.org/papers/volume15/fournierviger14a/fournierviger14a.pdf">SPMF: a Java open-source pattern mining library</a></p>
+<ul>
+<li><strong>SAMOA——一个挖掘大数据流的平台</strong> 2015</li>
+</ul>
+<p><strong>Morales GD</strong>提供了一个挖掘大数据流的平台——<strong>SAMOA</strong>。它提供了一组分布式流算法，用于最常见的数据挖掘和机器学习任务，如分类、聚类和回归，以及开发新算法的编程抽象。它具有一个可插入的体系结构，允许它在多个分布式流处理引擎(如Storm、S4和Samza)上运行。萨摩亚是用Java编写的，是开源的，可以在<a target="_blank" rel="noopener" href="http://samoa-project.net的apache/">http://samoa-project.net的Apache</a> Software License version 2.0下访问。</p>
+<p>– <a target="_blank" rel="noopener" href="http://www.jmlr.org/papers/volume16/morales15a/morales15a.pdf">SAMOA: scalable advanced massive online analysis.</a></p>
+<ul>
+<li>与应用相结合 </li>
+<li>研制和开发数据挖掘标准 </li>
+<li>支持移动环境  </li>
+</ul>
+<h1 id="3-应用领域及行业应用"><a href="#3-应用领域及行业应用" class="headerlink" title="3. 应用领域及行业应用"></a>3. 应用领域及行业应用</h1><h2 id="3-1-应用领域"><a href="#3-1-应用领域" class="headerlink" title="3.1. 应用领域"></a>3.1. 应用领域</h2><p><strong>数据挖掘有许多成功的应用，如电子商务、Web搜索、生物信息学、卫生保健信息学、商务智能、金融、数字图书馆和政府等。</strong></p>
+<h2 id="3-2-行业应用"><a href="#3-2-行业应用" class="headerlink" title="3.2. 行业应用"></a>3.2. 行业应用</h2><h3 id="3-2-1-动态资源的新闻识别"><a href="#3-2-1-动态资源的新闻识别" class="headerlink" title="3.2.1. 动态资源的新闻识别"></a>3.2.1. 动态资源的新闻识别</h3><p><strong>Kalmegh, Sushilkumar</strong>讨论了动态资源的新闻识别可以通过所提出的模型来完成，使用REPTree、Simple Cart和RandomTree三种分类器来分析数据集。结果表明，随机树算法在对新闻进行分类时表现最佳。REPTree和Simple Cart算法的整体性能是不可接受的，因为可以看出，这两种算法都只能正确地对政治新闻进行分类。</p>
+<p>– <a target="_blank" rel="noopener" href="https://pdfs.semanticscholar.org/26d6/73f140807942313545489b38241c1f0401d0.pdf">Analysis of WEKA data mining algorithm REPTree, Simple CART and RandomTree for classification of Indian news</a></p>
+<h3 id="3-2-2-教育数据挖掘-EDM-领域"><a href="#3-2-2-教育数据挖掘-EDM-领域" class="headerlink" title="3.2.2. 教育数据挖掘(EDM)领域"></a>3.2.2. 教育数据挖掘(EDM)领域</h3><ul>
+<li>教育数据挖掘和学习分析</li>
+</ul>
+<p><strong>Sin, Katrina</strong>近年来，学习管理系统在教育中的应用越来越多。学生们已经开始使用移动电话，主要是智能手机，它们已经成为他们日常生活的一部分，以获取在线内容。学生的在线活动产生了大量未使用的数据，由于传统的学习分析无法处理这些数据，这些数据被浪费了。这使得大数据技术和工具渗透到教育中，处理大量的数据。本研究探讨了大数据技术在教育领域的最新应用，并对教育数据挖掘和学习分析方面的文献进行了综述。</p>
+<p>– <a target="_blank" rel="noopener" href="http://www.academia.edu/download/51542496/APPLICATION_OF_BIG_DATA_IN_EDUCATION_DAT.pdf">APPLICATION OF BIG data IN EDUCATION data mining AND LEARNING ANALYTICS–A LITERATURE REVIEW.</a></p>
+<ul>
+<li>挖掘学生入学率、考勤记录以及他们的考试数据，使之有利于教育质量的改进与提高。</li>
+</ul>
+<p>–  <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/iel7/6287639/6514899/07820050.pdf">A systematic review on educational data mining</a></p>
+<h3 id="3-2-3-地理信息科学和遥感方面"><a href="#3-2-3-地理信息科学和遥感方面" class="headerlink" title="3.2.3. 地理信息科学和遥感方面"></a>3.2.3. 地理信息科学和遥感方面</h3><ul>
+<li>空间数据挖掘应用于<strong>地理信息科学和遥感方面</strong></li>
+</ul>
+<p><strong>Li, Deren</strong>提供了空间数据挖掘在地理信息科学和遥感方面的应用实例。实践项目包括用于维护公共安全的时空视频数据挖掘、用于评估叙利亚危机严重程度的夜间灯光序列图像挖掘、以及在政府“一带一路”项目中的应用。</p>
+<p>– <a target="_blank" rel="noopener" href="https://link.springer.com/content/pdf/10.1007/978-3-662-48538-5.pdf">Spatial data mining</a></p>
+<h3 id="3-2-4-医疗大数据"><a href="#3-2-4-医疗大数据" class="headerlink" title="3.2.4. 医疗大数据"></a>3.2.4. 医疗大数据</h3><ul>
+<li><p>医疗大数据创新路径包括三个阶段：疾病早期发现、诊断、治疗和预后阶段、生命健康促进阶段和护理阶段。</p>
+</li>
+<li><p>研究热点主要集中在三个维度：疾病维度(如流行病学、乳腺癌、肥胖、糖尿病)、技术维度(如数据挖掘、机器学习)、健康服务维度(如定制服务、养老护理)</p>
+</li>
+<li><ul>
+<li><a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1386505616302556">Visualizing the knowledge structure and evolution of big data research in healthcare informatics</a></li>
+</ul>
+</li>
+<li><p>与云技术结合提供医疗服务</p>
+</li>
+</ul>
+<p><strong>Zhang, Yin</strong>提出了一个基于云和大数据分析技术的以患者为中心的医疗应用和服务的网络物理系统，称为Health-CPS。该系统由具有统一标准的数据采集层、用于分布式存储和并行计算的数据管理层和面向数据的服务层组成。研究结果表明，云技术和大数据技术可以提高医疗系统的性能，使人们可以享受各种智能医疗应用和服务。</p>
+<p> – <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/7219371/">Health-CPS: Healthcare cyber-physical system assisted by cloud and big data</a></p>
+<ul>
+<li>医学大数据研究的文献计量分析与可视化 –<a target="_blank" rel="noopener" href="https://www.mdpi.com/2071-1050/10/1/166"><strong>A bibliometric analysis</strong> and <strong>visualization</strong> of <strong>medical big data research</strong></a></li>
+<li>预测和解决乳腺癌生存率 –<a target="_blank" rel="noopener" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2994925">Data mining techniques: To predict and resolve breast cancer survivability</a></li>
+</ul>
+<h3 id="3-2-5-能源评估"><a href="#3-2-5-能源评估" class="headerlink" title="3.2.5. 能源评估"></a>3.2.5. 能源评估</h3><ul>
+<li>全球水资源趋势和可持续发展的未来前景 –<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0959652617321182">Global water <strong>trends</strong> and future scenarios for sustainable development: The case of Russia</a></li>
+<li>对智能电网环境下用电量数据的数据质量分析 –<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1364032116307109">data quality of electricity consumption data in a smart grid environment</a></li>
+</ul>
+<h3 id="3-2-6-业务运营和风险管理"><a href="#3-2-6-业务运营和风险管理" class="headerlink" title="3.2.6. 业务运营和风险管理"></a>3.2.6. 业务运营和风险管理</h3><ul>
+<li>工业系统的可靠性和安全性以及它们的操作风险管理 –<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/7378465/">Recent development in big data analytics for business operations and risk management</a></li>
+<li>业务分析的数据挖掘 –<a target="_blank" rel="noopener" href="https://books.google.com/books?hl=en&lr=&id=ETwuDwAAQBAJ&oi=fnd&pg=PR19&dq=data+mining+Development+trend&ots=2NWgjl2RLK&sig=sQBatbtbXqXyebsmDBRzPVYNL_8">Data mining for business analytics: concepts, techniques, and applications in R</a></li>
+</ul>
+<h3 id="3-2-7-用于保险行业"><a href="#3-2-7-用于保险行业" class="headerlink" title="3.2.7. 用于保险行业"></a>3.2.7. 用于保险行业</h3><p>数据挖掘技术在人寿保险中的应用 –<a target="_blank" rel="noopener" href="https://www.researchgate.net/institution/Chh_Shahu_Institute_of_Business_Education_Research/publications">Applications of Data mining techniques in life insurance</a></p>
+<h3 id="3-2-8-用于政府机构"><a href="#3-2-8-用于政府机构" class="headerlink" title="3.2.8. 用于政府机构"></a>3.2.8. 用于政府机构</h3><ul>
+<li>可持续自然资源管理评价污染防治 –<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0959652616317115">How would big data support societal development and environmental sustainability? Insights and practices</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\03\DataMining_AdaBoost\" rel="bookmark">AdaBoost算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\10\DataMining_Apriori\" rel="bookmark">Apriori算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\10\DataMining_DBSCAN\" rel="bookmark">DBSCAN算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\21\DataMining_DataPreprocess\" rel="bookmark">预处理——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\16\DataMining_ID3\" rel="bookmark">ID3算法——数据挖掘</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag"><i class="fa fa-tag"></i> 数据挖掘</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/26/highValueApplicationSoftware/" rel="prev" title="高效软件推荐">
+                  <i class="fa fa-chevron-left"></i> 高效软件推荐
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/" rel="next" title="Manjaro系统安装.rpm或.deb软件">
+                  Manjaro系统安装.rpm或.deb软件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/09/27/DataMining_Introduction/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="试想一下，将精心编写的Spark业务代码Jar包上传到Spark集群环境，却出现了简单错误或预期之外的结果，势必会破坏一天的心情和积极性，这时一套桌面级的Spark开发&amp;测试环境的优势就展露无遗了。可以在本地开发Spark代码，并测试基础功能，让开发者可以不必担心上传jar包的代码逻辑正确性、代码质量等基础问题。接下来就跟随本文一起搭建一套Win10下的Spark开发&amp;测试环境">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 Win10 和 IDEA 的 Spark 开发&amp;测试环境搭建">
+<meta property="og:url" content="https://eisenhao.cn/2020/06/25/SparkDevAndTestEnvInWin10/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="试想一下，将精心编写的Spark业务代码Jar包上传到Spark集群环境，却出现了简单错误或预期之外的结果，势必会破坏一天的心情和积极性，这时一套桌面级的Spark开发&amp;测试环境的优势就展露无遗了。可以在本地开发Spark代码，并测试基础功能，让开发者可以不必担心上传jar包的代码逻辑正确性、代码质量等基础问题。接下来就跟随本文一起搭建一套Win10下的Spark开发&amp;测试环境">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SparkDevAndTestEnvInWin10.jpg">
+<meta property="article:published_time" content="2020-06-25T11:41:44.000Z">
+<meta property="article:modified_time" content="2020-06-25T11:41:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Spark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SparkDevAndTestEnvInWin10.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2020/06/25/SparkDevAndTestEnvInWin10/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2020/06/25/SparkDevAndTestEnvInWin10/","path":"2020/06/25/SparkDevAndTestEnvInWin10/","title":"基于 Win10 和 IDEA 的 Spark 开发&测试环境搭建"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基于 Win10 和 IDEA 的 Spark 开发&测试环境搭建 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">1. 准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%90%AD%E5%BB%BAJava%E7%8E%AF%E5%A2%83"><span class="nav-text">1.1. 搭建Java环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%90%AD%E5%BB%BAScala%E7%8E%AF%E5%A2%83"><span class="nav-text">1.2. 搭建Scala环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%90%AD%E5%BB%BAHadoop%E7%8E%AF%E5%A2%83"><span class="nav-text">1.3. 搭建Hadoop环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E4%B8%8B%E8%BD%BD-Spark-%E7%9A%84-Jar-%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-text">1.4. 下载 Spark 的 Jar 依赖包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E5%AE%89%E8%A3%85Intellij-IDEA-Community%EF%BC%88%E7%A4%BE%E5%8C%BA%E5%85%8D%E8%B4%B9%E7%89%88%EF%BC%89"><span class="nav-text">1.5. 安装Intellij IDEA Community（社区免费版）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-IDEA-%E5%AE%89%E8%A3%85-Scala-%E6%8F%92%E4%BB%B6"><span class="nav-text">1.6. IDEA 安装 Scala 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-1-%E5%9C%A8%E7%BA%BF%E5%AE%89%E8%A3%85-Scala-%E6%8F%92%E4%BB%B6%EF%BC%88%E8%B6%85%E6%97%B6%E3%80%81%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="nav-text">1.6.1. 在线安装 Scala 插件（超时、失败）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-2-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85-Scala-%E6%8F%92%E4%BB%B6"><span class="nav-text">1.6.2. 离线安装 Scala 插件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BAScala%E9%A1%B9%E7%9B%AE"><span class="nav-text">2. 创建Scala项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8F%82%E8%80%83%E5%8D%9A%E6%96%87"><span class="nav-text">3. 参考博文</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2020/06/25/SparkDevAndTestEnvInWin10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于 Win10 和 IDEA 的 Spark 开发&测试环境搭建
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2020-06-25 19:41:44" itemprop="dateCreated datePublished" datetime="2020-06-25T19:41:44+08:00">2020-06-25</time>
+    </span>
+
+  
+    <span id="/2020/06/25/SparkDevAndTestEnvInWin10/" class="post-meta-item leancloud_visitors" data-flag-title="基于 Win10 和 IDEA 的 Spark 开发&测试环境搭建" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SparkDevAndTestEnvInWin10.jpg" class="full-image" />
+
+<p>试想一下，将精心编写的Spark业务代码Jar包上传到Spark集群环境，却出现了简单错误或预期之外的结果，势必会破坏一天的心情和积极性，这时一套桌面级的Spark开发&amp;测试环境的优势就展露无遗了。可以在本地开发Spark代码，并测试基础功能，让开发者可以不必担心上传jar包的代码逻辑正确性、代码质量等基础问题。接下来就跟随本文一起搭建一套Win10下的Spark开发&amp;测试环境吧！</p>
+<a id="more"></a>
+
+<div class="note success"><p>环境信息<br>Java            1.8.0_251<br>Scala sdk       2.11.12<br>Spark lib       2.4.5<br>IDEA Community  2020.1.2</p>
+</div>
+
+<h1 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h1><h2 id="1-1-搭建Java环境"><a href="#1-1-搭建Java环境" class="headerlink" title="1.1. 搭建Java环境"></a>1.1. 搭建Java环境</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase-jdk14-downloads.html">Oracle官网</a>下载所需要的JDK(eg.<a target="_blank" rel="noopener" href="https://download.oracle.com/otn-pub/java/jdk/14.0.1+7/664493ef4a6946b186ff29eb326336a2/jdk-14.0.1_windows-x64_bin.exe">jdk-14.0.1_windows-x64_bin.exe</a>)</li>
+<li>安装JDK</li>
+<li>配置环境变量：此电脑 -&gt; 属性 -&gt; 高级系统设置 -&gt; 环境变量 -&gt; 系统变量 -&gt; 新建”JAVA_HOME”变量，其值为上一步JDK安装路径；新建”CLASSPATH”变量，其值为”.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar”；最后编辑”Path”变量，追加字段”%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;”<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">eg.</span><br><span class="line">新建环境变量</span><br><span class="line">JAVA_HOME       C:\Java\jdk1.8.0_251</span><br><span class="line">CLASSPATH       .;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar</span><br><span class="line">修改Path变量（追加）</span><br><span class="line">Path            %JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;</span><br></pre></td></tr></table></figure></li>
+<li>在PowerShell输入 java -version 判断是否安装成功<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">eg.</span><br><span class="line">PS C:\Windows\system32&gt; java -version</span><br><span class="line">java version &quot;1.8.0_251&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)</span><br><span class="line">PS C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="1-2-搭建Scala环境"><a href="#1-2-搭建Scala环境" class="headerlink" title="1.2. 搭建Scala环境"></a>1.2. 搭建Scala环境</h2><p>注：Scala依赖Java 8 JDK (或 Java 11 JDK)以后的版本；目前最新版本为2.13.2，但若需要调试Spark强烈建议下载2.11.x版本，因为Spark主要适配的是2.11.x版本，最新Scala版本可能出现与Spark不兼容问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.scala-lang.org/download/">Scala官网</a>下载Scala可安装程序版<a target="_blank" rel="noopener" href="https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.msi">msi安装包</a>(大小109 MB) 或 <a target="_blank" rel="noopener" href="https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.zip">Zip版本</a>(大小27.8 MB，推荐)。msi版可直接安装，Zip版需解压。</li>
+<li>配置环境变量：此电脑 -&gt; 属性 -&gt; 高级系统设置 -&gt; 环境变量 -&gt; 系统变量 -&gt; 新建”SCALA_HOME”变量，其值为上一步Zip版解压路径或msi版安装路径；最后编辑”Path”变量，追加字段”%SCALA_HOME%\bin;”<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">eg.</span><br><span class="line">新建环境变量</span><br><span class="line">SCALA_HOME      C:\Scala\scala-2.11.12</span><br><span class="line">修改Path变量（追加）</span><br><span class="line">Path            %SCALA_HOME%\bin;</span><br></pre></td></tr></table></figure></li>
+<li>在PowerShell输入 scala 判断是否安装成功<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">eg.</span><br><span class="line">PS C:\Windows\system32&gt; scala</span><br><span class="line">Welcome to Scala 2.11.12 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_251).</span><br><span class="line">Type in expressions for evaluation. Or try :help.</span><br><span class="line"></span><br><span class="line"><span class="meta">scala&gt;</span><span class="bash"> <span class="built_in">print</span>(<span class="string">&quot;hello&quot;</span>)</span></span><br><span class="line">hello</span><br><span class="line"><span class="meta">scala&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="1-3-搭建Hadoop环境"><a href="#1-3-搭建Hadoop环境" class="headerlink" title="1.3. 搭建Hadoop环境"></a>1.3. 搭建Hadoop环境</h2><p>注：此步未配置将会导致执行scala程序时因缺少Hadoop环境如“winutils.exe”文件而无法执行，抛IOException</p>
+<ul>
+<li>登录<a target="_blank" rel="noopener" href="https://github.com/">GitHub</a>搜索”hadoop win”，下载Spark运行所需的Hadoop win环境（如：<a target="_blank" rel="noopener" href="https://github.com/steveloughran/winutils">steveloughran/winutils</a>），否则将无法运行Spark工程，报”java.io.IOException: Could not locate executable null\bin\winutils.exe in the Hadoop binaries.”</li>
+<li>解压相应Hadoop版本到指定文件夹</li>
+<li>需确保bin下有如下两个文件：hadoop.dll、winutils.exe</li>
+<li>配置环境变量：此电脑 -&gt; 属性 -&gt; 高级系统设置 -&gt; 环境变量 -&gt; 系统变量 -&gt; 新建”HADOOP_HOME”变量，其值为上一步解压路径；最后编辑”Path”变量，追加字段”%HADOOP_HOME%\bin;”</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">eg.</span><br><span class="line">新建环境变量</span><br><span class="line">HADOOP_HOME     C:\hadoop-2.7.1</span><br><span class="line">修改Path变量（追加）</span><br><span class="line">Path            %HADOOP_HOME%\bin;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-下载-Spark-的-Jar-依赖包"><a href="#1-4-下载-Spark-的-Jar-依赖包" class="headerlink" title="1.4. 下载 Spark 的 Jar 依赖包"></a>1.4. 下载 Spark 的 Jar 依赖包</h2><p>Idea中Spark工程会用到Spark的jar依赖，故需下载spark的依赖包。</p>
+<p>下载<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz">spark-2.4.5-bin-hadoop2.7.tgz</a>后解压备用</p>
+<h2 id="1-5-安装Intellij-IDEA-Community（社区免费版）"><a href="#1-5-安装Intellij-IDEA-Community（社区免费版）" class="headerlink" title="1.5. 安装Intellij IDEA Community（社区免费版）"></a>1.5. 安装Intellij IDEA Community（社区免费版）</h2><p><a target="_blank" rel="noopener" href="https://www.jetbrains.com/idea/">官网</a>下载<a target="_blank" rel="noopener" href="https://download.jetbrains.8686c.com/idea/ideaIC-2020.1.2.exe">Intellij IDEA Community（社区免费版）</a>，并安装</p>
+<h2 id="1-6-IDEA-安装-Scala-插件"><a href="#1-6-IDEA-安装-Scala-插件" class="headerlink" title="1.6. IDEA 安装 Scala 插件"></a>1.6. IDEA 安装 Scala 插件</h2><p>有两种插件安装方式，即在线安装和离线安装，推荐网络不稳定的小伙伴选择后者（注意Scala插件版本应与IDEA版本匹配）</p>
+<h3 id="1-6-1-在线安装-Scala-插件（超时、失败）"><a href="#1-6-1-在线安装-Scala-插件（超时、失败）" class="headerlink" title="1.6.1. 在线安装 Scala 插件（超时、失败）"></a>1.6.1. 在线安装 Scala 插件（超时、失败）</h3><p>IDEA -&gt; Settings -&gt; plugins -&gt; search plugins in marketplace(“scala”) -&gt; install -&gt; restart IDEA</p>
+<h3 id="1-6-2-离线安装-Scala-插件"><a href="#1-6-2-离线安装-Scala-插件" class="headerlink" title="1.6.2. 离线安装 Scala 插件"></a>1.6.2. 离线安装 Scala 插件</h3><ul>
+<li><p>浏览器访问 <a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/1347-scala">IDEA 离线插件库</a>，点击右上角”Get”按钮，并下载支持IDEA版本(2020.1.2)的 <a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/files/1347/89709/scala-intellij-bin-2020.1.39.zip?updateId=89709&pluginId=1347&family=INTELLIJ">Scala 插件</a>（支持2020.1 — 2020.1.2）</p>
+</li>
+<li><p>IDEA -&gt; Settings -&gt; plugins -&gt; 点击小齿轮 -&gt; Install plugin form disk -&gt; select package -&gt; restart IDEA</p>
+</li>
+</ul>
+<div class="note success"><p>准备工作至此结束</p>
+</div>
+
+<h1 id="2-创建Scala项目"><a href="#2-创建Scala项目" class="headerlink" title="2. 创建Scala项目"></a>2. 创建Scala项目</h1><ul>
+<li>新建Scala工程<br>Run IDEA -&gt; File -&gt; New -&gt; Project -&gt; Scala -&gt; IDEA -&gt; NEXT</li>
+<li>填写工程基础信息</li>
+</ul>
+<p>指定工程的工程名、路径、Java JDK、Scala JDK。设置Scala JDK时点击右侧”Create”按钮会自动识别准备工作中安装的Scala JDK(2.11.12)</p>
+<ul>
+<li>添加Spark依赖的jar到此工程<br>也可直接将整个jars目录导入到Libraries</li>
+</ul>
+<p>File –&gt; Project Steuccture –&gt; Libraries –&gt; 点击”+”按钮 –&gt; Java –&gt; 选择准备工作中已解压备用的”spark-2.4.5-bin-hadoop2.7”文件夹里的”jars”目录 –&gt; OK</p>
+<ul>
+<li>新建一个object</li>
+</ul>
+<p>左侧工程结构中点击 src -&gt; new -&gt; scala clas -&gt; 输入文件名(“SparkPi.scala”) -&gt; 选择Object</p>
+<ul>
+<li>编写Spark简易程序：计算圆周率Pi</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.math.random</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Spark 简易程序：计算圆周率 Pi</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 原理：随机落在与正方形相切的同心圆内的概率为：S圆 / S正 = Pi / 4</span></span><br><span class="line"><span class="comment"> * 注：根据大数定律，当随机抛点次数达到百万次时，据概率所计算出Pi才具有参考意义</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">SparkPi</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> spark = <span class="type">SparkSession</span></span><br><span class="line">          .builder</span><br><span class="line">          .appName(<span class="string">&quot;Spark Pi&quot;</span>)</span><br><span class="line">          .getOrCreate()</span><br><span class="line">        <span class="keyword">val</span> slices = <span class="keyword">if</span> (args.length &gt; <span class="number">0</span>) args(<span class="number">0</span>).toInt <span class="keyword">else</span> <span class="number">2</span></span><br><span class="line">        <span class="keyword">val</span> n = math.min(<span class="number">1000000</span>L * slices, <span class="type">Int</span>.<span class="type">MaxValue</span>).toInt <span class="comment">// avoid overflow</span></span><br><span class="line">        <span class="keyword">val</span> count = spark.sparkContext.parallelize(<span class="number">1</span> until n, slices).map &#123; i =&gt;</span><br><span class="line">            <span class="keyword">val</span> x = random * <span class="number">2</span> - <span class="number">1</span></span><br><span class="line">            <span class="keyword">val</span> y = random * <span class="number">2</span> - <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> (x * x + y * y &lt; <span class="number">1</span>) <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        &#125;.reduce(_ + _)</span><br><span class="line">        println(<span class="string">&quot;Pi is roughly &quot;</span> + <span class="number">4.0</span> * count / (n - <span class="number">1</span>))</span><br><span class="line">        spark.stop()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置启动参数</li>
+</ul>
+<p>注：未设置会报”SparkException: A master URL must be set in your configuration”异常</p>
+<p>设置vm options：点击菜单栏Run -&gt; Edit Configurations -&gt; VM options -&gt; 填写如下启动参数，让Spark程序以local模式运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Dspark.master=local</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行Spark程序</li>
+</ul>
+<p>点击”object SparkPi”旁的绿色小三角即可运行Spark程序（注意设置启动参数）</p>
+<h1 id="3-参考博文"><a href="#3-参考博文" class="headerlink" title="3. 参考博文"></a>3. 参考博文</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zlslch/p/5880926.html">IntelliJ IDEA（Community版本）的下载、安装和WordCount的初步使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/LiangEdward/article/details/106845276">基于windows，IDEA配置hadoop运行环境遇到的问题和解决（null\bin\winutils.exe）</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/streamery/article/details/106752423">ERROR SparkContext: Error initializing SparkContext.</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spark/" rel="tag"><i class="fa fa-tag"></i> Spark</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/15/ExecShellCMD/" rel="prev" title="Java进程执行Shell命令问题总结">
+                  <i class="fa fa-chevron-left"></i> Java进程执行Shell命令问题总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/11/CppConfusedNotes/" rel="next" title="C++易混淆知识点总结">
+                  C++易混淆知识点总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2020/06/25/SparkDevAndTestEnvInWin10/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

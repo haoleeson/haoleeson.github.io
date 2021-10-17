@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类1.1. PAM算法简介 PAM方法于1987年提出，用于l1范数和其他距离的工作。  k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PAM算法——数据挖掘">
+<meta property="og:url" content="https://eisenhao.cn/2018/10/26/DataMining_PAM/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类1.1. PAM算法简介 PAM方法于1987年提出，用于l1范数和其他距离的工作。  k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_PAM.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=3_iteration=10.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=8_iteration=10.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=3_iteration=30.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=8_iteration=30.png">
+<meta property="article:published_time" content="2018-10-26T07:05:44.000Z">
+<meta property="article:modified_time" content="2019-02-18T07:03:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据挖掘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_PAM.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/10/26/DataMining_PAM/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/10/26/DataMining_PAM/","path":"2018/10/26/DataMining_PAM/","title":"PAM算法——数据挖掘"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PAM算法——数据挖掘 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%9E%E7%8E%B0PAM%E7%AE%97%E6%B3%95%E5%AF%B9%E9%83%A8%E5%88%86%E5%90%AB%E6%9C%89%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0%E7%9A%84waveform%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E8%81%9A%E7%B1%BB"><span class="nav-text">1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-PAM%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. PAM算法简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E7%BC%96%E5%86%99Python%E7%A8%8B%E5%BA%8F%E5%AE%9E%E7%8E%B0PAM%E7%AE%97%E6%B3%95"><span class="nav-text">1.2. 编写Python程序实现PAM算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%AF%B9%E9%83%A8%E5%88%86%E5%90%AB%E6%9C%89%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0%E7%9A%84waveform%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E8%81%9A%E7%B1%BB"><span class="nav-text">1.3. 对部分含有高斯噪声的waveform数据集进行聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E5%8A%A0%E8%BD%BD%E2%80%99waveform-noise-data%E2%80%99%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E5%90%AB%E5%99%AA%E5%A3%B0%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-text">1.3.1. 加载’waveform-+noise.data’文件中的含噪声的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-PAM%E7%AE%97%E6%B3%95%E5%AF%B9waveform%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8C%E8%81%9A%E7%B1%BB"><span class="nav-text">1.3.2. PAM算法对waveform数据集进行聚类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99Python%E7%A8%8B%E5%BA%8F%E5%AE%9E%E7%8E%B0PAM%E7%AE%97%E6%B3%95%E5%B9%B6%E5%AF%B9%E4%B8%80%E5%89%AF%E5%99%AA%E5%A3%B0%E5%9B%BE%E5%83%8F%E8%BF%9B%E8%A1%8C%E5%88%86%E5%89%B2"><span class="nav-text">2. 编写Python程序实现PAM算法并对一副噪声图像进行分割</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%8A%A0%E8%BD%BD%E5%90%AB%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0%E7%9A%84%E5%9B%BE%E7%89%87%E7%9A%84rgb%E6%95%B0%E6%8D%AE"><span class="nav-text">2.1. 加载含高斯噪声的图片的rgb数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90k%E4%B8%AA%E7%A7%8D%E5%AD%90%EF%BC%8C%E8%BF%94%E5%9B%9Ek%E4%B8%AA%E9%9A%8F%E6%9C%BA%E5%83%8F%E7%B4%A0%E7%82%B9%E5%9D%90%E6%A0%87"><span class="nav-text">2.2. 随机生成k个种子，返回k个随机像素点坐标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E9%9D%9E%E4%B8%AD%E5%BF%83%E7%82%B9Oi"><span class="nav-text">2.3. 随机选择一个非中心点Oi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E8%AE%A1%E7%AE%97%E5%8F%98%E9%87%8F%E4%B8%AD%E6%AF%8F%E4%B8%AA%E5%83%8F%E7%B4%A0%E7%82%B9%E4%B8%8Ek%E4%B8%AA%E4%B8%AD%E5%BF%83%E7%82%B9%E7%9A%84%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB%EF%BC%8C%E5%B9%B6%E5%88%86%E7%B0%87"><span class="nav-text">2.4. 计算变量中每个像素点与k个中心点的欧式距离，并分簇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E8%AE%A1%E7%AE%97%E6%89%80%E6%9C%89%E5%AF%B9%E8%B1%A1%E4%B8%8E%E5%85%B6%E7%B0%87%E4%B8%AD%E4%B8%AD%E5%BF%83%E7%82%B9%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%80%BC%EF%BC%8C%E5%B0%86%E5%85%B6%E5%85%A8%E9%83%A8%E7%B4%AF%E5%8A%A0%E5%BE%97%E5%88%B0%E6%8D%9F%E5%A4%B1%E5%80%BC%EF%BC%8C%E8%AE%B0%E4%B8%BAcost"><span class="nav-text">2.5. 计算所有对象与其簇中中心点的距离值，将其全部累加得到损失值，记为cost</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E6%98%BE%E7%A4%BA%E5%88%86%E5%89%B2%E5%89%8D%E5%90%8E%E5%AF%B9%E6%AF%94%E5%9B%BE%E7%A8%8B%E5%BA%8F"><span class="nav-text">2.6. 显示分割前后对比图程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-PAM%E7%AE%97%E6%B3%95%E5%AF%B9%E5%9B%BE%E7%89%87%E6%95%B0%E6%8D%AE%E8%81%9A%E7%B1%BB%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.7. PAM算法对图片数据聚类实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-8-%E4%BD%BF%E7%94%A8PAM%E7%AE%97%E6%B3%95%E5%AF%B9%E4%B8%80%E5%89%AF%E6%9C%89%E5%99%AA%E5%9B%BE%E5%83%8F%E8%BF%9B%E8%A1%8C%E5%88%86%E5%89%B2%E5%AE%8C%E6%95%B4%E4%B8%BB%E7%A8%8B%E5%BA%8F"><span class="nav-text">2.8. 使用PAM算法对一副有噪图像进行分割完整主程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-9-PAM%E7%AE%97%E6%B3%95%E5%88%86%E5%89%B2%E5%9B%BE%E7%89%87%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="nav-text">2.9. PAM算法分割图片效果图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-1-%E5%BD%93%E6%9C%80%E5%A4%A7%E8%BF%AD%E4%BB%A3%E6%AC%A1%E6%95%B0%E9%99%90%E5%88%B6%E4%B8%BA10%E6%AC%A1%E6%97%B6%EF%BC%9A"><span class="nav-text">2.9.1. 当最大迭代次数限制为10次时：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-2-%E5%BD%93%E6%9C%80%E5%A4%A7%E8%BF%AD%E4%BB%A3%E6%AC%A1%E6%95%B0%E9%99%90%E5%88%B6%E4%B8%BA30%E6%AC%A1%E6%97%B6%EF%BC%9A"><span class="nav-text">2.9.2. 当最大迭代次数限制为30次时：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AF%B9%E6%AF%94PAM%E7%AE%97%E6%B3%95%E4%B8%8EKmeans%E7%AE%97%E6%B3%95"><span class="nav-text">3. 对比PAM算法与Kmeans算法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/26/DataMining_PAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PAM算法——数据挖掘
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-10-26 15:05:44" itemprop="dateCreated datePublished" datetime="2018-10-26T15:05:44+08:00">2018-10-26</time>
+    </span>
+
+  
+    <span id="/2018/10/26/DataMining_PAM/" class="post-meta-item leancloud_visitors" data-flag-title="PAM算法——数据挖掘" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_PAM.png" class="full-image" />
+
+<h1 id="1-实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类"><a href="#1-实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类" class="headerlink" title="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类"></a>1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类</h1><h2 id="1-1-PAM算法简介"><a href="#1-1-PAM算法简介" class="headerlink" title="1.1. PAM算法简介"></a>1.1. PAM算法简介</h2><ul>
+<li>PAM方法于1987年提出，用于l1范数和其他距离的工作。 </li>
+<li>k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离的平方和。</li>
+<li>可以将medoid定义为群集的对象，其与群集中的所有对象的平均差异最小。即，它是群集中位于最中心的点（迭代选取最中心的点，而非Kmeans的中心计算值，抗噪声能力更强）。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="1-2-编写Python程序实现PAM算法"><a href="#1-2-编写Python程序实现PAM算法" class="headerlink" title="1.2. 编写Python程序实现PAM算法"></a>1.2. 编写Python程序实现PAM算法</h2><p><strong>PAM算法主要分为以下步骤实现</strong>：</p>
+<ul>
+<li>S1. 随机生成 k 个 “种子” 作为中心点</li>
+<li>S2. 将其余的对象划分至距离这k个类别中的最近的一个簇</li>
+<li>S3. 计算此时损失值cost。计算所有对象与其簇中中心点的距离值，将其全部累加得到损失值，记为cost0</li>
+<li>S4. 随机选择一个非中心对象Oi分别临时试替换k个簇中心对象中的一个，重新分簇，计算得到一个损失值cost</li>
+<li>S5. 如果这个损失值cost小于S3中得到的cost0，则将这个最小损失值计算时对应的非中心点和中心点交换，更新cost0</li>
+<li>S6. 重复S4~S6步骤，重复迭代直至收敛</li>
+</ul>
+<h2 id="1-3-对部分含有高斯噪声的waveform数据集进行聚类"><a href="#1-3-对部分含有高斯噪声的waveform数据集进行聚类" class="headerlink" title="1.3. 对部分含有高斯噪声的waveform数据集进行聚类"></a>1.3. 对部分含有高斯噪声的waveform数据集进行聚类</h2><h3 id="1-3-1-加载’waveform-noise-data’文件中的含噪声的数据"><a href="#1-3-1-加载’waveform-noise-data’文件中的含噪声的数据" class="headerlink" title="1.3.1. 加载’waveform-+noise.data’文件中的含噪声的数据"></a>1.3.1. 加载’waveform-+noise.data’文件中的含噪声的数据</h3><p>通过以下代码读取Waveform Database Generator (Version 2) Data Set中’waveform-+noise.data’文件内的所有数据，可看到数据的最后一列为类属性的标识号，由网页介绍可知,noise waveform数据规模为：5000 x 41，取含噪声waveform数据集的前500个数据样本进行聚类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 含噪声数据加载</span></span><br><span class="line">print(<span class="string">&#x27;数据加载...\n&#x27;</span>)</span><br><span class="line">data = pd.read_csv(<span class="string">&#x27;waveform.data&#x27;</span>, sep=<span class="string">&#x27;,&#x27;</span>, engine=<span class="string">&#x27;python&#x27;</span>, header=<span class="literal">None</span>, skiprows=<span class="number">0</span>, names=<span class="literal">None</span>) <span class="comment"># waveform.data</span></span><br><span class="line">print(data[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-2-PAM算法对waveform数据集进行聚类"><a href="#1-3-2-PAM算法对waveform数据集进行聚类" class="headerlink" title="1.3.2. PAM算法对waveform数据集进行聚类"></a>1.3.2. PAM算法对waveform数据集进行聚类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># PAM算法实现</span></span><br><span class="line"><span class="comment"># iteration:最大迭代次数，k:&#x27;种子&#x27;集群个数，data:待聚类数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PAM</span>(<span class="params">iteration, k, data</span>):</span></span><br><span class="line">    data_numSamples, data_dim = data.shape</span><br><span class="line">    <span class="comment"># print(data_numSamples, &#x27; &#x27;, data_dim)</span></span><br><span class="line"></span><br><span class="line">    data_new = copy.deepcopy(data)  <span class="comment"># 前40列存放数据，不可变。最后1列即第41列存放标签，标签列随着每次迭代而更新。</span></span><br><span class="line">    data_now = copy.deepcopy(data)  <span class="comment"># data_now用于存放中间过程的数据</span></span><br><span class="line"></span><br><span class="line">    center_point = np.random.choice(data_numSamples, k, replace=<span class="literal">False</span>)</span><br><span class="line">    center = data_new[center_point, :(data_dim-<span class="number">2</span>)]  <span class="comment"># 随机形成的k个中心，维度为（3，40）</span></span><br><span class="line"></span><br><span class="line">    distance = [[] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k)]</span><br><span class="line">    distance_now = [[] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k)]  <span class="comment"># distance_now用于存放中间过程的距离</span></span><br><span class="line">    lost = np.ones([data_numSamples, k]) * <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)  <span class="comment"># 初始lost为维度为（numSamples，3）的无穷大</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):  <span class="comment"># 首先完成第一次划分，即第一次根据距离划分所有点到k个类别中</span></span><br><span class="line">        distance[j] = np.sqrt(np.<span class="built_in">sum</span>(np.square(data_new[:, :(data_dim-<span class="number">2</span>)] - np.array(center[j])), axis=<span class="number">1</span>))</span><br><span class="line">    data_new[:, data_dim-<span class="number">1</span>] = np.argmin(np.array(distance), axis=<span class="number">0</span>)  <span class="comment"># data_new 的最后一列，即标签列随之改变，变为距离某中心点最近的标签，例如与第0个中心点最近，则为0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(iteration):  <span class="comment"># 假设迭代n次</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> <span class="built_in">range</span>(k):  <span class="comment"># 每一次都要分别替换k=k个中心点，所以循环k次。这层循环结束即算出利用所有点分别替代k个中心点后产生的i个lost值</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(data_numSamples):  <span class="comment"># 替换某个中心点时都要利用全部点进行替换，所以循环numSamples次。这层循环结束即算出利用所有点分别替换1个中心点后产生的numSamples个lost值</span></span><br><span class="line"></span><br><span class="line">                center_now = copy.deepcopy(center)  <span class="comment"># center_now用于存放中间过程的中心点</span></span><br><span class="line">                center_now[m] = data_now[l, :(data_dim-<span class="number">2</span>)]  <span class="comment"># 用第l个点替换第m个中心点</span></span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):  <span class="comment"># 计算暂时替换1个中心点后的距离值</span></span><br><span class="line">                    distance_now[j] = np.sqrt(np.<span class="built_in">sum</span>(np.square(data_now[:, :(data_dim-<span class="number">2</span>)] - np.array(center_now[j])), axis=<span class="number">1</span>))</span><br><span class="line">                data_now[:, (data_dim-<span class="number">1</span>)] = np.argmin(np.array(distance),</span><br><span class="line">                                            axis=<span class="number">0</span>)  <span class="comment"># data_now的标签列更新，注意data_now时中间过程，所以这里不能选择更新data_new的标签列</span></span><br><span class="line"></span><br><span class="line">                lost[l, m] = (caclEucDistance(data_now[:, :(data_dim-<span class="number">2</span>)], center_now[data_now[:, (data_dim-<span class="number">1</span>)].astype(<span class="built_in">int</span>)]) \</span><br><span class="line">                              - caclEucDistance(data_now[:, :(data_dim-<span class="number">2</span>)], center[data_new[:, (data_dim-<span class="number">1</span>)].astype(</span><br><span class="line">                            <span class="built_in">int</span>)])).<span class="built_in">sum</span>()  <span class="comment"># 这里很好理解lost的维度为什么为numSamples*3了。lost[l,m]的值代表用第l个点替换第m个中心点的损失值</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> np.<span class="built_in">min</span>(lost) &lt; <span class="number">0</span>:  <span class="comment"># lost意味替换代价，选择代价最小的来完成替换</span></span><br><span class="line">            index = np.where(np.<span class="built_in">min</span>(lost) == lost)  <span class="comment"># 即找到min(lost)对应的替换组合</span></span><br><span class="line">            index_l = index[<span class="number">0</span>][<span class="number">0</span>]  <span class="comment"># index_l指将要替代某个中心点的候选点</span></span><br><span class="line">            index_m = index[<span class="number">1</span>][<span class="number">0</span>]  <span class="comment"># index_m指将要被替代的某个中心点，即用index_l来替代index_m</span></span><br><span class="line"></span><br><span class="line">        center[index_m] = data_now[index_l, :data_dim-<span class="number">2</span>]  <span class="comment"># 更新聚类中心</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">            distance[j] = np.sqrt(np.<span class="built_in">sum</span>(np.square(data_now[:, :(data_dim-<span class="number">2</span>)] - np.array(center[j])), axis=<span class="number">1</span>))</span><br><span class="line">        data_new[:, (data_dim-<span class="number">1</span>)] = np.argmin(np.array(distance), axis=<span class="number">0</span>)  <span class="comment"># 更新参考矩阵,至此data_new的标签列得以更新，即完成了一次迭代</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> center ,data_new  <span class="comment"># 最后返回center：集群中心对象，data_new：其最后一列即为最终聚好的标签</span></span><br></pre></td></tr></table></figure>
+<p>设置最大迭代次数teration = 10, ‘种子’集群个数k = 3,对提取的500个含有高斯噪声的waveform数据集分类结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">center</span><br><span class="line"> [[ <span class="number">1.24</span>  <span class="number">1.75</span>  <span class="number">3.09</span>  <span class="number">3.08</span>  <span class="number">3.39</span>  <span class="number">3.22</span>  <span class="number">5.38</span>  <span class="number">4.55</span>  <span class="number">3.24</span>  <span class="number">2.52</span>  <span class="number">2.66</span>  <span class="number">1.15</span></span><br><span class="line">   <span class="number">0.69</span>  <span class="number">0.43</span>  <span class="number">0.84</span>  <span class="number">0.11</span>  <span class="number">1.25</span>  <span class="number">0.64</span> -<span class="number">0.14</span>  <span class="number">0.78</span> -<span class="number">0.75</span> -<span class="number">0.02</span>  <span class="number">0.14</span>  <span class="number">0.97</span></span><br><span class="line">   <span class="number">0.95</span>  <span class="number">0.91</span>  <span class="number">0.06</span>  <span class="number">0.78</span>  <span class="number">0.27</span> -<span class="number">2.38</span> -<span class="number">0.38</span> -<span class="number">0.04</span> -<span class="number">1.44</span>  <span class="number">0.89</span> -<span class="number">1.91</span>  <span class="number">0.04</span></span><br><span class="line">   <span class="number">0.66</span> -<span class="number">0.05</span>  <span class="number">0.74</span>]</span><br><span class="line"> [ <span class="number">1.24</span>  <span class="number">0.32</span>  <span class="number">0.19</span>  <span class="number">1.38</span>  <span class="number">0.16</span>  <span class="number">3.28</span>  <span class="number">4.65</span>  <span class="number">4.72</span>  <span class="number">2.97</span>  <span class="number">5.05</span>  <span class="number">4.05</span>  <span class="number">3.99</span></span><br><span class="line">   <span class="number">3.17</span>  <span class="number">1.06</span>  <span class="number">0.36</span> -<span class="number">0.23</span> -<span class="number">0.22</span>  <span class="number">1.4</span>   <span class="number">1.33</span>  <span class="number">0.72</span>  <span class="number">0.63</span> -<span class="number">0.05</span>  <span class="number">0.45</span>  <span class="number">0.68</span></span><br><span class="line">  -<span class="number">0.19</span> -<span class="number">1.13</span> -<span class="number">0.76</span> -<span class="number">0.01</span>  <span class="number">0.81</span>  <span class="number">0.3</span>   <span class="number">1.81</span>  <span class="number">0.15</span>  <span class="number">0.89</span>  <span class="number">0.31</span>  <span class="number">1.11</span> -<span class="number">0.51</span></span><br><span class="line">   <span class="number">0.42</span>  <span class="number">0.52</span> -<span class="number">0.01</span>]</span><br><span class="line"> [ <span class="number">0.05</span>  <span class="number">0.27</span>  <span class="number">1.3</span>  -<span class="number">0.72</span> -<span class="number">0.6</span>   <span class="number">1.16</span>  <span class="number">1.29</span>  <span class="number">1.59</span>  <span class="number">0.54</span>  <span class="number">2.19</span>  <span class="number">3.77</span>  <span class="number">3.77</span></span><br><span class="line">   <span class="number">3.76</span>  <span class="number">4.55</span>  <span class="number">4.48</span>  <span class="number">3.07</span>  <span class="number">2.65</span>  <span class="number">1.12</span>  <span class="number">1.09</span>  <span class="number">0.47</span>  <span class="number">1.47</span>  <span class="number">0.72</span> -<span class="number">0.02</span>  <span class="number">1.14</span></span><br><span class="line">  -<span class="number">1.04</span>  <span class="number">1.16</span>  <span class="number">0.81</span>  <span class="number">1.63</span> -<span class="number">0.57</span>  <span class="number">0.33</span> -<span class="number">0.2</span>  -<span class="number">0.18</span>  <span class="number">0.2</span>  -<span class="number">0.22</span> -<span class="number">0.77</span>  <span class="number">0.05</span></span><br><span class="line">   <span class="number">0.03</span> -<span class="number">0.36</span>  <span class="number">0.96</span>]]</span><br><span class="line">[<span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">1.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span></span><br><span class="line"> <span class="number">2.</span> <span class="number">0.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">0.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">0.</span>]</span><br></pre></td></tr></table></figure>
+
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>含高斯噪声文件</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/waveform-+noise.data">waveform-+noise.data</a><br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pam.py">pam.py</a></p>
+</div>
+
+<h1 id="2-编写Python程序实现PAM算法并对一副噪声图像进行分割"><a href="#2-编写Python程序实现PAM算法并对一副噪声图像进行分割" class="headerlink" title="2. 编写Python程序实现PAM算法并对一副噪声图像进行分割"></a>2. 编写Python程序实现PAM算法并对一副噪声图像进行分割</h1><h2 id="2-1-加载含高斯噪声的图片的rgb数据"><a href="#2-1-加载含高斯噪声的图片的rgb数据" class="headerlink" title="2.1. 加载含高斯噪声的图片的rgb数据"></a>2.1. 加载含高斯噪声的图片的rgb数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getImageRGB</span>(<span class="params">file</span>):</span></span><br><span class="line">    image = img.imread(file)</span><br><span class="line">    width, height, x = image.shape</span><br><span class="line">    <span class="comment"># 创建与照片像素规模同大小rgb列表，存rgb数据</span></span><br><span class="line">    rgb = np.zeros((width, height, x))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            rgb[i][j] = image[i, j]</span><br><span class="line">    <span class="keyword">return</span> rgb</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-随机生成k个种子，返回k个随机像素点坐标"><a href="#2-2-随机生成k个种子，返回k个随机像素点坐标" class="headerlink" title="2.2. 随机生成k个种子，返回k个随机像素点坐标"></a>2.2. 随机生成k个种子，返回k个随机像素点坐标</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initCentroids</span>(<span class="params">imageRGB, k</span>):</span></span><br><span class="line">    center = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        x, y = random.randint(<span class="number">0</span>, imageRGB.shape[<span class="number">0</span>]), random.randint(<span class="number">0</span>, imageRGB.shape[<span class="number">1</span>])</span><br><span class="line">        center += [[x, y]]</span><br><span class="line">    <span class="keyword">return</span> center</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-随机选择一个非中心点Oi"><a href="#2-3-随机选择一个非中心点Oi" class="headerlink" title="2.3. 随机选择一个非中心点Oi"></a>2.3. 随机选择一个非中心点Oi</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chooseOneNoCenterSample</span>(<span class="params">imageRGB, centers</span>):</span></span><br><span class="line">    x, y = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    isChooseACenterSampleFlag = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">while</span>(isChooseACenterSampleFlag):</span><br><span class="line">        isExist = <span class="literal">False</span></span><br><span class="line">        x, y = random.randint(<span class="number">0</span>, imageRGB.shape[<span class="number">0</span>]), random.randint(<span class="number">0</span>, imageRGB.shape[<span class="number">1</span>])</span><br><span class="line">        <span class="comment"># 判断与k个中心 是否有重复样本,</span></span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(centers)):</span><br><span class="line">            <span class="keyword">if</span>(x==centers[k][<span class="number">0</span>] <span class="keyword">and</span> y==centers[k][<span class="number">1</span>]):</span><br><span class="line">                isExist = <span class="literal">True</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">#若无重复，则退出while,并返回[x,y]</span></span><br><span class="line">        <span class="keyword">if</span>( isExist == <span class="literal">False</span> ):</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">#若重复则继续while</span></span><br><span class="line">    <span class="keyword">return</span> [x, y]</span><br></pre></td></tr></table></figure>
+<h2 id="2-4-计算变量中每个像素点与k个中心点的欧式距离，并分簇"><a href="#2-4-计算变量中每个像素点与k个中心点的欧式距离，并分簇" class="headerlink" title="2.4. 计算变量中每个像素点与k个中心点的欧式距离，并分簇"></a>2.4. 计算变量中每个像素点与k个中心点的欧式距离，并分簇</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caclEucDistance</span>(<span class="params">imageRGB, centers</span>):</span></span><br><span class="line">    region = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">0</span>]): <span class="comment">#行</span></span><br><span class="line">        x = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">1</span>]): <span class="comment">#列</span></span><br><span class="line">            temp = []</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(centers)): <span class="comment">#计算k个像素点与k个中心点的欧式距离</span></span><br><span class="line">                dist = np.sqrt(np.<span class="built_in">sum</span>(np.square(imageRGB[i, j] - imageRGB[centers[k][<span class="number">0</span>], centers[k][<span class="number">1</span>]])))</span><br><span class="line">                temp += [dist] <span class="comment">#添加到temp临时数组中</span></span><br><span class="line">            x.append(np.argmin(temp)) <span class="comment">#添加[i,j]像素距离k个‘种子’最小的距离于region</span></span><br><span class="line">        region.append(x)</span><br><span class="line">    <span class="keyword">return</span> region <span class="comment">#返回与数组同大小的最小欧式距离数组</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-5-计算所有对象与其簇中中心点的距离值，将其全部累加得到损失值，记为cost"><a href="#2-5-计算所有对象与其簇中中心点的距离值，将其全部累加得到损失值，记为cost" class="headerlink" title="2.5. 计算所有对象与其簇中中心点的距离值，将其全部累加得到损失值，记为cost"></a>2.5. 计算所有对象与其簇中中心点的距离值，将其全部累加得到损失值，记为cost</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcCost</span>(<span class="params">imageRGB, features, centers</span>):</span></span><br><span class="line">    cost = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">0</span>]): <span class="comment">#行</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(imageRGB.shape[<span class="number">1</span>]): <span class="comment">#列</span></span><br><span class="line">            dist = np.sqrt(np.<span class="built_in">sum</span>(np.square(imageRGB[i, j] - imageRGB[centers[features[i][j]][<span class="number">0</span>], centers[features[i][j]][<span class="number">1</span>]])))</span><br><span class="line">            cost = cost + dist</span><br><span class="line">    <span class="keyword">return</span> cost</span><br></pre></td></tr></table></figure>
+<h2 id="2-6-显示分割前后对比图程序"><a href="#2-6-显示分割前后对比图程序" class="headerlink" title="2.6. 显示分割前后对比图程序"></a>2.6. 显示分割前后对比图程序</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">showImage</span>(<span class="params">imageRGB, centercolor, features, k, iteration</span>):</span></span><br><span class="line">    NewImage = np.empty((<span class="built_in">len</span>(features), <span class="built_in">len</span>(features[<span class="number">0</span>]), <span class="number">3</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(features)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(features[i])):</span><br><span class="line">            NewImage[i, j] = centercolor[features[i][j]]</span><br><span class="line">    <span class="comment"># 绘制图片</span></span><br><span class="line">    fig = plt.figure(figsize=(<span class="number">10</span>, <span class="number">4</span>), facecolor=<span class="string">&#x27;white&#x27;</span>)</span><br><span class="line">    fig.suptitle(<span class="string">&#x27;k=&#x27;</span>+<span class="built_in">str</span>(k)+<span class="string">&#x27;, iteration=&#x27;</span>+<span class="built_in">str</span>(iteration), fontsize=<span class="number">12</span>, color=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line">    fig.gca().xaxis.set_major_locator(plt.NullLocator())</span><br><span class="line">    fig.gca().yaxis.set_major_locator(plt.NullLocator())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建子图1: 绘制原图</span></span><br><span class="line">    ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">    ax1.axis(<span class="string">&#x27;off&#x27;</span>) <span class="comment"># 关闭坐标轴显示</span></span><br><span class="line">    ax1.imshow(imageRGB / <span class="number">255</span>)</span><br><span class="line">    ax1.set_title(<span class="string">&#x27;Original image&#x27;</span>, fontsize=<span class="number">10</span>, color=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建子图2: 绘制分割图</span></span><br><span class="line">    ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">    ax2.axis(<span class="string">&#x27;off&#x27;</span>) <span class="comment"># 关闭坐标轴显示</span></span><br><span class="line">    ax2.imshow(NewImage / <span class="number">255</span>)</span><br><span class="line">    ax2.set_title(<span class="string">&#x27;Split graph&#x27;</span>, fontsize=<span class="number">10</span>, color=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 显示绘制图像</span></span><br><span class="line">    pylab.show()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<h2 id="2-7-PAM算法对图片数据聚类实现"><a href="#2-7-PAM算法对图片数据聚类实现" class="headerlink" title="2.7. PAM算法对图片数据聚类实现"></a>2.7. PAM算法对图片数据聚类实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PAM</span>(<span class="params">imageRGB, features, centers</span>):</span></span><br><span class="line">    <span class="comment"># 计算初始cost0</span></span><br><span class="line">    cost0 = calcCost(imageRGB, features, centers)</span><br><span class="line">    <span class="comment"># print(&#x27;cost0=&#x27;, cost0)</span></span><br><span class="line">    <span class="comment"># 随机选择一个非中心点Oi</span></span><br><span class="line">    aNoCenterSample = chooseOneNoCenterSample(imageRGB, centers)</span><br><span class="line">    <span class="comment"># print(&#x27;Center = &#x27;, centers)</span></span><br><span class="line">    <span class="comment"># print(&#x27;aNoCenterSample = &#x27;, aNoCenterSample)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 替换该随机对象所属的第k个中心对象</span></span><br><span class="line">    belongsK = features[aNoCenterSample[<span class="number">0</span>]][aNoCenterSample[<span class="number">1</span>]]</span><br><span class="line">    TempCenters = centers</span><br><span class="line">    TempCenters[belongsK][<span class="number">0</span>] = aNoCenterSample[<span class="number">0</span>]  <span class="comment"># Rows下标</span></span><br><span class="line">    TempCenters[belongsK][<span class="number">1</span>] = aNoCenterSample[<span class="number">1</span>]  <span class="comment"># Columns下标</span></span><br><span class="line">    <span class="comment"># 重新分簇</span></span><br><span class="line">    TempFeatures = caclEucDistance(imageRGB, TempCenters)</span><br><span class="line">    <span class="comment"># 计算代价cost</span></span><br><span class="line">    Tempcost = calcCost(imageRGB, TempFeatures, TempCenters)</span><br><span class="line">    <span class="comment"># 比较替换后的 cost</span></span><br><span class="line">    <span class="keyword">if</span> (Tempcost &lt; cost0):</span><br><span class="line">        <span class="comment"># 若比最初损失值cost0小，则确认替换</span></span><br><span class="line">        centers = TempCenters</span><br><span class="line">        features = TempFeatures</span><br><span class="line">        cost0 = Tempcost</span><br><span class="line">    <span class="keyword">return</span> features, centers</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-8-使用PAM算法对一副有噪图像进行分割完整主程序"><a href="#2-8-使用PAM算法对一副有噪图像进行分割完整主程序" class="headerlink" title="2.8. 使用PAM算法对一副有噪图像进行分割完整主程序"></a>2.8. 使用PAM算法对一副有噪图像进行分割完整主程序</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="comment">#加载图片数据</span></span><br><span class="line">    imageRGB = getImageRGB(<span class="string">&#x27;picture.jpg&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;Finish load image RGB data...\n&#x27;</span>)</span><br><span class="line">    <span class="comment"># 设置集群数：k=3</span></span><br><span class="line">    k = <span class="number">3</span></span><br><span class="line">    <span class="comment">#设置k-means算法执行的最大迭代次数：iteration = 20</span></span><br><span class="line">    iteration = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成k个随机像素点坐标，作为中心点</span></span><br><span class="line">    centers = initCentroids(imageRGB, k)</span><br><span class="line">    <span class="comment"># 计算样本中每个像素点与k个中心点的欧式距离，并根据距离分到最近簇</span></span><br><span class="line">    features = caclEucDistance(imageRGB, centers)</span><br><span class="line">    print(<span class="string">&#x27;PAM start...\n&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(iteration, <span class="number">0</span>, -<span class="number">1</span>):</span><br><span class="line">        print(<span class="string">&#x27;iteration = &#x27;</span>, i)</span><br><span class="line">        features, centers = PAM(imageRGB, features, centers) <span class="comment">#PAM迭代</span></span><br><span class="line">        print(<span class="string">&#x27;\n&#x27;</span> + <span class="string">&#x27;Centers = &#x27;</span>, centers, <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    centercolor = getCenterColor(imageRGB, centers, k)</span><br><span class="line">    <span class="comment">#显示分割前后对比图</span></span><br><span class="line">    print(<span class="string">&#x27;Show the Comparison images...&#x27;</span>)</span><br><span class="line">    showImage(imageRGB, centercolor, features, k, iteration)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-9-PAM算法分割图片效果图"><a href="#2-9-PAM算法分割图片效果图" class="headerlink" title="2.9. PAM算法分割图片效果图"></a>2.9. PAM算法分割图片效果图</h2><h3 id="2-9-1-当最大迭代次数限制为10次时："><a href="#2-9-1-当最大迭代次数限制为10次时：" class="headerlink" title="2.9.1. 当最大迭代次数限制为10次时："></a>2.9.1. 当最大迭代次数限制为10次时：</h3><p><strong>k=3时的效果图如下</strong>：<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=3_iteration=10.png" alt="PAMiteration=10,k=3时的效果图"><br><strong>k=8时的效果图如下</strong>：<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=8_iteration=10.png" alt="PAMiteration=10,k=8时的效果图"></p>
+<h3 id="2-9-2-当最大迭代次数限制为30次时："><a href="#2-9-2-当最大迭代次数限制为30次时：" class="headerlink" title="2.9.2. 当最大迭代次数限制为30次时："></a>2.9.2. 当最大迭代次数限制为30次时：</h3><p><strong>k=3时的效果图如下</strong>：<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=3_iteration=30.png" alt="PAMiteration=30,k=3时的效果图"><br><strong>k=8时的效果图如下</strong>：<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Pam_result_k=8_iteration=30.png" alt="PAMiteration=30,k=8时的效果图"><br>通过反复运行测试，得出的结论基本与K-mean算法一致：在一定的迭代次数限制下，设置的种子数越多，图像分割越明显，细节越丰富；在一定种子数范围内，最大迭代次数越多，图像分割效果并不一定更好。并且程序的运行时间会随着集群k、最大迭代次数iteration的增加而增加。</p>
+<h1 id="3-对比PAM算法与Kmeans算法"><a href="#3-对比PAM算法与Kmeans算法" class="headerlink" title="3. 对比PAM算法与Kmeans算法"></a>3. 对比PAM算法与Kmeans算法</h1><p>虽然经过反复测试运行代码，PAM与Kmeans算法对图片的分割效果与集群数k和最大迭代次数iteration的关系结论基本一致，总的来说PAM算法运行时间较长，复杂度也较高。但相比与K-means算法，PAM算法又有一定优势。由于选择的是中心对象而非平均值，所以如结果所示，受样本中的噪声的影响相对较小。</p>
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>含噪声图片</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PamTestPicture.jpg">PamTestPicture.jpg</a><br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pamPicture.py">pamPicture.py</a></p>
+</div>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\03\DataMining_AdaBoost\" rel="bookmark">AdaBoost算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\10\DataMining_Apriori\" rel="bookmark">Apriori算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\10\DataMining_DBSCAN\" rel="bookmark">DBSCAN算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\16\DataMining_ID3\" rel="bookmark">ID3算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\24\DataMining_Kmeans\" rel="bookmark">Kmeans算法——数据挖掘</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag"><i class="fa fa-tag"></i> 数据挖掘</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/24/DataMining_Kmeans/" rel="prev" title="Kmeans算法——数据挖掘">
+                  <i class="fa fa-chevron-left"></i> Kmeans算法——数据挖掘
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/10/DataMining_DBSCAN/" rel="next" title="DBSCAN算法——数据挖掘">
+                  DBSCAN算法——数据挖掘 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/10/26/DataMining_PAM/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

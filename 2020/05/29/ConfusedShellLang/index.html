@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="主要整理了常用易混淆Shell语法，以备不时查询之需。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell易混淆基本语法总结">
+<meta property="og:url" content="https://eisenhao.cn/2020/05/29/ConfusedShellLang/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="主要整理了常用易混淆Shell语法，以备不时查询之需。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/ConfusedShellLang.jpg">
+<meta property="article:published_time" content="2020-05-29T13:44:44.000Z">
+<meta property="article:modified_time" content="2020-05-29T13:44:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/ConfusedShellLang.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2020/05/29/ConfusedShellLang/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2020/05/29/ConfusedShellLang/","path":"2020/05/29/ConfusedShellLang/","title":"Shell易混淆基本语法总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Shell易混淆基本语法总结 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8D%95%E5%BC%95%E5%8F%B7%E3%80%81%E5%8F%8C%E5%BC%95%E5%8F%B7%E3%80%81%E5%80%92%E5%BC%95%E5%8F%B7%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">1. 单引号、双引号、倒引号的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%8D%95%E5%BC%95%E5%8F%B7-%E2%80%98-vs-%E5%8F%8C%E5%BC%95%E5%8F%B7-%E2%80%9C"><span class="nav-text">1.1. 单引号 ‘ vs 双引号 “</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%80%92%E5%BC%95%E5%8F%B7"><span class="nav-text">1.2. 倒引号 &#96;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8B%AC%E5%8F%B7-vs-%E8%8A%B1%E6%8B%AC%E5%8F%B7"><span class="nav-text">2. 括号() vs 花括号{}</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">2.1. 作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">2.2. 应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%8B%AC%E5%8F%B7-%E4%B8%8E%E8%8A%B1%E6%8B%AC%E5%8F%B7-%E7%9A%84%E5%BC%82%E5%90%8C"><span class="nav-text">2.3. 括号()与花括号{}的异同</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%87%A0%E7%A7%8D%E7%89%B9%E6%AE%8A%E7%9A%84%E6%9B%BF%E6%8D%A2%E7%94%A8%E6%B3%95"><span class="nav-text">3. 几种特殊的替换用法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%94%AF%E6%8C%81POSIX%E6%A0%87%E5%87%86%E7%9A%84%E6%89%A9%E5%B1%95%E8%AE%A1%E7%AE%97-exp"><span class="nav-text">4. 支持POSIX标准的扩展计算$((exp))</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-text">4.1. 举例说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%9B%9B%E7%A7%8D%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E6%9B%BF%E6%8D%A2"><span class="nav-text">5. 四种模式匹配替换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%A8%A1%E5%BC%8F%EF%BC%9A-variable-pattern"><span class="nav-text">5.1. 第一种模式：${variable%pattern}</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%A8%A1%E5%BC%8F%EF%BC%9A-variable-pattern"><span class="nav-text">5.2. 第二种模式：${variable%%pattern}</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E7%AC%AC%E4%B8%89%E7%A7%8D%E6%A8%A1%E5%BC%8F%EF%BC%9A-variable-pattern"><span class="nav-text">5.3. 第三种模式：${variable#pattern}</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E7%AC%AC%E5%9B%9B%E7%A7%8D%E6%A8%A1%E5%BC%8F%EF%BC%9A-variable-pattern"><span class="nav-text">5.4. 第四种模式：${variable##pattern}</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%8F%98%E9%87%8F%E5%88%A4%E7%A9%BA"><span class="nav-text">6. 变量判空</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">7. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2020/05/29/ConfusedShellLang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Shell易混淆基本语法总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2020-05-29 21:44:44" itemprop="dateCreated datePublished" datetime="2020-05-29T21:44:44+08:00">2020-05-29</time>
+    </span>
+
+  
+    <span id="/2020/05/29/ConfusedShellLang/" class="post-meta-item leancloud_visitors" data-flag-title="Shell易混淆基本语法总结" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/ConfusedShellLang.jpg" class="full-image" />
+
+<p>主要整理了常用易混淆Shell语法，以备不时查询之需。</p>
+<a id="more"></a>
+
+<h1 id="1-单引号、双引号、倒引号的区别"><a href="#1-单引号、双引号、倒引号的区别" class="headerlink" title="1. 单引号、双引号、倒引号的区别"></a>1. 单引号、双引号、倒引号的区别</h1><h2 id="1-1-单引号-‘-vs-双引号-“"><a href="#1-1-单引号-‘-vs-双引号-“" class="headerlink" title="1.1. 单引号 ‘ vs 双引号 “"></a>1.1. 单引号 ‘ vs 双引号 “</h2><ul>
+<li>单引号作用：将位于单引号之间的所有内容全部视为普通字符，即不处理任何特殊字符</li>
+<li>双引号作用：先将双引号之间的特殊字符做预处理（若存在），再将双引号之间的内容（特殊字符的结果）视为字符串</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">ans=15</span><br><span class="line"><span class="meta">#</span><span class="bash"> 单引号，不处理特殊字符</span></span><br><span class="line">echo ‘Petter: 3 * 5 = $ans’</span><br><span class="line"><span class="meta">#</span><span class="bash"> 双引号，处理特殊字符</span></span><br><span class="line">echo “Petter: 3 * 5 = $ans”</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果如下</span></span><br><span class="line">Petter: 3 * 5 = $ans</span><br><span class="line">Petter: 3 * 5 = 15</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-倒引号"><a href="#1-2-倒引号" class="headerlink" title="1.2. 倒引号 `"></a>1.2. 倒引号 `</h2><ul>
+<li>坐标：位于键盘Esc键下方及数字1键左侧。</li>
+<li>作用：用位于倒引号之间的命令执行结果替换倒引号及之间的命令。等价于$()，新用法$()中则不需要考虑\的问题，推荐使用后者。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">echo &quot;this path is `pwd`&quot;</span><br><span class="line">echo &quot;this path is $(pwd)&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果如下</span></span><br><span class="line">this path is /home</span><br><span class="line">this path is /home</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-括号-vs-花括号"><a href="#2-括号-vs-花括号" class="headerlink" title="2. 括号() vs 花括号{}"></a>2. 括号() vs 花括号{}</h1><h2 id="2-1-作用"><a href="#2-1-作用" class="headerlink" title="2.1. 作用"></a>2.1. 作用</h2><p>对命令的执行</p>
+<h2 id="2-2-应用场景"><a href="#2-2-应用场景" class="headerlink" title="2.2. 应用场景"></a>2.2. 应用场景</h2><p>变量名后要附加一些内容时（如：字符串、数字、下划线），为了分割变量名与附加内容；用执行命令的结果替换字符串中的部分内容；需要在括号内执行一串命令时；</p>
+<p>示例：批量改名（加后缀）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">for fileName in $(ls)</span><br><span class="line">do</span><br><span class="line">    mv $fileName $(fileName).tmp</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-括号-与花括号-的异同"><a href="#2-3-括号-与花括号-的异同" class="headerlink" title="2.3. 括号()与花括号{}的异同"></a>2.3. 括号()与花括号{}的异同</h2><table>
+<thead>
+<tr>
+<th align="left">\</th>
+<th align="center">括号()</th>
+<th align="center">花括号{}</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">执行位置</td>
+<td align="center">对一串命令重开一个子Shell执行</td>
+<td align="center">对一串命令在当前Shell执行</td>
+</tr>
+<tr>
+<td align="left">变量作用域</td>
+<td align="center">可视为局部变量</td>
+<td align="center">会改变全局同名变量的值</td>
+</tr>
+<tr>
+<td align="left">分号</td>
+<td align="center">最后一个命令可以不用分号结尾</td>
+<td align="center">最后一个命令要用分号结尾</td>
+</tr>
+<tr>
+<td align="left">空格</td>
+<td align="center">不必用空格与括号隔开</td>
+<td align="center">第一个命令和左括号之间必须要有一个空格</td>
+</tr>
+<tr>
+<td align="left">重定向</td>
+<td align="center">括号里的某个命令的重定向只影响该命令，括号外的重定向则影响到括号里的所有命令</td>
+<td align="center">括号里的某个命令的重定向只影响该命令，括号外的重定向则影响到括号里的所有命令</td>
+</tr>
+</tbody></table>
+<h1 id="3-几种特殊的替换用法"><a href="#3-几种特殊的替换用法" class="headerlink" title="3. 几种特殊的替换用法"></a>3. 几种特殊的替换用法</h1><ul>
+<li>若变量为空，则用默认值执行${var:-string}<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">var=</span><br><span class="line">echo $&#123;var:-NULL&#125;</span><br><span class="line">echo $var</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果如下：</span></span><br><span class="line">NULL</span><br></pre></td></tr></table></figure></li>
+<li>若变量为空，则用默认值赋值给空变量${var:=abc}<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">var=</span><br><span class="line">echo $&#123;var:=abc&#125;</span><br><span class="line">echo $var</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果如下：</span></span><br><span class="line">abc</span><br><span class="line">abc</span><br></pre></td></tr></table></figure></li>
+<li>若变量非空，则用默认值执行，若变量为空，则不作为${var:+string}<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">var1=abc</span><br><span class="line">var2=</span><br><span class="line">echo $&#123;var1:+FULL&#125;</span><br><span class="line">echo $&#123;var2:+FULL&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果如下：</span></span><br><span class="line">FULL</span><br></pre></td></tr></table></figure></li>
+<li>若变量非空，则用其值，若变量为空，则输出string到标准错误中后退出脚本${var:?string}<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">var1=abc</span><br><span class="line">var2=</span><br><span class="line">echo $&#123;var1:+FULL&#125;</span><br><span class="line">echo $&#123;var2:+FULL&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果如下：</span></span><br><span class="line">FULL</span><br></pre></td></tr></table></figure>
+<h1 id="4-支持POSIX标准的扩展计算-exp"><a href="#4-支持POSIX标准的扩展计算-exp" class="headerlink" title="4. 支持POSIX标准的扩展计算$((exp))"></a>4. 支持POSIX标准的扩展计算$((exp))</h1>其中exp为符合C语言的运算符<h2 id="4-1-举例说明"><a href="#4-1-举例说明" class="headerlink" title="4.1. 举例说明"></a>4.1. 举例说明</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">echo $((1+2))</span><br><span class="line">echo $((1&lt;2))</span><br><span class="line">echo $((5&lt;4?0:1))</span><br><span class="line">echo $((var=2+3))</span><br><span class="line">echo $((var++))</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果如下：</span></span><br><span class="line">3</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="5-四种模式匹配替换"><a href="#5-四种模式匹配替换" class="headerlink" title="5. 四种模式匹配替换"></a>5. 四种模式匹配替换</h1><ul>
+<li># 是去掉左边(在键盘上#在$之左边)；</li>
+<li>% 是去掉右边(在键盘上%在$之右边)；</li>
+<li>#和%中的单一符号是最小匹配，两个相同符号是最大匹配。</li>
+<li>这四种模式中都不会改变variable的值，其中，只有在pattern中使用了*匹配符号时，%和%%，#和##才有区别。</li>
+<li>结构中的pattern支持通配符:<ul>
+<li>*表示零个或多个任意字符</li>
+<li>?表示仅与一个任意字符匹配</li>
+<li>[…]表示匹配中括号里面的字符</li>
+<li>[!…]表示不匹配中括号里面的字符</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-1-第一种模式：-variable-pattern"><a href="#5-1-第一种模式：-variable-pattern" class="headerlink" title="5.1. 第一种模式：${variable%pattern}"></a>5.1. 第一种模式：${variable%pattern}</h2><p>说明：shell在variable中查找，判断variable是否以pattern结尾，如果是，就从命令行把variable中的内容去掉右边<em>最短的</em>匹配模式</p>
+<h2 id="5-2-第二种模式：-variable-pattern"><a href="#5-2-第二种模式：-variable-pattern" class="headerlink" title="5.2. 第二种模式：${variable%%pattern}"></a>5.2. 第二种模式：${variable%%pattern}</h2><p>说明：shell在variable中查找，判断variable是否以pattern结尾，如果是，就从命令行把variable中的内容去掉右边<em>最长的</em>匹配模式</p>
+<h2 id="5-3-第三种模式：-variable-pattern"><a href="#5-3-第三种模式：-variable-pattern" class="headerlink" title="5.3. 第三种模式：${variable#pattern}"></a>5.3. 第三种模式：${variable#pattern}</h2><p>说明：shell在variable中查找，判断variable是否以pattern开始，如果是，就从命令行把variable中的内容去掉左边最短的匹配模式</p>
+<h2 id="5-4-第四种模式：-variable-pattern"><a href="#5-4-第四种模式：-variable-pattern" class="headerlink" title="5.4. 第四种模式：${variable##pattern}"></a>5.4. 第四种模式：${variable##pattern}</h2><p>shell在variable中查找，判断variable是否以pattern开始，如果是，就从命令行把variable中的内容去掉右边最长的匹配模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">VAR=ABCABCDEFDEF</span><br><span class="line">PATTERN1=DEF</span><br><span class="line">PATTERN2=ABC</span><br><span class="line"></span><br><span class="line">echo &quot;VAR=$VAR&quot;</span><br><span class="line">echo &quot;PATTERN1=$PATTERN1&quot;</span><br><span class="line">echo &quot;PATTERN2=$PATTERN2&quot;</span><br><span class="line"></span><br><span class="line">echo &#x27;M1.$&#123;VAR%*$PATTERN1&#125;&#x27;</span><br><span class="line">echo $&#123;VAR%*$PATTERN1&#125;</span><br><span class="line"></span><br><span class="line">echo &#x27;M2.$&#123;VAR%%*$PATTERN1&#125;&#x27;</span><br><span class="line">echo $&#123;VAR%%*$PATTERN1&#125;</span><br><span class="line"></span><br><span class="line">echo &#x27;M2.$&#123;VAR%%?$PATTERN1&#125;&#x27;</span><br><span class="line">echo $&#123;VAR%%?$PATTERN1&#125;</span><br><span class="line"></span><br><span class="line">echo &#x27;M3.$&#123;VAR#*$PATTERN2&#125;&#x27;</span><br><span class="line">echo $&#123;VAR#*$PATTERN2&#125;</span><br><span class="line"></span><br><span class="line">echo &#x27;M4.$&#123;VAR##*$PATTERN2&#125;&#x27;</span><br><span class="line">echo $&#123;VAR##*$PATTERN2&#125;</span><br><span class="line"></span><br><span class="line">echo &#x27;M4.$&#123;VAR##$PATTERN2*&#125;&#x27;</span><br><span class="line">echo $&#123;VAR##$PATTERN2*&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果</span></span><br><span class="line">VAR=ABCABCDEFDEF</span><br><span class="line">PATTERN1=DEF</span><br><span class="line">PATTERN2=ABC</span><br><span class="line">M1.$&#123;VAR%*$PATTERN1&#125;</span><br><span class="line">ABCABCDEF</span><br><span class="line">M2.$&#123;VAR%%*$PATTERN1&#125;</span><br><span class="line">(空)</span><br><span class="line">M2.$&#123;VAR%%?$PATTERN1&#125;</span><br><span class="line">ABCABCDE</span><br><span class="line">M3.$&#123;VAR#*$PATTERN2&#125;</span><br><span class="line">ABCDEFDEF</span><br><span class="line">M4.$&#123;VAR##*$PATTERN2&#125;</span><br><span class="line">DEFDEF</span><br><span class="line">M4.$&#123;VAR##$PATTERN2*&#125;</span><br><span class="line">(空)</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-变量判空"><a href="#6-变量判空" class="headerlink" title="6. 变量判空"></a>6. 变量判空</h1><ul>
+<li>判空必要性：某些环境下执行空变量可能造成严重后果，如执行rm删除操作时，rm -rf 空路径变量会删除根目录，造成无法挽回的严重后果。</li>
+<li>正确操作：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 判断DIR变量非空，才会执行rm命令</span></span><br><span class="line">[ -n $DIR ] &amp;&amp; rm -rf $DIR</span><br></pre></td></tr></table></figure></li>
+<li>变量判空常用方法<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">para=</span><br><span class="line"><span class="meta">#</span><span class="bash"> 判空方式1. 直接判断变量</span></span><br><span class="line">if [ ! $para ];then</span><br><span class="line">    echo &quot;NULL&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash"> 判空方式2. 作字符串判空</span></span><br><span class="line">if [ ! -n &quot;$para&quot; ];then</span><br><span class="line">    echo &quot;NULL&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash"> 判空方式3. 与“空字符串”比较判空</span></span><br><span class="line">if [ &quot;$para&quot; = &quot;&quot; ];then</span><br><span class="line">    echo &quot;NULL&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash"> 判空方式4. 利用<span class="built_in">test</span>判空</span></span><br><span class="line">if test -z &quot;$para&quot;</span><br><span class="line">then</span><br><span class="line">    echo &quot;NULL&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="7-参考文档"><a href="#7-参考文档" class="headerlink" title="7. 参考文档"></a>7. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhan570556752/article/details/80515376?utm_source=blogxgwz1">Shell 命令中的特殊替换、模式匹配替换、字符串提取和替换</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Shell/" rel="tag"><i class="fa fa-tag"></i> Shell</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/19/CppCompile/" rel="prev" title="C++编译过程总结">
+                  <i class="fa fa-chevron-left"></i> C++编译过程总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/06/15/ExecShellCMD/" rel="next" title="Java进程执行Shell命令问题总结">
+                  Java进程执行Shell命令问题总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2020/05/29/ConfusedShellLang/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

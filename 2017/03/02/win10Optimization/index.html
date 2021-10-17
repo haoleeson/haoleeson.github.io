@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. Win + R 常用命令   命令 描述    msconfig 系统配置 (启动方式：安全模式，有无GUI引导等)   gpedit.msc 本地组策略编辑器   services.msc 服务   netplwiz 用户账户   msinfo32 查看系统是否UEFI启动   slmgr.vbs -dlv 查询操作系统版本、部分产品密钥、许可证等   slmgr.vbs -xpr 命">
+<meta property="og:type" content="article">
+<meta property="og:title" content="win10优化精选">
+<meta property="og:url" content="https://eisenhao.cn/2017/03/02/win10Optimization/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. Win + R 常用命令   命令 描述    msconfig 系统配置 (启动方式：安全模式，有无GUI引导等)   gpedit.msc 本地组策略编辑器   services.msc 服务   netplwiz 用户账户   msinfo32 查看系统是否UEFI启动   slmgr.vbs -dlv 查询操作系统版本、部分产品密钥、许可证等   slmgr.vbs -xpr 命">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/win10Optimization.jpg">
+<meta property="article:published_time" content="2017-03-02T07:39:45.000Z">
+<meta property="article:modified_time" content="2018-10-01T08:34:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="效率">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/win10Optimization.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2017/03/02/win10Optimization/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2017/03/02/win10Optimization/","path":"2017/03/02/win10Optimization/","title":"win10优化精选"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>win10优化精选 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Win-R-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">1. Win + R 常用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-win10%E7%BB%84%E7%AD%96%E7%95%A5%E5%85%B3%E9%97%AD%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E3%80%81Windows-Defender"><span class="nav-text">2. win10组策略关闭自动更新、Windows Defender</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85-Net3-5"><span class="nav-text">3. 离线安装.Net3.5</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%85%8D%E5%AF%86%E7%99%BB%E9%99%86win10"><span class="nav-text">4. 免密登陆win10</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Windows10%E5%BF%85%E5%81%9A%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-text">5. Windows10必做的优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%8D%B8%E8%BD%BD%E6%97%A0%E7%94%A8%E5%BA%94%E7%94%A8"><span class="nav-text">6. 卸载无用应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E5%85%B3%E9%97%AD%E4%BC%98%E5%8C%96%E9%A9%B1%E5%8A%A8%E5%99%A8"><span class="nav-text">7. 关闭优化驱动器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E7%A6%81%E7%94%A8%E7%B3%BB%E7%BB%9F%E4%BF%9D%E6%8A%A4"><span class="nav-text">8. 禁用系统保护</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E5%85%B3%E9%97%ADIPV6"><span class="nav-text">9. 关闭IPV6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-%E5%85%B3%E9%97%AD%E5%AE%B6%E5%BA%AD%E7%BB%84"><span class="nav-text">10. 关闭家庭组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-text">11. 防火墙</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-%E8%AE%BE%E7%BD%AE%E5%A5%BDSuperfetch%E6%9C%8D%E5%8A%A1-Windows-Search"><span class="nav-text">12. 设置好Superfetch服务 Windows Search</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-%E5%BC%80%E5%90%AFHybridBoot"><span class="nav-text">13. 开启HybridBoot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-%E5%85%B3%E9%97%AD%E6%80%A7%E8%83%BD%E7%89%B9%E6%95%88"><span class="nav-text">14. 关闭性能特效</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-%E5%85%B3%E9%97%AD%E8%AE%A8%E5%8E%8C%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E8%BD%AF%E4%BB%B6%E6%9C%8D%E5%8A%A1%E9%A1%B9"><span class="nav-text">15. 关闭讨厌的第三方软件服务项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#16-Win10%E5%8A%A0%E9%80%9F%E5%85%B3%E6%9C%BA%E9%80%9F%E5%BA%A6"><span class="nav-text">16. Win10加速关机速度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#17-%E5%85%B3%E9%97%AD%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E9%87%8C%E7%9A%84%E9%9A%90%E8%97%8F%E7%9A%84%E8%87%AA%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="nav-text">17. 关闭计划任务里的隐藏的自启动程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#18-%E5%85%B3%E9%97%ADwindows%E5%AE%89%E5%85%A8%E4%B8%AD%E5%BF%83%E6%9C%8D%E5%8A%A1"><span class="nav-text">18. 关闭windows安全中心服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-%E5%85%B3%E9%97%ADonedrive%EF%BC%8C%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="nav-text">19. 关闭onedrive，自动上传文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#20-%E5%8F%96%E6%B6%88%E9%BB%98%E8%AE%A4%E7%BD%91%E9%80%9F20-%E9%99%90%E5%88%B6%EF%BC%8C%E8%AE%A9%E7%BD%91%E9%80%9F%E5%9C%A8%E5%BF%AB%E4%B8%80%E7%82%B9%E5%84%BF"><span class="nav-text">20. 取消默认网速20%限制，让网速在快一点儿</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2017/03/02/win10Optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          win10优化精选
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2017-03-02 15:39:45" itemprop="dateCreated datePublished" datetime="2017-03-02T15:39:45+08:00">2017-03-02</time>
+    </span>
+
+  
+    <span id="/2017/03/02/win10Optimization/" class="post-meta-item leancloud_visitors" data-flag-title="win10优化精选" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/win10Optimization.jpg" class="full-image" />
+
+<h1 id="1-Win-R-常用命令"><a href="#1-Win-R-常用命令" class="headerlink" title="1. Win + R 常用命令"></a>1. Win + R 常用命令</h1><table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">msconfig</td>
+<td align="left">系统配置 (启动方式：安全模式，有无GUI引导等)</td>
+</tr>
+<tr>
+<td align="left">gpedit.msc</td>
+<td align="left">本地组策略编辑器</td>
+</tr>
+<tr>
+<td align="left">services.msc</td>
+<td align="left">服务</td>
+</tr>
+<tr>
+<td align="left">netplwiz</td>
+<td align="left">用户账户</td>
+</tr>
+<tr>
+<td align="left">msinfo32</td>
+<td align="left">查看系统是否UEFI启动</td>
+</tr>
+<tr>
+<td align="left">slmgr.vbs -dlv</td>
+<td align="left">查询操作系统版本、部分产品密钥、许可证等</td>
+</tr>
+<tr>
+<td align="left">slmgr.vbs -xpr</td>
+<td align="left">命令可以查询Win10是否永久激活</td>
+</tr>
+<tr>
+<td align="left">winver</td>
+<td align="left">查询系统内核版本，以及注册用户信息</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h1 id="2-win10组策略关闭自动更新、Windows-Defender"><a href="#2-win10组策略关闭自动更新、Windows-Defender" class="headerlink" title="2. win10组策略关闭自动更新、Windows Defender"></a>2. win10组策略关闭自动更新、Windows Defender</h1><ul>
+<li>组策略关闭自动更新</li>
+</ul>
+<p>按Win键+R键调出运行，输入<code>gpedit.msc</code>点击“确定”，调出“本地组策略编辑器”。按顺序依次展开”计算机配置”，”管理模板” ，”windows组件” ，”windows更新 “。在右面找到“配置自动更新”，并双击。 禁用</p>
+<ul>
+<li>关闭Windows Defender</li>
+</ul>
+<p>找到计算机配置、管理模板、Windows组件、Windows Defender”选项“”双击打开“关闭 Windows Defender”后启用关掉“本地组策略编辑器”，重启电脑。</p>
+<h1 id="3-离线安装-Net3-5"><a href="#3-离线安装-Net3-5" class="headerlink" title="3. 离线安装.Net3.5"></a>3. 离线安装.Net3.5</h1><ul>
+<li>按键盘上的windows+x组合键，在弹出的系统菜单中选择“命令提示符（管理员）”这一项：</li>
+<li>然后输入以下命令: (注意盘符要根据安装U盘实际盘符作出更改)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dism.exe &#x2F;online &#x2F;enable-feature &#x2F;featurename:NetFX3 &#x2F;Source:F:\sources\sxs #其中“d:\sources\sxs”为SXS文件夹路径：</span><br></pre></td></tr></table></figure>
+命令无误后安回车，稍等即可开始离线安装了</li>
+<li>当进程到100%时还需要稍等一会，显示“操作成功完成”后表示.net framework3.5离线安装完成：</li>
+<li>到控制面板中的“启用或关闭Windows功能”中看看，.net framework3.5程序已经打勾，一些程序可正常安装了，也不会再弹出.net framework3.5安装提示：</li>
+</ul>
+<h1 id="4-免密登陆win10"><a href="#4-免密登陆win10" class="headerlink" title="4. 免密登陆win10"></a>4. 免密登陆win10</h1><ul>
+<li>Win + R 打开运行程序，在空白框输入netplwiz,然后点击确定按钮</li>
+<li>进入账户页面，选择一个账户，将下图所示的要使用计算机，用户必须输入用户名和密码复选框的勾去掉！</li>
+<li>点击右下角“应用”弹出密码账户界面，输入密码，点击“确定”完成修改，下次将自动以此账户直接登录，免输密码！</li>
+</ul>
+<h1 id="5-Windows10必做的优化"><a href="#5-Windows10必做的优化" class="headerlink" title="5. Windows10必做的优化"></a>5. Windows10必做的优化</h1><ul>
+<li>右键点击“此电脑”，选择“管理”，进入“计算机管理”窗口，在左侧的菜单选择“服务”，</li>
+<li>手动禁用下列服务：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HomeGroup Listener</span><br><span class="line">HomeGroup Provider</span><br><span class="line">IPHelper （如果您的网络运营商不分配IPV6地址，可以将其关闭。）</span><br><span class="line">WindowsSearch （会在后台偷偷查户口。）</span><br><span class="line">Windows Update 禁用更新</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="6-卸载无用应用"><a href="#6-卸载无用应用" class="headerlink" title="6. 卸载无用应用"></a>6. 卸载无用应用</h1><ul>
+<li>打开开始菜单里的“设置”应用，依次进入“系统”→“应用和功能”，可以卸掉一些您用不到的系统自带应用。</li>
+</ul>
+<h1 id="7-关闭优化驱动器"><a href="#7-关闭优化驱动器" class="headerlink" title="7. 关闭优化驱动器"></a>7. 关闭优化驱动器</h1><ul>
+<li>双击“此电脑”打开，右键点击任意磁盘，选择“属性”。</li>
+<li>在上方的标签选择“工具”，然后点击“优化”。</li>
+<li>在下方“已计划的优化”处点“更改设置”，然后取消计划。</li>
+<li>win10的“优化驱动器”即win7时代的磁盘碎片整理，每两三个月做一次即可，每周计划运行实属对资源的浪费。【固态硬盘不需要】</li>
+</ul>
+<h1 id="8-禁用系统保护"><a href="#8-禁用系统保护" class="headerlink" title="8. 禁用系统保护"></a>8. 禁用系统保护</h1><ul>
+<li>右键点击“此电脑”，选择“属性”，再在“系统”窗口的左侧选择“系统保护”。</li>
+<li>在下方配置系统保护功能，选择禁用。（如果有开启的话）</li>
+<li>“系统保护”即XP时代的“系统还原”。现在一键GHOST或各品牌厂商的一键恢复软件的功能完爆它几条街，它也就没什么用了，关掉吧，还能节省一些磁盘空间。</li>
+</ul>
+<h1 id="9-关闭IPV6"><a href="#9-关闭IPV6" class="headerlink" title="9. 关闭IPV6"></a>9. 关闭IPV6</h1><p>如果您的网络运营商不分配IPV6地址，可以将其关闭。</p>
+<ul>
+<li>右键点击“此电脑”，选择“管理”，进入“计算机管理”窗口。在左侧的菜单选择“服务”，并在右侧找到“IPHelper”。右键点击它，选择“属性”，并在新打开的窗口中把启动类型改为“禁用”。方法基本同第一部分。</li>
+<li>网络共享中心&gt;网络连接&gt;以太网&gt;属性&gt;取消ipv6。</li>
+</ul>
+<h1 id="10-关闭家庭组"><a href="#10-关闭家庭组" class="headerlink" title="10. 关闭家庭组"></a>10. 关闭家庭组</h1><p>因为这功能会导致硬盘和CPU处于高负荷状态</p>
+<ul>
+<li>关闭方法：控制面板&gt;家庭组&gt;离开。</li>
+</ul>
+<h1 id="11-防火墙"><a href="#11-防火墙" class="headerlink" title="11. 防火墙"></a>11. 防火墙</h1><p>可在控制面板里面的防火墙的“高级设置”里面的“属性”把“域配置文件”、“专用配置文件”、“公用配置文件”的状态改成关闭，这样就可以在不禁用防火墙服务的情况下关闭防火墙。但windows firewall　(windows防火墙服务)千万不能停用。</p>
+<h1 id="12-设置好Superfetch服务-Windows-Search"><a href="#12-设置好Superfetch服务-Windows-Search" class="headerlink" title="12. 设置好Superfetch服务 Windows Search"></a>12. 设置好Superfetch服务 Windows Search</h1><p>服务Superfetch启动类型改成延迟启动或禁用，可以避免Win10对硬盘的频繁访问。关于Superfetch和Search，SSD用户要关</p>
+<h1 id="13-开启HybridBoot"><a href="#13-开启HybridBoot" class="headerlink" title="13. 开启HybridBoot"></a>13. 开启HybridBoot</h1><ul>
+<li>Win10启动飞快</li>
+</ul>
+<p>控制面板&gt;电源选项&gt;选择电源按钮的功能，更改当前不可用的设置&gt;关机设置&gt;勾上启用快速启动。</p>
+<ul>
+<li>关闭休眠</li>
+</ul>
+<p>Win+R输入powercfg -h on，关闭休眠：powercfg -h off（关闭后C盘会空出几G的空间）</p>
+<h1 id="14-关闭性能特效"><a href="#14-关闭性能特效" class="headerlink" title="14. 关闭性能特效"></a>14. 关闭性能特效</h1><p>配置不太好的机器可以适当关闭显示效果以提高系统相应速度</p>
+<ul>
+<li>系统属性&gt;高级&gt;性能&gt;设置&gt;关闭淡出淡入效果。打开文件夹，小软件很快的</li>
+</ul>
+<h1 id="15-关闭讨厌的第三方软件服务项"><a href="#15-关闭讨厌的第三方软件服务项" class="headerlink" title="15. 关闭讨厌的第三方软件服务项"></a>15. 关闭讨厌的第三方软件服务项</h1><ul>
+<li>Win+ R输入“msconfig”→确定。打开系统配置→勾选隐藏所有的Microsoft服务去掉不需要运行的服务</li>
+<li>引导 – 勾上无GUI引导，确定。</li>
+</ul>
+<h1 id="16-Win10加速关机速度"><a href="#16-Win10加速关机速度" class="headerlink" title="16. Win10加速关机速度"></a>16. Win10加速关机速度</h1><ul>
+<li>Win+R键。输入 gpedit.msc</li>
+<li>计算机管理中选择，模块管理 - 系统 -关机选项</li>
+<li>“启用” 关闭会阻止或取消关机的应用程序的自动终止功能</li>
+</ul>
+<h1 id="17-关闭计划任务里的隐藏的自启动程序"><a href="#17-关闭计划任务里的隐藏的自启动程序" class="headerlink" title="17. 关闭计划任务里的隐藏的自启动程序"></a>17. 关闭计划任务里的隐藏的自启动程序</h1><ul>
+<li>控制面板→所有控制面板项→管理工具→任务计划程序→任务计划程序库→右侧任务列表→禁用不需要的任务</li>
+</ul>
+<h1 id="18-关闭windows安全中心服务"><a href="#18-关闭windows安全中心服务" class="headerlink" title="18. 关闭windows安全中心服务"></a>18. 关闭windows安全中心服务</h1><ul>
+<li>Win+R键 输入services.msc回车——找到SecurityCenter ，设置禁用。</li>
+</ul>
+<h1 id="19-关闭onedrive，自动上传文件"><a href="#19-关闭onedrive，自动上传文件" class="headerlink" title="19. 关闭onedrive，自动上传文件"></a>19. 关闭onedrive，自动上传文件</h1><ul>
+<li>Win+R键输入 <code>gpedit.msc</code></li>
+</ul>
+<p>在计算机配置 管理模板 windows组件里，有三个选项关闭</p>
+<h1 id="20-取消默认网速20-限制，让网速在快一点儿"><a href="#20-取消默认网速20-限制，让网速在快一点儿" class="headerlink" title="20. 取消默认网速20%限制，让网速在快一点儿"></a>20. 取消默认网速20%限制，让网速在快一点儿</h1><ul>
+<li>单击“开始”菜单，然后单击“运行”，在出现的“运行”对话框的“打开”文本框中输入<code>gpedit.msc</code>命令，点击“确定”，启动组策略管理器</li>
+<li>展开“计算机配置”，而后再展开其下的“管理模板”子项目，展开“网络”，单击选中“Qos数据包调度程序”项目</li>
+<li>双击“限制可保留带宽”，将该项目设置为“已启动”，并将“带宽限制”设置为“0”就可以了</li>
+<li>单击“确定”按钮使设置生效</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2017\03\25\Efficient-reading-of-the-literature\" rel="bookmark">高效地阅读文献--《文献检索与论文写作》</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\09\26\highValueApplicationSoftware\" rel="bookmark">高效软件推荐</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%88%E7%8E%87/" rel="tag"><i class="fa fa-tag"></i> 效率</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/02/24/Spirited-Away/" rel="prev" title="《千里千寻》中蕴含人生观触动的一段话">
+                  <i class="fa fa-chevron-left"></i> 《千里千寻》中蕴含人生观触动的一段话
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/03/21/Save-your-soul-seven-times/" rel="next" title="七次省视自己的灵魂--卡里·纪伯伦">
+                  七次省视自己的灵魂--卡里·纪伯伦 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2017/03/02/win10Optimization/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="syslog协议与Rsyslog系统日志软件简介">
+<meta property="og:url" content="https://eisenhao.cn/2021/08/07/syslogProtocolAndRsyslog/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/syslogProtocol.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/RsyslogWorkFlow.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/RsyslogMsgDeal.jpg">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/RsyslogFeaturesImagemap.png">
+<meta property="article:published_time" content="2021-08-07T06:45:44.000Z">
+<meta property="article:modified_time" content="2021-08-12T08:31:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="syslog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/syslogProtocol.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/08/07/syslogProtocolAndRsyslog/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/08/07/syslogProtocolAndRsyslog/","path":"2021/08/07/syslogProtocolAndRsyslog/","title":"syslog协议与Rsyslog系统日志软件简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>syslog协议与Rsyslog系统日志软件简介 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-syslog%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97%E5%8D%8F%E8%AE%AE"><span class="nav-text">1. syslog系统日志协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-syslog%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. syslog协议简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-syslog%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%97%A5%E5%BF%97%E4%BF%A1%E6%81%AF%E7%BB%93%E6%9E%84"><span class="nav-text">1.2. syslog协议的日志信息结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-PRI%E9%83%A8%E5%88%86"><span class="nav-text">1.2.1. PRI部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-HEADER%E9%83%A8%E5%88%86"><span class="nav-text">1.2.2. HEADER部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-MSG%E9%83%A8%E5%88%86"><span class="nav-text">1.2.3. MSG部分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%90%84%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E7%9A%84%E9%BB%98%E8%AE%A4%E6%84%8F%E4%B9%89%E8%AF%B4%E6%98%8E"><span class="nav-text">1.3. 各日志文件的默认意义说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Rsyslog%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97%E8%BD%AF%E4%BB%B6%E7%AE%80%E4%BB%8B"><span class="nav-text">2. Rsyslog系统日志软件简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97%E8%BD%AF%E4%BB%B6%E7%AE%80%E4%BB%8B"><span class="nav-text">2.1. 系统日志软件简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%B8%B8%E7%94%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97%E8%BD%AF%E4%BB%B6%EF%BC%88Syslog%E3%80%81Syslog-ng-%E4%B8%8E-Rsyslog%EF%BC%89%E5%AF%B9%E6%AF%94"><span class="nav-text">2.2. 常用的系统日志软件（Syslog、Syslog-ng 与 Rsyslog）对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Rsyslog%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-text">2.3. Rsyslog工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-Rsyslog%E6%97%A5%E5%BF%97%E6%B6%88%E6%81%AF%E6%B5%81%E5%90%91"><span class="nav-text">2.4. Rsyslog日志消息流向</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">3. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/08/07/syslogProtocolAndRsyslog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          syslog协议与Rsyslog系统日志软件简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-08-07 14:45:44" itemprop="dateCreated datePublished" datetime="2021-08-07T14:45:44+08:00">2021-08-07</time>
+    </span>
+
+  
+    <span id="/2021/08/07/syslogProtocolAndRsyslog/" class="post-meta-item leancloud_visitors" data-flag-title="syslog协议与Rsyslog系统日志软件简介" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/syslogProtocol.png"  style="zoom:75%;" />
+
+<a id="more"></a>
+
+<h1 id="1-syslog系统日志协议"><a href="#1-syslog系统日志协议" class="headerlink" title="1. syslog系统日志协议"></a>1. syslog系统日志协议</h1><h2 id="1-1-syslog协议简介"><a href="#1-1-syslog协议简介" class="headerlink" title="1.1. syslog协议简介"></a>1.1. syslog协议简介</h2><ul>
+<li>Unix/Linux系统中的<strong>绝大部分日志</strong>都是通过一种叫做<strong>syslog</strong>的机制<strong>产生和维护</strong>的。</li>
+<li><strong>syslog协议</strong>是一个<b><font color="red" style="">转发系统日志信息的标准</font></b>，它是在美国加州大学伯克利软件分布研究中心BSD的 TCP/IP 系统实施中开发的，目前已成为一种工业标准协议。</li>
+<li>syslog协议可根据与日志消息的生产关系分为客户端和服务器端。其中<strong>客户端</strong>是产生日志消息的一方；<strong>服务器端</strong>负责接收客户端发送来的日志消息，并进行保存到特定的日志文件中或其他方式的处理。</li>
+<li><strong>syslog记录着系统中的任何事件</strong>，任何希望生成日志的程序都可以向 syslog 发送信息。 </li>
+</ul>
+<h2 id="1-2-syslog协议的日志信息结构"><a href="#1-2-syslog协议的日志信息结构" class="headerlink" title="1.2. syslog协议的日志信息结构"></a>1.2. syslog协议的日志信息结构</h2><p>标准syslog协议的日志信息结构主要由PRI（priority，优先级）、HEADER、MSG三部分组成。下方为某syslog消息示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;147&gt;Oct 9 22:33:20 hlfedora auditd[1787]: The audit daemon is exiting.</span><br></pre></td></tr></table></figure>
+
+<table width="700" border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <td colspan="5" align="center"><b><font color="red" style="">&lt;147&gt;</font></b><b><font color="blue" style="">Oct 9 22:33:20 hlfedora</font></b> <b><font color="green" style="">auditd[1787]: The audit daemon is exiting.</font></b></td>
+    </tr>
+    <tr>
+        <td align="center"><b><font color="red" style="">&lt;147&gt;</font></b></td>
+        <td colspan="2" align="center"><b><font color="blue" style="">Oct 9 22:33:20 hlfedora</font></b></td>
+        <td colspan="2" align="center"><b><font color="green" style="">auditd[1787]: The audit daemon is exiting.</font></b></td>
+    </tr>
+    <tr>
+        <th align="center"><b><font color="red" style="">PRI</font></b></th>
+        <th colspan="2" align="center"><b><font color="blue" style="">HEADER</font></b></th>
+        <th colspan="2" align="center"><b><font color="green" style="">MSG</font></b></th>
+    </tr>
+    <tr>
+        <th align="center"><b>&lt;Facility * 8 + Severity&gt;</th>
+        <th align="center"><b>时间</th>
+        <th align="center"><b>主机名（或IP）</th>
+        <th align="center"><b>TAG（可选）</th>
+        <th align="center"><b>Content</th>
+    </tr>
+    <tr>
+        <td align="center">&lt;18(local2) * 8 + 3(Error)&gt;</td>
+        <td align="center">Oct 9 22:33:20</td>
+        <td align="center">hlfedora</td>
+        <td align="center">auditd[1787]:</td>
+        <td align="center"> The audit daemon is exiting.</td>
+    </tr>
+</table>
+
+<p>其中“&lt;147&gt;”是PRI部分，“Oct 9 22:33:20 hlfedora”是HEADER部分，“auditd[1787]: The audit daemon is exiting.”是MSG部分。</p>
+<h3 id="1-2-1-PRI部分"><a href="#1-2-1-PRI部分" class="headerlink" title="1.2.1. PRI部分"></a>1.2.1. PRI部分</h3><p>PRI（priority，优先级）部分由尖括号包含的一个数字构成，这个数字包含了程序模块（Facility）、严重性（Severity），这个数字是由 Facility 乘以 8 再加上 Severity 得来。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">priNum = Facility * 8 + Severity</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="red" style="">协议定义了24个日志 程序模块（Facility）：</font></b></p>
+<table>
+<thead>
+<tr>
+<th align="center">Numerical Code</th>
+<th align="left">Facility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="left">kernel messages</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="left">user-level messages</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="left">mail system</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="left">system daemons</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="left">security/authorization messages (note 1)</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="left">messages generated internally by syslogd</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">line printer subsystem</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left">network news subsystem</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left">UUCP subsystem</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left">clock daemon (note 2)</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left">security/authorization messages (note 1)</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left">FTP daemon</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">NTP subsystem</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="left">log audit (note 1)</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="left">log alert (note 1)</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="left">clock daemon (note 2)</td>
+</tr>
+<tr>
+<td align="center">16</td>
+<td align="left">local use 0  (local0)</td>
+</tr>
+<tr>
+<td align="center">17</td>
+<td align="left">local use 1  (local1)</td>
+</tr>
+<tr>
+<td align="center"><strong>18</strong></td>
+<td align="left"><strong>local use 2  (local2)</strong></td>
+</tr>
+<tr>
+<td align="center">19</td>
+<td align="left">local use 3  (local3)</td>
+</tr>
+<tr>
+<td align="center">20</td>
+<td align="left">local use 4  (local4)</td>
+</tr>
+<tr>
+<td align="center">21</td>
+<td align="left">local use 5  (local5)</td>
+</tr>
+<tr>
+<td align="center">22</td>
+<td align="left">local use 6  (local6)</td>
+</tr>
+<tr>
+<td align="center">23</td>
+<td align="left">local use 7  (local7)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Note 1 - Various operating systems have been found to utilize<br>Facilities 4, 10, 13 and 14 for security/authorization,audit, and alert messages which seem to be similar.<br>Note 2 - Various operating systems have been found to utilize<br>both Facilities 9 and 15 for clock (cron/at) messages.</p>
+</blockquote>
+<p><b><font color="red" style="">协议定义了8个日志级别——严重性（Severity）：</font></b></p>
+<table>
+<thead>
+<tr>
+<th align="center">Numerical Code</th>
+<th align="left">Severity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="left">Emergency: system is unusable</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="left">Alert: action must be taken immediately</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="left">Critical: critical conditions</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="left"><strong>Error: error conditions</strong></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="left">Warning: warning conditions</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="left">Notice: normal but significant condition</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">Informational: informational messages</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left">Debug: debug-level messages</td>
+</tr>
+</tbody></table>
+<p>对上述PRI值为147的日志消息示例，syslog协议在：</p>
+<ul>
+<li><p><strong>填充PRI字段时</strong>，根据要传入日志消息的程序模块（Facility）和严重性（Severity）参数计算消息的PRI值：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">18(local2) * 8 + 3(Error) = 147</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>解析时PRI字段时</strong>，取 PRI值(<b><font color="green" style="">10010</font></b><b><font color="red" style="">011</font></b>B, 147) 的：</p>
+<ul>
+<li>低位3位(<b><font color="red" style="">011</font></b>B, 3)即可得到Severity的值(<b><font color="red" style="">Error</font></b>)；</li>
+<li>取PRI值的高5位（右移3位后）(<b><font color="green" style="">10010</font></b>B, 18)即可得到Facility的值(<b><font color="green" style="">local2</font></b>)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-2-HEADER部分"><a href="#1-2-2-HEADER部分" class="headerlink" title="1.2.2. HEADER部分"></a>1.2.2. HEADER部分</h3><p>HEADER部分包括两个字段，<strong>时间</strong>和<strong>主机名（或IP）</strong>。其格式如下：</p>
+<table  border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <td colspan="2" align="center">Oct 9 22:33:20 hlfedora</td>
+    </tr>
+    <tr>
+        <th align="center">时间</th>
+        <th align="center">主机名（或IP）</th>
+    </tr>
+    <tr>
+        <td align="center">Oct 9 22:33:20</td>
+        <td align="center">hlfedora</td>
+    </tr>
+</table>
+
+<p>格式必须是“Mmm dd hh:mm:ss”，不包括年份。“日”的数字如果是1～9，前面会补一个空格（也就是月份后面有两个空格），而“小时”、“分”、“秒”则在前面补“0”。<br>月份取值包括：Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec</p>
+<p>备注：</p>
+<ul>
+<li>长期以来，没有一个标准来规范syslog的格式，导致syslog的<strong>格式是非常随意</strong>；</li>
+<li>某些不标准的syslog格式中包含了年份，若未做<strong>容错处理</strong>将会导致解析出错；</li>
+<li>大部分syslog都包含PRI和MSG部分，而HEADER可能没有，这个时候MSG部分紧跟在PRI后面，中间没有空格。</li>
+</ul>
+<h3 id="1-2-3-MSG部分"><a href="#1-2-3-MSG部分" class="headerlink" title="1.2.3. MSG部分"></a>1.2.3. MSG部分</h3><p>MSG由TAG部分（可选）和Content部分构成。其格式如下：</p>
+<table  border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <td colspan="2" align="center">auditd[1787]: The audit daemon is exiting.</td>
+    </tr>
+    <tr>
+        <th align="center">TAG（可选）</th>
+        <th align="center">Content</th>
+    </tr>
+    <tr>
+        <td align="center">auditd[1787]</td>
+        <td align="center"> The audit daemon is exiting.</td>
+    </tr>
+</table>
+
+<p>其中，TAG域的值是产生日志消息的<strong>程序或进程</strong>的名称，TAG后面用一个冒号隔开Content部分，这部分的内容是应用程序自定义的日志正文。</p>
+<h2 id="1-3-各日志文件的默认意义说明"><a href="#1-3-各日志文件的默认意义说明" class="headerlink" title="1.3. 各日志文件的默认意义说明"></a>1.3. 各日志文件的默认意义说明</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center"><b>文件</b></th>
+        <th align="center"><b>说明</b></th>
+    </tr>
+    <tr>
+        <td><b>/var/log/messages</b></td>
+        <td>系统主日志文件，记录常见的系统和服务错误信息</td>
+    </tr>
+    <tr>
+        <td><b>/var/log/syslog</b></td>
+        <td>只记录警告信息，常常是系统出问题的信息，使用lastlog查看</td>
+    </tr>
+    <tr>
+        <td>/var/log/boot.log</td>
+        <td>记录系统在引导过程中发生的事件，即开机自检中显示信息</td>
+    </tr>
+    <tr>
+        <td>/var/log/lastlog</td>
+        <td>记录最后一次用户成功登陆的时间、登陆IP等信息</td>
+    </tr>
+    <tr>
+        <td>/var/log/secure</td>
+        <td>系统认证/安全日志。记录用户和工作组变坏情况、用户登陆认证情况</td>
+    </tr>
+    <tr>
+        <td>/var/log/maillog</td>
+        <td>邮件postfix相关日志</td>
+    </tr>
+    <tr>
+        <td>/var/log/btmp</td>
+        <td>记录Linux登陆失败的用户、时间以及远程IP地址</td>
+    </tr>
+    <tr>
+        <td>/var/log/cron</td>
+        <td>记录计划任务crond服务执行情况</td>
+    </tr>
+    <tr>
+        <td>/var/log/dmesg</td>
+        <td>记录系统启动相关日志</td>
+    </tr>
+</table>
+
+<h1 id="2-Rsyslog系统日志软件简介"><a href="#2-Rsyslog系统日志软件简介" class="headerlink" title="2. Rsyslog系统日志软件简介"></a>2. Rsyslog系统日志软件简介</h1><h2 id="2-1-系统日志软件简介"><a href="#2-1-系统日志软件简介" class="headerlink" title="2.1. 系统日志软件简介"></a>2.1. 系统日志软件简介</h2><ul>
+<li>系统日志软件可根据当条日志消息的<strong>PRI属性值</strong>，即对应syslog协议中的<strong>程序模块（Facility）</strong>和<strong>严重性级别（Severity）</strong>，对当条日志消息按配置文件中<strong>指定的方式进行处理</strong>，如：保存到不同的文件中、发送到远程服务器或数据库等。</li>
+<li><b><font color="red" style="">Syslog</font></b> 是早期大部分Linux发行版的内置<strong>日志记录程序</strong>，现已逐渐被 <b><font color="red" style="">Rsyslog</font></b> 取代（<strong>优势</strong>：性能和安全性更高，日志处理规模可达每秒百万条），Red Hat Enterprise Linux 6 之后的系统默认使用了Rsyslog。</li>
+<li>系统日志软件转发日志消息时，绝大多数情况下使用UDP协议转发syslog消息，少数情况使用TCP协议（RFC3195协议）转发syslog消息</li>
+</ul>
+<h2 id="2-2-常用的系统日志软件（Syslog、Syslog-ng-与-Rsyslog）对比"><a href="#2-2-常用的系统日志软件（Syslog、Syslog-ng-与-Rsyslog）对比" class="headerlink" title="2.2. 常用的系统日志软件（Syslog、Syslog-ng 与 Rsyslog）对比"></a>2.2. 常用的系统日志软件（Syslog、Syslog-ng 与 Rsyslog）对比</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <th align="center"><b><a target="_blank" rel="noopener" href="//en.wikipedia.org/wiki/Syslog">Syslog</a></b></th>
+        <th align="center"><b><a target="_blank" rel="noopener" href="//www.syslog-ng.com/products/open-source-log-management">Syslog-ng</a></b></th>
+        <th align="center"><b><a target="_blank" rel="noopener" href="//www.rsyslog.com">Rsyslog</a></b></th>
+    </tr>
+    <tr>
+        <td align="center">诞生时间</td>
+        <td align="center">1980</td>
+        <td align="center">1998</td>
+        <td align="center">2004</td>
+    </tr>
+    <tr>
+        <td align="center">守护进程</td>
+        <td align="center">syslogd<br>klogd</td>
+        <td align="center">journald</td>
+        <td align="center">rsyslogd</td>
+    </tr>
+    <tr>
+        <td align="center">配置文件</td>
+        <td align="center">/etc/syslog.conf</td>
+        <td align="center">/etc/syslog.conf</td>
+        <td align="center">/etc/rsyslog.conf</td>
+    </tr>
+    <tr>
+        <td align="center">主要特性</td>
+        <td>* 支持单机模式<br>* 支持C/S架构<br>* 支持UDP/TCP协议</td>
+        <td>* 支持SSL/TLS协议<br>* 支持输出日志到数据库，如：MySQL、<br>Oracle、PostgreSQL和SQLite.<br>* 支持标准的Syslog协议<br>* 支持Filter、Parse以及Rewrite<br>* 支持更多的平台和更高的负载能力</td>
+        <td>* 多线程<br>* 支持TCP, SSL, TLS, RELP<br>* 支持输出日志到各种数据库，如：MySQL，PostgreSQL，<br>MongoDB，ElasticSearch等<br>* 可通过可靠事件记录协议（Reliable Event Logging Protocol<br>，RELP） + TCP实现数据的可靠传输<br>* 可对输出格式进行精细控制<br>具有强大的消息过滤能力<br>具有高精度时间戳、队列操作（内存，磁盘以及混合模式等）<br>支持数据的加密和压缩传输等</td>
+    </tr>
+</table>
+
+<p>常用系统日志软件中，应用最广泛同时性能最强大的是<strong>Rsyslog</strong>（官网标语：The rocket-fast system for log processing）。</p>
+<h2 id="2-3-Rsyslog工作流"><a href="#2-3-Rsyslog工作流" class="headerlink" title="2.3. Rsyslog工作流"></a>2.3. Rsyslog工作流</h2><p>支持多线程的Rsyslog工作流示意图（多种输入输出方式并行处理）：</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/RsyslogWorkFlow.png" class="full-image" alt="Rsyslog工作流" />
+
+<p>对单个日志消息，日志message先进入主队列再过滤到分支队列，最后在各个processor线程中输出内容，输出到指定的输出方式中（如：写文件、发送远程主机、存数据库等）。</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/RsyslogMsgDeal.jpg" class="full-image" alt="Rsyslog消息处理流程" />
+
+<h2 id="2-4-Rsyslog日志消息流向"><a href="#2-4-Rsyslog日志消息流向" class="headerlink" title="2.4. Rsyslog日志消息流向"></a>2.4. Rsyslog日志消息流向</h2><p>下面从 rsyslogd 进程的输入和输出两个方面概述的日志信息流向。</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/RsyslogFeaturesImagemap.png" class="full-image" alt="Rsyslog msg流向" />
+
+<p><strong>输入</strong>：</p>
+<ol>
+<li>接收Linux内核进程发送到/dev/klog（特殊的设备，读取内核发出的消息）的日志消息</li>
+<li>接收用户进程（通过进程间通信）发送到/dev/log（UNIX域数据包套接字）的日志消息</li>
+<li>接收UDP协议（TCP/IP网络通信）发送到514端口的日志消息</li>
+<li>监听写入文件的日志消息</li>
+</ol>
+<p><strong>输出</strong>：</p>
+<ol>
+<li>写入本地指定文件</li>
+<li>发送给远程主机（eg. 远程ELK实时日志分析平台）</li>
+<li>输出日志到数据库</li>
+</ol>
+<h1 id="3-参考文档"><a href="#3-参考文档" class="headerlink" title="3. 参考文档"></a>3. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/skyofbitbit/p/3674664.html">linux syslog详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.rsyslog.com/">Rsyslog官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/taosiyu/p/12930410.html">rsyslog详解实战和避坑</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/syslog/" rel="tag"><i class="fa fa-tag"></i> syslog</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/25/GitUsefullCmd/" rel="prev" title="Git实用命令记录">
+                  <i class="fa fa-chevron-left"></i> Git实用命令记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/08/07/syslogProtocolAndRsyslog/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

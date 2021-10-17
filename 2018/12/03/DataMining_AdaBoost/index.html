@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 集成学习AdaBoost算法简介AdaBoost全称是adaptive boosting，该算法基本思想:多个结构较为简单，分类或预测精度较低的弱学习算法可以通过某种方式结合成具有较强学习能力的强学习算法。根据统计学习方法的三要素，AdaBoost 方法&#x3D;加法模型+指数损失函数(策略)+前向分步 算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AdaBoost算法——数据挖掘">
+<meta property="og:url" content="https://eisenhao.cn/2018/12/03/DataMining_AdaBoost/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 集成学习AdaBoost算法简介AdaBoost全称是adaptive boosting，该算法基本思想:多个结构较为简单，分类或预测精度较低的弱学习算法可以通过某种方式结合成具有较强学习能力的强学习算法。根据统计学习方法的三要素，AdaBoost 方法&#x3D;加法模型+指数损失函数(策略)+前向分步 算法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_AdaBoost.png">
+<meta property="article:published_time" content="2018-12-03T06:05:44.000Z">
+<meta property="article:modified_time" content="2019-02-18T09:05:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据挖掘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_AdaBoost.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/12/03/DataMining_AdaBoost/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/12/03/DataMining_AdaBoost/","path":"2018/12/03/DataMining_AdaBoost/","title":"AdaBoost算法——数据挖掘"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AdaBoost算法——数据挖掘 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0AdaBoost%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 集成学习AdaBoost算法简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-AdaBoost%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%A6%82%E4%B8%8B"><span class="nav-text">2. AdaBoost运行原理如下:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Python%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0%E5%9F%BA%E4%BA%8E%E5%8D%95%E5%B1%82%E5%86%B3%E7%AD%96%E6%A0%91%E7%9A%84AdaBoost%E7%AE%97%E6%B3%95"><span class="nav-text">3. Python编程实现基于单层决策树的AdaBoost算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%9F%BA%E4%BA%8E%E5%8D%95%E5%B1%82%E5%86%B3%E7%AD%96%E6%A0%91%E7%9A%84AdaBoost%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="nav-text">3.1. 基于单层决策树的AdaBoost算法步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%AF%BB%E6%89%BE%E6%9C%80%E4%BC%98%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-text">3.2. 寻找最优决策树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E8%BE%93%E5%87%BA%E5%A4%9A%E4%B8%AA%E5%BC%B1%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E6%95%B0%E7%BB%84"><span class="nav-text">3.3. 输出多个弱分类器的数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E8%BE%93%E5%87%BA%E5%88%86%E7%B1%BB%E7%BB%93%E6%9E%9C"><span class="nav-text">3.4. 输出分类结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E4%B8%BB%E5%87%BD%E6%95%B0"><span class="nav-text">3.5. 主函数</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/12/03/DataMining_AdaBoost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AdaBoost算法——数据挖掘
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-12-03 14:05:44" itemprop="dateCreated datePublished" datetime="2018-12-03T14:05:44+08:00">2018-12-03</time>
+    </span>
+
+  
+    <span id="/2018/12/03/DataMining_AdaBoost/" class="post-meta-item leancloud_visitors" data-flag-title="AdaBoost算法——数据挖掘" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_AdaBoost.png" class="full-image" />
+
+<h1 id="1-集成学习AdaBoost算法简介"><a href="#1-集成学习AdaBoost算法简介" class="headerlink" title="1. 集成学习AdaBoost算法简介"></a>1. 集成学习AdaBoost算法简介</h1><p>AdaBoost全称是adaptive boosting，该算法基本思想:多个结构较为简单，分类或预测精度较低的弱学习算法可以通过某种方式结合成具有较强学习能力的强学习算法。根据统计学习方法的三要素，AdaBoost 方法=加法模型+指数损失函数(策略)+前向分步 算法。</p>
+<a id="more"></a>
+<h1 id="2-AdaBoost运行原理如下"><a href="#2-AdaBoost运行原理如下" class="headerlink" title="2. AdaBoost运行原理如下:"></a>2. AdaBoost运行原理如下:</h1><ul>
+<li><p>S1.初始化训练数据的权值分布。如果有N个样本，则每一个训练样本最开始时都被赋予相同的权值:1/N。</p>
+</li>
+<li><p>S2.训练弱分类器。</p>
+<ul>
+<li>具体训练过程中，如果某个样本点已经被准确地分类，那么在构造下一个训练集中，它的权值就被降低;</li>
+<li>相反，如果某个样本点没有被准确地分类，那么它的权值就得到提高。</li>
+<li>然后，权值更新过的样本集被用于训练下一个分类器，整个训练过程如此迭代地进行下去。</li>
+</ul>
+</li>
+<li><p>S3.将各个训练得到的弱分类器组合成强分类器。各个弱分类器的训练过程结束后，加大分类误差率小的弱分类器的权重，使其在最终的分类函数中起着较大的决定作用，而降低分类误差率大的弱分类器的权重，使其在最终的分类函数中起着较小的决定作用。换言之，误差率低的弱分类器在最终分类器中占的权重较大，否则较小。</p>
+</li>
+</ul>
+<h1 id="3-Python编程实现基于单层决策树的AdaBoost算法"><a href="#3-Python编程实现基于单层决策树的AdaBoost算法" class="headerlink" title="3. Python编程实现基于单层决策树的AdaBoost算法"></a>3. Python编程实现基于单层决策树的AdaBoost算法</h1><h2 id="3-1-基于单层决策树的AdaBoost算法步骤"><a href="#3-1-基于单层决策树的AdaBoost算法步骤" class="headerlink" title="3.1. 基于单层决策树的AdaBoost算法步骤"></a>3.1. 基于单层决策树的AdaBoost算法步骤</h2><ul>
+<li>S1.找出最佳单层决策树: a.将最小分类误差率minerror=inf b.对数据集中的每一个特征: c.对该特征的每个步长(找出决策阈值): d.对每个不等号(&gt;=，&lt;): e.建立一颗单层决策树(只包含树桩)并利用加权数据集并计算该决策树的分类误差率 f.如果分类误差率小于minerror，则将当前单层决策树设置成最佳单层决策树。</li>
+<li>S2.利用单层决策树的分类误差率计算该决策树的比例系数alpha</li>
+<li>S3.计算更新权重向量D</li>
+<li>S4.更新累计类别估计值，计算AdaBoost模型的错误率</li>
+<li>S5.如果错误率为0或者分类器数目i&gt;M，则退出循环</li>
+</ul>
+<h2 id="3-2-寻找最优决策树"><a href="#3-2-寻找最优决策树" class="headerlink" title="3.2. 寻找最优决策树"></a>3.2. 寻找最优决策树</h2><p>找到加权错误率(分类错误率)最小的单层决策树(会被不断迭代)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">buildStump</span>(<span class="params">dataArray， classLabels， D</span>):</span></span><br><span class="line">    dataMatrix = np.mat(dataArray); labelMat = np.mat(classLabels).T</span><br><span class="line">    m， n = np.shape(dataMatrix)</span><br><span class="line">    stepNum = <span class="number">10.0</span>; bestStump = &#123;&#125;; bestClassEst = np.mat(np.zeros((m， <span class="number">1</span>)))</span><br><span class="line">    minError = np.inf</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        rangeMin = dataMatrix[:， i].<span class="built_in">min</span>(); rangeMax = dataMatrix[:， i].<span class="built_in">max</span>()</span><br><span class="line">        stepSize = (rangeMax - rangeMin)/stepNum</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(-<span class="number">1</span>， <span class="built_in">int</span>(stepNum)+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> thresholdIneq <span class="keyword">in</span> [<span class="string">&#x27;lt&#x27;</span>， <span class="string">&#x27;gt&#x27;</span>]:</span><br><span class="line">                thresholdValue =  rangeMin + <span class="built_in">float</span>(j) * stepSize</span><br><span class="line">                predictClass = stumpClassify(dataMatrix， i， thresholdValue， thresholdIneq)</span><br><span class="line">                errArray =  np.mat(np.ones((m， <span class="number">1</span>)))</span><br><span class="line">                errArray[predictClass == labelMat] = <span class="number">0</span></span><br><span class="line">                weightError = D.T * errArray</span><br><span class="line">                <span class="comment">#print &quot;split: dim %d， thresh: %.2f， threIneq:%s， weghtError %.3F&quot; %(i， thresholdValue， thresholdIneq， weightError)</span></span><br><span class="line">                <span class="keyword">if</span> weightError &lt; minError:</span><br><span class="line">                    minError = weightError</span><br><span class="line">                    bestClassEst = predictClass.copy()</span><br><span class="line">                    bestStump[<span class="string">&#x27;dimen&#x27;</span>] = i</span><br><span class="line">                    bestStump[<span class="string">&#x27;thresholdValue&#x27;</span>] = thresholdValue</span><br><span class="line">                    bestStump[<span class="string">&#x27;thresholdIneq&#x27;</span>] = thresholdIneq</span><br><span class="line">    <span class="keyword">return</span> bestClassEst， minError， bestStump</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-输出多个弱分类器的数组"><a href="#3-3-输出多个弱分类器的数组" class="headerlink" title="3.3. 输出多个弱分类器的数组"></a>3.3. 输出多个弱分类器的数组</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">adaBoostTrainDS</span>(<span class="params">dataArray， classLabels， numIt=<span class="number">40</span></span>):</span></span><br><span class="line">    weakClass = []<span class="comment">#定义弱分类数组，保存每个基本分类器bestStump</span></span><br><span class="line">    m， n = np.shape(dataArray)</span><br><span class="line">    D = np.mat(np.ones((m， <span class="number">1</span>))/m)</span><br><span class="line">    aggClassEst = np.mat(np.zeros((m， <span class="number">1</span>)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numIt):</span><br><span class="line">        print(<span class="string">&quot;i:&quot;</span>， i)</span><br><span class="line">        bestClassEst， minError， bestStump = buildStump(dataArray， classLabels， D)<span class="comment">#step1:找到最佳的单层决策树</span></span><br><span class="line">        print(<span class="string">&quot;D.T:&quot;</span>， D.T)</span><br><span class="line">        alpha = <span class="built_in">float</span>(<span class="number">0.5</span>*np.log((<span class="number">1</span>-minError)/<span class="built_in">max</span>(minError， <span class="number">1e-16</span>)))<span class="comment">#step2: 更新alpha</span></span><br><span class="line">        print(<span class="string">&quot;alpha:&quot;</span>， alpha)</span><br><span class="line">        bestStump[<span class="string">&#x27;alpha&#x27;</span>] = alpha</span><br><span class="line">        weakClass.append(bestStump)<span class="comment">#step3:将基本分类器添加到弱分类的数组中</span></span><br><span class="line">        print(<span class="string">&quot;classEst:&quot;</span>， bestClassEst)</span><br><span class="line">        expon = np.multiply(-<span class="number">1</span>*alpha*np.mat(classLabels).T， bestClassEst)</span><br><span class="line">        D = np.multiply(D， np.exp(expon))</span><br><span class="line">        D = D/D.<span class="built_in">sum</span>()<span class="comment">#step4:更新权重，该式是让D服从概率分布</span></span><br><span class="line">        aggClassEst += alpha*bestClassEst<span class="comment">#steo5:更新累计类别估计值</span></span><br><span class="line">        print(<span class="string">&quot;aggClassEst:&quot;</span>， aggClassEst.T)</span><br><span class="line">        print(np.sign(aggClassEst) != np.mat(classLabels).T)</span><br><span class="line">        aggError = np.multiply(np.sign(aggClassEst) != np.mat(classLabels).T， np.ones((m， <span class="number">1</span>)))</span><br><span class="line">        print(<span class="string">&quot;aggError&quot;</span>， aggError)</span><br><span class="line">        aggErrorRate = aggError.<span class="built_in">sum</span>()/m</span><br><span class="line">        print(<span class="string">&quot;total error:&quot;</span>， aggErrorRate)</span><br><span class="line">        <span class="keyword">if</span> aggErrorRate == <span class="number">0.0</span>: <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> weakClass</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-输出分类结果"><a href="#3-4-输出分类结果" class="headerlink" title="3.4. 输出分类结果"></a>3.4. 输出分类结果</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">adaTestClassify</span>(<span class="params">dataToClassify， weakClass</span>):</span></span><br><span class="line">    dataMatrix = np.mat(dataToClassify)        </span><br><span class="line">    m =np.shape(dataMatrix)[<span class="number">0</span>]</span><br><span class="line">    aggClassEst = np.mat(np.zeros((m， <span class="number">1</span>)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(weakClass)):</span><br><span class="line">        <span class="comment"># 输出决策树桩标签</span></span><br><span class="line">        classEst = stumpClassify(dataToClassify， weakClass[i][<span class="string">&#x27;dimen&#x27;</span>]， weakClass[i][<span class="string">&#x27;thresholdValue&#x27;</span>]， weakClass[i][<span class="string">&#x27;thresholdIneq&#x27;</span>])</span><br><span class="line">        aggClassEst += weakClass[i][<span class="string">&#x27;alpha&#x27;</span>] * classEst</span><br><span class="line">        print(<span class="string">&#x27;第&#x27;</span>， i， <span class="string">&#x27;个弱分类器权值：&#x27;</span>， aggClassEst)</span><br><span class="line">    <span class="keyword">return</span> np.sign(aggClassEst)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-5-主函数"><a href="#3-5-主函数" class="headerlink" title="3.5. 主函数"></a>3.5. 主函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main函数</span></span><br><span class="line"><span class="keyword">if</span> __name__  ==  <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    D =np.mat(np.ones((<span class="number">5</span>， <span class="number">1</span>))/<span class="number">5</span>)</span><br><span class="line">    <span class="comment"># 加载一个两个特征的数据集</span></span><br><span class="line">    dataMatrix， classLabels = loadSimData()</span><br><span class="line">    <span class="comment"># 找到加权错误率（分类错误率）最小的单层决策树</span></span><br><span class="line">    bestClassEst， minError， bestStump = buildStump(dataMatrix， classLabels， D)</span><br><span class="line">    <span class="comment"># 输出：多个弱分类器的数组</span></span><br><span class="line">    weakClass = adaBoostTrainDS(dataMatrix， classLabels， <span class="number">9</span>)</span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    testClass = adaTestClassify(np.mat([<span class="number">0</span>， <span class="number">0</span>])， weakClass)</span><br><span class="line">    print(<span class="string">&#x27;最终分类标签：&#x27;</span>， testClass)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">D.T: [[<span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.2</span>]]</span><br><span class="line">alpha: <span class="number">0.6931471805599453</span></span><br><span class="line">classEst: [[-<span class="number">1.</span>]</span><br><span class="line">[ <span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[ <span class="number">1.</span>]]</span><br><span class="line">aggClassEst: [[-<span class="number">0.69314718</span> <span class="number">0.69314718</span> -<span class="number">0.69314718</span> -<span class="number">0.69314718</span> <span class="number">0.69314718</span>]]</span><br><span class="line">[[ <span class="literal">True</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]]</span><br><span class="line">aggError [[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]]</span><br><span class="line">total error: <span class="number">0.2</span></span><br><span class="line">i: <span class="number">1</span></span><br><span class="line">D.T: [[<span class="number">0.5</span></span><br><span class="line"><span class="number">0.125</span> <span class="number">0.125</span> <span class="number">0.125</span> <span class="number">0.125</span>]]</span><br><span class="line">alpha: <span class="number">0.9729550745276565</span></span><br><span class="line">classEst: [[ <span class="number">1.</span>]</span><br><span class="line">[ <span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]]</span><br><span class="line">aggClassEst: [[ <span class="number">0.27980789</span> <span class="number">1.66610226</span> -<span class="number">1.66610226</span> -<span class="number">1.66610226</span> -<span class="number">0.27980789</span>]]</span><br><span class="line">[[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[ <span class="literal">True</span>]]</span><br><span class="line">aggError [[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">1.</span>]]</span><br><span class="line">total error: <span class="number">0.2</span></span><br><span class="line">i: <span class="number">2</span></span><br><span class="line">D.T: [[<span class="number">0.28571429</span> <span class="number">0.07142857</span> <span class="number">0.07142857</span> <span class="number">0.07142857</span> <span class="number">0.5</span>  ]]</span><br><span class="line">alpha: <span class="number">0.8958797346140273</span></span><br><span class="line">classEst: [[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]]</span><br><span class="line">aggClassEst: [[ <span class="number">1.17568763</span> <span class="number">2.56198199</span> -<span class="number">0.77022252</span> -<span class="number">0.77022252</span> <span class="number">0.61607184</span>]]</span><br><span class="line">[[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]]</span><br><span class="line">aggError [[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]]</span><br><span class="line">total error: <span class="number">0.0</span></span><br><span class="line">第 <span class="number">0</span> 个弱分类器权值: [[-<span class="number">0.69314718</span>]]</span><br><span class="line">第 <span class="number">1</span> 个弱分类器权值: [[-<span class="number">1.66610226</span>]]</span><br><span class="line">第 <span class="number">2</span> 个弱分类器权值: [[-<span class="number">2.56198199</span>]]</span><br><span class="line">最终分类标签: [[-<span class="number">1.</span>]]</span><br></pre></td></tr></table></figure>
+
+
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AdaBoost.py">AdaBoost.py</a></p>
+</div>
+
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\12\10\DataMining_Apriori\" rel="bookmark">Apriori算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\10\DataMining_DBSCAN\" rel="bookmark">DBSCAN算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\11\16\DataMining_ID3\" rel="bookmark">ID3算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\24\DataMining_Kmeans\" rel="bookmark">Kmeans算法——数据挖掘</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\26\DataMining_PAM\" rel="bookmark">PAM算法——数据挖掘</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag"><i class="fa fa-tag"></i> 数据挖掘</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/19/DockerSimpleUsing/" rel="prev" title="Docker安装及简单应用">
+                  <i class="fa fa-chevron-left"></i> Docker安装及简单应用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/10/DataMining_Apriori/" rel="next" title="Apriori算法——数据挖掘">
+                  Apriori算法——数据挖掘 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/12/03/DataMining_AdaBoost/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 指针函数1int* fun(char ch);&#x2F;&#x2F;指针函数 指针函数，即返回值为指针地址的函数。实质仍为函数，与普通函数的差异仅在于返回值比较特殊，为一个指针地址（当然需要告知编译器一个特定的类型处理数据类型）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数指针 &amp; 指针函数">
+<meta property="og:url" content="https://eisenhao.cn/2018/10/09/functionPointerAndPointerfunction/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 指针函数1int* fun(char ch);&#x2F;&#x2F;指针函数 指针函数，即返回值为指针地址的函数。实质仍为函数，与普通函数的差异仅在于返回值比较特殊，为一个指针地址（当然需要告知编译器一个特定的类型处理数据类型）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pointerFunction.jpg">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/functionPointer.jpg">
+<meta property="article:published_time" content="2018-10-09T03:30:44.000Z">
+<meta property="article:modified_time" content="2018-10-10T14:55:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pointerFunction.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/10/09/functionPointerAndPointerfunction/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/10/09/functionPointerAndPointerfunction/","path":"2018/10/09/functionPointerAndPointerfunction/","title":"函数指针 & 指针函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>函数指针 & 指针函数 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0"><span class="nav-text">1. 指针函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E5%AE%9E%E4%BE%8B1%EF%BC%9A-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BA%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.1. 指针函数实例1： 返回值为基本类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E5%AE%9E%E4%BE%8B2%EF%BC%9A%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BA%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-text">1.2. 指针函数实例2：返回值为结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%AE%9E%E4%BE%8B1%EF%BC%9A-%E9%80%9A%E8%BF%87%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E8%B0%83%E7%94%A8%E5%90%8C%E5%9E%8B%E7%9A%84%E4%B8%8D%E5%90%8C%E5%87%BD%E6%95%B0"><span class="nav-text">2.1. 函数指针实例1： 通过一个指针调用同型的不同函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%AE%9E%E4%BE%8B2%EF%BC%9A-%E9%80%9A%E8%BF%87%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E8%B0%83%E7%94%A8%E5%90%8C%E5%9E%8B%E7%9A%84%E4%B8%8D%E5%90%8C%E5%87%BD%E6%95%B02"><span class="nav-text">2.2. 函数指针实例2： 通过一个指针调用同型的不同函数2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%EF%BC%9A%E9%80%9A%E8%BF%87%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E6%B5%8B%E8%AF%95%E4%B8%8D%E5%90%8C%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4%EF%BC%88%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%BD%A2%E5%8F%82%EF%BC%89"><span class="nav-text">2.3. 函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/09/functionPointerAndPointerfunction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          函数指针 & 指针函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-10-09 11:30:44" itemprop="dateCreated datePublished" datetime="2018-10-09T11:30:44+08:00">2018-10-09</time>
+    </span>
+
+  
+    <span id="/2018/10/09/functionPointerAndPointerfunction/" class="post-meta-item leancloud_visitors" data-flag-title="函数指针 & 指针函数" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pointerFunction.jpg" class="full-image" />
+
+<h1 id="1-指针函数"><a href="#1-指针函数" class="headerlink" title="1. 指针函数"></a>1. 指针函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">fun</span><span class="params">(<span class="keyword">char</span> ch)</span></span>;<span class="comment">//指针函数</span></span><br></pre></td></tr></table></figure>
+<p>指针函数，即返回值为指针地址的函数。实质仍为函数，与普通函数的差异仅在于返回值比较特殊，为一个指针地址（当然需要告知编译器一个特定的类型处理数据类型）。</p>
+<a id="more"></a>
+<h2 id="1-1-指针函数实例1：-返回值为基本类型"><a href="#1-1-指针函数实例1：-返回值为基本类型" class="headerlink" title="1.1. 指针函数实例1： 返回值为基本类型"></a>1.1. 指针函数实例1： 返回值为基本类型</h2><p>函数实现：大小写互转。将传入字符串内所有小写字母转换为大写字母，所有大写字母转换为小写字母</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">Cover</span> <span class="params">(<span class="keyword">char</span>* <span class="keyword">const</span> Ptr )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span>* p = Ptr;</span><br><span class="line">    <span class="keyword">char</span> ch = *p ;</span><br><span class="line">    <span class="keyword">while</span>( ch != <span class="string">&#x27;\0&#x27;</span> ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( ch &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;z&#x27;</span> ) &#123;</span><br><span class="line">            *p -= <span class="number">32</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( ch &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;Z&#x27;</span> ) &#123;</span><br><span class="line">            *p += <span class="number">32</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">        ch = *(++p);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Ptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">15</span>] = &#123;<span class="string">&quot;Hello World!&quot;</span>&#125;;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Previous: &quot;</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Aftet: &quot;</span> &lt;&lt; Cover(str) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-指针函数实例2：返回值为结构体"><a href="#1-2-指针函数实例2：返回值为结构体" class="headerlink" title="1.2. 指针函数实例2：返回值为结构体"></a>1.2. 指针函数实例2：返回值为结构体</h2><p>函数实现：获取并返回注册信息结构体。获取用户信息并返回包含用户名、用户密码的结构体。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span> &#123;</span></span><br><span class="line">    <span class="built_in">string</span> userName;</span><br><span class="line">    <span class="built_in">string</span> userPassword;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showUser</span> <span class="params">( struct UserMessage* user )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( user == <span class="literal">NULL</span> ) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Error: register failed!&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Success: register success:)&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;User: &quot;</span> &lt;&lt; user-&gt;userName &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;Psw: &quot;</span> &lt;&lt; user-&gt;userPassword &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct UserMessage* <span class="title">Register</span> <span class="params">( <span class="keyword">void</span> )</span> </span>&#123;</span><br><span class="line">    <span class="built_in">string</span> str0, str1, str2;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;Please input UserName:&quot;</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; str0;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;Please input Password:&quot;</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; str1;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">&quot;Please input Password again:&quot;</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; str2;</span><br><span class="line">    <span class="keyword">if</span> ( str1.compare(str2) == <span class="number">0</span> ) &#123;</span><br><span class="line">        <span class="comment">//(string)(user-&gt;userName) = str0; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="comment">//(string)(user-&gt;userPassword) = str1; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">user</span> =</span> <span class="keyword">new</span> UserMessage;</span><br><span class="line">        *user = &#123; str0, str1 &#125;;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">Test</span> =</span> Register();</span><br><span class="line">    showUser(Test);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/functionPointer.jpg" class="full-image" />
+# 2. 函数指针
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (*fun)(<span class="keyword">char</span> ch);<span class="comment">//函数指针</span></span><br></pre></td></tr></table></figure>
+函数指针，即指针地址指向一个函数入口地址的指针。实质任为指针。我们可以通过改变这个指针的不同地址调用同型的不同函数。
+
+<h2 id="2-1-函数指针实例1：-通过一个指针调用同型的不同函数"><a href="#2-1-函数指针实例1：-通过一个指针调用同型的不同函数" class="headerlink" title="2.1. 函数指针实例1： 通过一个指针调用同型的不同函数"></a>2.1. 函数指针实例1： 通过一个指针调用同型的不同函数</h2><p>代码实现：通过改变一个指针地址的赋值，以调用同型的不同函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowOnce</span> <span class="params">(<span class="built_in">string</span> str)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;No.1 &quot;</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowTwice</span> <span class="params">(<span class="built_in">string</span> str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">2</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;No.&quot;</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; str &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowThrice</span> <span class="params">(<span class="built_in">string</span> str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">3</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;No.&quot;</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; str &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> (*fun)(<span class="built_in">string</span>);<span class="comment">//函数指针定义</span></span><br><span class="line">    fun = ShowOnce;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowOnce&quot;</span>);<span class="comment">//通过函数指针调用 函数1</span></span><br><span class="line"></span><br><span class="line">    fun = ShowTwice;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowTwice&quot;</span>);<span class="comment">//通过函数指针调用 函数2</span></span><br><span class="line"></span><br><span class="line">    fun = ShowThrice;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowThrice&quot;</span>);<span class="comment">//通过函数指针调用 函数3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-函数指针实例2：-通过一个指针调用同型的不同函数2"><a href="#2-2-函数指针实例2：-通过一个指针调用同型的不同函数2" class="headerlink" title="2.2. 函数指针实例2： 通过一个指针调用同型的不同函数2"></a>2.2. 函数指针实例2： 通过一个指针调用同型的不同函数2</h2><p>代码实现：通过改变一个指针地址的赋值，以调用同型的不同函数，与实例1区别在多个形参，需特别注意函数指针形参类型必须与调用的函数形参类型一致</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Add</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//加</span></span><br><span class="line">    <span class="keyword">return</span> (num1 + num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Subtract</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//减</span></span><br><span class="line">    <span class="keyword">return</span> (num1 - num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Multiply</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//乘</span></span><br><span class="line">    <span class="keyword">return</span> (num1 * num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Divide</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//除</span></span><br><span class="line">    <span class="keyword">return</span> (num1 / num2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> (*fun)(<span class="keyword">double</span>, <span class="keyword">double</span>);<span class="comment">//函数指针定义</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Test (*fun)(5,3) :&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    fun = Add;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; setw(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Add: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    fun = Subtract;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; setw(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Subtract: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    fun = Multiply;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; setw(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Multiply: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    fun = Divide;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; setw(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Divide: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）"><a href="#2-3-函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）" class="headerlink" title="2.3. 函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）"></a>2.3. 函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）</h2><p>代码实现：通过形参传入一个函数指针，可在函数体内调用该函数指针形参指向的函数，以测试不同函数的运行时间</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXN 10   <span class="comment">//多项式最大项数(9阶)</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Fun_x 1.1 <span class="comment">//多项式x的值</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXK 1e3  <span class="comment">//被测函数最大重复调用次数</span></span></span><br><span class="line"><span class="keyword">double</span> a[MAXN];   <span class="comment">//多项式系数</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function1</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function2</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showFunctionUsingTime</span> <span class="params">(<span class="keyword">double</span> (*fun)(<span class="keyword">void</span>))</span></span>; <span class="comment">// *******函数指针作为形参 *******</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;MAXN; i++) &#123; <span class="comment">//赋值项系数</span></span><br><span class="line">        a[i] = (<span class="keyword">double</span>)i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//计算Function1用时</span></span><br><span class="line">    showFunctionUsingTime(Function1);</span><br><span class="line">    <span class="comment">//计算Function2用时</span></span><br><span class="line">    showFunctionUsingTime(Function2);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function1</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> p = a[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=(MAXN<span class="number">-1</span>); i++) &#123;</span><br><span class="line">        p += (a[i] * <span class="built_in">pow</span>(Fun_x, i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function2</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> p = a[MAXN<span class="number">-1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=(MAXN<span class="number">-1</span>); i&gt;<span class="number">0</span>; i--) &#123;</span><br><span class="line">        p = a[i<span class="number">-1</span>] + Fun_x * p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showFunctionUsingTime</span> <span class="params">(<span class="keyword">double</span> (*fun)(<span class="keyword">void</span>))</span> </span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> start, stop;</span><br><span class="line">    <span class="keyword">double</span> duration; <span class="comment">//运行时间　变量</span></span><br><span class="line">    <span class="comment">//计算Function1用时</span></span><br><span class="line">    start = clock();<span class="comment">//记录时钟此刻打点数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;MAXK ;i++) &#123; <span class="comment">//重复调用多次函数</span></span><br><span class="line">        (*fun)();</span><br><span class="line">    &#125;</span><br><span class="line">    stop = clock();<span class="comment">//记录始终此时打点数</span></span><br><span class="line">    duration = ((<span class="keyword">double</span>)(stop - start))/CLOCKS_PER_SEC/MAXK;<span class="comment">//计算实际用时</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Ticks = &quot;</span> &lt;&lt; (<span class="keyword">double</span>)(stop - start) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Using time = &quot;</span> &lt;&lt; duration &lt;&lt; <span class="string">&quot; s&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\07\24\BitPrint\" rel="bookmark">测试内存中变量的存储方式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\12\19\CppCompile\" rel="bookmark">C++编译过程总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\08\11\CppConfusedNotes\" rel="bookmark">C++易混淆知识点总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\23\ParkingSimulationSystem\" rel="bookmark">停车场仿真系统</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/30/howToConvert.rpmPackagesIntoArchPackages/" rel="prev" title="Manjaro系统安装.rpm或.deb软件">
+                  <i class="fa fa-chevron-left"></i> Manjaro系统安装.rpm或.deb软件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/14/PolymorphismTest/" rel="next" title="C++中的四种多态">
+                  C++中的四种多态 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/10/09/functionPointerAndPointerfunction/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

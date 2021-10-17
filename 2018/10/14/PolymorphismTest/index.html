@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 多态的意义 使程序中的数学运算符合常规的数学运算规则，使程序提供更强的表达能力; 使得对不同类型的数据有同样的操作语义(程序的重用); 重用标识的资源，提高程序的可读性和可理解性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++中的四种多态">
+<meta property="og:url" content="https://eisenhao.cn/2018/10/14/PolymorphismTest/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 多态的意义 使程序中的数学运算符合常规的数学运算规则，使程序提供更强的表达能力; 使得对不同类型的数据有同样的操作语义(程序的重用); 重用标识的资源，提高程序的可读性和可理解性。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PolymorphismTest.jpg">
+<meta property="article:published_time" content="2018-10-14T11:30:44.000Z">
+<meta property="article:modified_time" content="2018-10-16T15:06:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PolymorphismTest.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2018/10/14/PolymorphismTest/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2018/10/14/PolymorphismTest/","path":"2018/10/14/PolymorphismTest/","title":"C++中的四种多态"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++中的四种多态 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%A4%9A%E6%80%81%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-text">1. 多态的意义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%A4%9A%E6%80%81%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="nav-text">2. 多态的种类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%8F%82%E6%95%B0%E5%A4%9A%E6%80%81-Parametric-polymorphism"><span class="nav-text">2.1. 参数多态(Parametric polymorphism)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%8C%85%E5%90%AB%E5%A4%9A%E6%80%81-inclusion-polymorphism"><span class="nav-text">2.2. 包含多态(inclusion polymorphism)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E9%87%8D%E7%BD%AE"><span class="nav-text">2.3. 重置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E8%BF%87%E8%BD%BD%E5%A4%9A%E6%80%81-overloading-polymorphism"><span class="nav-text">2.4. 过载多态(overloading polymorphism)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E5%BC%BA%E5%88%B6%E5%A4%9A%E6%80%81-coercion"><span class="nav-text">2.5. 强制多态(coercion)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%B0%9D%E8%AF%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%90%8C%E6%97%B6%E5%8C%85%E5%90%AB%E5%9B%9B%E7%A7%8D%E5%A4%9A%E6%80%81%E7%9A%84%E8%8C%83%E4%BE%8B"><span class="nav-text">3. 尝试构建一个同时包含四种多态的范例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-h%E6%96%87%E4%BB%B6%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-text">3.1. .h文件完整代码如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-cpp%E6%96%87%E4%BB%B6%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-text">3.2. .cpp文件完整代码如下：</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/14/PolymorphismTest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++中的四种多态
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2018-10-14 19:30:44" itemprop="dateCreated datePublished" datetime="2018-10-14T19:30:44+08:00">2018-10-14</time>
+    </span>
+
+  
+    <span id="/2018/10/14/PolymorphismTest/" class="post-meta-item leancloud_visitors" data-flag-title="C++中的四种多态" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PolymorphismTest.jpg" class="full-image" />
+
+<h1 id="1-多态的意义"><a href="#1-多态的意义" class="headerlink" title="1. 多态的意义"></a>1. 多态的意义</h1><ul>
+<li>使程序中的数学运算符合常规的数学运算规则，使程序提供更强的表达能力;</li>
+<li>使得对不同类型的数据有同样的操作语义(程序的重用);</li>
+<li>重用标识的资源，提高程序的可读性和可理解性。<a id="more"></a>
+
+</li>
+</ul>
+<h1 id="2-多态的种类"><a href="#2-多态的种类" class="headerlink" title="2. 多态的种类"></a>2. 多态的种类</h1><p>在程序中多态分为：通用的多态(universal)及特定的多态。</p>
+<ul>
+<li>其中通用多态包含：参数多态(parametric)和包含多态(inclusion)，特点是对数据类型不加限制;允许对不同类型的值执行相同的代码。</li>
+<li>特定的多态包含：过载多态(overloading)和强制多态(coercion)，特点是只对有限数量的类型有效、对不同类型的值可能要执行不同的代码。</li>
+</ul>
+<h2 id="2-1-参数多态-Parametric-polymorphism"><a href="#2-1-参数多态-Parametric-polymorphism" class="headerlink" title="2.1. 参数多态(Parametric polymorphism)"></a>2.1. 参数多态(Parametric polymorphism)</h2><ul>
+<li>概念：采用参数化模板，通过给出不同的类型实参，使得一个程序结构有多种类型。</li>
+<li>例如：Ada中的generic(类属)、C++中的template(模板)，二者均支持数据类型和函数的参数多态。</li>
+<li>从C++的template 结构可以看出：<ul>
+<li>对实参所取的类型不加限制，不同的实参执行的是相同的代码。所以参数多态是一种通用多态。</li>
+<li>模板的特点有：<ul>
+<li>在一个抽象结构中允许以参数形式来表示可变部分–包括：类型、函数、常数;</li>
+<li>在编译时(静态)才进行实例化，结果是一个具体的结构(类型、函数等)。</li>
+<li>类型的实例化(类型→变量)可以静态进行，也可以动态进行，但结果都是一个值。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>如以下代码，在.h文件中定义模板类shape时，将类中的变量类型暂时用”T”代替</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**参数多态**/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//基类：图形</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">shape</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">        T bottomLength; <span class="comment">//底边长</span></span><br><span class="line">        T height; <span class="comment">//高</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后在.cpp文件中实例化该shape类时再指定变量的类型。如以下代码实例化该shape时分别指定类中的成员变量bottomLength、height的类型为int、double</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**参数多态**/</span></span><br><span class="line"><span class="function">shape&lt;<span class="keyword">int</span>&gt; <span class="title">shape1</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">shape&lt;<span class="keyword">double</span> &gt; <span class="title">shape2</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-包含多态-inclusion-polymorphism"><a href="#2-2-包含多态-inclusion-polymorphism" class="headerlink" title="2.2. 包含多态(inclusion polymorphism)"></a>2.2. 包含多态(inclusion polymorphism)</h2><ul>
+<li>概念：同样的操作可用于一个(基)类型及其派生类型。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//基类：图形</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">shape</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">//求图形面积</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> T <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (bottomLength * height);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">        T bottomLength; <span class="comment">//底边长</span></span><br><span class="line">        T height; <span class="comment">//高</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//派生：平行四边形类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parallelogram</span> :</span> <span class="keyword">public</span> shape&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**包含多态，可直接调用基类的getArea()方法**/</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//派生：矩形类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> :</span> <span class="keyword">public</span> shape&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**包含多态，可直接调用基类的getArea()方法**/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-重置"><a href="#2-3-重置" class="headerlink" title="2.3. 重置"></a>2.3. 重置</h2><p>类比与之相似的“重置”。如C++中在基类定义的virsual方法，在派生类中再进行不同实现。如以下代码，在.h文件中从基类shape派生了两个子类：Triangle和Rectangle，两个子类中对父类的同一方法getArea()进行了两种不同的再实现，此为C++中的另一种形式的多态（重置）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//基类：图形</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">shape</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">//求图形面积</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> T <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (bottomLength * height);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">        T bottomLength; <span class="comment">//底边长</span></span><br><span class="line">        T height; <span class="comment">//高</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//派生：三角形类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Triangle</span> :</span> <span class="keyword">public</span> shape&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**包含多态**/</span></span><br><span class="line">        <span class="function">T <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">this</span>-&gt;bottomLength * <span class="keyword">this</span>-&gt;height / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//派生：矩形类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> :</span> <span class="keyword">public</span> shape&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**包含多态**/</span></span><br><span class="line">        <span class="function">T <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">this</span>-&gt;bottomLength * <span class="keyword">this</span>-&gt;height);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-过载多态-overloading-polymorphism"><a href="#2-4-过载多态-overloading-polymorphism" class="headerlink" title="2.4. 过载多态(overloading polymorphism)"></a>2.4. 过载多态(overloading polymorphism)</h2><ul>
+<li>概念：同一个表示操作的名字(如操作符、函数名)在不同的上下文中有不同的类型。(相同抽象，不同细节)。</li>
+<li>程序设计语言中基本类型的多数操作符都是过载多态的。如：一个过载多态的操作符或函数名，它通常对应多个不同的实现。</li>
+</ul>
+<p>如以下代码在定义shape类中，有两个shape()构造函数，仅形参不同</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//基类：图形</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">shape</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">        T bottomLength; <span class="comment">//底边长</span></span><br><span class="line">        T height; <span class="comment">//高</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**过载多态：不带参数**/</span></span><br><span class="line">        shape()</span><br><span class="line">        &#123;</span><br><span class="line">            bottomLength = <span class="number">0</span>;</span><br><span class="line">            height = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/**过载多态：带2个参数**/</span></span><br><span class="line">        shape(T value1， T value2)</span><br><span class="line">        &#123;</span><br><span class="line">            bottomLength = value1;</span><br><span class="line">            height = value2;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-强制多态-coercion"><a href="#2-5-强制多态-coercion" class="headerlink" title="2.5. 强制多态(coercion)"></a>2.5. 强制多态(coercion)</h2><ul>
+<li>概念：通过语义操作，把操作数的类型强行加以变换，以符合操作符或函数的要求。</li>
+<li>程序设计语言中基本类型的大多数操作符，在发生不同类型的数据进行混合运算时，编译程序一般都会进行强制类型转换(强制多态)。这种强制转换通常是隐式的，但程序员也可以显式地进行强制多态的操作(Casting)。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**强制多态**/</span></span><br><span class="line">    <span class="keyword">int</span> a=<span class="number">3</span>， b=<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">double</span> c;</span><br><span class="line">    c = a + b; <span class="comment">//隐式强制多态 将int类型的a，b转换为double</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-尝试构建一个同时包含四种多态的范例"><a href="#3-尝试构建一个同时包含四种多态的范例" class="headerlink" title="3. 尝试构建一个同时包含四种多态的范例"></a>3. 尝试构建一个同时包含四种多态的范例</h1><p>构造了一个基于C++的包含参数多态、包含多态、过载多态和强制多态的范例， 其中参数多态用模板展现。</p>
+<h2 id="3-1-h文件完整代码如下："><a href="#3-1-h文件完整代码如下：" class="headerlink" title="3.1. .h文件完整代码如下："></a>3.1. .h文件完整代码如下：</h2><figure class="highlight c++"><figcaption><span>文件名: PolymorphismTest.h</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> POLYMORPHISMTEST_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> POLYMORPHISMTEST_H_</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**参数多态**/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//基类：图形</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">shape</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">        T bottomLength; <span class="comment">//底边长</span></span><br><span class="line">        T height; <span class="comment">//高</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**过载多态：不带参数**/</span></span><br><span class="line">        shape()</span><br><span class="line">        &#123;</span><br><span class="line">            bottomLength = <span class="number">0</span>;</span><br><span class="line">            height = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/**过载多态：带1个参数**/</span></span><br><span class="line">        shape(T value)</span><br><span class="line">        &#123;</span><br><span class="line">            bottomLength = value;</span><br><span class="line">            height = value;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/**过载多态：带2个参数**/</span></span><br><span class="line">        shape(T value1， T value2)</span><br><span class="line">        &#123;</span><br><span class="line">            bottomLength = value1;</span><br><span class="line">            height = value2;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//求图形面积</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> T <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (bottomLength * height);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**参数多态**/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//派生：三角形类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Triangle</span> :</span> <span class="keyword">public</span> shape&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**重置**/</span></span><br><span class="line">        <span class="function">T <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">this</span>-&gt;bottomLength * <span class="keyword">this</span>-&gt;height / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Triangle(T value1， T value2)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>-&gt;bottomLength = value1;</span><br><span class="line">            <span class="keyword">this</span>-&gt;height = value2;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//派生：平行四边形类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parallelogram</span> :</span> <span class="keyword">public</span> shape&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**包含多态，可直接调用基类的getArea()方法**/</span></span><br><span class="line">        Parallelogram(T value1， T value2)</span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="keyword">this</span>-&gt;bottomLength = value1;</span><br><span class="line">            <span class="keyword">this</span>-&gt;height = value2;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**参数多态**/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="comment">//派生：矩形类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> :</span> <span class="keyword">public</span> shape&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">/**重置**/</span></span><br><span class="line">        <span class="function">T <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">this</span>-&gt;bottomLength * <span class="keyword">this</span>-&gt;height);</span><br><span class="line">        &#125;</span><br><span class="line">        Rectangle(T value1， T value2)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>-&gt;bottomLength = value1;</span><br><span class="line">            <span class="keyword">this</span>-&gt;height = value2;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-cpp文件完整代码如下："><a href="#3-2-cpp文件完整代码如下：" class="headerlink" title="3.2. .cpp文件完整代码如下："></a>3.2. .cpp文件完整代码如下：</h2><figure class="highlight c++"><figcaption><span>文件名: PolymorphismTest.cpp</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;PolymorphismTest.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**参数多态**/</span></span><br><span class="line">    <span class="function">shape&lt;<span class="keyword">int</span>&gt; <span class="title">shape1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">shape&lt;<span class="keyword">double</span> &gt; <span class="title">shape2</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**过载多态**/</span></span><br><span class="line">    <span class="function">shape&lt;<span class="keyword">double</span>&gt; <span class="title">shape3</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">shape&lt;<span class="keyword">double</span>&gt; <span class="title">shape4</span><span class="params">(<span class="number">3.2</span>， <span class="number">5.7</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**包含多态**/</span></span><br><span class="line">    <span class="function">shape&lt;<span class="keyword">double</span>&gt; <span class="title">shape5</span><span class="params">(<span class="number">4</span>， <span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="function">Parallelogram&lt;<span class="keyword">double</span>&gt; <span class="title">parallelogram</span><span class="params">(<span class="number">4</span>， <span class="number">5</span>)</span></span>;</span><br><span class="line">    shape5.getArea();</span><br><span class="line">    parallelogram.getArea();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**重置**/</span></span><br><span class="line">    <span class="keyword">int</span> a， b;</span><br><span class="line">    <span class="function">Rectangle&lt;<span class="keyword">int</span>&gt; <span class="title">rectangle1</span><span class="params">(<span class="number">4</span>， <span class="number">4</span>)</span></span>;</span><br><span class="line">    <span class="function">Triangle&lt;<span class="keyword">int</span>&gt; <span class="title">triangle1</span><span class="params">(<span class="number">4</span>， <span class="number">4</span>)</span></span>;</span><br><span class="line">    a = rectangle1.getArea();</span><br><span class="line">    b = triangle1.getArea();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**强制多态**/</span></span><br><span class="line">    <span class="keyword">double</span> c;</span><br><span class="line">    c = a + b; <span class="comment">//隐式强制多态 将int类型a，b转换为double</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\07\24\BitPrint\" rel="bookmark">测试内存中变量的存储方式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\12\19\CppCompile\" rel="bookmark">C++编译过程总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\08\11\CppConfusedNotes\" rel="bookmark">C++易混淆知识点总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\01\23\ParkingSimulationSystem\" rel="bookmark">停车场仿真系统</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/09/functionPointerAndPointerfunction/" rel="prev" title="函数指针 & 指针函数">
+                  <i class="fa fa-chevron-left"></i> 函数指针 & 指针函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/16/MinHeapAndMaxHeap/" rel="next" title="最小堆与最大堆">
+                  最小堆与最大堆 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2018/10/14/PolymorphismTest/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源白盒交换机系统 SONIC 简介">
+<meta property="og:url" content="https://eisenhao.cn/2021/09/12/SONIC/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SONICArchitecture.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SONICArchitecture.png">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataflowBetweenSONICContainerAndRedisTable.png">
+<meta property="article:published_time" content="2021-09-12T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-09-12T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SONICArchitecture.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/09/12/SONIC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/09/12/SONIC/","path":"2021/09/12/SONIC/","title":"开源白盒交换机系统 SONIC 简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>开源白盒交换机系统 SONIC 简介 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="nav-text">1. 发展历程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%AF%9E%E7%94%9F%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94SAI"><span class="nav-text">2. 诞生基础——SAI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8A%9F%E8%83%BD-amp-%E7%89%B9%E6%80%A7"><span class="nav-text">3. 功能&amp;特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%8B%AC%E7%89%B9%E4%BC%98%E5%8A%BF"><span class="nav-text">4. 独特优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-SONIC-%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="nav-text">5. SONIC 系统架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-SONIC-%E4%B8%AD%E5%90%84%E5%AE%B9%E5%99%A8%E5%8A%9F%E8%83%BD%E7%AE%80%E4%BB%8B"><span class="nav-text">6. SONIC 中各容器功能简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Teamd-container"><span class="nav-text">6.1. Teamd container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-Pmon-container"><span class="nav-text">6.2. Pmon container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-Snmp-container"><span class="nav-text">6.3. Snmp container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Dhcp-relay-container"><span class="nav-text">6.4. Dhcp-relay container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-LLDP-container"><span class="nav-text">6.5. LLDP container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-BGP-container"><span class="nav-text">6.6. BGP container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-7-Database-container"><span class="nav-text">6.7. Database container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-8-Swss-container"><span class="nav-text">6.8. Swss container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-9-Syncd-container"><span class="nav-text">6.9. Syncd container</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">7. 参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/09/12/SONIC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          开源白盒交换机系统 SONIC 简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-09-12 22:30:45" itemprop="dateCreated datePublished" datetime="2021-09-12T22:30:45+08:00">2021-09-12</time>
+    </span>
+
+  
+    <span id="/2021/09/12/SONIC/" class="post-meta-item leancloud_visitors" data-flag-title="开源白盒交换机系统 SONIC 简介" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SONICArchitecture.png" class="full-image" />
+
+<a id="more"></a>
+
+<h1 id="1-发展历程"><a href="#1-发展历程" class="headerlink" title="1. 发展历程"></a>1. 发展历程</h1><ul>
+<li><b><font color="red" style="">2016 年</font></b>的 OCP 峰会上，由<b><font color="red" style="">微软</font></b>发布（基于** Debian** GNU/Linux）</li>
+<li>目标：完善<strong>白盒交换机</strong>生态链</li>
+<li>2017 “凤凰项目”，推动“<strong>白盒+开源 OS</strong>”的网络生态发展，促进国内开放网络和 SDN 网络的进步。由阿里巴巴、腾讯、<strong>百度</strong>、京东、中国移动和中国联通共同参与的“凤凰项目”成立，<br>项目以** SONiC 开源社区<strong>为依托，选取社区稳定的 SONiC 版本软件，并将</strong> Base OS、SAI、平台驱动<strong>等共同打包制作成可直接加载运行在白盒交换机的</strong>网络 OS 映像文件<strong>，即</strong>凤凰发行版**。<br>其中各公司项目分工如下：阿里巴巴主要负责社区软件评估及发行版制作；腾讯主要负责发行版软硬件兼容性；百度主要负责运维管理体系；中国信息通信研究院主要完成测试验证工作。</li>
+<li>2017 年微软对 SONiC 的<strong>性能</strong>进行了大幅升级，全面支持 IDV，并且融合了更多的<strong>容器特性</strong>。</li>
+<li>2018 年微软又在<strong>管理性</strong>上下了大力气（如 ConfigDB），让使用者用起来更加从容。</li>
+<li>此后，SONiC 又在<strong>深度学习</strong>等** AI 特性**上做了更多的尝试。</li>
+</ul>
+<h1 id="2-诞生基础——SAI"><a href="#2-诞生基础——SAI" class="headerlink" title="2. 诞生基础——SAI"></a>2. 诞生基础——SAI</h1><ul>
+<li>交换机抽象端口（Switch Abstraction Interface，SAI）。在没有 SAI 之前所有芯片都要<strong>通过自己的 SDK 与上层的软件通信</strong>（相当于用芯片自己的“<strong>方言</strong>”跟上层的操作系统通信），<br>SAI 把这类“方言”<strong>标准化</strong>，大家的芯片用“<strong>标准化的语言</strong>”与上层的控制软件通信。</li>
+<li>正因为有了 SAI，所以才能建立一个操作系统（通过统一 API 与各交换机各组件通信）。有了 SAI 之后，适配 ASIC 的工作就由芯片厂商完成。</li>
+<li>SAI 本身没有完全开源，不过其却为 SONiC 提供了统一的 API，通过该统一的 API 可以向下对接不同的 ASIC（Application Specific Integrated Circuit，集成电路）。</li>
+</ul>
+<h1 id="3-功能-amp-特性"><a href="#3-功能-amp-特性" class="headerlink" title="3. 功能&amp;特性"></a>3. 功能&amp;特性</h1><ul>
+<li>实现了数据<strong>控制面</strong>与<strong>转发面</strong>的分离</li>
+<li>可以直接管理交换机状态</li>
+<li>能够更快的调试、修复并测试软件</li>
+<li>通过 <strong>改变软件策略和拓扑</strong> 实现 <strong>新的网络架构</strong>，让网络实践更为灵活</li>
+<li>SONiC 的网络应用都是基于容器构建的，可以非常方便的在生产环境实现 <strong>不停机部署或升级</strong> 应用</li>
+</ul>
+<h1 id="4-独特优势"><a href="#4-独特优势" class="headerlink" title="4. 独特优势"></a>4. 独特优势</h1><ul>
+<li>提供了将传统交换机 OS 拆分成多个容器化组件的解决方案</li>
+<li>进而也定义了<strong>控制面的容器化架构</strong>，囊括了诸多组件和编程端口</li>
+</ul>
+<h1 id="5-SONIC-系统架构"><a href="#5-SONIC-系统架构" class="headerlink" title="5. SONIC 系统架构"></a>5. SONIC 系统架构</h1><p>SONIC 采用模块化体系结构，将每个模块放在独立的 <strong>Docker 容器</strong>中。其在保持组件之间的<strong>高内聚性</strong>的同时<strong>减少</strong>组件之间的<strong>耦合</strong>。<br>其主要组件包括：DHCP-Relay、Pmon、Snmp、LLDP、BGP、Teamd、Database、Swss、Syncd。其系统架构如下图所示。</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SONICArchitecture.png" class="full-image" />
+
+<h1 id="6-SONIC-中各容器功能简介"><a href="#6-SONIC-中各容器功能简介" class="headerlink" title="6. SONIC 中各容器功能简介"></a>6. SONIC 中各容器功能简介</h1><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th></th>
+        <th align="center"><b>容器名</b></th>
+        <th align="center"><b>功能</b></th>
+    </tr>
+    <tr>
+        <td align="center">1</td>
+        <td align="center">Teamd</td>
+        <td>负责实现链路聚合组 (Link Aggregation Group，LAG) 功能</td>
+    </tr>
+    <tr>
+        <td align="center">2</td>
+        <td align="center">Pmon</td>
+        <td>负责监听“传感器”状态，在紧急状态时告警</td>
+    </tr>
+    <tr>
+        <td align="center">3</td>
+        <td align="center">Snmp</td>
+        <td>负责实现简单网络管理协议（Simple Network Management Protocol，SNMP）功能，以支持远程管理网络</td>
+    </tr>
+    <tr>
+        <td align="center">4</td>
+        <td align="center">DHCP-Relay</td>
+        <td>负责实现 DHCP 中继代理功能</td>
+    </tr>
+    <tr>
+        <td align="center">5</td>
+        <td align="center">LLDP</td>
+        <td>负责实现链路层发现协议（Link Layer Discovery Protocol，LLDP）功能</td>
+    </tr>
+    <tr>
+        <td align="center">6</td>
+        <td align="center">BGP</td>
+        <td>负责实现边界网关协议（Border Gateway Protocol，BGP）功能</td>
+    </tr>
+    <tr>
+        <td align="center">7</td>
+        <td align="center">Database</td>
+        <td>承载 Redis 数据库引擎，以供 SONiC 应用程序访问数据</td>
+    </tr>
+    <tr>
+        <td align="center">8</td>
+        <td align="center">Swss</td>
+        <td>负责交换状态服务（SWitch State Service，SWSS）功能，提供与网络应用程序和网络交换硬件<br>进行通信的数据库接口，以及提供呈现状态的服务。</td>
+    </tr>
+    <tr>
+        <td align="center">9</td>
+        <td align="center">Syncd</td>
+        <td>提供支持交换机的<b>网络状态</b>与<b>实际硬件/ASIC 同步</b>的机制，包括端口的初始化、配置和 ASIC 电流状态的收集等。</td>
+    </tr>
+</table>
+
+<h2 id="6-1-Teamd-container"><a href="#6-1-Teamd-container" class="headerlink" title="6.1. Teamd container"></a>6.1. Teamd container</h2><p>在 SONiC 设备中运行链路聚合功能 (LAG)。</p>
+<ul>
+<li><p><strong>teamd</strong>：负责基于 Linux 的 LAG 协议的开源实现。</p>
+</li>
+<li><p><strong>teamsyncd</strong>：进程支撑“teamd”与南部子系统之间相互作用。</p>
+</li>
+</ul>
+<h2 id="6-2-Pmon-container"><a href="#6-2-Pmon-container" class="headerlink" title="6.2. Pmon container"></a>6.2. Pmon container</h2><p>这是一个<strong>守护进程</strong>，负责监听“传感器”状态，包括定期记录硬件组件的传感器读数，并在高危情景下发出告警信号。</p>
+<ul>
+<li><strong>fancontrol</strong>: 对风扇进行控制</li>
+<li><strong>sensord</strong>：负责监听各传感器的状态</li>
+</ul>
+<h2 id="6-3-Snmp-container"><a href="#6-3-Snmp-container" class="headerlink" title="6.3. Snmp container"></a>6.3. Snmp container</h2><p>主要负责实现简单网络管理协议（Simple Network Management Protocol，SNMP），以远程管理网络。这个容器中有两个相关的进程，snmpd 和 snmp-agent (sonic_ax_impl)。</p>
+<ul>
+<li><strong>snmpd</strong>：负责处理来自外部网络的 <strong>snmp 轮询</strong>。</li>
+<li><strong>snmp-agent</strong>：是 SONiC 对可扩展代理协议 (Agent Extensibility，AgentX) 的实现。这个子代理向主代理 (snmpd) 提供 Redis 引擎 SONiC 数据库中汇聚后的信息。</li>
+</ul>
+<h2 id="6-4-Dhcp-relay-container"><a href="#6-4-Dhcp-relay-container" class="headerlink" title="6.4. Dhcp-relay container"></a>6.4. Dhcp-relay container</h2><p>负责实现 DHCP 中继代理功能。DHCP 中继代理可实现在不同子网和物理网段之间处理和转发 DHCP 信息的功能。</p>
+<ul>
+<li><strong>dhcprelay</strong>：实现 DHCP 中继代理功能</li>
+</ul>
+<h2 id="6-5-LLDP-container"><a href="#6-5-LLDP-container" class="headerlink" title="6.5. LLDP container"></a>6.5. LLDP container</h2><p>负责实现链路层发现协议（Link Layer Discovery Protocol，LLDP）功能。该容器提供 hosts lldp 链路层发现协议功能，其主要包含三个相关进程：</p>
+<ul>
+<li><strong>lldp</strong>：具有链路层发现功能的实际 LLDP 守护进程。负责与外部对等点建立 LLDP 连接，以接收或发布系统功能</li>
+<li><strong>lldp_syncd</strong>：负责<strong>上传</strong> LLDP 发现的结果到集中式系统消息组件 (Redis-engine)。以便于其他组件（如：snmp）消费此 LLDP 状态信息。</li>
+<li><strong>lldpmgrd</strong>：负责为 LLDP 守护进程提供<strong>增量配置</strong>功能。该容器通过订阅 Redis-engine 中的 STATE_DB 表来实现这一功能。</li>
+</ul>
+<h2 id="6-6-BGP-container"><a href="#6-6-BGP-container" class="headerlink" title="6.6. BGP container"></a>6.6. BGP container</h2><p>负责实现边界网关协议（Border Gateway Protocol，BGP）功能。BGP 协议是一种实现自治系统（Autonomous System，AS）之间的路由可达，并<strong>选择最佳路由</strong>的距离矢量路由协议。运行支持的路由堆栈的 Quagga（路由软件工具）或 FRR（IP 快速重路由技术，Fast ReRoute）。尽管该容器是以 BGP 命名的，但实际上，这些路由协议栈还可以运行各种其他协议，如：OSPF、ISIS、LDP 等。容器主要包含三个进程：</p>
+<ul>
+<li><strong>bgpd</strong>：负责<strong>边界网关协议</strong>功能的实现。通过 TCP/UDP 套接字接收来自外部各方的路由状态，并通过 zebra/fpmsyncd 端口下放到转发平面。</li>
+<li><strong>zebra</strong>：充当传统的 IP <strong>路由管理器</strong>，负责跨不同协议提供内核路由表更新、端口查找和路由重分发服务。Zebra 还负责将计算出的转发信息库（Forwarding Information Base，FIB）推送到<strong>内核</strong>（通过进程间通信接口 Netlink）和（转发过程中所涉及的）<strong>南向组件</strong>（通过转发平面管理器 Forwarding Plane Manager，FPM 端口）。</li>
+<li><strong>fpmsyncd</strong>：小型<strong>守护进程</strong>，负责收集 Zebra 生成的 FIB 状态，并将其内容转储到 Redis 引擎中的应用表 (APPL_DB)。</li>
+</ul>
+<h2 id="6-7-Database-container"><a href="#6-7-Database-container" class="headerlink" title="6.7. Database container"></a>6.7. Database container</h2><p>承载 Redis 数据库引擎，此引擎中保存的数据库可供 SONiC 应用程序<b>通过由 Redis-daemon 公开的 UNIX 套接字接口</b>访问。SONIC 中包含五个主要的数据库 DB：</p>
+<ol>
+<li> <font color="red">APPL_DB</font>： 存储所有应用程序容器<b>生成的状态</b>，包括：路由、下一跳、邻居等。这是与 SONiC 其他子系统交互的应用程序南方入口点。</li>
+<li> <b><font color="red">CONFIG_DB</font></b>： 存储由 SONiC 应用程序创建的 <b>配置状态</b> ，如：端口配置、VLAN 等。</li>
+<li> <font color="red">STATE_DB</font>： STATE_DB 存储了<b>跨模块依赖所必需的所有状态</b>，以用于解决 SONiC 不同子系统之间的 <b>依赖关系</b>。如：LAG 端口通道（由 teamd 子模块定义的）可引用系统中可能存在/不存在的物理端口。另一个例子是 VLAN 的定义（通过 vlanmgrd 组件） ，它可以引用在系统中存在不确定的端口成员。</li>
+<li> <b><font color="red">ASIC_DB</font></b>： 存储驱动特殊应用集成电路（Application Specific　Integrated Circuit，ASIC）的<b>配置和操作所需的状态</b>。这里的状态以 ASIC 友好的格式保存，以便于 Syncd 和 ASIC SDK 之间的交互。</li>
+<li> <font color="red">COUNTERS_DB</font>： 存储系统中每个端口相关联的<b>计数器/统计</b>信息。该信息可用于响应 CLI 的本地请求（查询统计信息）或用于为远程遥测提供信息。</li>
+</ol>
+<p>SONIC 各<strong>容器</strong>与<strong>各 Redis 表</strong>间数据流交互关系如下图所示（详细交互流程可参见：<a target="_blank" rel="noopener" href="https://github.com/Azure/SONiC/wiki/Architecture">SONIC Architecture</a>）：</p>
+<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataflowBetweenSONICContainerAndRedisTable.png" class="full-image" />
+
+<h2 id="6-8-Swss-container"><a href="#6-8-Swss-container" class="headerlink" title="6.8. Swss container"></a>6.8. Swss container</h2><p>负责交换状态服务（SWitch State Service，SWSS）功能，提供与网络应用程序和网络交换硬件进行通信的数据库接口，以及提供呈现状态的服务。该容器通过一组工具使得 SONiC 所有模块之间能够有效的通信，Swss 容器主要负责：提供了促进所有不同模块之间的<strong>通信</strong>的机制、承载了负责与 SONiC 应用层北向相互作用的进程、提供了允许 SONiC 应用程序和 SONiC 集中消息基础结构 (Redis-engine) 之间连接的方法。该容器主要包含三个<strong>状态生成</strong>进程和三个<strong>状态分发</strong>进程。</p>
+<p>三个<strong>状态生成进程</strong>：</p>
+<ul>
+<li><strong>portsyncd</strong>：侦听与端口相关的网络链接事件。在启动过程中，portsyncd 通过解析系统的硬件配置文件获取物理端口信息。<strong>portsyncd</strong> 最终将所有收集到的状态推送到 APPL_DB 中，如：端口速度、通道和 MTU 等属性。</li>
+<li><strong>Intfsyncd</strong>：侦听与端口相关的网络链接事件，并将收集的状态 <strong>推送到 APPL_DB</strong> 中。如与端口关联的属性：新增/更改的 IP 地址。</li>
+<li><strong>Neighsyncd</strong>：监听（由于 ARP 处理而被新发现的邻居触发的）与邻居相关的网络链接事件，如：MAC 地址和邻居的 Address-family 等属性的处理。这种状态最终将被用于构建 L2 时，重写所需的数据平面中的邻接表，并且所有收集到的状态最终都将被传输到 APPL_DB。</li>
+</ul>
+<p>三个<strong>状态分发进程</strong>：</p>
+<ul>
+<li><strong>Orchagent</strong>：作为 Swss 容器中最关键的组成部分，Orchagent 进程负责逻辑提取由 *syncd 守护进程输入的相关状态（APPL_DB）、相应地处理和发送这些信息、并最终将其推送到其南向端口（ASIC_DB）。由此可知，Orchagent 既作为消费者（消费来自 APPL_DB 的状态），又作为生产者（将状态写入 ASIC_DB）。</li>
+<li><strong>IntfMgrd</strong>：响应来自 APPL_DB、CONFIG_DB 和 STATE_DB 的状态，以在 Linux 内核中配置<strong>端口</strong>。（此步骤只有在所监听的所有数据库中没有冲突或不一致的状态时进行）</li>
+<li><strong>VlanMgrd</strong>：响应来自 APPL_DB、CONFIG_DB 和 STATE_DB 的状态，以在 Linux 内核中配置** vlan-interfaces**。（只有在的依赖状态/条件全部满足时，才尝试执行此步骤）</li>
+</ul>
+<h2 id="6-9-Syncd-container"><a href="#6-9-Syncd-container" class="headerlink" title="6.9. Syncd container"></a>6.9. Syncd container</h2><p>提供一种允许交换机的<strong>网络状态</strong>与交换机的<strong>实际硬件</strong>/ASIC <strong>同步</strong>的机制，包括端口的初始化、配置和 ASIC 电流状态的收集等。其主要包含三个主要逻辑组件：</p>
+<ul>
+<li><strong>Syncd</strong>：负责执行上面提到的同步逻辑的进程。在编译时与硬件供应商提供的 ASIC SDK 库进行同步链接，并通过调用 SDK 提供的端口将状态写入 ASIC。Syncd 既通过订阅 ASIC_DB 以接收来自 SWss 的状态，又作为发布者来上传硬件的状态。</li>
+<li><strong>SAI API</strong>：交换机抽象端口定义的 API，提供一种独立于供应商的控制/转发接口，即交换 ASIC、NPU 或软件交换机的统一调用接口。</li>
+<li><strong>ASIC SDK</strong>：硬件供应商预计将提供一个用于驱动其 ASIC 的、支持系统架构演进（System Architecture Evolution，SAE）的 SDK。此 SDK 通常以动态链接库的形式提供，负责驱动其执行的驱动进程。</li>
+</ul>
+<h1 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/azure/sonic/wiki">SONIC 社区 WiKi</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Azure/SONiC/blob/master/doc/SONiC-User-Manual.md">SONiC 用户手册</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Azure/sonic-utilities/blob/master/doc/Command-Reference.md">SONIC 命令行参考</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\23\EthernetAndMac\" rel="bookmark">以太帧与MAC</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\20\OSISevenLevelModel\" rel="bookmark">OSI七层网络模型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\05\TwoOrThreeLevelForwarding\" rel="bookmark">二三层转发</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\03\VLAN\" rel="bookmark">VLAN</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\09\switch\" rel="bookmark">交换机基础简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/05/TwoOrThreeLevelForwarding/" rel="prev" title="二三层转发">
+                  <i class="fa fa-chevron-left"></i> 二三层转发
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/09/12/SONIC/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

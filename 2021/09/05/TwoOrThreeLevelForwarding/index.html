@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="2. 二层转发2.1. 简介 一种基于OSI中的数据链路层（第二层）的数据帧的存储转发技术，二层交换是依靠MAC地址和VID号来确定转发方向的。 二层转发通过维护MAC地址表以及根据目的MAC查表转发，有效的利用了网络带宽，改善了网络性能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二三层转发">
+<meta property="og:url" content="https://eisenhao.cn/2021/09/05/TwoOrThreeLevelForwarding/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="2. 二层转发2.1. 简介 一种基于OSI中的数据链路层（第二层）的数据帧的存储转发技术，二层交换是依靠MAC地址和VID号来确定转发方向的。 二层转发通过维护MAC地址表以及根据目的MAC查表转发，有效的利用了网络带宽，改善了网络性能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-05T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-09-05T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/09/05/TwoOrThreeLevelForwarding/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/09/05/TwoOrThreeLevelForwarding/","path":"2021/09/05/TwoOrThreeLevelForwarding/","title":"二三层转发"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>二三层转发 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%BA%8C%E5%B1%82%E8%BD%AC%E5%8F%91"><span class="nav-text">2. 二层转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%AE%80%E4%BB%8B"><span class="nav-text">2.1. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%BA%8C%E5%B1%82%E8%BD%AC%E5%8F%91%E6%B5%81%E7%A8%8B%E4%BB%8B%E7%BB%8D"><span class="nav-text">2.2. 二层转发流程介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%9F%BA%E7%A1%80%E4%BA%8C%E5%B1%82%E8%BD%AC%E5%8F%91"><span class="nav-text">2.2.1. 基础二层转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%B8%A6VLAN%E7%9A%84%E4%BA%8C%E5%B1%82%E8%BD%AC%E5%8F%91"><span class="nav-text">2.2.2. 带VLAN的二层转发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-MAC%E5%9C%B0%E5%9D%80%E8%A1%A8%E7%9A%84%E8%80%81%E5%8C%96"><span class="nav-text">2.3. MAC地址表的老化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%B8%89%E5%B1%82%E8%BD%AC%E5%8F%91"><span class="nav-text">3. 三层转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E7%AE%80%E4%BB%8B"><span class="nav-text">3.1. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E4%B8%89%E5%B1%82%E8%BD%AC%E5%8F%91%E7%89%B9%E7%82%B9"><span class="nav-text">3.2. 三层转发特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%9C%BA%E4%B8%89%E5%B1%82%E8%BD%AC%E5%8F%91%E5%AF%B9%E6%AF%94"><span class="nav-text">3.3. 路由器与交换机三层转发对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E7%BB%84%E7%BD%91%E4%B8%80%E4%B8%8B%E7%9A%84%E4%B8%89%E5%B1%82%E8%BD%AC%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D"><span class="nav-text">3.4. 组网一下的三层转发流程详细介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E7%BB%84%E7%BD%91%E4%BA%8C%E4%B8%8B%E7%9A%84%E4%B8%89%E5%B1%82%E8%BD%AC%E5%8F%91%E6%B5%81%E7%A8%8B%E4%BB%8B%E7%BB%8D"><span class="nav-text">3.5. 组网二下的三层转发流程介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-text">4. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E4%BA%8C%E4%B8%89%E5%B1%82%E8%BD%AC%E5%8F%91%E5%AF%B9%E6%AF%94"><span class="nav-text">4.1. 二三层转发对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E4%B8%BB%E6%9C%BA%E9%97%B4%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6%E5%8F%8A%E4%BD%95%E6%97%B6%E4%BA%8C%E4%B8%89%E5%B1%82%E8%BD%AC%E5%8F%91%EF%BC%9F"><span class="nav-text">4.2. 主机间通信机制及何时二三层转发？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">5. 参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/09/05/TwoOrThreeLevelForwarding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二三层转发
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-09-05 22:30:45" itemprop="dateCreated datePublished" datetime="2021-09-05T22:30:45+08:00">2021-09-05</time>
+    </span>
+
+  
+    <span id="/2021/09/05/TwoOrThreeLevelForwarding/" class="post-meta-item leancloud_visitors" data-flag-title="二三层转发" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="2-二层转发"><a href="#2-二层转发" class="headerlink" title="2. 二层转发"></a>2. 二层转发</h1><h2 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1. 简介"></a>2.1. 简介</h2><ul>
+<li>一种基于OSI中的<strong>数据链路层（第二层）</strong>的数据帧的存储转发技术，二层交换是依靠<strong>MAC地址和VID号</strong>来确定转发方向的。</li>
+<li>二层转发通过维护MAC地址表以及根据目的MAC查表转发，有效的利用了网络带宽，改善了网络性能。</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li>二层转发使得二层交换机各端口属于不同的冲突域，不同端口发送和接收的<strong>数据独立</strong>，因此有效地隔离了网络中物理层冲突域，使得通过它互连的主机（或网络）之间不必再担心流量大小对于数据发送冲突的影响。</li>
+<li>二层转发通过专用集成电路（Application Specific Integrated Circuit，ASIC）来实现<strong>硬件转发</strong>，其转发性能非常高。</li>
+</ul>
+<h2 id="2-2-二层转发流程介绍"><a href="#2-2-二层转发流程介绍" class="headerlink" title="2.2. 二层转发流程介绍"></a>2.2. 二层转发流程介绍</h2><h3 id="2-2-1-基础二层转发"><a href="#2-2-1-基础二层转发" class="headerlink" title="2.2.1. 基础二层转发"></a>2.2.1. 基础二层转发</h3><p>二层交换机通过解析和学习以太网帧的<b><font color="red">源MAC地址</font></b>来维护MAC地址与端口的对应关系到<strong>MAC地址表</strong>。转发时，根据<b><font color="blue">目的MAC地址</font></b>检索 <strong>MAC地址表</strong> 来决定向哪个端口转发。</p>
+<ul>
+<li>二层交换机记录各端口接收到的以太帧的，将其 <b><font color="red">源MAC地址</font></b>与接收的<strong>端口</strong> 的映射关系添加（或覆盖已有，并刷新老化时间）到<strong>MAC地址表</strong>中，作为以后的二层转发依据。</li>
+<li>转发时，根据以太帧的<b><font color="blue">目的MAC地址</font></b>检索<strong>MAC地址表</strong>：<ul>
+<li>若无法查到表项，则向除接收端口的所有端口转发；</li>
+<li>若可查到表项，<ul>
+<li>但端口与太网帧的接收端口相同，则丢弃该帧；</li>
+<li>反之，则向记录端口转发；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>备注：</strong> 二层交换机虽然能够隔离冲突域，但是它并不能有效的划分广播域，广播报文以及目的MAC查找失败的报文会向所有端口转发。当网络中主机数量增多时，这种情况会消耗大量的网络带宽，并且也会带来安全性相关问题。当然，通过路由器来隔离广播域是一个办法，但是由于路由器的高成本以及转发性能低的特点使得这一方法应用有限。基于这些情况，二层交换中出现了虚拟局域网（Virtual Local Area Network，VLAN）技术。</p>
+<h3 id="2-2-2-带VLAN的二层转发"><a href="#2-2-2-带VLAN的二层转发" class="headerlink" title="2.2.2. 带VLAN的二层转发"></a>2.2.2. 带VLAN的二层转发</h3><p>VLAN技术主要根据MAC地址将局域网<strong>从逻辑上</strong>划分为不同网段，从而实现虚拟工作组的一种交换技术。根据MAC地址维护方式的不同，可分为两种方式的二层转发：共享VLAN的MAC地址学习（Shared VLAN Learning，<strong>SVL</strong>）和独立VLAN的MAC地址学习（Independent VLAN Learning，<strong>IVL</strong>）。由于SVL只以<strong>MAC地址作为表项</strong>，学习后存表时不存储VLAN信息，故SVL方式具有 <strong>在不同VLAN中相同MAC地址的多个主机存在通信冲突</strong> 的问题。SVL现已比较少见，这里主要讨论IVL方式的二层转发，其将<strong>MAC地址 + VLAN-ID</strong>作为查找表项（也可理解为——每个VLAN都有自己独立的MAC地址表）。</p>
+<ul>
+<li>二层交换机记录各个端口接收到以太帧的 <b><font color="red">源MAC地址</font></b> <strong>+ VLAN-ID</strong> 信息，并将其与对应端口的映射关系添加（或覆盖已有）到<strong>MAC地址表中</strong></li>
+<li>转发时，根据以太帧的<b><font color="blue">目的MAC地址</font></b> <strong>+ VLAN-ID</strong>检索<strong>MAC地址表</strong>：<ul>
+<li>若无表项，则在<strong>VLAN-ID</strong>内广播；</li>
+<li>若存在表项，<ul>
+<li>且记录端口与接收端口相同，则丢弃该帧；</li>
+<li>反之，则将该以太帧转发到表项记录端口；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-3-MAC地址表的老化"><a href="#2-3-MAC地址表的老化" class="headerlink" title="2.3. MAC地址表的老化"></a>2.3. MAC地址表的老化</h2><p>二层交换机的MAC地址老化和刷新通常直接由硬件ASIC芯片来完成，其老化机制如下：</p>
+<ul>
+<li>在芯片中储存的每一个动态添加的MAC地址表项都有一个 1 bit 的<strong>老化标志</strong>（1——保留；0——删除），同时芯片有一个<strong>老化定时器</strong>用于控制地址老化；</li>
+<li>在学到MAC地址表项时：<ul>
+<li>对于新学到的<strong>MAC地址表项</strong>，将其老化标志位置1；</li>
+<li>对于学到<strong>MAC地址中已有的表项</strong>（更新），将其老化标志位 置1；</li>
+</ul>
+</li>
+<li>在芯片的老化定时器超时触发时：<ul>
+<li>对于老化标志位为1的表项，修改老化标志位为0；</li>
+<li>对于老化标志位为0的表项，删除该条表项记录。</li>
+</ul>
+</li>
+</ul>
+<p><strong>备注：</strong> 由于新学到表项的时刻随机分布，故对每条表项，其实际老化时间为 1~2 倍的老化定时器周期。</p>
+<h1 id="3-三层转发"><a href="#3-三层转发" class="headerlink" title="3. 三层转发"></a>3. 三层转发</h1><h2 id="3-1-简介"><a href="#3-1-简介" class="headerlink" title="3.1. 简介"></a>3.1. 简介</h2><ul>
+<li>一种基于OSI七层模型中 <strong>第三层网络层</strong> 的数据帧的存储转发技术，三层交换是主要依靠 <strong>IP地址</strong> 来确定转发方向，以实现不同网络间的通信。</li>
+</ul>
+<h2 id="3-2-三层转发特点"><a href="#3-2-三层转发特点" class="headerlink" title="3.2. 三层转发特点"></a>3.2. 三层转发特点</h2><ul>
+<li>IP报文每经过一次三层转发，<b><font color="red" style="">其源/目的MAC地址都会变化</font></b>，但是<b><font color="blue" style="">其源/目的IP始终不变</font></b>。</li>
+<li><strong>一次路由，多次交换</strong>。即首包通过CPU参与转发过程，同时建立交换芯片<strong>硬件表项</strong>，后续包由交换芯片<strong>直接硬件转发</strong></li>
+<li>交换芯片的硬件转发并不关心路由的具体下一跳IP，硬件三层表项只包含：目的IP地址/网段、目的IP（或下一跳IP）对应的MAC地址、出口VLAN、出端口</li>
+</ul>
+<h2 id="3-3-路由器与交换机三层转发对比"><a href="#3-3-路由器与交换机三层转发对比" class="headerlink" title="3.3. 路由器与交换机三层转发对比"></a>3.3. 路由器与交换机三层转发对比</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <th align="center"><b>路由器</b></th>
+        <th align="center"><b>交换机</b></th>
+    </tr>
+    <tr>
+        <td align="center">成本</td>
+        <td align="center">高</td>
+        <td align="center">低</td>
+    </tr>
+    <tr>
+        <td align="center">实现方式</td>
+        <td align="center">主要依靠CPU计算处理，少部分支持硬件转发</td>
+        <td align="center">依靠ASIC硬件芯片集成IP三层转发功能<br>(检查IP报文头、修改存活时间参数、<br>重新计算IP头校验和、IP包的数据链路封装等)</td>
+    </tr>
+    <tr>
+        <td align="center">转发性能</td>
+        <td align="center">较弱</td>
+        <td align="center">强</td>
+    </tr>
+    <tr>
+        <td align="center">端口数量</td>
+        <td align="center">少</td>
+        <td align="center">多</td>
+    </tr>
+</table>
+
+<p>目前三层交换机一般通过VLAN来划分二层网络并实现二层交换（同网段），同时能够实现不同VLAN间的三层IP互访（不同网段）。</p>
+<h2 id="3-4-组网一下的三层转发流程详细介绍"><a href="#3-4-组网一下的三层转发流程详细介绍" class="headerlink" title="3.4. 组网一下的三层转发流程详细介绍"></a>3.4. 组网一下的三层转发流程详细介绍</h2><p>组网一如下图所示，源、目的主机都连接在同一台三层交换机上，但它们位于不同的VLAN(网段)。从三层交换机视角来说，源、目的主机都位于其直连网段，基础信息如下：</p>
+<p>(<strong>PC_A</strong> , <strong>MAC A</strong>：AA-AA-AA-AA-AA-AA , IP: 1.1.1.2, NetMask: 255.255.255.0, GW: 1.1.1.1)<br>(Ethernet2 1.1.1.1  &lt;-&gt;  <strong>L3_SW</strong>, <strong>MAC_L3_SW</strong>:CC-CC-CC-CC-CC-CC, NetMask: 255.255.255.0, &lt;-&gt;  Ethernet3 2.1.1.1  )<br>(<strong>PC_B</strong> , <strong>MAC B</strong>：BB-BB-BB-BB-BB-BB , IP: 2.1.1.2, NetMask: 255.255.255.0, GW: 2.1.1.1)</p>
+<!-- L3_SW的交换芯片的三层MAC地址表内容如下（交换机的VLAN配置时写入）： -->
+
+<!-- <table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">MAC</th>
+        <th align="center">VLAN-ID</th>
+        <th align="center">Port</th>
+    </tr>
+    <tr>
+        <td align="center">CC-CC-CC-CC-CC-CC</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+    </tr>
+    <tr>
+        <td align="center">CC-CC-CC-CC-CC-CC</td>
+        <td align="center">3</td>
+        <td align="center">3</td>
+    </tr>
+</table> -->
+
+
+<p>当 <b><font color="red" style="">PC_A Ping PC_B</font></b> 时，即发起 ICMP 请求时，涉及的三层转发处理流程如下（假设主机均暂未建立任何硬件转发表项）：</p>
+<!-- **【1】**  **PC_A进行目标IP网段与自身的异同判断**:  -->
+<p><b><font color="#7E3D76" style="">【1】 PC_A判断目标IP网段与自身的异同: </font></b></p>
+<p><strong>PC_A</strong>对比报文的目的IP网段与自身网段（发现不在同一网段），需要进行三层转发（即，需通过网关转发报文信息）</p>
+<!-- **【2】**  **PC_A查询其ARP缓存表**:  -->
+<p><b><font color="#7E3D76" style="">【2】 PC_A查询其ARP缓存表: </font></b></p>
+<p><strong>PC_A</strong>检查自己的ARP缓存表，发现网关的MAC地址不在MAC地址表里，此时<strong>PC_A</strong>的ARP缓存表为空：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>IP</th>
+        <th>MAC</th>
+    </tr>
+    <tr>
+        <td align="center"> </td>
+        <td align="center"> </td>
+    </tr>
+</table>
+
+<!-- **【3】**  **PC_A广播ARP请求报文**:  -->
+<p><b><font color="#7E3D76" style="">【3】 PC_A广播ARP请求报文：</font></b></p>
+<p><strong>PC_A</strong>在所处物理广播域内广播ARP请求报文（求取<strong>L3_SW</strong>网关IP(1.1.1.1)的MAC地址？），<strong>PC_A</strong>发送的ARP请求帧内容如下（广播）：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="10">ARP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <td>Type/Length</td>
+        <td>HardwareType</td>
+        <td>ProtocolType</td>
+        <td>HardwareLen</td>
+        <td>ProtocolLen</td>
+        <td align="center">OP</td>
+        <td align="center">SrcAddr</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesAddr</td>
+        <td align="center">DesIP</td>
+        <td>FilledField</td>
+        <td>FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center">18</td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">FF-FF-FF-FF-FF-FF</font></td>
+        <td align="center"><font color="red">AA-AA-AA-AA-AA-AA</font></td>
+        <td align="center"><b>0x0806</b></font></td>
+        <td align="center">0x0001</td>
+        <td align="center">0x0800</td>
+        <td align="center">0x06</td>
+        <td align="center">0x04</td>
+        <td align="center"><b>0x01</b></td>
+        <td align="center"><font color="red">AA-AA-AA-AA-AA-AA</font></td>
+        <td align="center"><font color="red">01-01-01-02</font></td>
+        <td align="center"><font color="blue">00-00-00-00-00-00</font></td>
+        <td align="center"><font color="blue">01-01-01-01</font></td>
+        <td align="center">00...00</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<p>注：</p>
+<ul>
+<li>Ethernet II封装的以太帧头的”Type”字段中，<strong>0x0806</strong>表示其后为<strong>ARP协议</strong></li>
+<li>OP为操作码，1表示ARP请求、2表示ARP应答、3表示RARP请求、4表示RARP应答</li>
+<li>因物理传输数据帧最短需不低于64Bytes，故上文ARP帧需在填充区段填充18个字节长度的’0’。</li>
+</ul>
+<!-- **【4】**  **L3_SW接收到ARP请求报文**:  -->
+<p><b><font color="#7E3D76" style="">【4】 L3_SW接收到ARP请求报文：</font></b></p>
+<p><strong>L3_SW</strong>收到<strong>PC_A</strong>的ARP请求报文，并将<strong>PC_A</strong>的MAC地址学习到自己的MAC地址表和ARP缓存表。<br><strong>L3_SW</strong>的MAC地址表内容如下：</p>
+<!-- <b><font color="red" style="">Q：MAC地址表中，转发标志位缺省值为TRUE么 ?</font></b> -->
+
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">MAC</th>
+        <th align="center">VLAN-ID</th>
+        <th align="center">Port</th>
+    </tr>
+    <!-- <tr>
+        <td align="center">CC-CC-CC-CC-CC-CC</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+    </tr>
+    <tr>
+        <td align="center">CC-CC-CC-CC-CC-CC</td>
+        <td align="center">3</td>
+        <td align="center">3</td>
+    </tr> -->
+    <tr>
+        <td align="center"><font color="green">AA-AA-AA-AA-AA-AA</font></td>
+        <td align="center"><font color="green">2</font></td>
+        <td align="center"><font color="green">2</font></td>
+    </tr>
+</table>
+
+<p><strong>L3_SW</strong>的ARP缓存表内容如下：</p>
+<!-- <b><font color="red" style=""> Q：正确么？</font></b> -->
+
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">IP</th>
+        <th align="center">MAC</th>
+    </tr>
+    <tr>
+        <td align="center"><font color="green">1.1.1.2</font></td>
+        <td align="center"><font color="green">AA-AA-AA-AA-AA-AA</font></td>
+    </tr>
+</table>
+
+<p>注：为提升检索效率，交换机芯片中，MAC地址表与ARP表融合为一张表。</p>
+<!-- **【5】**  **L3_SW单播ARP应答报文**:  -->
+<p><b><font color="#7E3D76" style="">【5】 L3_SW单播ARP应答报文：</font></b></p>
+<p><strong>L3_SW</strong>发现自己的IP与<strong>PC_A</strong>发出ARP请求包的目的IP一致，向<strong>PC_A</strong>响应ARP应答报文，<strong>L3_SW</strong>向<strong>PC_A</strong>发送的ARP应答帧内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="10">ARP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <td>Type/Length</td>
+        <td>HardwareType</td>
+        <td>ProtocolType</td>
+        <td>HardwareLen</td>
+        <td>ProtocolLen</td>
+        <td align="center">OP</td>
+        <td align="center">SrcAddr</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesAddr</td>
+        <td align="center">DesIP</td>
+        <td>FilledField</td>
+        <td>FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center"><b>18</b></td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">AA-AA-AA-AA-AA-AA</font></td>
+        <td align="center"><font color="red">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><b>0x0806</b></td>
+        <td align="center">0x0001</td>
+        <td align="center">0x0800</td>
+        <td align="center">0x06</td>
+        <td align="center">0x04</td>
+        <td align="center"><b>0x02</b></td>
+        <td align="center"><font color="red">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><font color="red">01-01-01-01</font></td>
+        <td align="center"><font color="blue">AA-AA-AA-AA-AA-AA</font></td>
+        <td align="center"><font color="blue">01-01-01-02</font></td>
+        <td align="center">00...00</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<p><strong>PC_A</strong>收到<strong>L3_SW</strong>的ARP应答报文后，<strong>PC_A</strong>学习到<strong>L3_SW</strong>的MAC地址并添加到ARP缓存表。<br>此时<strong>PC_A</strong>的ARP缓存表内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>IP</th>
+        <th>MAC</th>
+    </tr>
+    <tr>
+        <td align="center"><font color="green">1.1.1.1</font></td>
+        <td align="center"><font color="green">CC-CC-CC-CC-CC-CC</font></td>
+    </tr>
+</table>
+
+<!-- **【6】**  **PC_A组装并发送ICMP请求**:  -->
+<p><b><font color="#7E3D76" style="">【6】 PC_A组装并发送ICMP请求：</font></b></p>
+<p>接着<strong>PC_A</strong>组装并发出目的IP为<strong>PC_B</strong>IP地址的ICMP请求报文（目的MAC为<strong>L3_SW</strong>的MAC）。<strong>PC_A</strong>向<strong>PC_B</strong>发出的ICMP请求帧内容如下：</p>
+<table width="1900" border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <!-- <th colspan="7">Ethernet II Header</th> -->
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="12">IP Header</th>
+        <th colspan="6">ICMP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <!-- <td align="center">Type</td>
+        <td>UserPriority</td>
+        <td>Flag</td>
+        <td>VLAN-ID</td> -->
+        <td align="center">Type</td>
+        <td>Version</td>
+        <td>HeaderLen</td>
+        <td>Priority</td>
+        <td>TotalLen</td>
+        <td>Identification</td>
+        <td align="center">Flags</td>
+        <td align="center">FragmentOffset</td>
+        <td align="center">TTL</td>
+        <td align="center">Protocol</td>
+        <td align="center">Checksum</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesIP</td>
+        <td align="center">Type</td>
+        <td align="center">Code</td>
+        <td align="center">Checksum</td>
+        <td align="center">Identifier</td>
+        <td align="center">SequenceNumber</td>
+        <td align="center">OptionalData</td>
+        <td align="center">FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <!-- <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">1bit</td>
+        <td align="center">12bits</td> -->
+        <td align="center">2</td>
+        <td align="center">4bits</td>
+        <td align="center">4bits</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">13bits</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">/</td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><font color="red">AA-AA-AA-AA-AA-AA</font></td>
+        <!-- <td align="center"><b>0x8100</b></td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center"><b>10B</b></td> -->
+        <td align="center"><b>0x0800</b></td>
+        <td align="center">0100B</td>
+        <td align="center">0101B</td>
+        <td align="center">0x00</td>
+        <td align="center">0x005F</td>
+        <td align="center">0x0000</td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center">0xFF</td>
+        <td align="center"><b>0x01</b></td>
+        <td align="center">/</td>
+        <td align="center"><font color="red">01-01-01-02</font></td>
+        <td align="center"><font color="blue">02-01-01-02</font></td>
+        <td align="center"><b>0x08</b></td>
+        <td align="center">0</td>
+        <td align="center">/</td>
+        <td align="center">/</td>
+        <td align="center">0x01000001</td>
+        <td align="center">0...0</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<p>注：</p>
+<ul>
+<li>Ethernet II封装的以太帧头的”Type”字段中，<strong>0x0800</strong>表示其后为<strong>IP协议</strong></li>
+<li>在IP帧头的”Protocol”字段中，<strong>0x01</strong>表示其后为<strong>ICMP协议</strong></li>
+<li>ICMP帧头的”Type”字段中，<strong>0x08</strong>表示请求，<strong>0x00</strong>表示响应。</li>
+</ul>
+<!-- **【7】**  **L3_SW接收ICMP报文，判断转发方式，查表**:  -->
+<p><b><font color="#7E3D76" style="">【7】 L3_SW接收ICMP报文，判断转发方式，查表：</font></b></p>
+<p><strong>L3_SW</strong>收到<strong>PC_A</strong>的ICMP请求报文。根据 <strong>目的MAC地址+VLAN</strong> 检索MAC地址表 或 查询 MyStation表是否存在目的MAC：</p>
+<ul>
+<li>若存在则交换机需对该报文进行三层转发。</li>
+<li>但实际不存在，接着根据 <strong>目的IP(2.1.1.2)</strong> 查找交换机芯片三层表项：<ul>
+<li>若能查到，则进行硬件三层转发；</li>
+<li>但实际未查到，将报文送到CPU处理，CPU根据ICMP请求报文的 <strong>目的IP(2.1.1.2)</strong> 查找其<strong>软件路由表</strong>：<ul>
+<li>若未能匹配，不同交换机处理方式不同（丢弃/ARP查询到后转发）</li>
+<li>匹配了一个直连网段<b><font color="blue">2.1.1.0</font></b>（即PC_B所在的网段），接着继续查找其<strong>软件ARP表</strong>中是否存在 <strong>IP(2.1.1.2)</strong> 的表项：<ul>
+<li>若能查到，则更新源/目的MAC，并向 <strong>IP(2.1.1.2)</strong> 转发ICMP报文。</li>
+<li>但实际未查到，则需先发送ARP请求到 <strong>IP(2.1.1.2)</strong> 的MAC地址，再更新源/目的MAC和转发ICMP报文。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><br>此时<strong>L3_SW</strong>的交换芯片的MAC地址表内容如下：</p>
+<!-- <b><font color="red" style=""> Q：默认添加到交换芯片的表项的转发Flag值？</font></b> -->
+
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">MAC</th>
+        <th align="center">VLAN-ID</th>
+        <th align="center">Port</th>
+    </tr>
+    <!-- <tr>
+        <td align="center"><font color="blue">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><font color="blue">2</font></td>
+        <td align="center">2</td>
+    </tr>
+    <tr>
+        <td align="center">CC-CC-CC-CC-CC-CC</td>
+        <td align="center">3</td>
+        <td align="center">3</td>
+    </tr> -->
+    <tr>
+        <td align="center">AA-AA-AA-AA-AA-AA</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+    </tr>
+</table>
+
+
+<p><strong>L3_SW</strong>的ARP缓存表内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">IP</th>
+        <th align="center">MAC</th>
+    </tr>
+    <tr>
+        <td align="center">1.1.1.2</td>
+        <td align="center">AA-AA-AA-AA-AA-AA</td>
+    </tr>
+</table>
+
+<p><strong>L3_SW</strong>的软件路由表内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>NetworkDestination</th>
+        <th>SubnetMask</th>
+        <th>Gateway</th>
+        <th>Interface</th>
+        <th>Metric</th>
+    </tr>
+    <tr>
+        <td align="center">1.1.1.1</td>
+        <td align="center">255.255.255.0</td>
+        <td align="center">1.1.1.0</td>
+        <td align="center">Ethernet 2</td>
+        <td align="center">/</td>
+    </tr>
+    <tr>
+        <td align="center">2.1.1.1</td>
+        <td align="center">255.255.255.0</td>
+        <td align="center"><font color="blue">2.1.1.0</font></td>
+        <td align="center">Ethernet 3</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<!-- **【8】**  **L3_SW发送ARP请求**： -->
+<p><b><font color="#7E3D76" style="">【8】 L3_SW发送ARP请求：</font></b></p>
+<p><strong>L3_SW</strong>向目标网段广播ARP请求报文（求取2.1.1.2的MAC地址），ARP请求帧内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="10">ARP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <td>Type/Length</td>
+        <td>HardwareType</td>
+        <td>ProtocolType</td>
+        <td>HardwareLen</td>
+        <td>ProtocolLen</td>
+        <td align="center">OP</td>
+        <td align="center">SrcAddr</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesAddr</td>
+        <td align="center">DesIP</td>
+        <td>FilledField</td>
+        <td>FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center">18</td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">FF-FF-FF-FF-FF-FF</font></td>
+        <td align="center"><font color="red">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><b>0x0806</b></td>
+        <td align="center">0x0001</td>
+        <td align="center">0x0800</td>
+        <td align="center">0x06</td>
+        <td align="center">0x04</td>
+        <td align="center"><b>0x01</b></td>
+        <td align="center"><font color="red">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><font color="red">02-01-01-01</font></td>
+        <td align="center"><font color="blue">00-00-00-00-00-00</font></td>
+        <td align="center"><font color="blue">02-01-01-02</font></td>
+        <td align="center">00...00</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<!-- **【9】**  **PC_B接收报文并学习ARP表**:  -->
+<p><b><font color="#7E3D76" style="">【9】 PC_B接收报文并学习ARP表：</font></b></p>
+<p><strong>PC_B</strong>收到ARP请求报文，更新ARP表。此时<strong>PC_B</strong>的ARP缓存表内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>IP</th>
+        <th>MAC</th>
+    </tr>
+    <tr>
+        <td align="center"><font color="green">2.1.1.1</font></td>
+        <td align="center"><font color="green">CC-CC-CC-CC-CC-CC</font></td>
+    </tr>
+</table>
+
+<!-- **【10】**  **PC_B回应ARP应答报文**:  -->
+<p><b><font color="#7E3D76" style="">【10】 PC_B回应ARP应答报文：</font></b></p>
+<p>PC_B发现目的IP是自己，于是向<strong>L3_SW</strong>发送ARP应答报文，ARP应答帧内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="10">ARP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <td>Type/Length</td>
+        <td>HardwareType</td>
+        <td>ProtocolType</td>
+        <td>HardwareLen</td>
+        <td>ProtocolLen</td>
+        <td align="center">OP</td>
+        <td align="center">SrcAddr</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesAddr</td>
+        <td align="center">DesIP</td>
+        <td>FilledField</td>
+        <td>FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center">6</td>
+        <td align="center">4</td>
+        <td align="center">18</td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><font color="red">BB-BB-BB-BB-BB-BB</font></td>
+        <td align="center"><b>0x0806</b></td>
+        <td align="center">0x0001</td>
+        <td align="center">0x0800</td>
+        <td align="center">0x06</td>
+        <td align="center">0x04</td>
+        <td align="center"><b>0x02</b></td>
+        <td align="center"><font color="red">BB-BB-BB-BB-BB-BB</font></td>
+        <td align="center"><font color="red">02-01-01-02</font></td>
+        <td align="center"><font color="blue">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><font color="blue">02-01-01-01</font></td>
+        <td align="center">00...00</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+
+<p><strong>L3_SW</strong>收到<strong>PC_B</strong>的ARP应答报文后，<strong>L3_SW</strong>学习到<strong>PC_B</strong>的MAC地址并添加到ARP缓存表（三层表项，注：此后对三层交换机L3_SW来说，L3_SW到PC_A或PC_B的三层表项均已学习到，这样后续PC_A和PC_B之间经过交换机L3_SW互发报文时，可直接通过交换机芯片进行硬件三层转发）。<br>此时<strong>L3_SW</strong>的ARP缓存表内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">IP</th>
+        <th align="center">MAC</th>
+    </tr>
+    <tr>
+        <td align="center">1.1.1.2</td>
+        <td align="center">AA-AA-AA-AA-AA-AA</td>
+    </tr>
+    <tr>
+        <td align="center"><font color="green">2.1.1.2</font></td>
+        <td align="center"><font color="green">BB-BB-BB-BB-BB-BB</font></td>
+    </tr>
+</table>
+
+<p>此时<strong>L3_SW</strong>的交换芯片的MAC地址表内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">MAC</th>
+        <th align="center">VLAN-ID</th>
+        <th align="center">Port</th>
+    </tr>
+    <tr>
+        <td align="center">AA-AA-AA-AA-AA-AA</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+    </tr>
+    <tr>
+        <td align="center"><font color="blue">BB-BB-BB-BB-BB-BB</font></td>
+        <td align="center"><font color="blue">3</font></td>
+        <td align="center">3</td>
+    </tr>
+</table>
+
+<!-- **【11】**    **L3_SW接收ARP应答报文后，修改并转发ICMP请求**:  -->
+<p><b><font color="#7E3D76" style="">【11】 L3_SW接收ARP应答报文后，修改并转发ICMP请求：</font></b></p>
+<p><strong>L3_SW</strong>修改<strong>PC_A</strong>的ICMP请求包的源/目的MAC地址（目的MAC修改为<strong>PC_B的MAC地址</strong>、源MAC修改为<strong>自己的MAC地址</strong>），并转发给PC_B。转发的ICMP请求帧内容如下：</p>
+<table width="1900" border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <!-- <th colspan="7">Ethernet II Header</th> -->
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="12">IP Header</th>
+        <th colspan="6">ICMP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <!-- <td align="center">Type</td>
+        <td>UserPriority</td>
+        <td>Flag</td>
+        <td>VLAN-ID</td> -->
+        <td align="center">Type</td>
+        <td>Version</td>
+        <td>HeaderLen</td>
+        <td>Priority</td>
+        <td>TotalLen</td>
+        <td>Identification</td>
+        <td align="center">Flags</td>
+        <td align="center">FragmentOffset</td>
+        <td align="center">TTL</td>
+        <td align="center">Protocol</td>
+        <td align="center">Checksum</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesIP</td>
+        <td align="center">Type</td>
+        <td align="center">Code</td>
+        <td align="center">Checksum</td>
+        <td align="center">Identifier</td>
+        <td align="center">SequenceNumber</td>
+        <td align="center">OptionalData</td>
+        <td align="center">FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <!-- <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">1bit</td>
+        <td align="center">12bits</td> -->
+        <td align="center">2</td>
+        <td align="center">4bits</td>
+        <td align="center">4bits</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">13bits</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">/</td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">BB-BB-BB-BB-BB-BB</font></td>
+        <td align="center"><font color="red">CC-CC-CC-CC-CC-CC</font></td>
+        <!-- <td align="center"><b>0x8100</b></td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center"><b>10B</b></td> -->
+        <td align="center"><b>0x0800</b></td>
+        <td align="center">0100B</td>
+        <td align="center">0101B</td>
+        <td align="center">0x00</td>
+        <td align="center">0x005F</td>
+        <td align="center">0x0000</td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center">0xFF</td>
+        <td align="center"><b>0x01</b></td>
+        <td align="center">/</td>
+        <td align="center"><font color="red">01-01-01-02</font></td>
+        <td align="center"><font color="blue">02-01-01-02</font></td>
+        <td align="center"><b>0x08</b></td>
+        <td align="center">0</td>
+        <td align="center">/</td>
+        <td align="center">/</td>
+        <td align="center">0x01000001</td>
+        <td align="center">0...0</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<!-- **【12】**   **PC_B接收并响应ICMP报文**:  -->
+<p><b><font color="#7E3D76" style="">【12】 PC_B接收并响应ICMP报文：</font></b></p>
+<p>PC_B收到L3_SW转发的ICMP请求后，向<strong>PC_A</strong>发送应答ICMP报文（目的MAC为<strong>网关MAC地址</strong>）。其中ICMP报文内容如下：</p>
+<table width="1900" border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <!-- <th colspan="7">Ethernet II Header</th> -->
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="12">IP Header</th>
+        <th colspan="6">ICMP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <!-- <td align="center">Type</td>
+        <td>UserPriority</td>
+        <td>Flag</td>
+        <td>VLAN-ID</td> -->
+        <td align="center">Type</td>
+        <td>Version</td>
+        <td>HeaderLen</td>
+        <td>Priority</td>
+        <td>TotalLen</td>
+        <td>Identification</td>
+        <td align="center">Flags</td>
+        <td align="center">FragmentOffset</td>
+        <td align="center">TTL</td>
+        <td align="center">Protocol</td>
+        <td align="center">Checksum</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesIP</td>
+        <td align="center">Type</td>
+        <td align="center">Code</td>
+        <td align="center">Checksum</td>
+        <td align="center">Identifier</td>
+        <td align="center">SequenceNumber</td>
+        <td align="center">OptionalData</td>
+        <td align="center">FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <!-- <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">1bit</td>
+        <td align="center">12bits</td> -->
+        <td align="center">2</td>
+        <td align="center">4bits</td>
+        <td align="center">4bits</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">13bits</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">/</td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">CC-CC-CC-CC-CC-CC</font></td>
+        <td align="center"><font color="red">BB-BB-BB-BB-BB-BB</font></td>
+        <!-- <td align="center"><b>0x8100</b></td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center"><b>10B</b></td> -->
+        <td align="center"><b>0x0800</b></td>
+        <td align="center">0100B</td>
+        <td align="center">0101B</td>
+        <td align="center">0x00</td>
+        <td align="center">0x005F</td>
+        <td align="center">0x0000</td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center">0xFF</td>
+        <td align="center"><b>0x01</b></td>
+        <td align="center">/</td>
+        <td align="center"><font color="red">02-01-01-02</font></td>
+        <td align="center"><font color="blue">01-01-01-02</font></td>
+        <td align="center"><b>0x00</b></td>
+        <td align="center">0</td>
+        <td align="center">/</td>
+        <td align="center">/</td>
+        <td align="center">0x01000001</td>
+        <td align="center">0...0</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<!-- **【13】**  **L3_SW硬件转发ICMP应答报文**:  -->
+<p><b><font color="#7E3D76" style="">【13】 L3_SW硬件转发ICMP应答报文：</font></b></p>
+<p><strong>L3_SW</strong>收到<strong>PC_B</strong>响应<strong>PC_A</strong>的应答报文后，根据 <strong>目的MAC地址+VLAN</strong> 检索MAC地址地址表：</p>
+<ul>
+<li>能查到，则需对其进行三层转发。然后根据 <strong>目的IP(1.1.1.2)</strong> 查找交换机芯片三层表项：<ul>
+<li>能查到，则通过交换机芯片实现<strong>硬件三层转发</strong>该ICMP应答报文（目的MAC修改为PC_A的MAC地址、源MAC修改为自己的MAC地址）。<br></li>
+</ul>
+</li>
+</ul>
+<p>此时<strong>L3_SW</strong>的交换芯片的MAC地址表内容如下（交换机的VLAN配置时写入）：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">MAC</th>
+        <th align="center">VLAN-ID</th>
+        <th align="center">Port</th>
+    </tr>
+    <tr>
+        <td align="center"><font color="blue">AA-AA-AA-AA-AA-AA</font></td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+    </tr>
+    <tr>
+        <td align="center">BB-BB-BB-BB-BB-BB</td>
+        <td align="center">3</td>
+        <td align="center">3</td>
+    </tr>
+</table>
+
+<p><strong>L3_SW</strong>的ARP缓存表内容如下：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">IP</th>
+        <th align="center">MAC</th>
+        <!-- <th align="center">VLAN-ID</th>
+        <th align="center">Port</th> -->
+    </tr>
+    <tr>
+        <td align="center"><font color="blue">1.1.1.2</font></td>
+        <td align="center"><font color="blue">AA-AA-AA-AA-AA-AA</font></td>
+        <!-- <td align="center">2</td>
+        <td align="center">2</td> -->
+    </tr>
+    <tr>
+        <td align="center">2.1.1.2</td>
+        <td align="center">BB-BB-BB-BB-BB-BB</td>
+        <!-- <td align="center">3</td>
+        <td align="center">3</td> -->
+    </tr>
+</table>
+
+<p><strong>L3_SW</strong>硬件转发<strong>PC_B</strong>响应<strong>PC_A</strong>的应答报文内容如下：</p>
+<table width="1900" border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <!-- <th colspan="7">Ethernet II Header</th> -->
+        <th colspan="3">Ethernet II Header</th>
+        <th colspan="12">IP Header</th>
+        <th colspan="6">ICMP Frame</th>
+        <th>End</th>
+    </tr>
+    <tr>
+        <td align="center">字段</td>
+        <td align="center">DA</td>
+        <td align="center">SA</td>
+        <!-- <td align="center">Type</td>
+        <td>UserPriority</td>
+        <td>Flag</td>
+        <td>VLAN-ID</td> -->
+        <td align="center">Type</td>
+        <td>Version</td>
+        <td>HeaderLen</td>
+        <td>Priority</td>
+        <td>TotalLen</td>
+        <td>Identification</td>
+        <td align="center">Flags</td>
+        <td align="center">FragmentOffset</td>
+        <td align="center">TTL</td>
+        <td align="center">Protocol</td>
+        <td align="center">Checksum</td>
+        <td align="center">SrcIP</td>
+        <td align="center">DesIP</td>
+        <td align="center">Type</td>
+        <td align="center">Code</td>
+        <td align="center">Checksum</td>
+        <td align="center">Identifier</td>
+        <td align="center">SequenceNumber</td>
+        <td align="center">OptionalData</td>
+        <td align="center">FCR</td>
+    </tr>
+    <tr>
+        <td align="center">字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <!-- <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">1bit</td>
+        <td align="center">12bits</td> -->
+        <td align="center">2</td>
+        <td align="center">4bits</td>
+        <td align="center">4bits</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">3bits</td>
+        <td align="center">13bits</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">2</td>
+        <td align="center">/</td>
+        <td align="center">4</td>
+    </tr>
+    <tr>
+        <td align="center">填充值(0x)</td>
+        <td align="center"><font color="blue">AA-AA-AA-AA-AA-AA</font></td>
+        <td align="center"><font color="red">CC-CC-CC-CC-CC-CC</font></td>
+        <!-- <td align="center"><b>0x8100</b></td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center"><b>10B</b></td> -->
+        <td align="center"><b>0x0800</b></td>
+        <td align="center">0100B</td>
+        <td align="center">0101B</td>
+        <td align="center">0x00</td>
+        <td align="center">0x005F</td>
+        <td align="center">0x0000</td>
+        <td align="center">000B</td>
+        <td align="center">0B</td>
+        <td align="center">0xFF</td>
+        <td align="center"><b>0x01</b></td>
+        <td align="center">/</td>
+        <td align="center"><font color="red">01-01-01-02</font></td>
+        <td align="center"><font color="blue">02-01-01-02</font></td>
+        <td align="center"><b>0x00</b></td>
+        <td align="center">0</td>
+        <td align="center">/</td>
+        <td align="center">/</td>
+        <td align="center">0x01000001</td>
+        <td align="center">0...0</td>
+        <td align="center">/</td>
+    </tr>
+</table>
+
+<p>PC_A成功接收到PC_B发出的ICMP应答报文后整个Ping过程结束。<br>此后PC_A和PC_B之间往返报文都将（经过查MAC地址表，查交换机芯片三层转发表后）由交换芯片<strong>直接完成硬件三层转发</strong>。<br>经过上述流程的分析可知，三层交换机充分利用“<strong>一次路由、多次转换</strong>”的原理实现了转发性能与三层交换复杂业务的完美统一。</p>
+<p>注：</p>
+<ul>
+<li> 一次路由：即首包通过CPU参与 <strong>请求/转发</strong>，再根据应答 <strong>学习/建立</strong> 交换芯片 <strong>硬件表项</strong>的“路由”过程（相对较慢，完成三层交换的必须的表项学习/建立流程）</li>
+<li> 多次交换：后续往返报文都可由交换芯片<strong>直接硬件三层转发</strong>（更快，提升转发性能）</li>
+</ul>
+<h2 id="3-5-组网二下的三层转发流程介绍"><a href="#3-5-组网二下的三层转发流程介绍" class="headerlink" title="3.5. 组网二下的三层转发流程介绍"></a>3.5. 组网二下的三层转发流程介绍</h2><p>另一种组网示例如下图所示，图中标明了两台主机的MAC、IP、网关以及两台三层交换机的MAC、不同VLAN配置的三层接口IP。且两台交换机分别预配置了静态路由：<br>其中 L3_SW1 静态路由配置为 ip route 2.1.1.0 255.255.255.0 3.1.1.2，L3_SW2 静态路由配置为 ip route 1.1.1.0 255.255.255.0 3.1.1.1。</p>
+<p>当 <b><font color="red" style="">PC_A Ping PC_B</font></b> ，即发起 ICMP 请求时，三层转发处理流程如下（假设主机均暂未建立任何硬件转发表项）：</p>
+<p>由于组网转发中间许多转发详细流程与具体请求帧分析已在3.5中介绍，这里不再赘述，下面主要介绍此组网示例下三层转发流程：</p>
+<p>总结，其与组网一的主要区别在于第7步，组网一的L3_SW交换机在CPU查找软件路由表时<strong>匹配了目的IP的直连网段</strong>（2.1.1.0），然后广播找到直连网段内的PC_B并建立通信；而在本组网二中，L3_SW1交换机在CPU查找软件路由时<b><font color="red" style="">匹配了静态路由表项中某一下一跳网段（2.1.1.0/24）</font></b>。组网二多出的流程为，需将ICMP报文转发给下一跳(L3_SW2交换机)，并由L3_SW2交换机重复执行类似的CPU软件路由表查询、建表、转发ICMP请求报文、并最终转发ICMP应答报文回到L3_SW1，其他过程与组网一类似。</p>
+<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><h2 id="4-1-二三层转发对比"><a href="#4-1-二三层转发对比" class="headerlink" title="4.1. 二三层转发对比"></a>4.1. 二三层转发对比</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th> </th>
+        <th align="center"><b>二层转发</b></th>
+        <th align="center"><b>三层转发</b></th>
+    </tr>
+    <tr>
+        <td align="center">转发依据</td>
+        <td align="center">MAC地址和VID号</td>
+        <td align="center">IP地址</td>
+    </tr>
+    <tr>
+        <td align="center">数据交换范围</td>
+        <td align="center">同一网段</td>
+        <td align="center">跨网段</td>
+    </tr>
+    <tr>
+        <td align="center">所属OSI网络模型层级</td>
+        <td align="center">数据链路层（第二层）</td>
+        <td align="center">网络层（第三层）</td>
+    </tr>
+    <tr>
+        <td align="center">是否需要二次封装</td>
+        <td align="center">否</td>
+        <td align="center">是</td>
+    </tr>
+</table>
+
+<h2 id="4-2-主机间通信机制及何时二三层转发？"><a href="#4-2-主机间通信机制及何时二三层转发？" class="headerlink" title="4.2. 主机间通信机制及何时二三层转发？"></a>4.2. 主机间通信机制及何时二三层转发？</h2><ul>
+<li>当前主机收到以太网数据帧，解析<strong>目的IP</strong></li>
+<li>判断目的IP与自己IP是否位于同一网段（和掩码逻辑与）：<ul>
+<li>若位于同一网段，则采用<strong>二层转发</strong>。（流程为：当前主机广播ARP请求（获取目的MAC地址），然后填充目的MAC并发送报文。）</li>
+<li>若为不同网段，则采用<strong>三层转发</strong>，通过网关转发报文。流程为：当前主机向网关发送ARP请求（获取网关的MAC地址），然后将网关MAC地址作为目的MAC地址并发送报文（注：此时目的IP仍未改动）</li>
+</ul>
+</li>
+</ul>
+<p><strong>其他判定方式</strong>：交换芯片中的<strong>MAC地址表</strong>中会记录三层接口MAC+VID表项，且存在<strong>MyStation表</strong>。当报文进来时，用报文的目的MAC检索这两张表，若存在则需<strong>三层转发</strong>。</p>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><ul>
+<li>《H3C网络之路第六期——交换专题》</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zqixiao_09/article/details/51170795">ARP 基础知识解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38902271/article/details/110213222">ARP请求的详细过程</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\23\EthernetAndMac\" rel="bookmark">以太帧与MAC</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\20\OSISevenLevelModel\" rel="bookmark">OSI七层网络模型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONIC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\03\VLAN\" rel="bookmark">VLAN</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\09\switch\" rel="bookmark">交换机基础简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/09/switch/" rel="prev" title="交换机基础简介">
+                  <i class="fa fa-chevron-left"></i> 交换机基础简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/12/SONIC/" rel="next" title="开源白盒交换机系统 SONIC 简介">
+                  开源白盒交换机系统 SONIC 简介 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/09/05/TwoOrThreeLevelForwarding/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

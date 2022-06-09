@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -239,7 +239,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/01/03/AnalysisOfAlgorithmsLesson/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/10/26/gitRevert/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -252,7 +252,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/01/03/AnalysisOfAlgorithmsLesson/" class="post-title-link" itemprop="url">算法分析与设计练习</a>
+          <a href="/2019/10/26/gitRevert/" class="post-title-link" itemprop="url">git撤销已push到远端仓库的提交</a>
         </h2>
 
         <div class="post-meta-container">
@@ -263,11 +263,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2019-01-03 21:05:44" itemprop="dateCreated datePublished" datetime="2019-01-03T21:05:44+08:00">2019-01-03</time>
+      <time title="创建：2019-10-26 09:18:44" itemprop="dateCreated datePublished" datetime="2019-10-26T09:18:44+08:00">2019-10-26</time>
     </span>
 
   
-    <span id="/2019/01/03/AnalysisOfAlgorithmsLesson/" class="post-meta-item leancloud_visitors" data-flag-title="算法分析与设计练习" title="浏览">
+    <span id="/2019/10/26/gitRevert/" class="post-meta-item leancloud_visitors" data-flag-title="git撤销已push到远端仓库的提交" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -283,13 +283,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AnalysisOfAlgorithmsLesson.jpg" class="full-image" />
+          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/gitRevert.jpg" class="full-image" />
 
-<h1 id="1-算法分析与设计练习"><a href="#1-算法分析与设计练习" class="headerlink" title="1. 算法分析与设计练习"></a>1. 算法分析与设计练习</h1><p>完整源代码已在本文尾部给出</p>
-<h2 id="1-1-No1-优先级队列（大小顶堆）"><a href="#1-1-No1-优先级队列（大小顶堆）" class="headerlink" title="1.1. No1. 优先级队列（大小顶堆）"></a>1.1. No1. 优先级队列（大小顶堆）</h2><p>堆是一种经过排序的完全二叉树，其中任一非终端节点的数据值均不大于（或不小于）其左子节点和右子节点的值。最小(大)堆能保证堆顶元素最小(大)，相比于用数组存放数据，如果要查找所有数据中最小(大)的数据时，数组的时间复杂度为O(n)，而最小(大)堆的时间复杂度为O(1)。而数据增删数据时，需要保证最小(大)堆的动态可维护性仅需O(logN)。因此对于特定的需求环境，最小(大)堆这种数据结构非常高效。</p>
+<p>随着互联网时代的来临，代码项目多采用git仓库管理多人协同编码的方式。人非圣贤孰能无过，难免有时自己刚push到远端仓库的代码存在瑕疵需要修改，此时不必惊慌，我们可以利用git的强制覆盖远端仓库来实现撤销提交的目的。适用前提：待撤销的提交记录后暂无他人提交记录。</p>
+<p>关键词: git、回退commit</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/01/03/AnalysisOfAlgorithmsLesson/#more" rel="contents">
+              <a class="btn" href="/2019/10/26/gitRevert/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -320,7 +320,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/12/10/DataMining_Apriori/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/07/24/BitPrint/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -333,7 +333,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/12/10/DataMining_Apriori/" class="post-title-link" itemprop="url">Apriori算法——数据挖掘</a>
+          <a href="/2019/07/24/BitPrint/" class="post-title-link" itemprop="url">测试内存中变量的存储方式</a>
         </h2>
 
         <div class="post-meta-container">
@@ -344,11 +344,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2018-12-10 19:05:44" itemprop="dateCreated datePublished" datetime="2018-12-10T19:05:44+08:00">2018-12-10</time>
+      <time title="创建：2019-07-24 21:44:44" itemprop="dateCreated datePublished" datetime="2019-07-24T21:44:44+08:00">2019-07-24</time>
     </span>
 
   
-    <span id="/2018/12/10/DataMining_Apriori/" class="post-meta-item leancloud_visitors" data-flag-title="Apriori算法——数据挖掘" title="浏览">
+    <span id="/2019/07/24/BitPrint/" class="post-meta-item leancloud_visitors" data-flag-title="测试内存中变量的存储方式" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -364,16 +364,98 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Apriori.png" class="full-image" />
+          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/bitPrint.jpg" class="full-image" />
 
-<h1 id="1-Apriori算法简介"><a href="#1-Apriori算法简介" class="headerlink" title="1. Apriori算法简介"></a>1. Apriori算法简介</h1><ul>
-<li>Apriori是一种在事务数据库上进行频繁项集挖掘和关联规则学习的算法。</li>
-<li>它通过识别数据库中的频繁单项，并将经常出现的项扩展到越来越大的项目集。</li>
-<li>Apriori确定的频繁项目集可用于确定关联规则，能够显示出数据库中项的一般趋势，故常应用于诸如市场购物栏分析的领域中（决策分析）。</li>
+<p>众所周知，程序中的变量存放于计算机内存中，程序对这些变量执行特定的赋值和计算等操作以实现某种功能。你是否好奇变量是如何被存储和表示于内存之中呢？</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/07/24/BitPrint/#more" rel="contents">
+                展开阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/07/05/CloudComputingNote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/07/05/CloudComputingNote/" class="post-title-link" itemprop="url">云计算学习笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2019-07-05 15:10:44" itemprop="dateCreated datePublished" datetime="2019-07-05T15:10:44+08:00">2019-07-05</time>
+    </span>
+
+  
+    <span id="/2019/07/05/CloudComputingNote/" class="post-meta-item leancloud_visitors" data-flag-title="云计算学习笔记" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/cloudComputing.jpg" class="full-image" />
+
+<h1 id="1-Bigtable————分布式结构化数据表"><a href="#1-Bigtable————分布式结构化数据表" class="headerlink" title="1. Bigtable————分布式结构化数据表"></a>1. Bigtable————分布式结构化数据表</h1><h2 id="1-1-Bigtable特点"><a href="#1-1-Bigtable特点" class="headerlink" title="1.1. Bigtable特点"></a>1.1. Bigtable特点</h2><ul>
+<li> 数据种类繁多，满足一系列Google产品的存储要求</li>
+<li>吞吐量大，响应海量的服务请求</li>
+<li>高可用性，几乎所有情况下的系统均可用</li>
+<li>高扩展性，可根据需要随时加入或撤销服务器</li>
+<li>简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/10/DataMining_Apriori/#more" rel="contents">
+              <a class="btn" href="/2019/07/05/CloudComputingNote/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -404,7 +486,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/12/03/DataMining_AdaBoost/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/04/30/webCrawlerSimpleTest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -417,7 +499,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/12/03/DataMining_AdaBoost/" class="post-title-link" itemprop="url">AdaBoost算法——数据挖掘</a>
+          <a href="/2019/04/30/webCrawlerSimpleTest/" class="post-title-link" itemprop="url">Python简单网页爬虫练习</a>
         </h2>
 
         <div class="post-meta-container">
@@ -428,11 +510,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2018-12-03 14:05:44" itemprop="dateCreated datePublished" datetime="2018-12-03T14:05:44+08:00">2018-12-03</time>
+      <time title="创建：2019-04-30 11:28:44" itemprop="dateCreated datePublished" datetime="2019-04-30T11:28:44+08:00">2019-04-30</time>
     </span>
 
   
-    <span id="/2018/12/03/DataMining_AdaBoost/" class="post-meta-item leancloud_visitors" data-flag-title="AdaBoost算法——数据挖掘" title="浏览">
+    <span id="/2019/04/30/webCrawlerSimpleTest/" class="post-meta-item leancloud_visitors" data-flag-title="Python简单网页爬虫练习" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -448,12 +530,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_AdaBoost.png" class="full-image" />
+          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/webCrawlerSimpleTest.jpg" class="full-image" />
 
-<h1 id="1-集成学习AdaBoost算法简介"><a href="#1-集成学习AdaBoost算法简介" class="headerlink" title="1. 集成学习AdaBoost算法简介"></a>1. 集成学习AdaBoost算法简介</h1><p>AdaBoost全称是adaptive boosting，该算法基本思想:多个结构较为简单，分类或预测精度较低的弱学习算法可以通过某种方式结合成具有较强学习能力的强学习算法。根据统计学习方法的三要素，AdaBoost 方法=加法模型+指数损失函数(策略)+前向分步 算法。</p>
+<h1 id="1-爬取豆瓣一周口碑榜的电影列表"><a href="#1-爬取豆瓣一周口碑榜的电影列表" class="headerlink" title="1. 爬取豆瓣一周口碑榜的电影列表"></a>1. 爬取豆瓣一周口碑榜的电影列表</h1><p>爬取结果展示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">爬取豆瓣一周口碑榜的电影列表（十个）:</span><br><span class="line">复仇者联盟<span class="number">4</span>：终局之战</span><br><span class="line">触不可及(美版)</span><br><span class="line">盗梦特攻队</span><br><span class="line">深红累之渊</span><br><span class="line">遇见女孩的感觉</span><br><span class="line">撞死了一只羊</span><br><span class="line">归家：碧昂斯电影作品</span><br><span class="line">西班牙之旅</span><br><span class="line">娑婆诃</span><br><span class="line">番石榴岛</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/03/DataMining_AdaBoost/#more" rel="contents">
+              <a class="btn" href="/2019/04/30/webCrawlerSimpleTest/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -484,7 +567,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/11/19/DockerSimpleUsing/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/04/06/AfterWatch7upAndRenJianShi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -497,7 +580,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/19/DockerSimpleUsing/" class="post-title-link" itemprop="url">Docker安装及简单应用</a>
+          <a href="/2019/04/06/AfterWatch7upAndRenJianShi/" class="post-title-link" itemprop="url">《人生七年》、《人间世》观后感</a>
         </h2>
 
         <div class="post-meta-container">
@@ -508,11 +591,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2018-11-19 12:10:44" itemprop="dateCreated datePublished" datetime="2018-11-19T12:10:44+08:00">2018-11-19</time>
+      <time title="创建：2019-04-06 22:17:44" itemprop="dateCreated datePublished" datetime="2019-04-06T22:17:44+08:00">2019-04-06</time>
     </span>
 
   
-    <span id="/2018/11/19/DockerSimpleUsing/" class="post-meta-item leancloud_visitors" data-flag-title="Docker安装及简单应用" title="浏览">
+    <span id="/2019/04/06/AfterWatch7upAndRenJianShi/" class="post-meta-item leancloud_visitors" data-flag-title="《人生七年》、《人间世》观后感" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -528,96 +611,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DockerSimpleUsing.png" class="full-image" />
+          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AfterWatch7upAndRenJianShi.jpg" class="full-image" />
 
-<h1 id="1-安装Docker"><a href="#1-安装Docker" class="headerlink" title="1. 安装Docker"></a>1. 安装Docker</h1><h2 id="1-1-一键安装Docker"><a href="#1-1-一键安装Docker" class="headerlink" title="1.1. 一键安装Docker"></a>1.1. 一键安装Docker</h2><p>Manjaro系统下pacman命令一键安装Docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S docker</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/11/19/DockerSimpleUsing/#more" rel="contents">
-                展开阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/11/16/DataMining_ID3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/my-avatar.png">
-      <meta itemprop="name" content="EisenHao">
-      <meta itemprop="description" content="记录成长，享受生活！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="EisenHao's Note">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/16/DataMining_ID3/" class="post-title-link" itemprop="url">ID3算法——数据挖掘</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">编写</span>
-
-      <time title="创建：2018-11-16 17:05:44" itemprop="dateCreated datePublished" datetime="2018-11-16T17:05:44+08:00">2018-11-16</time>
-    </span>
-
-  
-    <span id="/2018/11/16/DataMining_ID3/" class="post-meta-item leancloud_visitors" data-flag-title="ID3算法——数据挖掘" title="浏览">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">浏览：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <img src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_ID3.png" class="full-image" />
-
-<h1 id="1-ID3算法简介"><a href="#1-ID3算法简介" class="headerlink" title="1. ID3算法简介"></a>1. ID3算法简介</h1><ul>
-<li>ID3算法最早是由罗斯昆（J.Ross Quinlan）于1975年在悉尼大学提出的一种分类预测算法，算法的核心是“信息熵（Information entropy）”。</li>
-<li>ID3算法通过计算每个属性的信息增益，认为信息增益高的是好属性，每次划分选取信息增益最高的属性为划分标准，重复这个过程，直至生成一个能完美分类训练样例的决策树。</li>
+<p>最近疲于找实习，感觉自己能力不足，有些迷茫，遂重温了《人生七年》、《人间世》，竟有些新的感受。</p>
+<h1 id="1-《人生七年》观后感"><a href="#1-《人生七年》观后感" class="headerlink" title="1. 《人生七年》观后感"></a>1. 《人生七年》观后感</h1><ul>
+<li>《人生七年》感受到阶级血淋淋地存在，且每个人深受其影响。从一出生，影响就潜移默化地开始了，从家庭背景、思维方式、教育资源、人生规划等方面。7岁的高富帅三人组John、Andrew和Charles的谈吐和未来规划就能初见端倪</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/16/DataMining_ID3/#more" rel="contents">
+              <a class="btn" href="/2019/04/06/AfterWatch7upAndRenJianShi/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -641,7 +643,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

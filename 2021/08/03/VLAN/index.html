@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 简介 虚拟局域网（Virtual Local Area Network，VLAN），是将局域网从逻辑上划分为一个个网段，从而实现虚拟工作组的一种交换技术。 每个网段内所有主机间的通讯和广播仅限于该VLAN内，广播帧不会被转发到其他网段，VLAN间不能进行直接通信，从而实现了对广播域的分割和隔离。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VLAN">
+<meta property="og:url" content="https://eisenhao.cn/2021/08/03/VLAN/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 简介 虚拟局域网（Virtual Local Area Network，VLAN），是将局域网从逻辑上划分为一个个网段，从而实现虚拟工作组的一种交换技术。 每个网段内所有主机间的通讯和广播仅限于该VLAN内，广播帧不会被转发到其他网段，VLAN间不能进行直接通信，从而实现了对广播域的分割和隔离。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-03T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-08-03T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/08/03/VLAN/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/08/03/VLAN/","path":"2021/08/03/VLAN/","title":"VLAN"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>VLAN | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-VLAN%E4%BA%A7%E7%94%9F%E8%83%8C%E6%99%AF"><span class="nav-text">1.1. VLAN产生背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-VLAN%E4%BD%9C%E7%94%A8"><span class="nav-text">1.2. VLAN作用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E9%9D%99%E6%80%81VLAN%E4%B8%8E%E5%8A%A8%E6%80%81VLAN"><span class="nav-text">2. 静态VLAN与动态VLAN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E9%9D%99%E6%80%81VLAN"><span class="nav-text">2.1. 静态VLAN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%8A%A8%E6%80%81VLAN"><span class="nav-text">2.2. 动态VLAN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%8A%A8%E9%9D%99%E6%80%81VLAN%E5%AF%B9%E6%AF%94"><span class="nav-text">2.3. 动静态VLAN对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-802-1Q-VLAN%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="nav-text">3. 802.1Q VLAN帧格式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E4%BC%A0%E7%BB%9F%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="nav-text">3.1. 传统以太网帧格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-802-1Q%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="nav-text">3.2. 802.1Q帧格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-VLAN%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-text">4. VLAN间的通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%90%8CVLAN%E5%86%85%E4%B8%BB%E6%9C%BA%E7%9A%84%E8%B7%A8%E5%9F%9F%E9%80%9A%E8%AE%AF"><span class="nav-text">4.1. 同VLAN内主机的跨域通讯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E4%B8%8D%E5%90%8C%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B%E4%B8%8B%E7%9A%84VLAN%E9%97%B4%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B"><span class="nav-text">4.2. 不同接口类型下的VLAN间通信流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Tag-Untag%E6%8A%A5%E6%96%87%E7%9A%84%E5%A4%84%E7%90%86%E5%8E%9F%E5%88%99"><span class="nav-text">4.3. Tag&#x2F;Untag报文的处理原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-1-%E6%8A%A5%E6%96%87%E8%BF%9B%E5%85%A5switch%E6%97%B6"><span class="nav-text">4.3.1. 报文进入switch时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-2-%E6%8A%A5%E6%96%87%E5%87%BAswitch%E6%97%B6"><span class="nav-text">4.3.2. 报文出switch时</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/08/03/VLAN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VLAN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-08-03 22:30:45" itemprop="dateCreated datePublished" datetime="2021-08-03T22:30:45+08:00">2021-08-03</time>
+    </span>
+
+  
+    <span id="/2021/08/03/VLAN/" class="post-meta-item leancloud_visitors" data-flag-title="VLAN" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><ul>
+<li>虚拟局域网（Virtual Local Area Network，VLAN），是将局域网从逻辑上划分为一个个网段，从而实现虚拟工作组的一种交换技术。</li>
+<li>每个网段内所有主机间的通讯和广播仅限于该VLAN内，广播帧不会被转发到其他网段，VLAN间不能进行直接通信，从而实现了对广播域的分割和隔离。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="1-1-VLAN产生背景"><a href="#1-1-VLAN产生背景" class="headerlink" title="1.1. VLAN产生背景"></a>1.1. VLAN产生背景</h2><ul>
+<li>网桥、集线器或交换机构成的整个物理局域网同属于一个广播域，任何一个广播帧或多播帧都将被光波导整个局域网的每一台主机</li>
+<li>在网络通讯中，广播信息是普遍存在的，这些广播帧将占用大量网络带宽，导致网络速度和通讯效率下降，增加网络主机处理广播信息的负荷</li>
+<li>蠕虫病毒泛滥，为防止网络阻塞和瘫痪，需要进行有效的广播域隔离</li>
+</ul>
+<h2 id="1-2-VLAN作用"><a href="#1-2-VLAN作用" class="headerlink" title="1.2. VLAN作用"></a>1.2. VLAN作用</h2><ul>
+<li><p><strong>限制广播域</strong>：广播域被限制在一个VLAN内，节省了带宽，提高了网络处理能力。</p>
+</li>
+<li><p><strong>增强局域网的安全性</strong>：不同VLAN内的报文在传输时是相互隔离的，即一个VLAN内的用户不能和其它VLAN内的用户直接通信。</p>
+</li>
+<li><p><strong>提高网络的健壮性</strong>：故障被限制在一个VLAN内，本VLAN内的故障不会影响其他VLAN的正常工作。</p>
+</li>
+<li><p><strong>灵活构建虚拟工作组</strong>：用VLAN可以划分不同的用户到不同的工作组，同一工作组的用户也不必局限于某一固定的物理范围，网络构建和维护更方便灵活。</p>
+<h1 id="2-静态VLAN与动态VLAN"><a href="#2-静态VLAN与动态VLAN" class="headerlink" title="2. 静态VLAN与动态VLAN"></a>2. 静态VLAN与动态VLAN</h1><h2 id="2-1-静态VLAN"><a href="#2-1-静态VLAN" class="headerlink" title="2.1. 静态VLAN"></a>2.1. 静态VLAN</h2><p>明确指定个端口所属VLAN的设定方法，也称为基于端口的VLAN。</p>
+</li>
+</ul>
+<p>特点：是将交换机按端口进行分组，每组定义一个VLAN，属于同一个VLAN的端口，可来自一台或多台交换机（即可跨多台交换机设置VLAN）。</p>
+<h2 id="2-2-动态VLAN"><a href="#2-2-动态VLAN" class="headerlink" title="2.2. 动态VLAN"></a>2.2. 动态VLAN</h2><p>根据每个端口所连的计算机，动态设置端口所属VLAN的设定方法。</p>
+<table>
+<thead>
+<tr>
+<th align="left">划分依据</th>
+<th align="left">说明</th>
+<th align="left">优点</th>
+<th align="left">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">基于端口</td>
+<td align="left">根据以太网交换机的端口来划分</td>
+<td align="left">定义VLAN成员时非常简单(只要将所有的端口都指定一下就可以了)</td>
+<td align="left">如果VLAN A的用户离开了原来的端口，到了一个新的交换机的某个端口，那么就必须重新定义。</td>
+</tr>
+<tr>
+<td align="left">基于MAC地址</td>
+<td align="left">根据端口所连计算机的网卡MAC地址，决定该端口所属的VLAN。<br>eg.MAC地址为”00-0C-6E-E1-1B-36”的计算机被设置为属于VLAN2，则该计算机连接的交换机端口会被自动划归为VLAN2。</td>
+<td align="left">当用户物理位置移动时，即从一个交换机换到其他的交换机时，VLAN不用重新配置，可以认为这种根据MAC地址的划分方法是基于用户的VLAN</td>
+<td align="left">初始化时，所有的用户都必须进行配置，若用户数量较大则配置量非常大。<br>此外这种划分的方法也导致了交换机执行效率的降低，因为在每一个交换机的端口都可能存在很多个VLAN组的成员，这样就无法限制广播包了。</td>
+</tr>
+<tr>
+<td align="left">基于子网</td>
+<td align="left">根据每个主机的网络层地址划分的。虽然这种划分方法是根据网络地址，比如IP地址，但它不是路由，与网络层的路由毫无关系</td>
+<td align="left">用户的物理位置改变了，不需要重新配置所属的VLAN。<br>此外无需附加的帧标签来识别VLAN，可减少网络的通信量</td>
+<td align="left">效率低，因为检查每一个数据包的网络层地址是需要消耗处理时间的，一般的交换机芯片都可以自动检查网络上数据包的以太网帧头，但要让芯片能检查IP帧头，需要更高的技术，同时更费时</td>
+</tr>
+<tr>
+<td align="left">基于协议</td>
+<td align="left">根据报文的协议类型和封装格式进行VLAN的划分。<br>如：IP、IPX、AppleTalk协议族；Ethernet II，802.3，802.3/802.2 LLC， 802.3/802.2 SNAP等封装格式</td>
+<td align="left">一个交换机换到其他的交换机时，VLAN不用重新配置</td>
+<td align="left">初始化时，所有的用户都必须进行配置，配置量大、执行效率低、无法限制广播包</td>
+</tr>
+</tbody></table>
+<h2 id="2-3-动静态VLAN对比"><a href="#2-3-动静态VLAN对比" class="headerlink" title="2.3. 动静态VLAN对比"></a>2.3. 动静态VLAN对比</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">静态VLAN</th>
+<th align="center">动态VLAN</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">划分方式</td>
+<td align="center">基于端口</td>
+<td align="center">基于MAC地址、子网、用户</td>
+</tr>
+<tr>
+<td align="center">特点</td>
+<td align="center">需人为设定，需设定的端口数目较多，工作量大</td>
+<td align="center">自动设定，灵活，省事</td>
+</tr>
+</tbody></table>
+<h1 id="3-802-1Q-VLAN帧格式"><a href="#3-802-1Q-VLAN帧格式" class="headerlink" title="3. 802.1Q VLAN帧格式"></a>3. 802.1Q VLAN帧格式</h1><h2 id="3-1-传统以太网帧格式"><a href="#3-1-传统以太网帧格式" class="headerlink" title="3.1. 传统以太网帧格式"></a>3.1. 传统以太网帧格式</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">目的MAC地址</th>
+<th align="center">源MAC地址</th>
+<th align="center">长度或类型</th>
+<th align="center">数据</th>
+<th align="center">FCS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">区段大小（bytes））</td>
+<td align="center">6</td>
+<td align="center">6</td>
+<td align="center">2</td>
+<td align="center">46~1500</td>
+<td align="center">4</td>
+</tr>
+</tbody></table>
+<h2 id="3-2-802-1Q帧格式"><a href="#3-2-802-1Q帧格式" class="headerlink" title="3.2. 802.1Q帧格式"></a>3.2. 802.1Q帧格式</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">目的MAC地址</th>
+<th align="center">源MAC地址</th>
+<th align="center">802.1Q Tag</th>
+<th align="center">长度或类型</th>
+<th align="center">数据</th>
+<th align="center">FCS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">区段大小（bytes））</td>
+<td align="center">6</td>
+<td align="center">6</td>
+<td align="center">4</td>
+<td align="center">2</td>
+<td align="center">46~1500</td>
+<td align="center">4</td>
+</tr>
+</tbody></table>
+<p>其中802.1Q Tag中又细分了TPID、PRI、CFI和VID4个字段，四个字段说明如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">字段</th>
+<th align="center">长度（bits）</th>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TPID</td>
+<td align="center">16</td>
+<td align="left">Tag Protocol ID，表示这个帧是否带标签</td>
+<td align="left">如果该值取<strong>0x8100</strong>，则表示这个帧是带Tag的帧，相反表示其是传统不带Tag标签的帧；<br>该帧与传统的以太网帧中该位置的Type/Length字段兼容</td>
+</tr>
+<tr>
+<td align="center">PRI</td>
+<td align="center">3</td>
+<td align="left">Priority，表示帧的优先级</td>
+<td align="left">取值范围为0~7，值越大优先级越高，在交换机阻塞时，优先发送优先级较高的帧</td>
+</tr>
+<tr>
+<td align="center">CFI</td>
+<td align="center">1</td>
+<td align="left">标准格式指示位</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="center">VID</td>
+<td align="center">12</td>
+<td align="left">VLAN Identifier，表示该帧所属的VLAN</td>
+<td align="left">VLAN的有效取值范围为1~4094（0和4095为保留取值）</td>
+</tr>
+</tbody></table>
+<h1 id="4-VLAN间的通信"><a href="#4-VLAN间的通信" class="headerlink" title="4. VLAN间的通信"></a>4. VLAN间的通信</h1><p>可使用路由器或三层交换机为VLAN设置路由，在三层交换机中划分VLAN，以支持VLAN间的相互通讯。</p>
+<h2 id="4-1-同VLAN内主机的跨域通讯"><a href="#4-1-同VLAN内主机的跨域通讯" class="headerlink" title="4.1. 同VLAN内主机的跨域通讯"></a>4.1. 同VLAN内主机的跨域通讯</h2><ol>
+<li>在交换机端口各拿num(VLAN)个端口级联，专门用于对应VLAN的主机跨交换机通讯</li>
+<li>让交换机间的互联链路汇集到一条链路上（<strong>汇聚链路</strong>、<strong>主干链路</strong>），该链路的端口被称为汇聚连接端口，该链路允许各VLAN的通讯流过</li>
+</ol>
+<h2 id="4-2-不同接口类型下的VLAN间通信流程"><a href="#4-2-不同接口类型下的VLAN间通信流程" class="headerlink" title="4.2. 不同接口类型下的VLAN间通信流程"></a>4.2. 不同接口类型下的VLAN间通信流程</h2><p>交换机上的端口分为三种一种是接入层端口<strong>直连</strong>设备的，叫做Access；一种是交换机和交换机之间的端口负责<strong>汇聚</strong>的叫做Trunk，还有一种是Access与Trunk混合的模式，叫做Hybrid。</p>
+<table>
+<thead>
+<tr>
+<th align="left">接口类型</th>
+<th align="left">不带Tag报文处理</th>
+<th align="left">带Tag报文处理</th>
+<th align="left">发送帧处理流程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Access接口</td>
+<td align="left">接收该报文，并打上缺省的VLAN ID</td>
+<td align="left">当VLAN ID与缺省VLAN ID相同（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">先剥离帧的PVID Tag，然后再发送</td>
+</tr>
+<tr>
+<td align="left">Trunk接口</td>
+<td align="left">打上缺省的VLAN ID，当缺省VLAN ID在允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">当VLAN ID在接口允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">若不是接口允许通过的VLAN ID时，则丢弃该报文。<br>当VLAN ID与缺省VLAN ID相同（合法）时，去掉Tag，发送该报文。<br>不合法时保持原有Tag，发送该报文</td>
+</tr>
+<tr>
+<td align="left">Hybrid接口</td>
+<td align="left">打上缺省的VLAN ID，当缺省VLAN ID在允许通过的VLAN ID列表里（合法）时，接收该报文。<br>不合法时丢弃该报文</td>
+<td align="left">当VLAN ID在接口允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">当VLAN ID是该接口允许通过的VLAN ID时，发送该报文。<br>可以通过命令设置发送时是否携带Tag</td>
+</tr>
+</tbody></table>
+<h2 id="4-3-Tag-Untag报文的处理原则"><a href="#4-3-Tag-Untag报文的处理原则" class="headerlink" title="4.3. Tag/Untag报文的处理原则"></a>4.3. Tag/Untag报文的处理原则</h2><p>背景：在交换机内部，为快速高效的处理，<strong>报文都是带tag转发的</strong>。（交换机上很多会配置多个VLAN，不同VLAN的流量仅能靠tag标签区分）</p>
+<h3 id="4-3-1-报文进入switch时"><a href="#4-3-1-报文进入switch时" class="headerlink" title="4.3.1. 报文进入switch时"></a>4.3.1. 报文进入switch时</h3><p>在接收报文时，交换机的主要职责是——根据tag/untag属性和端口属性决定<strong>是否允许</strong>该报文进入该端口：</p>
+<ul>
+<li>报文属性为untag：允许报文进入该端口，并打上PVID的VLAN tag（与端口属性无关）</li>
+<li>报文属性为tag，且此交换机端口为Access端口：若端口允许该报文tag标明的VLAN通过，接收并处理报文；若不允许则丢弃报文</li>
+<li>报文属性为tag，且此交换机端口为Trunk/Hybrid端口：若端口允许该报文tag标明的VLAN通过，接收并处理报文；若不允许则丢弃报文</li>
+</ul>
+<h3 id="4-3-2-报文出switch时"><a href="#4-3-2-报文出switch时" class="headerlink" title="4.3.2. 报文出switch时"></a>4.3.2. 报文出switch时</h3><p>在转发报文时，主要职责是——根据出端口属性决定是否携带tag转发报文：</p>
+<ul>
+<li>出端口为Access端口：不带tag转发（将标签剥离）</li>
+<li>出端口为Trunk端口：若报文所在的VLAN和PVID相同，则报文不带tag转发；否则带tag转发</li>
+<li>出端口为Hybrid端口：根据报文所在的VLAN配置是/否为tag，决定是/否带tag转发</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\23\EthernetAndMac\" rel="bookmark">以太帧与MAC</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\20\OSISevenLevelModel\" rel="bookmark">OSI七层网络模型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONIC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\05\TwoOrThreeLevelForwarding\" rel="bookmark">二三层转发</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\09\switch\" rel="bookmark">交换机基础简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/25/GitUsefullCmd/" rel="prev" title="Git实用命令记录">
+                  <i class="fa fa-chevron-left"></i> Git实用命令记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/07/syslogProtocolAndRsyslog/" rel="next" title="syslog协议与Rsyslog系统日志软件简介">
+                  syslog协议与Rsyslog系统日志软件简介 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/08/03/VLAN/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

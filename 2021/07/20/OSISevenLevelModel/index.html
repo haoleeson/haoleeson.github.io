@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. OSI网络模型优势 定义了模型每层执行的功能功能，促成行业网络组件标准化，让满足模型的不同类型网络硬件和软件能够彼此通信，也能让各厂商能够协作开发 将网络通信过程划分成更小、更简单的组件，这有助于组件的开发、设计和故障排除 避免让对一层的修改影响其他层，从而避免妨碍开发工作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSI七层网络模型">
+<meta property="og:url" content="https://eisenhao.cn/2021/07/20/OSISevenLevelModel/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. OSI网络模型优势 定义了模型每层执行的功能功能，促成行业网络组件标准化，让满足模型的不同类型网络硬件和软件能够彼此通信，也能让各厂商能够协作开发 将网络通信过程划分成更小、更简单的组件，这有助于组件的开发、设计和故障排除 避免让对一层的修改影响其他层，从而避免妨碍开发工作">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-20T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-07-20T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/07/20/OSISevenLevelModel/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/07/20/OSISevenLevelModel/","path":"2021/07/20/OSISevenLevelModel/","title":"OSI七层网络模型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OSI七层网络模型 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-OSI%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8A%BF"><span class="nav-text">1. OSI网络模型优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-OSI%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. OSI七层网络模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-text">2.1. 物理层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-text">2.2. 数据链路层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="nav-text">2.3. 网络层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="nav-text">2.4. 传输层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E4%BC%9A%E8%AF%9D%E5%B1%82"><span class="nav-text">2.5. 会话层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E8%A1%A8%E7%A4%BA%E5%B1%82"><span class="nav-text">2.6. 表示层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-%E5%BA%94%E7%94%A8%E5%B1%82"><span class="nav-text">2.7. 应用层</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-TCP-IP%E5%8D%8F%E8%AE%AE%E7%B0%87%E5%92%8COSI%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB"><span class="nav-text">3. TCP&#x2F;IP协议簇和OSI模型的对应关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-TCP-IP%E5%8D%8F%E8%AE%AE%E7%B0%87"><span class="nav-text">4. TCP&#x2F;IP协议簇</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/07/20/OSISevenLevelModel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OSI七层网络模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-07-20 22:30:45" itemprop="dateCreated datePublished" datetime="2021-07-20T22:30:45+08:00">2021-07-20</time>
+    </span>
+
+  
+    <span id="/2021/07/20/OSISevenLevelModel/" class="post-meta-item leancloud_visitors" data-flag-title="OSI七层网络模型" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-OSI网络模型优势"><a href="#1-OSI网络模型优势" class="headerlink" title="1. OSI网络模型优势"></a>1. OSI网络模型优势</h1><ul>
+<li>定义了模型每层执行的功能功能，促成行业网络组件标准化，让满足模型的不同类型网络硬件和软件能够彼此通信，也能让各厂商能够协作开发</li>
+<li>将网络通信过程划分成更小、更简单的组件，这有助于组件的开发、设计和故障排除</li>
+<li>避免让对一层的修改影响其他层，从而避免妨碍开发工作</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="2-OSI七层网络模型"><a href="#2-OSI七层网络模型" class="headerlink" title="2. OSI七层网络模型"></a>2. OSI七层网络模型</h1><table  border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>层级</th>
+        <th>OSI模型层级</th>
+        <th>功能</th>
+        <th>说明</th>
+    </tr>
+    <tr>
+        <td align="center">7</td>
+        <td align="center">应用层</td>
+        <td>针对特定应用的协议</td>
+        <td>电子邮件协议、远程登录协议、文件传输协议...</td>
+    <tr>
+        <td align="center">6</td>
+        <td align="center">表示层</td>
+        <td>设备固有数据格式与网络标准数据格式的转换</td>
+        <td>将接收到的不同表现形式的信息。<br>如文字流、图像、声音等，转换为网络标准格式</td>
+    </tr>
+    <tr>
+        <td align="center">5</td>
+        <td align="center">会话层</td>
+        <td>通信管理，负责建立和断开通信连接；<br>管理传输层以下的分层</td>
+        <td>何时建立、断开连接，以及连接保持多久</td>
+    </tr>
+    <tr>
+        <td align="center">4</td>
+        <td align="center">传输层</td>
+        <td>管理两个节点间数据传输。负责可靠传输<br>（确保数据被可靠地传送到目标地址）</td>
+        <td>确保无数据丢失</td>
+    </tr>
+    <tr>
+        <td align="center">3</td>
+        <td align="center">网络层</td>
+        <td>地址管理与路由选择</td>
+        <td>明确经过哪些路由传递数据到目标地址</td>
+    </tr>
+    <tr>
+        <td align="center">2</td>
+        <td align="center">数据链路层</td>
+        <td>互连设备之间传送和识别数据帧</td>
+        <td>比特流与数据帧之间的转换</td>
+    </tr>
+    <tr>
+        <td align="center">1</td>
+        <td align="center">物理层</td>
+        <td>以电压的高低、灯光的闪灭代表"0"、"1"。<br>界定连接器和网线的规格</td>
+        <td>电子信号与比特流之间的转换</td>
+    </tr>
+</table>
+
+<h2 id="2-1-物理层"><a href="#2-1-物理层" class="headerlink" title="2.1. 物理层"></a>2.1. 物理层</h2><p>负责发送和接收”0”、”1”比特功能。物理层直接与各种通信介质交流。不同类型的介质以不同方式表示比特值，如光的闪灭，电压高低或状态的切换一一从高电平变成低电平以及从低电平变成高电平。对于每种类型的介质，都需要特定的协议，这些协议描述了正确的比特模式、如何将数据编码成介质信号以及物理介质连接头的各种特征</p>
+<h2 id="2-2-数据链路层"><a href="#2-2-数据链路层" class="headerlink" title="2.2. 数据链路层"></a>2.2. 数据链路层</h2><p>负责数据的物理传输，并处理错误通知、网络拓扑和流量控制功能。这意味着数据链路层需确保报文被传输到LAN中的正确设备（使用硬件地址），也能把来自网络层的报文转换为比特，以供物理层传输</p>
+<p>数据链路层使用硬件地址，以便主机能够给本地网络中的其他主机发送分组以及穿越路由器发送分组。每当在路由器之间传输分组时，分组都将被封装成帧，而接收路由器会将这些信息剥离，只保留完整的原始分组。在每一跳都将重复这种将分组封装成帧的过程，直到分组最终到达目的接收机。注意，在整个传输过程中，分组本身从未被修改过，而只是被必要的控制信息封装，以便能够通过不同的介质进行传输</p>
+<p>IEEE 以太网数据链路层包含两个子层，如下：</p>
+<ul>
+<li>**介质访问控制子层 (MAC，802.3)**：它定义了如何通过介质传输分组。它采用”先到先服务”的访问方式，带宽由大家共享，因此称为竟用介质访问（contention media access）。 这个子层定义了物理地址和逻辑拓扑。其中，逻辑拓扑指信号在物理拓扑中的传输路径。在这个子层，还可使用线路控制、错误通知(不纠错)、顺序传递帧以及可选的流量控制</li>
+<li>**逻辑链路控制子层 (LLC，802.2)**：负责识别网络层协议并对其进行封装。 LLC报头说明数据链路层收到帧后如何对分组进行处理。其工作原理类似于：收到帧后，主机查看LLC报头以确定要将分组交给谁一一如网络层的IP协议 。LLC还可提供流量控制以及控制比特排序</li>
+</ul>
+<h2 id="2-3-网络层"><a href="#2-3-网络层" class="headerlink" title="2.3. 网络层"></a>2.3. 网络层</h2><p>负责将分组数据从源端传输到目的端。功能：为网络设备提供逻辑地址；进行路由选择和分组转发，即管理设备编址、跟踪设备在网络中的位置并确定最佳的数据传输路径</p>
+<p><strong>流程：</strong></p>
+<ol>
+<li>在其接口上收到分组后，路由器首先检查分组的目标F地址 </li>
+<li>若分组目的地是当前路由，则将分组封装成帧后在本地网络中传输</li>
+<li>若分组目的地不是当前路由器，路由器将在路由选择表中查找目标网络地址对应端口</li>
+<li>若找不到目标网络对应的记录，则丢弃分组</li>
+<li>若能找到目标网络对应的记录，则将分组发送到该记录中的端口</li>
+</ol>
+<h2 id="2-4-传输层"><a href="#2-4-传输层" class="headerlink" title="2.4. 传输层"></a>2.4. 传输层</h2><p>传输层将数据进行分段并重组为数据流。位于传输层的服务将来自上层应用的数据进行分段和重 组，并将它们合并到同一个数据流中。它们提供了端到端的数据传输服务，并可在互联网络上的发送 主机和目标主机之间建立逻辑连接</p>
+<p>传输层负责提供如下机制:对上层应用程序进行多路复用、建立会话以及拆除虚电路。它还提供 透明的数据传输，从而对高层隐藏随网络而异的信息</p>
+<p>在传输层，可使用术语可靠的联网，这意味着将使用确认、排序和流量控制</p>
+<h2 id="2-5-会话层"><a href="#2-5-会话层" class="headerlink" title="2.5. 会话层"></a>2.5. 会话层</h2><p>会话层负责建立、维护、管理应用程序之间的会话。它协调和组织系统之间的通信，为此提供了 3种不同的模式:单工、半双工和全双工。总之，会话层的基本功能是将不同应用程序的数据分离</p>
+<h2 id="2-6-表示层"><a href="#2-6-表示层" class="headerlink" title="2.6. 表示层"></a>2.6. 表示层</h2><p>它向应用层提供数据，并负责数据转换和代码格式化</p>
+<p>从本质上说，该层是一个转换器，提供编码和转换功能。一种成功的数据传输方法是，将数据转 换为标准格式再进行传输。计算机被配置成能够接受这种通用格式的数据，然后将其转换为本机格式 以便读取(例如，从 EDCDIC 转换为 ASCII )。通过提供转换服务，表示层能够确保从一个系统的应 用层传输而来的数据可被另一个系统的应用层读取</p>
+<p>OSI 制定了相关的协议标准，这些标准定义了如何格式化标准数据。诸如数据压缩、解压缩、加密和解密等任务都与表示层有关。有些表示层标准还涉及多媒体操作</p>
+<h2 id="2-7-应用层"><a href="#2-7-应用层" class="headerlink" title="2.7. 应用层"></a>2.7. 应用层</h2><p>为用于通信的应用程序和用于消息传输的底层网络提供接口，组成一个信息报文，实际上，应用层让应用程序能够将信息沿协议横向下传输，从而充当了应用程序和下一层之间的接口</p>
+<h1 id="3-TCP-IP协议簇和OSI模型的对应关系"><a href="#3-TCP-IP协议簇和OSI模型的对应关系" class="headerlink" title="3. TCP/IP协议簇和OSI模型的对应关系"></a>3. TCP/IP协议簇和OSI模型的对应关系</h1><table width="300" border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>DoD模型</th>
+        <th>OSI模型</th>
+    </tr>
+    <tr>
+        <td  align="center" rowspan="3">进程/应用层</td>
+        <td align="center">应用层</td>
+    </tr>
+    <tr>
+        <td align="center">表示层</td>
+    </tr>
+    <tr>
+        <td align="center">会话层</td>
+    </tr>
+    <tr>
+        <td align="center">主机到主机层</td>
+        <td align="center">传输层</td>
+    </tr>
+    <tr>
+        <td align="center">因特尔层</td>
+        <td align="center">网络层</td>
+    </tr>
+    <tr>
+        <td  align="center" rowspan="2">网络接入层</td>
+        <td align="center">数据链路层</td>
+    </tr>
+    <tr>
+        <td align="center">物理层</td>
+    </tr>
+</table>
+
+<h1 id="4-TCP-IP协议簇"><a href="#4-TCP-IP协议簇" class="headerlink" title="4. TCP/IP协议簇"></a>4. TCP/IP协议簇</h1><table  border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>DoD模型</th>
+        <th>协议</th>
+        <th>说明</th>
+    </tr>
+    <tr>
+        <td rowspan="10">进程/应用层</td>
+        <td align="center">Telnet</td>
+        <td>远程终端协议，远程登录并控制服务器的协议，SSH</td>
+    </tr>
+    <tr>
+        <td align="center">DNS</td>
+        <td>将域名转换为IP地址的协议，基于TCP/UDP，53端口</td>
+    </tr>
+    <tr>
+        <td align="center">HTTP</td>
+        <td>超文本传输协议，是一个简单的请求-响应协议，基于TCP/TLS</td>
+    </tr>
+    <tr>
+        <td align="center">FTP</td>
+        <td>20/21 文件传输协议，20用于传输数据，21用于传输控制信息</td>
+    </tr>
+    <tr>
+        <td align="center">LPD</td>
+        <td>等待接受客户使用行式打印机远程协议传来的打印工作的协议</td>
+    </tr>
+    <tr>
+        <td align="center">SNMP</td>
+        <td>简单网络管理协议，用于管理服务器、工作站、路由器、交换机和HUBS等，通常使用UDP</td>
+    </tr>
+    <tr>
+        <td align="center">TFTP</td>
+        <td>在客户机与服务器之间进行简单文件传输的协议，基于UDP实现，端口69</td>
+    </tr>
+    <tr>
+        <td align="center">DHCP</td>
+        <td>动态主机设置协议，基于UDP</td>
+    </tr>
+    <tr>
+        <td align="center">SMTP</td>
+        <td>建模在FTP文件传输服务上的一种邮件服务，主要用于传输系统之间的邮件信息并提供来信有关的通知</td>
+    </tr>
+    <tr>
+        <td align="center">NFS</td>
+        <td>UNIX表示层协议(presentation layer protocol)，能使使用者访问网络上别处的文件就像在使用自己的计算机一样</td>
+    </tr>
+    <tr>
+        <td rowspan="2">主机到主机层</td>
+        <td align="center">TCP</td>
+        <td>面向连接的、可靠的、基于字节流的传输层通信协议</td>
+    </tr>
+    <tr>
+        <td align="center">UDP</td>
+        <td>用户数据报协议，提供了一种无需建立连接就可以发送封装的IP数据包的方法</td>
+    </tr>
+    <tr>
+        <td rowspan="4">因特网层</td>
+        <td align="center">ICMP</td>
+        <td>互联网控制消息协议，ICMP 依靠IP来完成它的任务，它是IP的主要部分。<br>其通常不由网络程序直接使用，除了ping和traceroute这两个特别的例子</td>
+    </tr>
+    <tr>
+        <td align="center">ARP</td>
+        <td>地址解析协议， 用于实现从 IP 地址到 MAC 地址的映射，即询问目标IP对应的MAC地址</td>
+    </tr>
+    <tr>
+        <td align="center">RARP</td>
+        <td>反地址解析协议</td>
+    </tr>
+    <tr>
+        <td align="center">IP</td>
+        <td>提供了不可靠，无连接的数据报传送服务。基本功能：寻址、分片。</td>
+    </tr>
+    <tr>
+        <td rowspan="4">网络接入层</td>
+        <td align="center">以太网</td>
+        <td>属网络低层协议，通常在OSI模型的物理层和数据链路层操作。完成网络传输控制任务</td>
+    </tr>
+    <tr>
+        <td align="center">快速以太网</td>
+        <td>一种局域网（LAN）传输标准，它提供每秒100兆的数据传输率（100BASE-T）</td>
+    </tr>
+    <tr>
+        <td align="center">令牌环</td>
+        <td>令牌环协议是令牌环网（一种以环形网络拓扑结构为基础发展起来的局域网）的协议，谁有令牌谁就有传输权限</td>
+    </tr>
+    <tr>
+        <td align="center">FDDI</td>
+        <td>光纤数据在200公里内局域网内传输的标准，基于令牌环协议。支持长距离传输，支持多用户。<br>FDDI用于环型网数据传输速率可达100Mbit/s</td>
+    </tr>
+</table>
+
+
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\23\EthernetAndMac\" rel="bookmark">以太帧与MAC</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONIC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\05\TwoOrThreeLevelForwarding\" rel="bookmark">二三层转发</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\03\VLAN\" rel="bookmark">VLAN</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\09\switch\" rel="bookmark">交换机基础简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/14/CodeSpecificationNote/" rel="prev" title="代码规范笔记">
+                  <i class="fa fa-chevron-left"></i> 代码规范笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/23/EthernetAndMac/" rel="next" title="以太帧与MAC">
+                  以太帧与MAC <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/07/20/OSISevenLevelModel/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

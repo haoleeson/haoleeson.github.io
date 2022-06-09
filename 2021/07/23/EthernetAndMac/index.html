@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 以太网数据帧结构1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="以太帧与MAC">
+<meta property="og:url" content="https://eisenhao.cn/2021/07/23/EthernetAndMac/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 以太网数据帧结构1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-23T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-07-23T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/07/23/EthernetAndMac/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/07/23/EthernetAndMac/","path":"2021/07/23/EthernetAndMac/","title":"以太帧与MAC"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>以太帧与MAC | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%BB%A5%E5%A4%AA%E7%BD%91%E6%95%B0%E6%8D%AE%E5%B8%A7%E7%BB%93%E6%9E%84"><span class="nav-text">1. 以太网数据帧结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-802-3-Type-%E4%BB%A5%E5%A4%AA%E5%B8%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%88%E5%8F%88%E7%A7%B0-Ethernet-II-%E5%B0%81%E8%A3%85%EF%BC%8C%E7%9B%AE%E5%89%8D%E4%BD%BF%E7%94%A8%E6%9C%80%E5%B9%BF%E6%B3%9B%EF%BC%89%EF%BC%9A"><span class="nav-text">1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-802-3-802-2-LLC%E5%B0%81%E8%A3%85"><span class="nav-text">1.2. 802.3&#x2F;802.2 LLC封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-802-3-802-2-SNAP%E5%B0%81%E8%A3%85"><span class="nav-text">1.3. 802.3&#x2F;802.2 SNAP封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-802-3-802-2-SNAP-RFC-1042%E5%B0%81%E8%A3%85"><span class="nav-text">1.4. 802.3&#x2F;802.2 SNAP RFC 1042封装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MAC%E5%9C%B0%E5%9D%80%E7%AE%80%E4%BB%8B"><span class="nav-text">2. MAC地址简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-MAC%E5%9C%B0%E5%9D%80%E5%BA%94%E7%94%A8"><span class="nav-text">2.1. MAC地址应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-text">3. 参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/07/23/EthernetAndMac/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          以太帧与MAC
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-07-23 22:30:45" itemprop="dateCreated datePublished" datetime="2021-07-23T22:30:45+08:00">2021-07-23</time>
+    </span>
+
+  
+    <span id="/2021/07/23/EthernetAndMac/" class="post-meta-item leancloud_visitors" data-flag-title="以太帧与MAC" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-以太网数据帧结构"><a href="#1-以太网数据帧结构" class="headerlink" title="1. 以太网数据帧结构"></a>1. 以太网数据帧结构</h1><h2 id="1-1-802-3-Type-以太帧数据结构（又称-Ethernet-II-封装，目前使用最广泛）："><a href="#1-1-802-3-Type-以太帧数据结构（又称-Ethernet-II-封装，目前使用最广泛）：" class="headerlink" title="1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）："></a>1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）：</h2><a id="more"></a>
+
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>字段名</th>
+        <th>字段长度(Bytes)</th>
+        <th>说明</th>
+    </tr>
+    <tr>
+        <td align="center">Preamble</td>
+        <td align="center">7</td>
+        <td>与SFD共同构成前导码，内容为"101010..."1和0交替，通知接收方有数据帧到来；<br>同时同步时钟</td>
+    <tr>
+        <td align="center">SFD</td>
+        <td align="center">1</td>
+        <td>与Preamble共同构成前导码，内容为0xAB，标识下一字段为目的MAC；<br>物理层添加，非帧的一部分</td>
+    </tr>
+    <tr>
+        <td align="center">DA</td>
+        <td align="center">6</td>
+        <td>目的MAC地址</td>
+    </tr>
+    <tr>
+        <td align="center">SA</td>
+        <td align="center">6</td>
+        <td>源MAC地址</td>
+    </tr>
+    <tr>
+        <td align="center">Type/Length</td>
+        <td align="center">2</td>
+        <td>若取值为0x0000 ~ 0x05DC，表示字段长度（0x05DC = 1500）；<br>若取值为0x0600 ~ 0xFFFF，表示该字段为Type</td>
+    </tr>
+    <tr>
+        <td align="center">Payload</td>
+        <td align="center">46 ~ 1500</td>
+        <td>有效负荷（帧携带数据）</td>
+    </tr>
+    <tr>
+        <td align="center">FCR</td>
+        <td align="center">4</td>
+        <td>校验和</td>
+    </tr>
+</table>
+
+<p>除上述Ethernet II封装格式外，以太网还有如下几种封装格式：</p>
+<h2 id="1-2-802-3-802-2-LLC封装"><a href="#1-2-802-3-802-2-LLC封装" class="headerlink" title="1.2. 802.3/802.2 LLC封装"></a>1.2. 802.3/802.2 LLC封装</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>字段名</th>
+        <th>DA</th>
+        <th>SA</th>
+        <th>Length</th>
+        <th>DSAP</th>
+        <th>SSAP</th>
+        <th>Ctrl</th>
+        <th>Data</th>
+    </tr>
+    <tr>
+        <td>字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">2</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">46 ~ 1500</td>
+    </tr>
+</table>
+
+<p>DSAP、SSAP用来标志上层协议，eg.NetBios时均为0xF0, IPX时均为0xE0</p>
+<h2 id="1-3-802-3-802-2-SNAP封装"><a href="#1-3-802-3-802-2-SNAP封装" class="headerlink" title="1.3. 802.3/802.2 SNAP封装"></a>1.3. 802.3/802.2 SNAP封装</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>字段名/固定内容</th>
+        <th>DA</th>
+        <th>SA</th>
+        <th>Length</th>
+        <th>0xAA</th>
+        <th>0xAA</th>
+        <th>0x03</th>
+        <th>Org Code</th>
+        <th>PID</th>
+        <th>Data</th>
+    </tr>
+    <tr>
+        <td>字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">2</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">3</td>
+        <td align="center">2</td>
+        <td align="center">46 ~ 1500</td>
+    </tr>
+</table>
+
+<p>Org Code代表机构编码；PID为协议标志，很少使用</p>
+<h2 id="1-4-802-3-802-2-SNAP-RFC-1042封装"><a href="#1-4-802-3-802-2-SNAP-RFC-1042封装" class="headerlink" title="1.4. 802.3/802.2 SNAP RFC 1042封装"></a>1.4. 802.3/802.2 SNAP RFC 1042封装</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>字段名/固定内容</th>
+        <th>DA</th>
+        <th>SA</th>
+        <th>Length</th>
+        <th>0xAA</th>
+        <th>0xAA</th>
+        <th>0x03</th>
+        <th>00-00-00</th>
+        <th>Type</th>
+        <th>Data</th>
+    </tr>
+    <tr>
+        <td>字段长度(Bytes)</td>
+        <td align="center">6</td>
+        <td align="center">6</td>
+        <td align="center">2</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">1</td>
+        <td align="center">3</td>
+        <td align="center">2</td>
+        <td align="center">46 ~ 1500</td>
+    </tr>
+</table>
+
+<p>一般说SNAP封装都指SNAP RFC1042封装</p>
+<p>IP协议支持两种封装（<strong>Ethernet II</strong> 和 <strong>SNAP RFC1042</strong>封装，Type均为<strong>0x0800</strong>）。</p>
+<h1 id="2-MAC地址简介"><a href="#2-MAC地址简介" class="headerlink" title="2. MAC地址简介"></a>2. MAC地址简介</h1><p>MAC（Media Access Control）地址，是OSI模型第二层（数据链路层）数据包转发的依据，一个MAC地址有6字节，足以标识281万亿台设备，一般联网设备在出厂时会打上具有唯一标识的物理MAC地址。</p>
+<h2 id="2-1-MAC地址应用"><a href="#2-1-MAC地址应用" class="headerlink" title="2.1. MAC地址应用"></a>2.1. MAC地址应用</h2><p>上文介绍了传输中的以太网数据帧的各类封装结构，它们都包含一个目的MAC地址和一个源MAC地址，它的作用是标志帧的源节点和目的节点的<strong>物理地址</strong>。一个MAC地址有48bit（<strong>6个字节</strong>），从应用上可以分为<strong>单播地址</strong>、<strong>组播地址</strong>、<strong>广播地址</strong>：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>地址类型</th>
+        <th>格式</th>
+        <th>示例</th>
+        <th>说明</th>
+    </tr>
+    <tr>
+        <td>单播地址</td>
+        <td>第1字节的最低位为0</td>
+        <td>00-AA-AA-AA-AA-AA</td>
+        <td>用于标志唯一的设备</td>
+    </tr>
+    <tr>
+        <td>组播地址</td>
+        <td>第1字节的最低位为1</td>
+        <td>01-BB-BB-BB-BB-BB</td>
+        <td>用于标志同属一组的多个设备</td>
+    </tr>
+    <tr>
+        <td>广播地址</td>
+        <td>所有bit全为1</td>
+        <td>FF-FF-FF-FF-FF-FF</td>
+        <td>用于标志同一网段的所有设备</td>
+    </tr>
+</table>
+
+
+<h1 id="3-参考文献"><a href="#3-参考文献" class="headerlink" title="3. 参考文献"></a>3. 参考文献</h1><ul>
+<li>《H3C网络之路第六期——交换专题》</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\20\OSISevenLevelModel\" rel="bookmark">OSI七层网络模型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONIC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\05\TwoOrThreeLevelForwarding\" rel="bookmark">二三层转发</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\03\VLAN\" rel="bookmark">VLAN</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\09\switch\" rel="bookmark">交换机基础简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/20/OSISevenLevelModel/" rel="prev" title="OSI七层网络模型">
+                  <i class="fa fa-chevron-left"></i> OSI七层网络模型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/25/GitUsefullCmd/" rel="next" title="Git实用命令记录">
+                  Git实用命令记录 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/07/23/EthernetAndMac/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

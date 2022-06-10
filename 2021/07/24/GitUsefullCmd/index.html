@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="记录Git生僻进阶用法，以备不时之需">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git 实用命令记录">
+<meta property="og:url" content="https://eisenhao.cn/2021/07/24/GitUsefullCmd/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="记录Git生僻进阶用法，以备不时之需">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/gitRevert.jpg">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/gitUsuallyUseCmd.png">
+<meta property="article:published_time" content="2021-07-24T09:54:44.000Z">
+<meta property="article:modified_time" content="2021-07-24T13:44:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/gitRevert.jpg">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/07/24/GitUsefullCmd/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/07/24/GitUsefullCmd/","path":"2021/07/24/GitUsefullCmd/","title":"Git 实用命令记录"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git 实用命令记录 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Git-%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95"><span class="nav-text">1. Git 实用命令记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Git-%E5%8F%96%E5%87%BA%E6%9A%82%E5%AD%98%E5%8C%BA%E6%96%87%E4%BB%B6%EF%BC%88%E4%BF%9D%E7%95%99%E6%96%87%E4%BB%B6%E6%9B%B4%E6%94%B9%EF%BC%89"><span class="nav-text">1.1. Git 取出暂存区文件（保留文件更改）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Git-%E5%8F%96%E6%B6%88%E5%AF%B9%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E7%9A%84%E8%B7%9F%E8%B8%AA"><span class="nav-text">1.2. Git 取消对某个文件的跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E4%B8%A2%E5%BC%83%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9%EF%BC%88%E6%81%A2%E5%A4%8D%E6%96%87%E4%BB%B6%EF%BC%89"><span class="nav-text">1.3. 丢弃文件修改（恢复文件）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E5%85%8B%E9%9A%86%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="nav-text">1.4. 克隆子模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E7%BB%9F%E8%AE%A1%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E8%A1%8C%E6%95%B0"><span class="nav-text">1.5. 统计代码提交行数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-%E6%8F%90%E5%8F%96%E5%BD%93%E5%89%8D-commit-%E5%88%B0%E6%8C%87%E5%AE%9A-commit-%E4%B9%8B%E5%89%8D%E7%9A%84%E6%89%80%E6%9C%89%E6%8F%90%E4%BA%A4"><span class="nav-text">1.6. 提取当前 commit 到指定 commit 之前的所有提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-%E8%A1%A5%E4%B8%81%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%B6%E4%BD%9C%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8F%96%E6%B6%88"><span class="nav-text">1.7. 补丁文件的制作、安装与取消</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-cherry-pick"><span class="nav-text">1.8. cherry pick</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-%E5%88%86%E6%94%AF%E6%9B%B4%E5%90%8D"><span class="nav-text">1.9. 分支更名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-10-%E5%BF%BD%E7%95%A5%E9%83%A8%E5%88%86%E6%9C%AC%E5%9C%B0%E4%BF%AE%E6%94%B9"><span class="nav-text">1.10. 忽略部分本地修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-11-%E5%AF%B9%E6%AF%94%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6%E5%9C%A8%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF%E4%B8%8E%E8%BF%9C%E7%AB%AF%E5%88%86%E6%94%AF%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-text">1.11. 对比指定文件在本地分支与远端分支的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-12-%E5%AF%B9%E6%AF%94%E4%BF%A9%E5%88%86%E6%94%AF%E6%96%87%E4%BB%B6%E5%B7%AE%E5%BC%82"><span class="nav-text">1.12. 对比俩分支文件差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-13-%E5%AF%B9%E6%AF%94%E4%B8%A4%E5%88%86%E6%94%AF%E7%9A%84%E2%80%9Dcommit-%E5%B7%AE%E5%BC%82%E2%80%9D"><span class="nav-text">1.13. 对比两分支的”commit 差异”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-14-%E5%9C%A8%E8%BF%9C%E7%AB%AF%E4%BB%93%E5%BA%93%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%88%86%E6%94%AF"><span class="nav-text">1.14. 在远端仓库新建一个分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-15-%E5%88%A0%E9%99%A4%E8%BF%9C%E7%AB%AF%E5%88%86%E6%94%AF"><span class="nav-text">1.15. 删除远端分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-16-%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF%E4%B8%8E%E8%BF%9C%E7%AB%AF%E5%88%86%E6%94%AF%E5%85%B3%E8%81%94"><span class="nav-text">1.16. 本地分支与远端分支关联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-17-Cherry-pick"><span class="nav-text">1.17. Cherry pick</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-18-git-%E5%88%86%E6%94%AF%E6%94%B9%E5%90%8D"><span class="nav-text">1.18. git 分支改名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-19-%E6%92%A4%E9%94%80%E6%9A%82%E5%AD%98%E5%8C%BA%E6%96%87%E4%BB%B6%EF%BC%88git-add-%E7%9A%84%E9%80%86%E5%90%91%EF%BC%8C%E4%BF%9D%E7%95%99%E4%BF%AE%E6%94%B9%EF%BC%89"><span class="nav-text">1.19. 撤销暂存区文件（git add 的逆向，保留修改）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Git-%E5%91%BD%E4%BB%A4%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95"><span class="nav-text">2. Git 命令进阶用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-reset-%E5%9B%9E%E6%BB%9A"><span class="nav-text">2.1. reset 回滚</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-amend-%E4%BF%AE%E5%A4%8D%E4%B8%8A%E6%AC%A1%E6%8F%90%E4%BA%A4%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-text">2.2. amend 修复上次提交的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%81%A2%E5%A4%8D%E5%8D%95%E4%B8%AA%E6%96%87%E4%BB%B6%E5%88%B0%E6%9C%80%E6%96%B0%E6%8F%90%E4%BA%A4"><span class="nav-text">2.3. 恢复单个文件到最新提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-rebase-%E5%8F%98%E5%9F%BA%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-text">2.4. rebase 变基的操作步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-rebase-%E4%BF%AE%E6%94%B9%E5%AE%8C%E5%96%84%E4%B9%8B%E5%89%8D%E6%9F%90%E6%AC%A1%E6%8F%90%E4%BA%A4%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-text">2.5. rebase 修改完善之前某次提交的操作步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-rebase-%E6%92%A4%E9%94%80%E8%BF%87%E5%BE%80%E6%8F%90%E4%BA%A4%E5%91%BD%E4%BB%A4%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-text">2.6. rebase 撤销过往提交命令的两种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-%E6%A0%B9%E6%8D%AE%E6%93%8D%E4%BD%9C%E5%8E%86%E5%8F%B2%E5%9B%9E%E9%80%80"><span class="nav-text">2.7. 根据操作历史回退</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E5%8D%9A%E6%96%87"><span class="nav-text">参考博文</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kisence.com/" title="https:&#x2F;&#x2F;www.kisence.com&#x2F;" rel="noopener" target="_blank">kisence</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.wanghao.work/" title="https:&#x2F;&#x2F;notes.wanghao.work&#x2F;" rel="noopener" target="_blank">Doublemine</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/07/24/GitUsefullCmd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git 实用命令记录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-07-24 17:54:44" itemprop="dateCreated datePublished" datetime="2021-07-24T17:54:44+08:00">2021-07-24</time>
+    </span>
+
+  
+    <span id="/2021/07/24/GitUsefullCmd/" class="post-meta-item leancloud_visitors" data-flag-title="Git 实用命令记录" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/gitRevert.jpg" style="zoom:45%;"  />
+
+<p>记录Git生僻进阶用法，以备不时之需</p>
+<a id="more"></a>
+
+<p>常用基础命令速查：<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/gitUsuallyUseCmd.png" style="zoom:35%;" /></p>
+<h1 id="1-Git-实用命令记录"><a href="#1-Git-实用命令记录" class="headerlink" title="1. Git 实用命令记录"></a>1. Git 实用命令记录</h1><h2 id="1-1-Git-取出暂存区文件（保留文件更改）"><a href="#1-1-Git-取出暂存区文件（保留文件更改）" class="headerlink" title="1.1. Git 取出暂存区文件（保留文件更改）"></a>1.1. Git 取出暂存区文件（保留文件更改）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 将缓存区中文件取出到工作区，保留文件变更</span></span><br><span class="line">git checkout -- file_path</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 不保留文件变更</span></span><br><span class="line">git reset HEAD file_path</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-Git-取消对某个文件的跟踪"><a href="#1-2-Git-取消对某个文件的跟踪" class="headerlink" title="1.2. Git 取消对某个文件的跟踪"></a>1.2. Git 取消对某个文件的跟踪</h2><p>PS: 解决 .gitignore 文件对已跟踪的文件失效问题</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 列出需要取消跟踪的文件（未执行，检查）</span></span><br><span class="line">git rm -r -n --cached &lt;文件或目录&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 取消（不想跟踪文件）的缓存</span></span><br><span class="line">git rm -r --cached &lt;文件或目录&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改根目录 .gitignore 文件，添加</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-丢弃文件修改（恢复文件）"><a href="#1-3-丢弃文件修改（恢复文件）" class="headerlink" title="1.3. 丢弃文件修改（恢复文件）"></a>1.3. 丢弃文件修改（恢复文件）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD file_path</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-克隆子模块"><a href="#1-4-克隆子模块" class="headerlink" title="1.4. 克隆子模块"></a>1.4. 克隆子模块</h2><p>默认不会在 clone 时下载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-5-统计代码提交行数"><a href="#1-5-统计代码提交行数" class="headerlink" title="1.5. 统计代码提交行数"></a>1.5. 统计代码提交行数</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --author=&quot;user&quot; --since==2000-01.01 --pretty=tformat: --numstat | gawk &#x27;&#123; add += $1 ; subs += $2 ; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s removed lines : %s total lines: %s\n&quot;,add,subs,loc &#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-6-提取当前-commit-到指定-commit-之前的所有提交"><a href="#1-6-提取当前-commit-到指定-commit-之前的所有提交" class="headerlink" title="1.6. 提取当前 commit 到指定 commit 之前的所有提交"></a>1.6. 提取当前 commit 到指定 commit 之前的所有提交</h2><blockquote>
+<p>每此 commit 生成一个 *.patch 补丁文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git format-patch 上一提交 ID</span><br><span class="line">git format-patch b6c3a8bf</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-7-补丁文件的制作、安装与取消"><a href="#1-7-补丁文件的制作、安装与取消" class="headerlink" title="1.7. 补丁文件的制作、安装与取消"></a>1.7. 补丁文件的制作、安装与取消</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 生成差异文件（补丁）</span></span><br><span class="line">git diff -- filepath &gt; differences.patch</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 打补丁</span></span><br><span class="line">git apply differences.patch</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 取消补丁</span></span><br><span class="line">git reset -hard HEAD</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-8-cherry-pick"><a href="#1-8-cherry-pick" class="headerlink" title="1.8. cherry pick"></a>1.8. cherry pick</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -x 参数：在提交信息的末尾追加一行 (cherry picked from commit ...)</span></span><br><span class="line">git cherry-pick -e -x &lt;commit_id&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-9-分支更名"><a href="#1-9-分支更名" class="headerlink" title="1.9. 分支更名"></a>1.9. 分支更名</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -m 原名 新名</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-10-忽略部分本地修改"><a href="#1-10-忽略部分本地修改" class="headerlink" title="1.10. 忽略部分本地修改"></a>1.10. 忽略部分本地修改</h2><p>eg. 个人定制 IDE 或者 Build 工具的配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Git 忽略本地对这个文件的所有修改</span></span><br><span class="line">git update-index --skip-worktree /path/to/file</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 恢复</span></span><br><span class="line">git update-index --no-skip-worktree /path/to/file</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看被忽略的文件项目</span></span><br><span class="line">git ls-files -v | grep -E -i /path/to/file</span><br><span class="line">git ls-files -v | Select-String -Pattern /path/to/file</span><br></pre></td></tr></table></figure>
+
+<p>备注：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mengqi92.github.io/2020/07/17/hide-files-from-git/">Git 四种忽略本地文件修改的方法对比</a>：<ul>
+<li><a target="_blank" rel="noopener" href="https://git-scm.com/docs/gitignore">gitignore 文件</a></li>
+<li>.git/info/exclude 文件</li>
+<li><a target="_blank" rel="noopener" href="https://www.git-scm.com/docs/git-update-index">git update-index –assume-unchanged</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.git-scm.com/docs/git-update-index">git update-index –skip-worktree</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="1-11-对比指定文件在本地分支与远端分支的差异"><a href="#1-11-对比指定文件在本地分支与远端分支的差异" class="headerlink" title="1.11. 对比指定文件在本地分支与远端分支的差异"></a>1.11. 对比指定文件在本地分支与远端分支的差异</h2><p><b><font color="#7E3D76" style="">1. 对比指定【单个文件】在【本地分支与远端】分支的差异</font></b></p>
+<p>可以识别到暂存区中未提交的修改（其他跨分支的比较均无法识别暂存区中未提交的修改）。</p>
+<p>前置条件：本地当前分支在远端有相对应分支。</p>
+<p>示例代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --stat -- src/file1.cpp src/file1.cpp</span><br></pre></td></tr></table></figure>
+
+<p>–stat 参数作用：显示简要信息（精度到文件），默认 diff 会显示精度到行的差异信息</p>
+<p>只需填写需对比的文件路径分别在本地和远端分支各自的地址即可，第一个路径为本地文件地址，第二个路径为远端仓库文件地址（此示例两文件路径相同）</p>
+<p><b><font color="#7E3D76" style="">2. 对比指定的多个文件在两分支间的差异</font></b></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --stat master dev  -- file1.md src/file2.java</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-12-对比俩分支文件差异"><a href="#1-12-对比俩分支文件差异" class="headerlink" title="1.12. 对比俩分支文件差异"></a>1.12. 对比俩分支文件差异</h2><p><b><font color="#7E3D76" style="">1. 对比【本地两分支】差异</font></b></p>
+<p>比较本地 master 和 dev 分支所有文件的差异</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --stat master dev</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="#7E3D76" style="">2. 对比【本地两分支】差异（限定文件）</font></b></p>
+<p>只比较关注的指定文件，在本地 master 和 dev 分支的差异</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --stat master dev -- filepath1 filepath2 filepath3</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="#7E3D76" style="">3. 对比【本地分支与远端分支】差异</font></b></p>
+<p>比较本地 dev 分支和远端 master 分支所有文件的差异</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --stat dev origin/master</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="#7E3D76" style="">4. 对比【本地分支与远端分支】差异（限定文件）</font></b></p>
+<p>比较指定文件，在本地 dev 分支和远端 master 分支的差异</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --stat dev origin/master -- filepath1 filepath2 filepath3</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-13-对比两分支的”commit-差异”"><a href="#1-13-对比两分支的”commit-差异”" class="headerlink" title="1.13. 对比两分支的”commit 差异”"></a>1.13. 对比两分支的”commit 差异”</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log --left-right --stat master...dev</span><br><span class="line">git log --left-right --oneline master...dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-14-在远端仓库新建一个分支"><a href="#1-14-在远端仓库新建一个分支" class="headerlink" title="1.14. 在远端仓库新建一个分支"></a>1.14. 在远端仓库新建一个分支</h2><p>实现方式：本地建分支后同步到远端仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b newBranch origin/master</span><br><span class="line">git push --set-upstream origin newBranch</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-15-删除远端分支"><a href="#1-15-删除远端分支" class="headerlink" title="1.15. 删除远端分支"></a>1.15. 删除远端分支</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -r -d origin/newBranch</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-16-本地分支与远端分支关联"><a href="#1-16-本地分支与远端分支关联" class="headerlink" title="1.16. 本地分支与远端分支关联"></a>1.16. 本地分支与远端分支关联</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout --track origin/branchName</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-17-Cherry-pick"><a href="#1-17-Cherry-pick" class="headerlink" title="1.17. Cherry pick"></a>1.17. Cherry pick</h2><p>常用用法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick [Option] &lt;commit-id&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 示例</span></span><br><span class="line">git cherry-pick -e -x 123456</span><br></pre></td></tr></table></figure>
+
+<p>附加参数：</p>
+<ul>
+<li><code>-e，--edit</code> 。打开外部编辑器，编辑提交信息。</li>
+<li><code>-n，--no-commit</code> 。只更新工作区和暂存区，不产生新的提交。</li>
+<li><code>-x</code> 。在提交信息的末尾追加一行 (cherry picked from commit …)，方便以后查到这个提交是如何产生的。</li>
+<li><code>-s，--signoff</code> 。在提交信息的末尾追加一行操作者的签名，表示是谁进行了这个操作。</li>
+<li><code>-m parent-number，--mainline parent-number</code> 。如果原始提交是一个合并节点，来自于两个分支的合并，那么 Cherry pick 默认将失败，因为它不知道应该采用哪个分支的代码变动。-m 配置项告诉 Git，应该采用哪个分支的变动。它的参数 parent-number 是一个从 1 开始的整数，代表原始提交的父分支编号。</li>
+</ul>
+<p>若发生 Cherry-pick 冲突：</p>
+<ul>
+<li><p>若能成功解决冲突，则继续 cherry-pick 过程。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;成功处理后的冲突文件&gt;</span><br><span class="line">git cherry-pick --continue</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>若未能成功解决冲突，可终止 cherry-pick 过程。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 终止 cherry-pick 过程，且恢复到操作之前的状态</span></span><br><span class="line">git cherry-pick --abort</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 注：quit 虽能退出 Cherry pick ，但不能恢复到操作之前的状态。</span></span><br><span class="line">git cherry-pick --quit</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="1-18-git-分支改名"><a href="#1-18-git-分支改名" class="headerlink" title="1.18. git 分支改名"></a>1.18. git 分支改名</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -m $&#123;原分支名&#125; $&#123;新分支名&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-19-撤销暂存区文件（git-add-的逆向，保留修改）"><a href="#1-19-撤销暂存区文件（git-add-的逆向，保留修改）" class="headerlink" title="1.19. 撤销暂存区文件（git add 的逆向，保留修改）"></a>1.19. 撤销暂存区文件（git add 的逆向，保留修改）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD files</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Git-命令进阶用法"><a href="#2-Git-命令进阶用法" class="headerlink" title="2. Git 命令进阶用法"></a>2. Git 命令进阶用法</h1><h2 id="2-1-reset-回滚"><a href="#2-1-reset-回滚" class="headerlink" title="2.1. reset 回滚"></a>2.1. reset 回滚</h2><p>reset 参数说明：</p>
+<ul>
+<li>–hard：重置时清空工作目录的所有改动</li>
+<li>–soft：重置时保留工作目录和暂存区的内容；</li>
+<li>–mixed（默认）：重置时保留工作目录的内容，并清空暂存区。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^          # 方式 1：回滚到上一次提交</span><br><span class="line">git reset --hard $&#123;commitID&#125;    # 方式 2：回滚到指定 commit 处，丢弃其后所有 commit</span><br><span class="line">git reflog                      # 方式 3：撤销历史操作（如撤销上一次回滚操作）</span><br><span class="line">git reset --hard $&#123;历史操作 ID&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="2-2-amend-修复上次提交的操作"><a href="#2-2-amend-修复上次提交的操作" class="headerlink" title="2.2. amend 修复上次提交的操作"></a>2.2. amend 修复上次提交的操作</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add $&#123;changeFiles&#125;  # s1. 将修复错误的文件添加到提交</span><br><span class="line">git commit --amend      # s2. 修复上次提交，注意 amend 只适用于还处于评审中的 CR。</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-恢复单个文件到最新提交"><a href="#2-3-恢复单个文件到最新提交" class="headerlink" title="2.3. 恢复单个文件到最新提交"></a>2.3. 恢复单个文件到最新提交</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD path_to_file</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-rebase-变基的操作步骤"><a href="#2-4-rebase-变基的操作步骤" class="headerlink" title="2.4. rebase 变基的操作步骤"></a>2.4. rebase 变基的操作步骤</h2><p>前置条件：dev 分支拉取自 master（eg.dev 分支拉取时间：20210715），且在之后（eg.20210720）master 又有新提交（或合入），且现在（eg.20210730）dev 分支需要在引入该新提交（或合入）后再开发。</p>
+<p>变基操作成功执行后，dev 分支相当于是从变基操作时（eg.20210730）新拉取的分支，且 (20210715 ~ 20210730) 之间的提交和修改仍保留。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout dev        # s1. 切换到待变基分支 dev</span><br><span class="line">git rebase master       # s2. 将分支的起点移动到想要合并的分支的 HEAD 上</span><br><span class="line"></span><br><span class="line">git checkout master     # s3. 切换到主分支（本地）</span><br><span class="line">git merge dev           # s4. 移到最新的提交</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-rebase-修改完善之前某次提交的操作步骤"><a href="#2-5-rebase-修改完善之前某次提交的操作步骤" class="headerlink" title="2.5. rebase 修改完善之前某次提交的操作步骤"></a>2.5. rebase 修改完善之前某次提交的操作步骤</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> s1. 触发 git 修改弹窗，将对应 commit 标记为 edit。</span></span><br><span class="line">git rebase -i $&#123;commitID&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s2. 修改完善某次提交的文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> s3. 添加已修改的文件</span></span><br><span class="line">git add changedFiles</span><br><span class="line"><span class="meta">#</span><span class="bash"> s4. 将修正应用到当前最新的 commit</span></span><br><span class="line">git commit --amend</span><br><span class="line"><span class="meta">#</span><span class="bash"> s5. 继续 rebase 过程。</span></span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-6-rebase-撤销过往提交命令的两种方式"><a href="#2-6-rebase-撤销过往提交命令的两种方式" class="headerlink" title="2.6. rebase 撤销过往提交命令的两种方式"></a>2.6. rebase 撤销过往提交命令的两种方式</h2><p><b><font color="#7E3D76" style="">1. 方式 1——触发 git 修改并在弹出 git 编辑界面中删除想撤销的 commits</font></b><br>实现原理：在触发的 git 编辑界面中添加 drop ${待删除 commitID}</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> s1. 触发 rebase 编辑界面</span></span><br><span class="line">git rebase -i $&#123;待删除的前一条 commitID&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s2. 在修改文件中 pick commitId.. 下方将 pick 命令改为丢弃命令</span></span><br><span class="line">pick $&#123;待删除 commitID&#125;  ==》  drop $&#123;待删除 commitID&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s3. 手动解决<span class="variable">$&#123;冲突 files&#125;</span>的冲突</span></span><br><span class="line">vi $&#123;冲突 files&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s4. 添加已修改的文件</span></span><br><span class="line">git add $&#123;冲突 files&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s5. 继续 rebase 过程</span></span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="#7E3D76" style="">2. 方式 2——将修正应用到当前最新的 commit</font></b></p>
+<p>实现原理：对本地当前分支，将左开右闭区间 (commitID_B, commitID_C] 的提交覆盖到 commitID_A 之后。相当于原左开右闭区间 (commitID_A, commitID_B] 的提交被删除了。</p>
+<p>示例代码：</p>
+<p>当前分支提交记录顺序为：commitID_A, … , commitID_B , … , commitID_C。现要删除左开右闭区间 (commitID_A, commitID_B] 的提交：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> s1. 触发 rebase</span></span><br><span class="line">git rebase --onto $&#123;目标 commitID_A&#125; $&#123;起点 commitID_B&#125; $&#123;终点 commitID_C&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s2. 手动解决<span class="variable">$&#123;冲突 files&#125;</span>的冲突</span></span><br><span class="line">vi $&#123;冲突 files&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s3. 添加已修改的文件</span></span><br><span class="line">git add $&#123;冲突 files&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> s4. 继续 rebase 过程</span></span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-7-根据操作历史回退"><a href="#2-7-根据操作历史回退" class="headerlink" title="2.7. 根据操作历史回退"></a>2.7. 根据操作历史回退</h2><p>根据 git 操作历史记录回退，eg. 撤销上一步 git reset –hard 操作，以恢复到执行该操作前的状态（需确保 git 全局配置中 core.logallrefupdates 已打开 true）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> s1. 查询 git 操作命令历史记录对应的<span class="variable">$&#123;上一步操作 ID&#125;</span></span></span><br><span class="line">git reflog</span><br><span class="line"><span class="meta">#</span><span class="bash"> s2. 恢复到执行该操作的前一个操作状态</span></span><br><span class="line">git reset --hard $&#123;上一步操作 ID&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考博文"><a href="#参考博文" class="headerlink" title="参考博文"></a>参考博文</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhaoyingjie/p/10259715.html">Git 合并多次 commit 、 删除某次 commit</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34268843/article/details/92032933">git diff 比较本地文件记录和远程文件记录的修改项</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\11\18\RefreshForkRepositorie\" rel="bookmark">Fork仓库同步官方源仓库的更新</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\10\26\gitRevert\" rel="bookmark">git撤销已push到远端仓库的提交</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/23/EthernetAndMac/" rel="prev" title="以太帧与MAC">
+                  <i class="fa fa-chevron-left"></i> 以太帧与MAC
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/03/VLAN/" rel="next" title="VLAN">
+                  VLAN <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/07/24/GitUsefullCmd/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

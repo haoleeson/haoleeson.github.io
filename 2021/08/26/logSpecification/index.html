@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 日志分类 日志：用来准确、恰当、适量地记录用户操作、系统运行状态等，是一个系统的重要组成部分  日志从功能划分，可分为诊断日志、统计日志、审计日志：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="日志规范">
+<meta property="og:url" content="https://eisenhao.cn/2021/08/26/logSpecification/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 日志分类 日志：用来准确、恰当、适量地记录用户操作、系统运行状态等，是一个系统的重要组成部分  日志从功能划分，可分为诊断日志、统计日志、审计日志：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/logLevelChoose.png">
+<meta property="article:published_time" content="2021-08-26T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-08-26T15:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="syslog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/logLevelChoose.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/08/26/logSpecification/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/08/26/logSpecification/","path":"2021/08/26/logSpecification/","title":"日志规范"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>日志规范 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%97%A5%E5%BF%97%E5%88%86%E7%B1%BB"><span class="nav-text">1. 日志分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%97%A5%E5%BF%97%E8%A7%84%E8%8C%83%E9%87%8D%E8%A6%81%E6%80%A7"><span class="nav-text">2. 日志规范重要性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%97%A5%E5%BF%97%E8%A7%84%E8%8C%83%E6%80%BB%E5%88%99"><span class="nav-text">3. 日志规范总则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%97%A5%E5%BF%97%E8%A7%84%E8%8C%83"><span class="nav-text">4. 日志规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E7%9A%84%E9%80%89%E6%8B%A9%E8%A7%84%E7%BA%A6"><span class="nav-text">4.1. 日志级别的选择规约</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%97%A5%E5%BF%97%E6%A0%BC%E5%BC%8F%E8%A7%84%E7%BA%A6"><span class="nav-text">4.2. 日志格式规约</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E6%97%A5%E5%BF%97%E6%A0%BC%E5%BC%8F%E6%80%BB%E4%BD%93%E8%A6%81%E6%B1%82"><span class="nav-text">4.2.1. 日志格式总体要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E6%A0%BC%E5%BC%8F%E8%A7%84%E5%88%99"><span class="nav-text">4.2.2. 格式规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-%E6%97%A5%E5%BF%97%E6%A0%BC%E5%BC%8F"><span class="nav-text">4.2.3. 日志格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E6%97%A5%E5%BF%97%E5%86%85%E5%AE%B9%E8%A7%84%E7%BA%A6"><span class="nav-text">4.3. 日志内容规约</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-1-%E6%8E%A8%E8%8D%90%E8%AE%B0%E5%BD%95%E7%9A%84%E6%97%A5%E5%BF%97%E5%86%85%E5%AE%B9"><span class="nav-text">4.3.1. 推荐记录的日志内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-2-%E9%81%BF%E5%85%8D%E8%AE%B0%E5%BD%95%E7%9A%84%E6%97%A5%E5%BF%97%E5%86%85%E5%AE%B9"><span class="nav-text">4.3.2. 避免记录的日志内容</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/08/26/logSpecification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          日志规范
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-08-26 22:30:45" itemprop="dateCreated datePublished" datetime="2021-08-26T22:30:45+08:00">2021-08-26</time>
+    </span>
+
+  
+    <span id="/2021/08/26/logSpecification/" class="post-meta-item leancloud_visitors" data-flag-title="日志规范" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-日志分类"><a href="#1-日志分类" class="headerlink" title="1. 日志分类"></a>1. 日志分类</h1><blockquote>
+<p><strong>日志</strong>：用来准确、恰当、适量地记录用户操作、系统运行状态等，是一个系统的重要组成部分</p>
+</blockquote>
+<p>日志从功能划分，可分为<strong>诊断日志</strong>、<strong>统计日志</strong>、<strong>审计日志</strong>：</p>
+<a id="more"></a>
+
+<ul>
+<li><strong>诊断日志</strong><ul>
+<li>请求的入口和出口</li>
+<li>外部服务调用及返回</li>
+<li>资源消耗操作: 打开文件等</li>
+<li>容错行为，譬如云硬盘的副本修复操作</li>
+<li>程序异常，譬如数据库无法连接</li>
+<li>后台操作，清理程序</li>
+<li>启动、关闭、配置加载</li>
+<li>抛出异常时，不记录日志</li>
+</ul>
+</li>
+<li><strong>统计日志</strong><ul>
+<li>用户访问统计</li>
+<li>计费日志（如记录用户使用的网络资源或磁盘占用，格式较为严格，便于统计）</li>
+</ul>
+</li>
+<li><strong>审计日志</strong><ul>
+<li>管理操作</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-日志规范重要性"><a href="#2-日志规范重要性" class="headerlink" title="2. 日志规范重要性"></a>2. 日志规范重要性</h1><blockquote>
+<p>只有在程序出问题以后才会知道打一个好的日志有多么重要</p>
+</blockquote>
+<p><strong>低效日志</strong>将导致开发/测试/运维人员：</p>
+<ul>
+<li>对系统的运行状态一知半解，甚至一无所知</li>
+<li>系统出现问题无法定位，或需耗费大量时间和精力</li>
+<li>无法发现系统瓶颈，不知优化从何做起</li>
+<li>无法基于日志对系统运行过程中的错误和潜在风险进行监控和报警</li>
+<li>对挖掘用户行为和提升产品价值毫无帮助</li>
+</ul>
+<p><strong>优质日志</strong>将帮助开发/测试/运维人员：</p>
+<ul>
+<li>准确知晓线上系统的运行状态</li>
+<li>快速定位线上问题，高效排障</li>
+<li>发现系统瓶颈</li>
+<li>预警系统潜在风险</li>
+<li>挖掘产品最大价值</li>
+</ul>
+<h1 id="3-日志规范总则"><a href="#3-日志规范总则" class="headerlink" title="3. 日志规范总则"></a>3. 日志规范总则</h1><ul>
+<li><p>减少日志中无用信息，防止淹没重要信息</p>
+</li>
+<li><p>要尽可能使日志信息准确全面，以便快速精确定位问题</p>
+</li>
+<li><p>要统一日志格式规范，以方便后续排障和分析</p>
+</li>
+<li><p>要不断优化完善日志，以提升问题定位效率</p>
+</li>
+<li><p>要明确不同功能日志的用途，使日志内容符合对应功能日志的要求</p>
+</li>
+<li><p>开发过程中记录日志应思考：</p>
+<ul>
+<li>该行日志真的有人看么？</li>
+<li>该条日志能够传递什么信息？</li>
+<li>这条日志能对排障带来什么帮助？</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-日志规范"><a href="#4-日志规范" class="headerlink" title="4. 日志规范"></a>4. 日志规范</h1><h2 id="4-1-日志级别的选择规约"><a href="#4-1-日志级别的选择规约" class="headerlink" title="4.1. 日志级别的选择规约"></a>4.1. 日志级别的选择规约</h2><blockquote>
+<p>如何针对不同场景，选择恰当的日志级别？</p>
+</blockquote>
+<ul>
+<li><strong>Emergency</strong>：<ul>
+<li>发生导致系统不可用的事故时</li>
+<li>一个进程的生命周期里最多记录一次 Emergency 级别日志（慎用）</li>
+</ul>
+</li>
+<li><strong>Alert</strong>：<ul>
+<li>发生核心功能不可用的紧急事件时</li>
+<li>紧急程度仅次于 Emergency，此时系统虽仍可用，但已严重影响了功能的完整性与可用性</li>
+<li>必须马上处理</li>
+</ul>
+</li>
+<li><strong>Critical</strong>：<ul>
+<li>发生程序组件不可用的危急事件时</li>
+<li>需要马上处理</li>
+</ul>
+</li>
+<li><strong>Error</strong>：<ul>
+<li>程序运行中出现错误，但不影响整个系统的逻辑运行时</li>
+<li>一般不需要立即修复，但必须及时记录并做检测</li>
+</ul>
+</li>
+<li><strong>Warning</strong>：<ul>
+<li>发生若不及时处理可能引发/导致程序出错的征兆事件时</li>
+<li>虽暂时未发生程序错误，但也需要提醒并及时查看和处理</li>
+</ul>
+</li>
+<li><strong>Notice</strong>：<ul>
+<li>发生不影响程序功能，但需要引起注意的事件时</li>
+</ul>
+</li>
+<li><strong>Informational</strong>：<ul>
+<li>记录系统正常运行的一般信息，侧重对正常运行的主要流程的记录</li>
+<li>辅助更高级别错误日志的定位分析，譬如排除掉Error错误前已打Info日志的正常流程，缩小排障范围</li>
+</ul>
+</li>
+<li><strong>Debug</strong>：<ul>
+<li>帮助开发/测试/运维人员，对系统进行诊断的更丰富和细致的信息</li>
+</ul>
+</li>
+</ul>
+<p>日志级别选择流程：</p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/logLevelChoose.png" alt="CloudComputing-20190617100822880"></p>
+<h2 id="4-2-日志格式规约"><a href="#4-2-日志格式规约" class="headerlink" title="4.2. 日志格式规约"></a>4.2. 日志格式规约</h2><blockquote>
+<p>如何利用正确的日志格式规范所输出的日志内容？</p>
+</blockquote>
+<h3 id="4-2-1-日志格式总体要求"><a href="#4-2-1-日志格式总体要求" class="headerlink" title="4.2.1. 日志格式总体要求"></a>4.2.1. 日志格式总体要求</h3><ul>
+<li><strong>统一字段命名</strong>：对于不同请求中的同一含义的字段，只能有一个名字</li>
+<li><strong>统一字段风格</strong>：譬如字段一律使用 xxx_yyy 的下划线命名风格</li>
+<li><strong>统一字段顺序</strong>：譬如统一使用 请求ID/服务名/请求参数/响应数据/响应时间 作为日志字段顺序</li>
+</ul>
+<h3 id="4-2-2-格式规则"><a href="#4-2-2-格式规则" class="headerlink" title="4.2.2. 格式规则"></a>4.2.2. 格式规则</h3><ul>
+<li> 避免字符串拼接，使用‘{‘和’}’作为消息正文中参数的占位符</li>
+<li> 避免重复记录，同样的日志内容理论上只需要记录一次，否则会造成磁盘空间浪费，过多冗余日志也会对查找问题产生干扰</li>
+<li> 日志一定要有显示Level呈现，一眼就知道日志属性</li>
+<li> 重要日志信息脱敏，如用’*’号代替</li>
+</ul>
+<h3 id="4-2-3-日志格式"><a href="#4-2-3-日志格式" class="headerlink" title="4.2.3. 日志格式"></a>4.2.3. 日志格式</h3><p>即日志的字段结构，包含哪些字段，字段顺序等</p>
+<p><br><b><font color="#7E3D76" style="">示例日志格式</font></b></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-08-31 20:35:01.713966 host &lt;local2.notice&gt; NOTICE client[38] zread_hello(): client 29 says hello and bids fair.</span><br></pre></td></tr></table></figure>
+
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center"><b>日志结构中各字段</b></th>
+        <th align="center"><b>对应日志内容</b></th>
+    </tr>
+    <tr>
+        <td><b><font color="green" style="">日志时间</font></b></td>
+        <td>2021-08-31 20:35:01.713966</td>
+    </tr>
+    <tr>
+        <td><b><font color="green" style="">主机名</font></b></td>
+        <td>host</td>
+    </tr>
+    <tr>
+        <td><b><font color="green" style="">日志属性&lt;模块类别.日志级别&gt;</font></b></td>
+        <td>&lt;local2.notice&gt;</td>
+    </tr>
+    <tr>
+        <td><b><font color="green" style="">日志级别</font></b></td>
+        <td>NOTICE</td>
+    </tr>
+    <tr>
+        <td><b><font color="green" style="">所属进程/线程</font></b></td>
+        <td>client[38]</td>
+    </tr>
+    <tr>
+        <td><b><font color="green" style="">类名/方法名</font></b></td>
+        <td>zread_hello():</td>
+    </tr>
+    <tr>
+        <td><b><font color="green" style="">日志正文</font></b></td>
+        <td>client 29 says hello and bids fair.</td>
+    </tr>
+</table>
+
+
+<h2 id="4-3-日志内容规约"><a href="#4-3-日志内容规约" class="headerlink" title="4.3. 日志内容规约"></a>4.3. 日志内容规约</h2><blockquote>
+<p>什么场景下打日志，日志输出什么内容？</p>
+</blockquote>
+<h3 id="4-3-1-推荐记录的日志内容"><a href="#4-3-1-推荐记录的日志内容" class="headerlink" title="4.3.1. 推荐记录的日志内容"></a>4.3.1. 推荐记录的日志内容</h3><p><b><font color="#7E3D76" style="">1. 系统启动或初始化时，重要的系统初始化参数、配置加载【Info】</font></b></p>
+<p><b><font color="#7E3D76" style="">2. 系统运行过程中的重要信息</font></b></p>
+<ul>
+<li>所有<strong>错误信息</strong>：<ul>
+<li>程序崩溃事故【Emergency】</li>
+<li>核心功能不可用紧急事件【Alert】</li>
+<li>程序组件不可用危急事件【Critical】</li>
+<li>程序运行错误【Error】</li>
+</ul>
+</li>
+<li>所有<strong>警告信息</strong>【Warning】：<ul>
+<li>暂未但不及时处理可能将会导致错误的事件</li>
+<li>流程中正常的请求出错</li>
+</ul>
+</li>
+<li>关键<strong>流程信息</strong>【Info】：<ul>
+<li>主要模块间的请求与响应</li>
+<li>重要事件的发生与结束</li>
+<li>重要状态变化</li>
+<li>持久化数据时修改前后的记录变化</li>
+<li>长期执行任务的执行进度</li>
+</ul>
+</li>
+<li>后台<strong>定期执行任务</strong>【Info】：<ul>
+<li>定期缓存更新任务的启停时间</li>
+</ul>
+</li>
+<li>异常处理逻辑【Notice】：<ul>
+<li>请求资源首次未成功后，后续尝试再次请求的行为记录</li>
+</ul>
+</li>
+</ul>
+<p><b><font color="#7E3D76" style="">3. 有助于排障运维的信息【Debug】</font></b></p>
+<ul>
+<li>重要事件函数的启停，返回值信息等</li>
+<li>核心变量的变化</li>
+<li>内存数据结构的状态</li>
+</ul>
+<h3 id="4-3-2-避免记录的日志内容"><a href="#4-3-2-避免记录的日志内容" class="headerlink" title="4.3.2. 避免记录的日志内容"></a>4.3.2. 避免记录的日志内容</h3><ul>
+<li>文件内容或者一大段消息的内容</li>
+<li>良性“错误”，有时候尽管出现了错误，然而错误处理的流程可以正确解决这种情况</li>
+<li>预期会发生且能够被正常处理的异常，否则将打印出一堆无用的堆栈信息</li>
+<li>开发者为方便调试临时加入的非必要状态信息</li>
+<li>输出机密信息</li>
+</ul>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels">When to use the different log levels</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1553096">日志记录规范总结</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27363484">最佳日志实践（v2.0）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903584904003592">SeasLog 之企业级日志行为规范发布</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\23\Logrotate\" rel="bookmark">logrotate日志轮转工具简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\07\syslogProtocolAndRsyslog\" rel="bookmark">syslog协议与Rsyslog系统日志软件简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/syslog/" rel="tag"><i class="fa fa-tag"></i> syslog</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/23/Logrotate/" rel="prev" title="logrotate日志轮转工具简介">
+                  <i class="fa fa-chevron-left"></i> logrotate日志轮转工具简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/05/TwoOrThreeLevelForwarding/" rel="next" title="二三层转发">
+                  二三层转发 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/08/26/logSpecification/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

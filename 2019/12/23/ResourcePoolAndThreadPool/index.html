@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 资源池1.1. 简介 是一种配置机制，用于对主机资源进行分区。当某一个资源使用完后，资源池把相关的资源的忙标示清除掉，以示该资源可以再被下一个请求使用 每个主机均具有一个默认的资源池，所有的进程最初均与该资源池绑定。新创建的资源池会从默认池中获取处理器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="资源池与线程池">
+<meta property="og:url" content="https://eisenhao.cn/2019/12/23/ResourcePoolAndThreadPool/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 资源池1.1. 简介 是一种配置机制，用于对主机资源进行分区。当某一个资源使用完后，资源池把相关的资源的忙标示清除掉，以示该资源可以再被下一个请求使用 每个主机均具有一个默认的资源池，所有的进程最初均与该资源池绑定。新创建的资源池会从默认池中获取处理器">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-23T14:30:45.000Z">
+<meta property="article:modified_time" content="2019-12-23T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Common">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2019/12/23/ResourcePoolAndThreadPool/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2019/12/23/ResourcePoolAndThreadPool/","path":"2019/12/23/ResourcePoolAndThreadPool/","title":"资源池与线程池"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>资源池与线程池 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%B5%84%E6%BA%90%E6%B1%A0"><span class="nav-text">1. 资源池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E7%9B%AE%E7%9A%84"><span class="nav-text">1.2. 目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%BF%90%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="nav-text">1.3. 运作机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E5%8F%82%E6%95%B0"><span class="nav-text">1.4. 参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E5%B8%B8%E8%A7%81%E7%9A%84%E8%B5%84%E6%BA%90%E6%B1%A0"><span class="nav-text">1.5. 常见的资源池</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-text">2. 线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%83%8C%E6%99%AF"><span class="nav-text">2.1. 背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E7%AE%80%E4%BB%8B"><span class="nav-text">2.2. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E4%BC%98%E7%82%B9"><span class="nav-text">2.3. 优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%BB%93%E6%9E%84"><span class="nav-text">2.4. 线程池结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">2.5. 应用场景</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/12/23/ResourcePoolAndThreadPool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          资源池与线程池
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2019-12-23 22:30:45" itemprop="dateCreated datePublished" datetime="2019-12-23T22:30:45+08:00">2019-12-23</time>
+    </span>
+
+  
+    <span id="/2019/12/23/ResourcePoolAndThreadPool/" class="post-meta-item leancloud_visitors" data-flag-title="资源池与线程池" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-资源池"><a href="#1-资源池" class="headerlink" title="1. 资源池"></a>1. 资源池</h1><h2 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1. 简介"></a>1.1. 简介</h2><ul>
+<li>是一种配置机制，用于对主机资源进行分区。当某一个资源使用完后，资源池把相关的资源的忙标示清除掉，以示该资源可以再被下一个请求使用</li>
+<li>每个主机均具有一个默认的资源池，所有的进程最初均与该资源池绑定。新创建的资源池会从默认池中获取处理器</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="1-2-目的"><a href="#1-2-目的" class="headerlink" title="1.2. 目的"></a>1.2. 目的</h2><p>提高性能</p>
+<h2 id="1-3-运作机制"><a href="#1-3-运作机制" class="headerlink" title="1.3. 运作机制"></a>1.3. 运作机制</h2><p>由资源池管理器提供一定数目的目标资源，当有请求该资源时，资源池分配给一个，然后给该资源标识为忙，标示为忙的资源不能再被分配使用</p>
+<h2 id="1-4-参数"><a href="#1-4-参数" class="headerlink" title="1.4. 参数"></a>1.4. 参数</h2><ul>
+<li>初始资源的数目。资源池启动时，一次建立的资源数目，资源池最少要保证在这个数目上</li>
+<li>最大资源的数目。当请求的资源超出这个数目，就等待</li>
+</ul>
+<h2 id="1-5-常见的资源池"><a href="#1-5-常见的资源池" class="headerlink" title="1.5. 常见的资源池"></a>1.5. 常见的资源池</h2><ul>
+<li>连接池。数据库连接池</li>
+<li>对象池。web 容器中的 request, response 对象池</li>
+<li>线程池（thread pool）</li>
+</ul>
+<h1 id="2-线程池"><a href="#2-线程池" class="headerlink" title="2. 线程池"></a>2. 线程池</h1><h2 id="2-1-背景"><a href="#2-1-背景" class="headerlink" title="2.1. 背景"></a>2.1. 背景</h2><ul>
+<li>线程过多会带来调度开销（线程切换开销），进而影响缓存局部性和整体性能</li>
+<li>在处理短时间任务时创建与销毁线程的代价过大</li>
+</ul>
+<h2 id="2-2-简介"><a href="#2-2-简介" class="headerlink" title="2.2. 简介"></a>2.2. 简介</h2><ul>
+<li>线程池是一种多线程处理形式，处理过程中将任务添加到队列，然后在创建线程后自动启动这些任务</li>
+<li>线程池线程都是后台线程</li>
+<li>每个线程都使用默认的堆栈大小，以默认的优先级运行，并处于多线程单元中</li>
+<li>如果某个线程在托管代码中空闲（如正在等待某个事件）, 则线程池将插入另一个辅助线程来使所有处理器保持繁忙</li>
+<li>如果所有线程池线程都始终保持繁忙，但队列中包含挂起的工作，则线程池将在一段时间后创建另一个辅助线程，但线程的数目永远不会超过最大值</li>
+<li>超过最大值的线程可以排队，但他们要等到其他线程完成后才启动</li>
+</ul>
+<h2 id="2-3-优点"><a href="#2-3-优点" class="headerlink" title="2.3. 优点"></a>2.3. 优点</h2><ul>
+<li>避免在处理短时间任务时创建与销毁线程的代价</li>
+<li>不仅能够保证内核的充分利用，还能防止过分调度</li>
+</ul>
+<h2 id="2-4-线程池结构"><a href="#2-4-线程池结构" class="headerlink" title="2.4. 线程池结构"></a>2.4. 线程池结构</h2><ul>
+<li>线程池管理器。创建并管理线程池</li>
+<li>工作线程。线程池中的线程</li>
+<li>任务接口 taskHandle。每个任务必须实现接口以供工作线程调度执行任务</li>
+<li>任务队列。用于暂存未处理任务（缓冲机制）</li>
+</ul>
+<h2 id="2-5-应用场景"><a href="#2-5-应用场景" class="headerlink" title="2.5. 应用场景"></a>2.5. 应用场景</h2><ul>
+<li>需要大量的线程来完成任务，且完成任务的时间比较短。 eg. WEB 服务器完成网页请求这样的任务</li>
+<li>对性能要求苛刻的应用。eg。 要求服务器迅速响应客户请求</li>
+<li>可能出现突发性的大量请求（创建大量线程）。eg. 双 11，0:00 网页请求。利用线程池技术有效地调度线程资源，缓冲作用不至于使服务器突然产生大量线程的应用。短时间内产生大量线程可能使内存到达极限，并出现”OutOfMemory”的错误</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\01\27\OpenConfigNorthboundInterface\" rel="bookmark">OpenConfig北向接口简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\10\22\RegularExpressionSyntax\" rel="bookmark">正则表达式语法记录</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Common/" rel="tag"><i class="fa fa-tag"></i> Common</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/19/CppCompile/" rel="prev" title="C++编译过程总结">
+                  <i class="fa fa-chevron-left"></i> C++编译过程总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/29/ConfusedShellLang/" rel="next" title="Shell易混淆基本语法总结">
+                  Shell易混淆基本语法总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2019/12/23/ResourcePoolAndThreadPool/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

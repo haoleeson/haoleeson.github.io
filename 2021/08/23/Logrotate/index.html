@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="日志轮转 log rotation 解读：日志轮转是系统管理中使用的一个自动化过程，在此过程中，一旦日志文件太旧或太大，就会对其进行压缩、移动（存档）、重命名或删除。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logrotate日志轮转工具简介">
+<meta property="og:url" content="https://eisenhao.cn/2021/08/23/Logrotate/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="日志轮转 log rotation 解读：日志轮转是系统管理中使用的一个自动化过程，在此过程中，一旦日志文件太旧或太大，就会对其进行压缩、移动（存档）、重命名或删除。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-23T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-08-23T15:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="syslog">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/08/23/Logrotate/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/08/23/Logrotate/","path":"2021/08/23/Logrotate/","title":"logrotate日志轮转工具简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>logrotate日志轮转工具简介 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-logrotate-%E7%AE%80%E4%BB%8B"><span class="nav-text">1. logrotate 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-logrotate-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-text">1.1. logrotate 配置文件说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-logrotate-%E6%89%8B%E5%8A%A8%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-text">1.2. logrotate 手动运行命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%B7%BB%E5%8A%A0-logrotate-%E5%B7%A5%E5%85%B7%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="nav-text">1.3. 添加 logrotate 工具的计划任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-logrotate-%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-text">1.4. logrotate 命令格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-logrotate-%E8%BD%AE%E8%BD%AC%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B"><span class="nav-text">2. logrotate 轮转参数配置示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%A1%B9%E7%9B%AE%E4%B8%AD-logrotate-%E9%85%8D%E7%BD%AE"><span class="nav-text">3. 项目中 logrotate 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-logrotate-%E5%B7%A5%E5%85%B7%E8%87%AA%E8%BA%AB%E9%85%8D%E7%BD%AE%EF%BC%88%E5%AE%BF%E4%B8%BB%E6%9C%BA%EF%BC%8C%E5%AE%B9%E5%99%A8%E5%86%85%E6%97%A0%EF%BC%89"><span class="nav-text">3.1. logrotate 工具自身配置（宿主机，容器内无）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%90%84%E9%9C%80%E6%97%A5%E5%BF%97%E8%BD%AE%E8%BD%AC%E6%96%87%E4%BB%B6%E7%9A%84%E9%85%8D%E7%BD%AE%EF%BC%88%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B8%AD%EF%BC%89"><span class="nav-text">3.2. 各需日志轮转文件的配置（宿主机中）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%90%84%E9%9C%80%E6%97%A5%E5%BF%97%E8%BD%AE%E8%BD%AC%E6%96%87%E4%BB%B6%E7%9A%84%E9%85%8D%E7%BD%AE%EF%BC%88%E5%AE%B9%E5%99%A8%E4%B8%AD%EF%BC%89"><span class="nav-text">3.3. 各需日志轮转文件的配置（容器中）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AE%B9%E5%99%A8%E4%B8%AD-supervisor-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%88%E5%AE%B9%E5%99%A8%E4%B8%AD%EF%BC%8C%E5%AE%BF%E4%B8%BB%E6%9C%BA%E6%97%A0%EF%BC%89"><span class="nav-text">4. 容器中 supervisor 守护进程的配置文件（容器中，宿主机无）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/08/23/Logrotate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          logrotate日志轮转工具简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-08-23 22:30:45" itemprop="dateCreated datePublished" datetime="2021-08-23T22:30:45+08:00">2021-08-23</time>
+    </span>
+
+  
+    <span id="/2021/08/23/Logrotate/" class="post-meta-item leancloud_visitors" data-flag-title="logrotate日志轮转工具简介" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>日志轮转 log rotation 解读：日志轮转是系统管理中使用的一个自动化过程，在此过程中，一旦日志文件太旧或太大，就会对其进行压缩、移动（存档）、重命名或删除。</p>
+<a id="more"></a>
+
+<h1 id="1-logrotate-简介"><a href="#1-logrotate-简介" class="headerlink" title="1. logrotate 简介"></a>1. logrotate 简介</h1><ul>
+<li>管理系统所产生的日志文件。可自动对日志进行截断（或轮转）、压缩以及删除旧的日志文件。</li>
+<li>可周期性（按天/周/月）或当所监控文本文件大小超过阈值时（eg. 100MB），对文件进行截断（轮转）、压缩或删除过于老旧备份文件等处理。</li>
+<li>Linux系统默认安装logrotate工具，判断有无安装logrotate方式：<code>which logrotate</code></li>
+<li>logrotate自身为一个命令行工具，需要手动调用或基于计划任务cron调起logrotate工作<br>（默认情况已在<code>/etc/cron.daily/logrotate</code>配置了其每天定时执行）</li>
+</ul>
+<h2 id="1-1-logrotate-配置文件说明"><a href="#1-1-logrotate-配置文件说明" class="headerlink" title="1.1. logrotate 配置文件说明"></a>1.1. logrotate 配置文件说明</h2><p>logrotate 配置文件包括：</p>
+<ul>
+<li><b><font color="#7E3D76" style="">logrotate 自身的配置文件: /etc/logrotate.conf</font></b></li>
+<li><b><font color="#7E3D76" style="">需要轮转管理的日志文件各自的配置文件: /etc/logrotate.d/*</font></b>（统一放置于/etc/logrotate.d/目录下）</li>
+</ul>
+<h2 id="1-2-logrotate-手动运行命令"><a href="#1-2-logrotate-手动运行命令" class="headerlink" title="1.2. logrotate 手动运行命令"></a>1.2. logrotate 手动运行命令</h2><p>在完成/修改 logrotate 配置后，需重启 logrotate 以使配置生效。</p>
+<p><b><font color="#7E3D76" style="">手动运行logrotate的命令：</font></b></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/logrotate /etc/logrotate.conf</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="#7E3D76" style="">手动执行某个日志的轮转配置文件的命令：</font></b></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/logrotate -vf /etc/logrotate.d/log-file</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-添加-logrotate-工具的计划任务"><a href="#1-3-添加-logrotate-工具的计划任务" class="headerlink" title="1.3. 添加 logrotate 工具的计划任务"></a>1.3. 添加 logrotate 工具的计划任务</h2><p>/etc/cron.daily目录下，有个logrotate的脚本，系统每天会执行/etc/cron.daily内的脚本，这样只需我们按上述/etc/logrotate.d/example中的配置，即可保证每天日志的生成。</p>
+<p><b><font color="#7E3D76" style="">配置宿主机计划任务：以天为周期启动日志轮转工具logrotate工具（无守护进程），内容如下：</font></b></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">admin@host:~$ cat /etc/cron.daily/logrotate</span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line">test -x /usr/sbin/logrotate || exit 0</span><br><span class="line">/usr/sbin/logrotate /etc/logrotate.conf</span><br><span class="line">admin@host:~$</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-logrotate-命令格式"><a href="#1-4-logrotate-命令格式" class="headerlink" title="1.4. logrotate 命令格式"></a>1.4. logrotate 命令格式</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logrotate [OPTION...] &lt;configfile&gt;</span><br></pre></td></tr></table></figure>
+<p>OPTION参数说明：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center">参数（简写）</th>
+        <th align="center">参数（详细）</th>
+        <th align="center">功能</th>
+    </tr>
+    <tr>
+        <td align="center">-d</td>
+        <td align="center">--debug</td>
+        <td align="center">debug模式，测试配置文件是否有错误。</td>
+    </tr>
+    <tr>
+        <td align="center">-f</td>
+        <td align="center">--force</td>
+        <td align="center">强制转储文件。</td>
+    </tr>
+    <tr>
+        <td align="center">-m</td>
+        <td align="center">--mail=command</td>
+        <td align="center">压缩日志后，发送日志到指定邮箱。</td>
+    </tr>
+    <tr>
+        <td align="center">-s</td>
+        <td align="center">--state=statefile</td>
+        <td align="center">使用指定的状态文件。</td>
+    </tr>
+    <tr>
+        <td align="center">-v</td>
+        <td align="center">--verbose</td>
+        <td align="center">显示转储过程。</td>
+    </tr>
+</table>
+
+
+<h1 id="2-logrotate-轮转参数配置示例"><a href="#2-logrotate-轮转参数配置示例" class="headerlink" title="2. logrotate 轮转参数配置示例"></a>2. logrotate 轮转参数配置示例</h1><p>示例配置文件<code>（/etc/logrotate.d/log-file</code>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;var&#x2F;log&#x2F;log-file &#123;</span><br><span class="line">    monthly</span><br><span class="line">    rotate 5</span><br><span class="line">    compress</span><br><span class="line">    delaycompress</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    create 644 root root</span><br><span class="line">    postrotate</span><br><span class="line">        &#x2F;usr&#x2F;bin&#x2F;killall -HUP rsyslogd</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="red" style="">轮转参数解释如下：</font></b></p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center"><b>配置参数</b></th>
+        <th align="center"><b>说明</b></th>
+    </tr>
+    <tr>
+        <td>monthly</td>
+        <td>日志文件将按月轮转。其它可用值为'daily'，'weekly'或者'yearly'。</td>
+    </tr>
+    <tr>
+        <td>rotate 5</td>
+        <td>一次将存储5个归档日志。对于第六个归档，时间最久的归档将被删除。</td>
+    </tr>
+    <tr>
+        <td>compress</td>
+        <td>在轮转任务完成后，已轮转的归档将使用gzip进行压缩。</td>
+    </tr>
+    <tr>
+        <td>delaycompress</td>
+        <td>总是与compress选项一起用，delaycompress选项指示logrotate不要将最近的归档压缩，<br>压缩将在下一次轮转周期进行。这在你或任何软件仍然需要读取最新归档时很有用。</td>
+    </tr>
+    <tr>
+        <td>missingok</td>
+        <td>在日志轮转期间，任何错误将被忽略，例如“文件无法找到”之类的错误。</td>
+    </tr>
+    <tr>
+        <td>notifempty</td>
+        <td>如果日志文件为空，轮转不会进行。</td>
+    </tr>
+    <tr>
+        <td>create 644 root root</td>
+        <td>以指定的权限创建全新的日志文件，同时logrotate也会重命名原始日志文件。</td>
+    </tr>
+    <tr>
+        <td>postrotate/endscript</td>
+        <td>在所有其它指令完成后，postrotate和endscript里面指定的命令将被执行。<br>在这种情况下，rsyslogd 进程将立即再次读取其配置并继续运行。</td>
+    </tr>
+</table>
+
+<p><b><font color="red" style="">其他参数说明：</font></b></p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th align="center"><b>配置参数</b></th>
+        <th align="center"><b>说明</b></th>
+    </tr>
+    <tr>
+        <td>nocompress</td>
+        <td>不压缩</td>
+    </tr>
+    <tr>
+        <td>copytruncate</td>
+        <td>用于还在打开中的日志文件，把当前日志备份并截断</td>
+    </tr>
+    <tr>
+        <td>nocopytruncate</td>
+        <td>备份日志文件但是不截断</td>
+    </tr>
+    <tr>
+        <td>create mode owner group</td>
+        <td>转储文件，使用指定的文件模式创建新的日志文件</td>
+    </tr>
+    <tr>
+        <td>nocreate</td>
+        <td>不建立新的日志文件</td>
+    </tr>
+    <tr>
+        <td>nodelaycompress</td>
+        <td>覆盖 delaycompress 选项，转储同时压缩。</td>
+    </tr>
+    <tr>
+        <td>nosharedscripts</td>
+        <td>（默认项）对于每一个轮转的日志文件都执行prerotate和postrotate脚本。</td>
+    </tr>
+    <tr>
+        <td>errors address</td>
+        <td>专储时的错误信息发送到指定的Email 地址</td>
+    </tr>
+    <tr>
+        <td>ifempty</td>
+        <td>即使是空文件也转储，这个是 logrotate 的缺省选项。</td>
+    </tr>
+    <tr>
+        <td>mail address</td>
+        <td>把转储的日志文件发送到指定的E-mail 地址</td>
+    </tr>
+    <tr>
+        <td>nomail</td>
+        <td>转储时不发送日志文件</td>
+    </tr>
+    <tr>
+        <td>olddir directory</td>
+        <td>转储后的日志文件放入指定的目录，必须和当前日志文件在同一个文件系统</td>
+    </tr>
+    <tr>
+        <td>noolddir</td>
+        <td>转储后的日志文件和当前日志文件放在同一个目录下</td>
+    <tr>
+        <td>prerotate/endscript</td>
+        <td>在转储以前需要执行的命令可以放入这个对，这两个关键字必须单独成行</td>
+    </tr>
+    <tr>
+        <td>postrotate/endscript</td>
+        <td>该对字段间的脚本将在日志轮转结束后执行</td>
+    </tr>
+    <tr>
+        <td>firstaction/endscript</td>
+        <td>区间内的脚本在轮转之前、prerotate之前，且至少有一个待轮转日志时，才执行（限制：需要轮转的日志数必须大于1才执行；若此区间出错，将不会执行下方的脚本）</td>
+    </tr>
+    <tr>
+        <td>rotate count</td>
+        <td>指定日志文件删除之前转储的次数，0指没有备份，5指保留5个备份</td>
+    </tr>
+    <tr>
+        <td>tabooext [+] list</td>
+        <td>让logrotate不转储指定扩展名的文件，缺省的扩展名是：.rpm-orig, .rpmsave, v, 和 ~</td>
+    </tr>
+    <tr>
+        <td>size size</td>
+        <td>当日志文件到达指定的大小时才转储，bytes(缺省)及KB(sizek)或MB(sizem)
+    </tr>
+</table>
+
+<h1 id="3-项目中-logrotate-配置"><a href="#3-项目中-logrotate-配置" class="headerlink" title="3. 项目中 logrotate 配置"></a>3. 项目中 logrotate 配置</h1><h2 id="3-1-logrotate-工具自身配置（宿主机，容器内无）"><a href="#3-1-logrotate-工具自身配置（宿主机，容器内无）" class="headerlink" title="3.1. logrotate 工具自身配置（宿主机，容器内无）"></a>3.1. logrotate 工具自身配置（宿主机，容器内无）</h2><p><b><font color="red" style="">宿主机的 logrotate 工具自身配置文件/etc/logrotate.conf如下：</font></b></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># see &quot;man logrotate&quot; for details</span><br><span class="line"># rotate log files weekly</span><br><span class="line">weekly</span><br><span class="line"></span><br><span class="line"># keep 4 weeks worth of backlogs</span><br><span class="line">rotate 4</span><br><span class="line"></span><br><span class="line"># create new (empty) log files after rotating old ones</span><br><span class="line">create</span><br><span class="line"></span><br><span class="line"># uncomment this if you want your log files compressed</span><br><span class="line">#compress</span><br><span class="line"></span><br><span class="line"># packages drop log rotation information into this directory</span><br><span class="line">include &#x2F;etc&#x2F;logrotate.d</span><br><span class="line"></span><br><span class="line"># no packages own wtmp, or btmp -- we&#39;ll rotate them here</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;wtmp &#123;</span><br><span class="line">    missingok</span><br><span class="line">    monthly</span><br><span class="line">    create 0664 root utmp</span><br><span class="line">    rotate 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;var&#x2F;log&#x2F;btmp &#123;</span><br><span class="line">    missingok</span><br><span class="line">    monthly</span><br><span class="line">    create 0660 root utmp</span><br><span class="line">    rotate 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># system-specific logs may be configured here</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="3-2-各需日志轮转文件的配置（宿主机中）"><a href="#3-2-各需日志轮转文件的配置（宿主机中）" class="headerlink" title="3.2. 各需日志轮转文件的配置（宿主机中）"></a>3.2. 各需日志轮转文件的配置（宿主机中）</h2><p><b><font color="red" style="">各需日志轮转文件的配置文件 /etc/logrotate.d/rsyslog 内容如下：</font></b></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"># These logs should no longer get created. However, in case they do get created,</span><br><span class="line"># we should keep them to a small size and rotate them also.</span><br><span class="line"></span><br><span class="line">&#x2F;var&#x2F;log&#x2F;auth.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;cli.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;debug</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;telemetry.log</span><br><span class="line">&#123;</span><br><span class="line">    size 10M</span><br><span class="line">    rotate 1</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    compress</span><br><span class="line">    sharedscripts</span><br><span class="line">    postrotate</span><br><span class="line">        &#x2F;bin&#x2F;kill -HUP $(cat &#x2F;var&#x2F;run&#x2F;rsyslogd.pid)</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;var&#x2F;log&#x2F;kern.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;quagga&#x2F;bgpd.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;quagga&#x2F;zebra.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;syslog</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;teamd.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;user.log</span><br><span class="line">&#123;</span><br><span class="line">    size 100M</span><br><span class="line">    rotate 10</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    compress</span><br><span class="line">    sharedscripts</span><br><span class="line">    postrotate</span><br><span class="line">        &#x2F;bin&#x2F;kill -HUP $(cat &#x2F;var&#x2F;run&#x2F;rsyslogd.pid)</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;var&#x2F;log&#x2F;cron.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;daemon.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;messages</span><br><span class="line">&#123;</span><br><span class="line">    size 200M</span><br><span class="line">    rotate 10</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    compress</span><br><span class="line">    sharedscripts</span><br><span class="line">    firstaction</span><br><span class="line">        # Adjust NUM_LOGS_TO_ROTATE to reflect number of log files that trigger this block specified above</span><br><span class="line">        NUM_LOGS_TO_ROTATE&#x3D;5</span><br><span class="line"></span><br><span class="line">        # Adjust LOG_FILE_ROTATE_SIZE_KB to reflect the &quot;size&quot; parameter specified above, in kB</span><br><span class="line">        LOG_FILE_ROTATE_SIZE_KB&#x3D;204800</span><br><span class="line"></span><br><span class="line">        # Reserve space for btmp, wtmp, dpkg.log, monit.log, etc., as well as logs that</span><br><span class="line">        # should be disabled, just in case they get created and rotated</span><br><span class="line">        RESERVED_SPACE_KB&#x3D;4096</span><br><span class="line"></span><br><span class="line">        VAR_LOG_SIZE_KB&#x3D;$(df -k &#x2F;var&#x2F;log | sed -n 2p | awk &#39;&#123; print $2 &#125;&#39;)</span><br><span class="line"></span><br><span class="line">        # Limit usable space to 90% of the partition minus the reserved space for other logs</span><br><span class="line">        USABLE_SPACE_KB&#x3D;$(( (VAR_LOG_SIZE_KB * 90 &#x2F; 100) - RESERVED_SPACE_KB))</span><br><span class="line"></span><br><span class="line">        # Set our threshold so as to maintain enough space to write all logs from empty to full</span><br><span class="line">        # Most likely, some logs will have non-zero size when this is called, so this errs on the side</span><br><span class="line">        # of caution, giving us a bit of a cushion if a log grows quickly and passes its rotation size</span><br><span class="line">        THRESHOLD_KB&#x3D;$((USABLE_SPACE_KB - (NUM_LOGS_TO_ROTATE * LOG_FILE_ROTATE_SIZE_KB * 2)))</span><br><span class="line"></span><br><span class="line">        # First, delete any *.1 or *.11~20.gz files that might be left around from a prior incomplete</span><br><span class="line">        find &#x2F;var&#x2F;log -type f | egrep &#39;.+\.1?$|.+\.1[1-9]+\.gz?$|.+\.20+\.gz?$&#39; | xargs rm -f</span><br><span class="line"></span><br><span class="line">        # logrotate execution, otherwise logrotate will fail to do its job</span><br><span class="line">        while true; do</span><br><span class="line">            USED_KB&#x3D;$(du -s &#x2F;var&#x2F;log | awk &#39;&#123; print $1; &#125;&#39;)</span><br><span class="line"></span><br><span class="line">            if [ $USED_KB -lt $THRESHOLD_KB ]; then</span><br><span class="line">                break</span><br><span class="line">            else</span><br><span class="line">                OLDEST_ARCHIVE_FILE&#x3D;$(find &#x2F;var&#x2F;log -type f -printf &#39;%T+ %p\n&#39; | grep -E &#39;.+\.[0-9]+(\.gz)?$&#39; | sort | head -n 1 | awk &#39;&#123; print $2; &#125;&#39;)</span><br><span class="line"></span><br><span class="line">                if [ -z &quot;$OLDEST_ARCHIVE_FILE&quot; ]; then</span><br><span class="line">                    logger -p syslog.err -t &quot;logrotate&quot; &quot;No archive file to delete -- potential for filling up &#x2F;var&#x2F;log partition!&quot;</span><br><span class="line">                    break</span><br><span class="line">                fi</span><br><span class="line"></span><br><span class="line">                logger -p syslog.info -t &quot;logrotate&quot; &quot;Deleting archive file $OLDEST_ARCHIVE_FILE to free up space&quot;</span><br><span class="line">                rm -rf &quot;$OLDEST_ARCHIVE_FILE&quot;</span><br><span class="line">            fi</span><br><span class="line">        done</span><br><span class="line">    endscript</span><br><span class="line">    postrotate</span><br><span class="line">        &#x2F;bin&#x2F;kill -HUP $(cat &#x2F;var&#x2F;run&#x2F;rsyslogd.pid) 2&gt;&#x2F;dev&#x2F;null || true</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;var&#x2F;log&#x2F;swss&#x2F;swss.rec</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;swss&#x2F;sairedis.rec</span><br><span class="line">&#123;</span><br><span class="line">    size 200M</span><br><span class="line">    rotate 10</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    compress</span><br><span class="line">    sharedscripts</span><br><span class="line">    postrotate</span><br><span class="line">        pgrep -x orchagent | xargs &#x2F;bin&#x2F;kill -HUP 2&gt;&#x2F;dev&#x2F;null || true</span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-各需日志轮转文件的配置（容器中）"><a href="#3-3-各需日志轮转文件的配置（容器中）" class="headerlink" title="3.3. 各需日志轮转文件的配置（容器中）"></a>3.3. 各需日志轮转文件的配置（容器中）</h2><p><b><font color="red" style="">容器各需日志轮转文件的配置文件 /etc/logrotate.d/rsyslog 内容如下：</font></b></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;var&#x2F;log&#x2F;syslog</span><br><span class="line">&#123;</span><br><span class="line">	rotate 7</span><br><span class="line">	daily</span><br><span class="line">	missingok</span><br><span class="line">	notifempty</span><br><span class="line">	delaycompress</span><br><span class="line">	compress</span><br><span class="line">	postrotate</span><br><span class="line">		invoke-rc.d rsyslog rotate &gt; &#x2F;dev&#x2F;null</span><br><span class="line">	endscript</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;var&#x2F;log&#x2F;mail.info</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;mail.warn</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;mail.err</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;mail.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;daemon.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;kern.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;auth.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;user.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;lpr.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;cron.log</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;debug</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;messages</span><br><span class="line">&#123;</span><br><span class="line">	rotate 4</span><br><span class="line">	weekly</span><br><span class="line">	missingok</span><br><span class="line">	notifempty</span><br><span class="line">	compress</span><br><span class="line">	delaycompress</span><br><span class="line">	sharedscripts</span><br><span class="line">	postrotate</span><br><span class="line">		invoke-rc.d rsyslog rotate &gt; &#x2F;dev&#x2F;null</span><br><span class="line">	endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="4-容器中-supervisor-守护进程的配置文件（容器中，宿主机无）"><a href="#4-容器中-supervisor-守护进程的配置文件（容器中，宿主机无）" class="headerlink" title="4. 容器中 supervisor 守护进程的配置文件（容器中，宿主机无）"></a>4. 容器中 supervisor 守护进程的配置文件（容器中，宿主机无）</h1><p>配置文件：/etc/supervisor/conf.d/supervisord.conf</p>
+<p><b><font color="red" style="">容器中，守护进程配置（各程序的kill重启策略）</font></b></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">root@host:&#x2F;var# cat &#x2F;etc&#x2F;supervisor&#x2F;conf.d&#x2F;supervisord.conf</span><br><span class="line">[supervisord]</span><br><span class="line">logfile_maxbytes&#x3D;1MB</span><br><span class="line">logfile_backups&#x3D;2</span><br><span class="line">nodaemon&#x3D;true</span><br><span class="line"></span><br><span class="line">[eventlistener:supervisor-proc-exit-listener]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;bin&#x2F;supervisor-proc-exit-listener</span><br><span class="line">events&#x3D;PROCESS_STATE_EXITED</span><br><span class="line">autostart&#x3D;true</span><br><span class="line">autorestart&#x3D;unexpected</span><br><span class="line"></span><br><span class="line">[program:start.sh]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;bin&#x2F;start.sh</span><br><span class="line">priority&#x3D;1</span><br><span class="line">autostart&#x3D;true</span><br><span class="line">autorestart&#x3D;false</span><br><span class="line">stdout_logfile&#x3D;syslog</span><br><span class="line">stderr_logfile&#x3D;syslog</span><br><span class="line"></span><br><span class="line">[program:rsyslogd]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;sbin&#x2F;rsyslogd -n</span><br><span class="line">priority&#x3D;2</span><br><span class="line">autostart&#x3D;false</span><br><span class="line">autorestart&#x3D;unexpected</span><br><span class="line">stdout_logfile&#x3D;syslog</span><br><span class="line">stderr_logfile&#x3D;syslog</span><br><span class="line"></span><br><span class="line">[program:syncd]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;bin&#x2F;syncd_start.sh</span><br><span class="line">priority&#x3D;3</span><br><span class="line">autostart&#x3D;false</span><br><span class="line">autorestart&#x3D;false</span><br><span class="line">stdout_logfile&#x3D;syslog</span><br><span class="line">stderr_logfile&#x3D;syslog</span><br><span class="line"></span><br><span class="line">[program:ledinit]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;bin&#x2F;bcmcmd -t 60 &quot;rcload &#x2F;usr&#x2F;share&#x2F;host&#x2F;platform&#x2F;led_proc_init.soc&quot;</span><br><span class="line">priority&#x3D;4</span><br><span class="line">autostart&#x3D;false</span><br><span class="line">autorestart&#x3D;false</span><br><span class="line">startsecs&#x3D;0</span><br><span class="line">stdout_logfile&#x3D;syslog</span><br><span class="line">stderr_logfile&#x3D;syslog</span><br><span class="line"></span><br><span class="line">[program:linecardd]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;bin&#x2F;linecardd</span><br><span class="line">priority&#x3D;5</span><br><span class="line">autostart&#x3D;false</span><br><span class="line">autorestart&#x3D;false</span><br><span class="line">stdout_logfile&#x3D;syslog</span><br><span class="line">stderr_logfile&#x3D;syslog</span><br><span class="line"></span><br><span class="line">[program:averagerated]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;bin&#x2F;averated</span><br><span class="line">priority&#x3D;6</span><br><span class="line">autostart&#x3D;true</span><br><span class="line">autorestart&#x3D;false</span><br><span class="line">stdout_logfile&#x3D;syslog</span><br><span class="line">stderr_logfile&#x3D;syslog</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/clsn/p/8428257.html">日志切割之Logrotate</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\26\logSpecification\" rel="bookmark">日志规范</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\07\syslogProtocolAndRsyslog\" rel="bookmark">syslog协议与Rsyslog系统日志软件简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/syslog/" rel="tag"><i class="fa fa-tag"></i> syslog</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/09/switch/" rel="prev" title="交换机基础简介">
+                  <i class="fa fa-chevron-left"></i> 交换机基础简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/26/logSpecification/" rel="next" title="日志规范">
+                  日志规范 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/08/23/Logrotate/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

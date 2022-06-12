@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -338,9 +338,9 @@
 <li>一种基于OSI七层模型中 <strong>第三层网络层</strong> 的数据帧的存储转发技术，三层交换是主要依靠 <strong>IP地址</strong> 来确定转发方向，以实现不同网络间的通信。</li>
 </ul>
 <h2 id="3-2-三层转发特点"><a href="#3-2-三层转发特点" class="headerlink" title="3.2. 三层转发特点"></a>3.2. 三层转发特点</h2><ul>
-<li>IP报文每经过一次三层转发，<b><font color="red" style="">其源/目的MAC地址都会变化</font></b>，但是<b><font color="blue" style="">其源/目的IP始终不变</font></b>。</li>
+<li>IP报文每经过一次三层转发，<b><font color="red" style="">其源&#x2F;目的MAC地址都会变化</font></b>，但是<b><font color="blue" style="">其源&#x2F;目的IP始终不变</font></b>。</li>
 <li><strong>一次路由，多次交换</strong>。即首包通过CPU参与转发过程，同时建立交换芯片<strong>硬件表项</strong>，后续包由交换芯片<strong>直接硬件转发</strong></li>
-<li>交换芯片的硬件转发并不关心路由的具体下一跳IP，硬件三层表项只包含：目的IP地址/网段、目的IP（或下一跳IP）对应的MAC地址、出口VLAN、出端口</li>
+<li>交换芯片的硬件转发并不关心路由的具体下一跳IP，硬件三层表项只包含：目的IP地址&#x2F;网段、目的IP（或下一跳IP）对应的MAC地址、出口VLAN、出端口</li>
 </ul>
 <h2 id="3-3-路由器与交换机三层转发对比"><a href="#3-3-路由器与交换机三层转发对比" class="headerlink" title="3.3. 路由器与交换机三层转发对比"></a>3.3. 路由器与交换机三层转发对比</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
     <tr>
@@ -714,10 +714,10 @@
 <li>但实际不存在，接着根据 <strong>目的IP(2.1.1.2)</strong> 查找交换机芯片三层表项：<ul>
 <li>若能查到，则进行硬件三层转发；</li>
 <li>但实际未查到，将报文送到CPU处理，CPU根据ICMP请求报文的 <strong>目的IP(2.1.1.2)</strong> 查找其<strong>软件路由表</strong>：<ul>
-<li>若未能匹配，不同交换机处理方式不同（丢弃/ARP查询到后转发）</li>
+<li>若未能匹配，不同交换机处理方式不同（丢弃&#x2F;ARP查询到后转发）</li>
 <li>匹配了一个直连网段<b><font color="blue">2.1.1.0</font></b>（即PC_B所在的网段），接着继续查找其<strong>软件ARP表</strong>中是否存在 <strong>IP(2.1.1.2)</strong> 的表项：<ul>
-<li>若能查到，则更新源/目的MAC，并向 <strong>IP(2.1.1.2)</strong> 转发ICMP报文。</li>
-<li>但实际未查到，则需先发送ARP请求到 <strong>IP(2.1.1.2)</strong> 的MAC地址，再更新源/目的MAC和转发ICMP报文。</li>
+<li>若能查到，则更新源&#x2F;目的MAC，并向 <strong>IP(2.1.1.2)</strong> 转发ICMP报文。</li>
+<li>但实际未查到，则需先发送ARP请求到 <strong>IP(2.1.1.2)</strong> 的MAC地址，再更新源&#x2F;目的MAC和转发ICMP报文。</li>
 </ul>
 </li>
 </ul>
@@ -967,7 +967,7 @@
 
 <!-- **【11】**    **L3_SW接收ARP应答报文后，修改并转发ICMP请求**:  -->
 <p><b><font color="#7E3D76" style="">【11】 L3_SW接收ARP应答报文后，修改并转发ICMP请求：</font></b></p>
-<p><strong>L3_SW</strong>修改<strong>PC_A</strong>的ICMP请求包的源/目的MAC地址（目的MAC修改为<strong>PC_B的MAC地址</strong>、源MAC修改为<strong>自己的MAC地址</strong>），并转发给PC_B。转发的ICMP请求帧内容如下：</p>
+<p><strong>L3_SW</strong>修改<strong>PC_A</strong>的ICMP请求包的源&#x2F;目的MAC地址（目的MAC修改为<strong>PC_B的MAC地址</strong>、源MAC修改为<strong>自己的MAC地址</strong>），并转发给PC_B。转发的ICMP请求帧内容如下：</p>
 <table width="1900" border="1" cellspacing="1" style="border: 1ps dotted #666" >
     <tr>
         <th> </th>
@@ -1319,13 +1319,13 @@
 <p>PC_A成功接收到PC_B发出的ICMP应答报文后整个Ping过程结束。<br>此后PC_A和PC_B之间往返报文都将（经过查MAC地址表，查交换机芯片三层转发表后）由交换芯片<strong>直接完成硬件三层转发</strong>。<br>经过上述流程的分析可知，三层交换机充分利用“<strong>一次路由、多次转换</strong>”的原理实现了转发性能与三层交换复杂业务的完美统一。</p>
 <p>注：</p>
 <ul>
-<li> 一次路由：即首包通过CPU参与 <strong>请求/转发</strong>，再根据应答 <strong>学习/建立</strong> 交换芯片 <strong>硬件表项</strong>的“路由”过程（相对较慢，完成三层交换的必须的表项学习/建立流程）</li>
-<li> 多次交换：后续往返报文都可由交换芯片<strong>直接硬件三层转发</strong>（更快，提升转发性能）</li>
+<li>一次路由：即首包通过CPU参与 <strong>请求&#x2F;转发</strong>，再根据应答 <strong>学习&#x2F;建立</strong> 交换芯片 <strong>硬件表项</strong>的“路由”过程（相对较慢，完成三层交换的必须的表项学习&#x2F;建立流程）</li>
+<li>多次交换：后续往返报文都可由交换芯片<strong>直接硬件三层转发</strong>（更快，提升转发性能）</li>
 </ul>
 <h2 id="3-5-组网二下的三层转发流程介绍"><a href="#3-5-组网二下的三层转发流程介绍" class="headerlink" title="3.5. 组网二下的三层转发流程介绍"></a>3.5. 组网二下的三层转发流程介绍</h2><p>另一种组网示例如下图所示，图中标明了两台主机的MAC、IP、网关以及两台三层交换机的MAC、不同VLAN配置的三层接口IP。且两台交换机分别预配置了静态路由：<br>其中 L3_SW1 静态路由配置为 ip route 2.1.1.0 255.255.255.0 3.1.1.2，L3_SW2 静态路由配置为 ip route 1.1.1.0 255.255.255.0 3.1.1.1。</p>
 <p>当 <b><font color="red" style="">PC_A Ping PC_B</font></b> ，即发起 ICMP 请求时，三层转发处理流程如下（假设主机均暂未建立任何硬件转发表项）：</p>
 <p>由于组网转发中间许多转发详细流程与具体请求帧分析已在3.5中介绍，这里不再赘述，下面主要介绍此组网示例下三层转发流程：</p>
-<p>总结，其与组网一的主要区别在于第7步，组网一的L3_SW交换机在CPU查找软件路由表时<strong>匹配了目的IP的直连网段</strong>（2.1.1.0），然后广播找到直连网段内的PC_B并建立通信；而在本组网二中，L3_SW1交换机在CPU查找软件路由时<b><font color="red" style="">匹配了静态路由表项中某一下一跳网段（2.1.1.0/24）</font></b>。组网二多出的流程为，需将ICMP报文转发给下一跳(L3_SW2交换机)，并由L3_SW2交换机重复执行类似的CPU软件路由表查询、建表、转发ICMP请求报文、并最终转发ICMP应答报文回到L3_SW1，其他过程与组网一类似。</p>
+<p>总结，其与组网一的主要区别在于第7步，组网一的L3_SW交换机在CPU查找软件路由表时<strong>匹配了目的IP的直连网段</strong>（2.1.1.0），然后广播找到直连网段内的PC_B并建立通信；而在本组网二中，L3_SW1交换机在CPU查找软件路由时<b><font color="red" style="">匹配了静态路由表项中某一下一跳网段（2.1.1.0&#x2F;24）</font></b>。组网二多出的流程为，需将ICMP报文转发给下一跳(L3_SW2交换机)，并由L3_SW2交换机重复执行类似的CPU软件路由表查询、建表、转发ICMP请求报文、并最终转发ICMP应答报文回到L3_SW1，其他过程与组网一类似。</p>
 <h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><h2 id="4-1-二三层转发对比"><a href="#4-1-二三层转发对比" class="headerlink" title="4.1. 二三层转发对比"></a>4.1. 二三层转发对比</h2><table border="1" cellspacing="1" style="border: 1ps dotted #666" >
     <tr>
         <th> </th>

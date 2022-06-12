@@ -21,16 +21,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. step1.预编译“宏展开”，也就是对那些#***的命令的一种展开。例如define MAX 1000就是建立起MAX和1000之间的对等关系，好在编译阶段进行替换。例如ifdef&#x2F;ifndef就是从一个文件中有选择性的挑出一些符合条件的代码来交给下一步的编译阶段来处理。这里面最复杂的莫过于include了，相当于把那个对应的文件里面的内容一下子替换到这条include***语句的地方">
+<meta name="description" content="1. step1.预编译“宏展开”，也就是对那些#***的命令的一种展开。例如define MAX 1000就是建立起MAX和1000之间的对等关系，好在编译阶段进行替换。例如ifdef&#x2F;ifndef就是从一个文件中有选择性的挑出一些符合条件的代码来交给下一步的编译阶段来处理。这里面最复杂的莫过于include了，相当于把那个对应的文件里面的内容一下子替换到这条include***">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++编译过程总结">
 <meta property="og:url" content="https://eisenhao.cn/2019/12/19/CppCompile/index.html">
 <meta property="og:site_name" content="EisenHao&#39;s Note">
-<meta property="og:description" content="1. step1.预编译“宏展开”，也就是对那些#***的命令的一种展开。例如define MAX 1000就是建立起MAX和1000之间的对等关系，好在编译阶段进行替换。例如ifdef&#x2F;ifndef就是从一个文件中有选择性的挑出一些符合条件的代码来交给下一步的编译阶段来处理。这里面最复杂的莫过于include了，相当于把那个对应的文件里面的内容一下子替换到这条include***语句的地方">
+<meta property="og:description" content="1. step1.预编译“宏展开”，也就是对那些#***的命令的一种展开。例如define MAX 1000就是建立起MAX和1000之间的对等关系，好在编译阶段进行替换。例如ifdef&#x2F;ifndef就是从一个文件中有选择性的挑出一些符合条件的代码来交给下一步的编译阶段来处理。这里面最复杂的莫过于include了，相当于把那个对应的文件里面的内容一下子替换到这条include***">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CppCompile.jpg">
-<meta property="article:published_time" content="2019-12-19T11:30:44.000Z">
-<meta property="article:modified_time" content="2021-10-17T11:39:43.767Z">
+<meta property="article:published_time" content="2019-12-19T11:30:30.000Z">
+<meta property="article:modified_time" content="2022-06-12T16:58:19.648Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
@@ -171,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -264,7 +264,7 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2019-12-19 19:30:44" itemprop="dateCreated datePublished" datetime="2019-12-19T19:30:44+08:00">2019-12-19</time>
+      <time title="创建：2019-12-19 19:30:30" itemprop="dateCreated datePublished" datetime="2019-12-19T19:30:30+08:00">2019-12-19</time>
     </span>
 
   
@@ -287,7 +287,7 @@
         <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CppCompile.jpg" class="full-image" />
 
 
-<h1 id="1-step1-预编译"><a href="#1-step1-预编译" class="headerlink" title="1. step1.预编译"></a>1. step1.预编译</h1><p>“宏展开”，也就是对那些#***的命令的一种展开。例如define MAX 1000就是建立起MAX和1000之间的对等关系，好在编译阶段进行替换。例如ifdef/ifndef就是从一个文件中有选择性的挑出一些符合条件的代码来交给下一步的编译阶段来处理。这里面最复杂的莫过于include了，相当于把那个对应的文件里面的内容一下子替换到这条include***语句的地方来。</p>
+<h1 id="1-step1-预编译"><a href="#1-step1-预编译" class="headerlink" title="1. step1.预编译"></a>1. step1.预编译</h1><p>“宏展开”，也就是对那些#***的命令的一种展开。例如define MAX 1000就是建立起MAX和1000之间的对等关系，好在编译阶段进行替换。例如ifdef&#x2F;ifndef就是从一个文件中有选择性的挑出一些符合条件的代码来交给下一步的编译阶段来处理。这里面最复杂的莫过于include了，相当于把那个对应的文件里面的内容一下子替换到这条include***语句的地方来。</p>
 <a id="more"></a>
 
 <h1 id="2-step2-编译"><a href="#2-step2-编译" class="headerlink" title="2. step2.编译"></a>2. step2.编译</h1><p>编译是以一个个独立的文件作为单元的，一个文件就会编译出一个目标文件。（这里插入一点关于编译的文件的说明，编译器通过后缀名来辨识是否编译该文件，因此“.h”的头文件一概不理会，而“.cpp”的源文件一律都要被编译，我实验过把.h文件的后缀名改为.cpp，然后在include的地方相应的改为***.cpp，这样一来，编译器就会编译许多不必要的头文件，只不过头文件里我们通常只放置声明而不是定义，因此最后链接生成的可执行文件的大小是不会改变的）。<br>清楚编译是以一个个单独的文件为单元的，这一点很重要，因此编译只负责本单元的那些事，而对外部的事情一概不理会，在这一步里，我们可以调用一个函数而不必给出这个函数的定义，但是要在调用前得到这个函数的声明（其实这就是include的本质，不就是为了给你提前提供个声明而好让你使用吗？至于那个函数到底是如何实现的，需要在链接这一步里去找函数的入口地址。因此提供声明的方式可以是用include把放在别的文件中的声明拿过来，也可以是在调用之前自己写一句void max(int,int);都行。），编译阶段剩下的事情就是分析语法的正确性之类的工作了。</p>
@@ -297,10 +297,10 @@
 </ul>
 <h1 id="3-step3-链接"><a href="#3-step3-链接" class="headerlink" title="3. step3.链接"></a>3. step3.链接</h1><p>它会把所有编译好的单元全部链接为一个整体文件，其实这一步可以比作一个“连线”的过程，比如A文件用了B文件中的函数，那么链接的这一步会建立起这个关联。链接时最重要的我认为是检查全局空间里面是不是有重复定义或者缺失定义。这也就解释了为什么我们一般不在头文件中出现定义，因为头文件有可能被释放到多个源文件中，每个源文件都会单独编译，链接时就会发现全局空间中有多个定义了。</p>
 <h1 id="4-标准C和C-将编译过程定义为9个阶段"><a href="#4-标准C和C-将编译过程定义为9个阶段" class="headerlink" title="4. 标准C和C++将编译过程定义为9个阶段"></a>4. 标准C和C++将编译过程定义为9个阶段</h1><h2 id="4-1-字符映射-Character-Mapping"><a href="#4-1-字符映射-Character-Mapping" class="headerlink" title="4.1. 字符映射(Character Mapping)"></a>4.1. 字符映射(Character Mapping)</h2><p>文件中的物理源字符被映射到源字符集中，其中包括三字符运算符的替换、控制字符(行尾的回车换行)的替换。许多非美式键盘不支持基本源字符集中的一些字符，文件中可用三字符来代替这些基本源字符，以??为前导。但如果所用键盘是美式键盘，有些编译器可能不对三字符进行查找和替换，需要增加-trigraphs编译参数。在C++程序中，任何不在基本源字符集中的字符都被它的通用字符名替换。</p>
-<h2 id="4-2-行合并-Line-Splicing"><a href="#4-2-行合并-Line-Splicing" class="headerlink" title="4.2. 行合并(Line Splicing)"></a>4.2. 行合并(Line Splicing)</h2><p>以反斜杠/结束的行和它接下来的行合并。</p>
+<h2 id="4-2-行合并-Line-Splicing"><a href="#4-2-行合并-Line-Splicing" class="headerlink" title="4.2. 行合并(Line Splicing)"></a>4.2. 行合并(Line Splicing)</h2><p>以反斜杠&#x2F;结束的行和它接下来的行合并。</p>
 <h2 id="4-3-标记化-Tokenization"><a href="#4-3-标记化-Tokenization" class="headerlink" title="4.3. 标记化(Tokenization)"></a>4.3. 标记化(Tokenization)</h2><p>每一条注释被一个单独的空字符所替换。C++双字符运算符被识别为标记(为了开发可读性更强的程序，C++为非ASCII码开发者定义了一套双字符运算符集和新的保留字集)。源代码被分析成预处理标记。</p>
 <h2 id="4-4-预处理-Preprocessing"><a href="#4-4-预处理-Preprocessing" class="headerlink" title="4.4. 预处理(Preprocessing)"></a>4.4. 预处理(Preprocessing)</h2><p>调用预处理指令并扩展宏。使用#include指令包含的文件，重复步骤1到4。上述四个阶段统称为预处理阶段。</p>
-<h2 id="4-5-字符集映射-Character-set-Mapping"><a href="#4-5-字符集映射-Character-set-Mapping" class="headerlink" title="4.5. 字符集映射(Character-set Mapping)"></a>4.5. 字符集映射(Character-set Mapping)</h2><p>源字符集成员、转义序列被转换成等价的执行字符集成员。例如：’/a’在ASCII环境下会被转换成值为一个字节，值为7。</p>
+<h2 id="4-5-字符集映射-Character-set-Mapping"><a href="#4-5-字符集映射-Character-set-Mapping" class="headerlink" title="4.5. 字符集映射(Character-set Mapping)"></a>4.5. 字符集映射(Character-set Mapping)</h2><p>源字符集成员、转义序列被转换成等价的执行字符集成员。例如：’&#x2F;a’在ASCII环境下会被转换成值为一个字节，值为7。</p>
 <h2 id="4-6-字符串连接-String-Concatenation"><a href="#4-6-字符串连接-String-Concatenation" class="headerlink" title="4.6. 字符串连接(String Concatenation)"></a>4.6. 字符串连接(String Concatenation)</h2><p>相邻的字符串被连接。例如：”””hahaha””huohuohuo”将成为”hahahahuohuohuo”。</p>
 <h2 id="4-7-翻译-Translation"><a href="#4-7-翻译-Translation" class="headerlink" title="4.7. 翻译(Translation)"></a>4.7. 翻译(Translation)</h2><p>进行语法和语义分析编译，并翻译成目标代码。</p>
 <h2 id="4-8-处理模板"><a href="#4-8-处理模板" class="headerlink" title="4.8. 处理模板"></a>4.8. 处理模板</h2><p>处理模板实例。</p>
@@ -324,10 +324,10 @@
       <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\23\ParkingSimulationSystem\" rel="bookmark">停车场仿真系统</a></div>
+      <div class="popular-posts-title"><a href="\2022\06\12\ImplementationOfSkipListOnCpp\" rel="bookmark">基于 C++ 的 SkipList 数据结构设计与编码实现</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2018\10\14\PolymorphismTest\" rel="bookmark">C++中的四种多态</a></div>
+      <div class="popular-posts-title"><a href="\2019\01\23\ParkingSimulationSystem\" rel="bookmark">停车场仿真系统</a></div>
     </li>
   </ul>
 

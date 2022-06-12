@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -282,7 +282,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="1-排版与格式"><a href="#1-排版与格式" class="headerlink" title="1. 排版与格式"></a>1. 排版与格式</h1><h2 id="1-1-include"><a href="#1-1-include" class="headerlink" title="1.1. include"></a>1.1. include</h2><p>include guards 或#pragma once<br>include guards 必须使用<CODEPATH>_<FILE>_H（或 HPP）的全大写形式。CODEPATH 中需要去掉标示主干/分支的关键词如：trunk, branch-xxx </p>
+        <h1 id="1-排版与格式"><a href="#1-排版与格式" class="headerlink" title="1. 排版与格式"></a>1. 排版与格式</h1><h2 id="1-1-include"><a href="#1-1-include" class="headerlink" title="1.1. include"></a>1.1. include</h2><p>include guards 或#pragma once<br>include guards 必须使用<CODEPATH>_<FILE>_H（或 HPP）的全大写形式。CODEPATH 中需要去掉标示主干&#x2F;分支的关键词如：trunk, branch-xxx </p>
 <a id="more"></a>
 
 <h2 id="1-2-头文件顺序"><a href="#1-2-头文件顺序" class="headerlink" title="1.2. 头文件顺序"></a>1.2. 头文件顺序</h2><p>强制头 (.h) 文件按以下顺序组织：</p>
@@ -290,7 +290,7 @@
 <li>文件声明</li>
 <li>include guards</li>
 <li>引用的头文件</li>
-<li>自定义类型声明，函数声明（一般函数，模板函数）, 内联函数/模板函数</li>
+<li>自定义类型声明，函数声明（一般函数，模板函数）, 内联函数&#x2F;模板函数</li>
 </ul>
 <h2 id="1-3-源文件顺序"><a href="#1-3-源文件顺序" class="headerlink" title="1.3. 源文件顺序"></a>1.3. 源文件顺序</h2><p>强制 CPP 文件按以下顺序组织：</p>
 <ul>
@@ -308,23 +308,23 @@
 </li>
 <li><p>命名空间不缩进</p>
 </li>
-<li><p>public/protected/private 关键字与类声明对齐</p>
+<li><p>public&#x2F;protected&#x2F;private 关键字与类声明对齐</p>
 </li>
 <li><p>比较短的函数声明，整个声明占一行；过长的函数声明，令每一参数占一行，并且垂直对齐，换行后的参数至少保持 8 个空格缩进</p>
 </li>
 <li><p>比较短的函数调用语句，整个语句占一行；过长的函数调用，控制折行确保每行不要超过 100 列，换行后至少额外缩进 8 个空格</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">grey_wolf.eat(white_sheep);</span><br><span class="line">hungry_lion.eat(</span><br><span class="line">        big_grey_wolf,</span><br><span class="line">        little_white_sheep,</span><br><span class="line">        quick_brown_fox,</span><br><span class="line">        lazy_dog);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">grey_wolf.<span class="built_in">eat</span>(white_sheep);</span><br><span class="line">hungry_lion.<span class="built_in">eat</span>(</span><br><span class="line">        big_grey_wolf,</span><br><span class="line">        little_white_sheep,</span><br><span class="line">        quick_brown_fox,</span><br><span class="line">        lazy_dog);</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>if 语句的分支部分必须使用大括号包围</p>
 </li>
 <li><p>如果条件表达式很长很复杂，在低优先级运算符前换行，换行后运算符 (|| or &amp;&amp;) 放在新行最前面，并额外缩进 8 个空格</p>
 </li>
-<li><p>强制连续的 if…elseif… 判断，原则上应该以 else 语句结束。若该条件合法但没有相应动作，通过注释标明//pass 或//do nothing; 若是不合法情况，应报错</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (you.com_from(EARTH)</span><br><span class="line">        || you.com_from(MARS)</span><br><span class="line">        ||you.com_from(VENUS)) &#123;</span><br><span class="line">    <span class="keyword">return</span><span class="string">&quot;youcomefromsolar system&quot;</span>;</span><br><span class="line">&#125; <span class="comment">// else do nothing</span></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">std</span>::<span class="built_in">string</span>();</span><br></pre></td></tr></table></figure>
+<li><p>强制连续的 if…elseif… 判断，原则上应该以 else 语句结束。若该条件合法但没有相应动作，通过注释标明&#x2F;&#x2F;pass 或&#x2F;&#x2F;do nothing; 若是不合法情况，应报错</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (you.<span class="built_in">com_from</span>(EARTH)</span><br><span class="line">        || you.<span class="built_in">com_from</span>(MARS)</span><br><span class="line">        ||you.<span class="built_in">com_from</span>(VENUS)) &#123;</span><br><span class="line">    <span class="keyword">return</span><span class="string">&quot;youcomefromsolar system&quot;</span>;</span><br><span class="line">&#125; <span class="comment">// else do nothing</span></span><br><span class="line"><span class="keyword">return</span> std::<span class="built_in">string</span>();</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>强制每一个 case 语句都必须以 break 语句或 return 语句结束</p>
 </li>
-<li><p>强制语句原则上应该有一个 default 语句，如果没有动作，通过注释标明//pass 或//do nothing</p>
+<li><p>强制语句原则上应该有一个 default 语句，如果没有动作，通过注释标明&#x2F;&#x2F;pass 或&#x2F;&#x2F;do nothing</p>
 </li>
 <li><p>强制 case 语句需要与 switch 对齐，不要增加额外缩进</p>
 </li>
@@ -339,7 +339,7 @@
 <li>局部变量应在声明处赋初值，指针类型局部变量必须在声明处赋初值</li>
 </ul>
 <h2 id="2-2-注释"><a href="#2-2-注释" class="headerlink" title="2.2. 注释"></a>2.2. 注释</h2><ul>
-<li>强制 每个文件都必须有文件声明放在文件头部，按如下内容组织：1) 版权声明；2) 许可证（可选）3) 作者 4) 代码功能/用法说明</li>
+<li>强制 每个文件都必须有文件声明放在文件头部，按如下内容组织：1) 版权声明；2) 许可证（可选）3) 作者 4) 代码功能&#x2F;用法说明</li>
 <li>强制 文档化注释必须标明作者和简要介绍，公有函数必须解释其输入参数、输入参数合法取值、输出参数、返回值、抛出的异常</li>
 </ul>
 <h1 id="3-代码规范"><a href="#3-代码规范" class="headerlink" title="3. 代码规范"></a>3. 代码规范</h1><ul>
@@ -350,7 +350,7 @@
 <li><p>强制 必须使用构造函数初始化列表显式初始化直接基类与所有的基本类型数据成员</p>
 </li>
 <li><p><strong>强制 没有复制意义的类必须用 DISALLOW_COPY_AND_ASSIGN 宏禁止拷贝构造函数和赋值构造函数。</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DISALLOW_COPY_AND_ASSIGN(TypeName) \</span></span><br><span class="line">        TypeName(constTypeName&amp;); \</span><br><span class="line">        TypeName&amp; <span class="keyword">operator</span>=(constTypeName&amp;)</span><br><span class="line">class Foo &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">explicit</span> Foo(<span class="keyword">int</span> f) : _f(f) &#123;&#125;</span><br><span class="line">    ~Foo();</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    DISALLOW_COPY_AND_ASSIGN(Foo);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DISALLOW_COPY_AND_ASSIGN(TypeName) \</span></span><br><span class="line">        <span class="built_in">TypeName</span>(constTypeName&amp;); \</span><br><span class="line">        TypeName&amp; <span class="keyword">operator</span>=(constTypeName&amp;)</span><br><span class="line">class Foo &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">explicit</span> <span class="built_in">Foo</span>(<span class="keyword">int</span> f) : _f(f) &#123;&#125;</span><br><span class="line">    ~<span class="built_in">Foo</span>();</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">DISALLOW_COPY_AND_ASSIGN</span>(Foo);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>强制 有默认值语意的类，必须显式定义默认构造函数</p>
 </li>
@@ -364,24 +364,20 @@
 <li><strong>头文件中禁止在函数、方法和类作用域外的地方使用 using namespace 或者 using class</strong>，但是类别名（type alias）和别名模板（alias template）的使用不受限制</li>
 </ul>
 <h2 id="3-2-类型转换"><a href="#3-2-类型转换" class="headerlink" title="3.2. 类型转换"></a>3.2. 类型转换</h2><ul>
-<li>强制 必须使用 C++ 风格类型转换。如 static_cast、dynamic_cast、const_cast、reinterpret_cast<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>&gt;(i);</span><br><span class="line"><span class="keyword">const</span> MyBuf * buf = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> MyBuf*&gt;(network_buf);</span><br><span class="line"><span class="keyword">const</span> Derived * d = <span class="keyword">dynamic_cast</span>&lt;<span class="keyword">const</span> Derived*&gt;(b);</span><br><span class="line">old_copy(dest, <span class="keyword">const_cast</span>&lt;<span class="keyword">void</span> *&gt;(src), n);</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>强制 必须使用 C++ 风格类型转换。如 static_cast、dynamic_cast、const_cast、reinterpret_cast<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>&gt;(i);</span><br><span class="line"><span class="keyword">const</span> MyBuf * buf = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> MyBuf*&gt;(network_buf);</span><br><span class="line"><span class="keyword">const</span> Derived * d = <span class="keyword">dynamic_cast</span>&lt;<span class="keyword">const</span> Derived*&gt;(b);</span><br><span class="line"><span class="built_in">old_copy</span>(dest, <span class="keyword">const_cast</span>&lt;<span class="keyword">void</span> *&gt;(src), n);</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="3-3-smart-ptr"><a href="#3-3-smart-ptr" class="headerlink" title="3.3. smart_ptr"></a>3.3. smart_ptr</h2><ul>
 <li><p><strong>强制 禁止使用 auto_ptr</strong></p>
 </li>
 <li><p>应使用：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Foo&gt; <span class="title">ptr</span><span class="params">(newFoo())</span></span>;</span><br><span class="line"><span class="built_in">std</span>::scoped_ptr&lt;Shape&gt; p;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Shape&gt; p = createShape();</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_ptr&lt;Foo&gt; <span class="title">ptr</span><span class="params">(newFoo())</span></span>;</span><br><span class="line">std::scoped_ptr&lt;Shape&gt; p;</span><br><span class="line">std::shared_ptr&lt;Shape&gt; p = <span class="built_in">createShape</span>();</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>建议不要使用 strcpy()/strcat()/strdup()/sprintf() 等没有越界检查的函数</p>
+<li><p>建议不要使用 strcpy()&#x2F;strcat()&#x2F;strdup()&#x2F;sprintf() 等没有越界检查的函数</p>
 </li>
-<li><p>建议不要使用 strncpy/strncat 实现有问题的函数</p>
+<li><p>建议不要使用 strncpy&#x2F;strncat 实现有问题的函数</p>
 </li>
 <li><p>强制 禁止定义 struct 的同时 typedef 一个类型名，除非该头文件必须兼容 gcc，应使用：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="3-4-返回值"><a href="#3-4-返回值" class="headerlink" title="3.4. 返回值"></a>3.4. 返回值</h2><ul>
 <li>强制 如果使用 int 作为返回值，必须遵循“负值表示失败，非负值表示成功”</li>

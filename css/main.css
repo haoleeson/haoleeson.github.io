@@ -17,10 +17,10 @@
   --btn-default-hover-bg: #fff;
   --btn-default-hover-color: #222;
   --btn-default-hover-border-color: #222;
-  --highlight-background: #fdf6e3;
-  --highlight-foreground: #657b83;
-  --highlight-gutter-background: #ede9d9;
-  --highlight-gutter-foreground: #74878c;
+  --highlight-background: #282b2e;
+  --highlight-foreground: #a9b7c6;
+  --highlight-gutter-background: #34393d;
+  --highlight-gutter-foreground: #9ca9b6;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -42,10 +42,10 @@
     --btn-default-hover-bg: #666;
     --btn-default-hover-color: #ccc;
     --btn-default-hover-border-color: #666;
-    --highlight-background: #3f3f3f;
-    --highlight-foreground: #dcdcdc;
-    --highlight-gutter-background: #4e4e4e;
-    --highlight-gutter-foreground: #ccc;
+    --highlight-background: #282b2e;
+    --highlight-foreground: #a9b7c6;
+    --highlight-gutter-background: #34393d;
+    --highlight-gutter-foreground: #9ca9b6;
   }
   img {
     opacity: 0.75;
@@ -392,80 +392,62 @@ td {
   transform: rotate(-45deg);
 }
 /*
-
-Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmail.com>
-
+Date: 24 Fev 2015
+Author: Pedro Oliveira <kanytu@gmail . com>
 */
 
 .hljs {
+  color: #a9b7c6;
+  background: #282b2e;
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #fdf6e3;
-  color: #657b83;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet {
+  color: #6897BB;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-deletion {
+  color: #cc7832;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link {
+  color: #629755;
 }
 
 .hljs-comment,
 .hljs-quote {
-  color: #93a1a1;
+  color: #808080;
 }
 
-/* Solarized Green */
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-addition {
-  color: #859900;
+.hljs-meta {
+  color: #bbb529;
 }
 
-/* Solarized Cyan */
-.hljs-number,
 .hljs-string,
-.hljs-meta .hljs-meta-string,
-.hljs-literal,
-.hljs-doctag,
-.hljs-regexp {
-  color: #2aa198;
+.hljs-attribute,
+.hljs-addition {
+  color: #6A8759;
 }
 
-/* Solarized Blue */
-.hljs-title,
 .hljs-section,
+.hljs-title,
+.hljs-type {
+  color: #ffc66d;
+}
+
 .hljs-name,
 .hljs-selector-id,
 .hljs-selector-class {
-  color: #268bd2;
-}
-
-/* Solarized Yellow */
-.hljs-attribute,
-.hljs-attr,
-.hljs-variable,
-.hljs-template-variable,
-.hljs-class .hljs-title,
-.hljs-type {
-  color: #b58900;
-}
-
-/* Solarized Orange */
-.hljs-symbol,
-.hljs-bullet,
-.hljs-subst,
-.hljs-meta,
-.hljs-meta .hljs-keyword,
-.hljs-selector-attr,
-.hljs-selector-pseudo,
-.hljs-link {
-  color: #cb4b16;
-}
-
-/* Solarized Red */
-.hljs-built_in,
-.hljs-deletion {
-  color: #dc322f;
-}
-
-.hljs-formula {
-  background: #eee8d5;
+  color: #e8bf6a;
 }
 
 .hljs-emphasis {
@@ -476,89 +458,6 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
   font-weight: bold;
 }
 
-@media (prefers-color-scheme: dark) {
-/*
-
-Zenburn style from voldmar.ru (c) Vladimir Epifanov <voldmar@voldmar.ru>
-based on dark.css by Ivan Sagalaev
-
-*/
-
-.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 0.5em;
-  background: #3f3f3f;
-  color: #dcdcdc;
-}
-
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-tag {
-  color: #e3ceab;
-}
-
-.hljs-template-tag {
-  color: #dcdcdc;
-}
-
-.hljs-number {
-  color: #8cd0d3;
-}
-
-.hljs-variable,
-.hljs-template-variable,
-.hljs-attribute {
-  color: #efdcbc;
-}
-
-.hljs-literal {
-  color: #efefaf;
-}
-
-.hljs-subst {
-  color: #8f8f8f;
-}
-
-.hljs-title,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-section,
-.hljs-type {
-  color: #efef8f;
-}
-
-.hljs-symbol,
-.hljs-bullet,
-.hljs-link {
-  color: #dca3a3;
-}
-
-.hljs-deletion,
-.hljs-string,
-.hljs-built_in,
-.hljs-builtin-name {
-  color: #cc9393;
-}
-
-.hljs-addition,
-.hljs-comment,
-.hljs-quote,
-.hljs-meta {
-  color: #7f9f7f;
-}
-
-
-.hljs-emphasis {
-  font-style: italic;
-}
-
-.hljs-strong {
-  font-weight: bold;
-}
-
-}
 .highlight:hover .copy-btn,
 pre:hover .copy-btn {
   opacity: 1;
@@ -2902,7 +2801,7 @@ mark.search-keyword {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #e08195;
+  background: #46f506;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);

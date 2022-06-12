@@ -29,7 +29,7 @@
 <meta property="og:description" content="在大部分Java开发过程中需要调用一些Shell脚本命令来实现某些功能，如：文本处理过程中调脚本使开发更便捷、其他组件只提供了Shell脚本调用方式或调脚本与系统直接交互等场景。博主总结了一些Java进程执行Shell命令的常见问题及解决方法，或能在大家开发过程中避坑有积极作用。 关键词: Java调Shell、问题总结">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/execShellCMD.jpg">
-<meta property="article:published_time" content="2020-06-15T14:17:44.000Z">
+<meta property="article:published_time" content="2020-06-15T14:17:30.000Z">
 <meta property="article:modified_time" content="2020-06-15T14:17:45.000Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="Java">
@@ -171,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -264,7 +264,7 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2020-06-15 22:17:44" itemprop="dateCreated datePublished" datetime="2020-06-15T22:17:44+08:00">2020-06-15</time>
+      <time title="创建：2020-06-15 22:17:30" itemprop="dateCreated datePublished" datetime="2020-06-15T22:17:30+08:00">2020-06-15</time>
     </span>
 
   
@@ -299,11 +299,9 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim查看文本格式，确定脚本文档格式（dos(Windows)--\r\n; unix(Linux)--\n）</span></span><br><span class="line">:set ff</span><br><span class="line"><span class="meta">#</span><span class="bash"> vim查看不可见字符，确认脚本结尾字符问题</span></span><br><span class="line">:set invlist</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 方式1：命令行模式<span class="built_in">set</span> fileformat(推荐)</span></span><br><span class="line">:set fileformat=unix</span><br><span class="line">:wq</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 方式2：删除多的\r字符（下方替换命令没写错，用/r）</span></span><br><span class="line">:%s//r//g</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>若需要修改多个脚本文件格式，也可通过dos2unix命令批量修改</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo find YourScriptsDir/ -name &quot;*.sh&quot; | xargs dos2unix</span><br><span class="line">可选参数备注：</span><br><span class="line">-k：保持输出文件的日期不变 </span><br><span class="line">-q：安静模式，不提示任何警告信息</span><br><span class="line">-V：查看版本</span><br><span class="line">-c：转换模式，模式有：ASCII, 7bit, ISO, Mac, 默认是：ASCII</span><br><span class="line">-o：写入到源文件</span><br><span class="line">-n：写入到新文件</span><br></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo find YourScriptsDir/ -name &quot;*.sh&quot; | xargs dos2unix</span><br><span class="line">可选参数备注：</span><br><span class="line">-k：保持输出文件的日期不变 </span><br><span class="line">-q：安静模式，不提示任何警告信息</span><br><span class="line">-V：查看版本</span><br><span class="line">-c：转换模式，模式有：ASCII, 7bit, ISO, Mac, 默认是：ASCII</span><br><span class="line">-o：写入到源文件</span><br><span class="line">-n：写入到新文件</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="1-2-手动在bash中能够执行，但Java中调用Shell却报“No-such-file-or-directory”"><a href="#1-2-手动在bash中能够执行，但Java中调用Shell却报“No-such-file-or-directory”" class="headerlink" title="1.2. 手动在bash中能够执行，但Java中调用Shell却报“No such file or directory”"></a>1.2. 手动在bash中能够执行，但Java中调用Shell却报“No such file or directory”</h2><p><strong>原因分析：</strong>Java在调用Shell的时候，默认是用在系统的/bin/目录下的指令（不加载环境变量），可能是找不到命令的路径。如：要用Java执行Shell命令为”node helloworld.js”，可能是不能识别”node”这个命令。<br><strong>解决方法：</strong>在/bin/目录下创所调用命令软链接 或 用命令全路径</p>
+<h2 id="1-2-手动在bash中能够执行，但Java中调用Shell却报“No-such-file-or-directory”"><a href="#1-2-手动在bash中能够执行，但Java中调用Shell却报“No-such-file-or-directory”" class="headerlink" title="1.2. 手动在bash中能够执行，但Java中调用Shell却报“No such file or directory”"></a>1.2. 手动在bash中能够执行，但Java中调用Shell却报“No such file or directory”</h2><p><strong>原因分析：</strong>Java在调用Shell的时候，默认是用在系统的&#x2F;bin&#x2F;目录下的指令（不加载环境变量），可能是找不到命令的路径。如：要用Java执行Shell命令为”node helloworld.js”，可能是不能识别”node”这个命令。<br><strong>解决方法：</strong>在&#x2F;bin&#x2F;目录下创所调用命令软链接 或 用命令全路径</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建所调用命令软链接到/bin/目录</span></span><br><span class="line">ln -s /home/admin/node/bin/node node;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">  或调用时用node的绝对地址</span></span><br><span class="line">/home/admin/node/bin/node helloworld.js</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-3-若脚本文件换行符正确、有脚本执行权限，无命令识别问题，却依然无法执行shell"><a href="#1-3-若脚本文件换行符正确、有脚本执行权限，无命令识别问题，却依然无法执行shell" class="headerlink" title="1.3. 若脚本文件换行符正确、有脚本执行权限，无命令识别问题，却依然无法执行shell"></a>1.3. 若脚本文件换行符正确、有脚本执行权限，无命令识别问题，却依然无法执行shell</h2><p><strong>原因分析：</strong>推测可能是在调用Runtime.getRuntime().exec(“CMD”)时，传递Shell命令字符串的某个实现环节出了问题。<br><strong>解决方法：</strong>实例化一个数据输出流，通过dataoutputstream对象的写字节方法往process写待执行的Shell命令字符串</p>
@@ -340,8 +338,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/05/29/ConfusedShellLang/" rel="prev" title="Shell易混淆基本语法总结">
-                  <i class="fa fa-chevron-left"></i> Shell易混淆基本语法总结
+                <a href="/2020/05/29/ConfusedShellLang/" rel="prev" title="Shell 实用指令记录">
+                  <i class="fa fa-chevron-left"></i> Shell 实用指令记录
                 </a>
             </div>
             <div class="post-nav-item">

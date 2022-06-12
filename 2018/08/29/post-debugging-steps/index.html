@@ -171,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -289,16 +289,12 @@
 <h1 id="1-博客文章编写＆调试＆发布"><a href="#1-博客文章编写＆调试＆发布" class="headerlink" title="1. 博客文章编写＆调试＆发布"></a>1. 博客文章编写＆调试＆发布</h1><h2 id="1-1-进入Hexo根目录"><a href="#1-1-进入Hexo根目录" class="headerlink" title="1.1. 进入Hexo根目录"></a>1.1. 进入Hexo根目录</h2><ol>
 <li>输入密码,进入root用户模式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo su</span><br></pre></td></tr></table></figure></li>
 <li>进入Hexo站点根目录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-</li>
+<a id="more"></a></li>
 </ol>
 <h2 id="1-2-写文章"><a href="#1-2-写文章" class="headerlink" title="1.2. 写文章"></a>1.2. 写文章</h2><ol>
 <li>进入发布文件夹<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;source&#x2F;_posts</span><br></pre></td></tr></table></figure></li>
 <li>新建md文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ touch example.md</span><br></pre></td></tr></table></figure></li>
-<li>编辑example.md文件，编写文章(用Markdown大肆发挥吧，可参考<a href="https://eisenhao.cn/2018/08/31/write-a-md-file/">Markdown文章语法</a>)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim example.md</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>编辑example.md文件，编写文章(用Markdown大肆发挥吧，可参考<a href="https://eisenhao.cn/2018/08/31/write-a-md-file/">Markdown文章语法</a>)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim example.md</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h2 id="1-3-本地调试"><a href="#1-3-本地调试" class="headerlink" title="1.3. 本地调试"></a>1.3. 本地调试</h2><ol>
 <li>开启测试<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo hexo s</span><br></pre></td></tr></table></figure></li>
@@ -307,15 +303,11 @@
 <h2 id="1-4-发布"><a href="#1-4-发布" class="headerlink" title="1.4. 发布"></a>1.4. 发布</h2><ol>
 <li>测试没问题后，我们就生成静态网页文件发布至我们的Github pages 中。<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /home/eisenhao/eisenhao.github.io</span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
 <li>可能会要求输入github账号密码</li>
-<li>如果上传失败显示如下信息,可能是由于我们没有配置root环境中的GitHub账号global，按照提示配置一下GitHub的global账号即可.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-</li>
+<li>如果上传失败显示如下信息,可能是由于我们没有配置root环境中的GitHub账号global，按照提示配置一下GitHub的global账号即可.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
 </ol>
 <h1 id="2-主题配置"><a href="#2-主题配置" class="headerlink" title="2. 主题配置"></a>2. 主题配置</h1><ol>
 <li>主题配置文件在主题文件夹中,我们可以更改config.yml文件进行配置.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
-<li>用文本编辑器打开编辑主题配置文件,点击查看<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/getting-started.html#theme-settings">设置详细介绍.</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>用文本编辑器打开编辑主题配置文件,点击查看<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/getting-started.html#theme-settings">设置详细介绍.</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h1 id="3-Linux-技巧每日一练"><a href="#3-Linux-技巧每日一练" class="headerlink" title="3. Linux 技巧每日一练"></a>3. Linux 技巧每日一练</h1><p>用管理员运行文档管理器. sudo nautilus 会打开root版的文档管理器，可在终端键入ctrl+c就会关闭这个文档管理器。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nautilus</span><br></pre></td></tr></table></figure>

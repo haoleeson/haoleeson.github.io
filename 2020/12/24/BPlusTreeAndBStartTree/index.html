@@ -31,8 +31,8 @@
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree1.jpg">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree2.PNG">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BStartTree.PNG">
-<meta property="article:published_time" content="2020-12-24T09:54:44.000Z">
-<meta property="article:modified_time" content="2021-10-17T11:39:43.767Z">
+<meta property="article:published_time" content="2020-12-24T09:54:30.000Z">
+<meta property="article:modified_time" content="2022-06-12T16:58:19.648Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
@@ -173,7 +173,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -266,7 +266,7 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2020-12-24 17:54:44" itemprop="dateCreated datePublished" datetime="2020-12-24T17:54:44+08:00">2020-12-24</time>
+      <time title="创建：2020-12-24 17:54:30" itemprop="dateCreated datePublished" datetime="2020-12-24T17:54:30+08:00">2020-12-24</time>
     </span>
 
   
@@ -321,7 +321,7 @@
 <h1 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B*树"></a>2. B*树</h1><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BStartTree.PNG" alt="B*树"></p>
 <h2 id="2-1-B-树的定义"><a href="#2-1-B-树的定义" class="headerlink" title="2.1. B*树的定义"></a>2.1. B*树的定义</h2><ul>
 <li>是B+树的变体，在B+树的非根和非叶子结点再增加<strong>指向兄弟的指针</strong>；</li>
-<li>B*树定义了非叶子结点关键字个数至少为(2/3)*M，即块的最低使用率为2/3（代替B+树的1/2）；</li>
+<li>B*树定义了非叶子结点关键字个数至少为(2&#x2F;3)*M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
 </ul>
 <h1 id="3-B树，B-树，B-树小结"><a href="#3-B树，B-树，B-树小结" class="headerlink" title="3. B树，B+树，B*树小结"></a>3. B树，B+树，B*树小结</h1><table>
 <thead>
@@ -332,7 +332,7 @@
 </thead>
 <tbody><tr>
 <td align="left">B树</td>
-<td align="left">多路搜索树，每个结点存储M/2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；</td>
+<td align="left">多路搜索树，每个结点存储M&#x2F;2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；</td>
 </tr>
 <tr>
 <td align="left">B+树</td>
@@ -340,7 +340,7 @@
 </tr>
 <tr>
 <td align="left">B*树</td>
-<td align="left">在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1/2提高到2/3；</td>
+<td align="left">在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1&#x2F;2提高到2&#x2F;3；</td>
 </tr>
 </tbody></table>
 <h1 id="4-B树，B-树与B-树的优缺点比较"><a href="#4-B树，B-树与B-树的优缺点比较" class="headerlink" title="4. B树，B+树与B*树的优缺点比较"></a>4. B树，B+树与B*树的优缺点比较</h1><p>备注：B-树就是B树，”-“是个连字符号，不是减号。</p>
@@ -352,9 +352,9 @@
 <li>另外B树也好B+树也好，根或者上面几层因为被反复query，所以这几块基本都在内存中，不会出现读磁盘IO，一般已启动的时候，就会主动换入内存。 mysql底层存储是用B+树实现的，因为内存中B+树是没有优势的，但是一到磁盘，B+树的威力就出来了。</li>
 </ul>
 <h2 id="4-2-B-树-vs-B-树"><a href="#4-2-B-树-vs-B-树" class="headerlink" title="4.2. B+树 vs B*树"></a>4.2. B+树 vs B*树</h2><ul>
-<li>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针；B树定义了非叶子结点关键字个数至少为(2/3)M，即块的最低使用率为2/3（代替B+树的1/2）；</li>
-<li>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1/2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</li>
-<li>B*树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1/3的数据到新结点，最后在父结点增加新结点的指针； 所以，B*树分配新结点的概率比B+树要低，空间使用率更高；</li>
+<li>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针；B树定义了非叶子结点关键字个数至少为(2&#x2F;3)M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
+<li>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1&#x2F;2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</li>
+<li>B*树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1&#x2F;3的数据到新结点，最后在父结点增加新结点的指针； 所以，B*树分配新结点的概率比B+树要低，空间使用率更高；</li>
 </ul>
 <h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7323130d351b">讲点”B树”，一文详解B树，B+树，B*树及其优缺点比较</a></li>
@@ -370,6 +370,9 @@
   <ul class="popular-posts">
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\06\12\ImplementationOfSkipListOnCpp\" rel="bookmark">基于 C++ 的 SkipList 数据结构设计与编码实现</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2018\10\16\MinHeapAndMaxHeap\" rel="bookmark">最小堆与最大堆</a></div>

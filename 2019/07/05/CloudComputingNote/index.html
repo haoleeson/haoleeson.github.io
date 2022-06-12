@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. Bigtable————分布式结构化数据表1.1. Bigtable特点  数据种类繁多，满足一系列Google产品的存储要求 吞吐量大，响应海量的服务请求 高可用性，几乎所有情况下的系统均可用 高扩展性，可根据需要随时加入或撤销服务器 简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单">
+<meta name="description" content="1. Bigtable————分布式结构化数据表1.1. Bigtable特点 数据种类繁多，满足一系列Google产品的存储要求 吞吐量大，响应海量的服务请求 高可用性，几乎所有情况下的系统均可用 高扩展性，可根据需要随时加入或撤销服务器 简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单">
 <meta property="og:type" content="article">
 <meta property="og:title" content="云计算学习笔记">
 <meta property="og:url" content="https://eisenhao.cn/2019/07/05/CloudComputingNote/index.html">
 <meta property="og:site_name" content="EisenHao&#39;s Note">
-<meta property="og:description" content="1. Bigtable————分布式结构化数据表1.1. Bigtable特点  数据种类繁多，满足一系列Google产品的存储要求 吞吐量大，响应海量的服务请求 高可用性，几乎所有情况下的系统均可用 高扩展性，可根据需要随时加入或撤销服务器 简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单">
+<meta property="og:description" content="1. Bigtable————分布式结构化数据表1.1. Bigtable特点 数据种类繁多，满足一系列Google产品的存储要求 吞吐量大，响应海量的服务请求 高可用性，几乎所有情况下的系统均可用 高扩展性，可根据需要随时加入或撤销服务器 简单，简单的底层系统，既减小了系统出错概念，又使上层应用开发更简单">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/cloudComputing.jpg">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190617095713134.png">
@@ -48,7 +48,7 @@
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-Dremel.png">
 <meta property="og:image" content="https://eisenhao.cn/Users/eisenhao/Documents/CloudComputing/CloudComputing-20190710154540235.png">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/CloudComputing-20190710161656740.png">
-<meta property="article:published_time" content="2019-07-05T07:10:44.000Z">
+<meta property="article:published_time" content="2019-07-05T07:10:30.000Z">
 <meta property="article:modified_time" content="2019-07-15T15:01:45.000Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="云计算">
@@ -190,7 +190,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -283,7 +283,7 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2019-07-05 15:10:44" itemprop="dateCreated datePublished" datetime="2019-07-05T15:10:44+08:00">2019-07-05</time>
+      <time title="创建：2019-07-05 15:10:30" itemprop="dateCreated datePublished" datetime="2019-07-05T15:10:30+08:00">2019-07-05</time>
     </span>
 
   
@@ -306,7 +306,7 @@
         <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/cloudComputing.jpg" class="full-image" />
 
 <h1 id="1-Bigtable————分布式结构化数据表"><a href="#1-Bigtable————分布式结构化数据表" class="headerlink" title="1. Bigtable————分布式结构化数据表"></a>1. Bigtable————分布式结构化数据表</h1><h2 id="1-1-Bigtable特点"><a href="#1-1-Bigtable特点" class="headerlink" title="1.1. Bigtable特点"></a>1.1. Bigtable特点</h2><ul>
-<li> 数据种类繁多，满足一系列Google产品的存储要求</li>
+<li>数据种类繁多，满足一系列Google产品的存储要求</li>
 <li>吞吐量大，响应海量的服务请求</li>
 <li>高可用性，几乎所有情况下的系统均可用</li>
 <li>高扩展性，可根据需要随时加入或撤销服务器</li>
@@ -381,7 +381,7 @@
 <h1 id="2-Megastore————分布式存储系统"><a href="#2-Megastore————分布式存储系统" class="headerlink" title="2. Megastore————分布式存储系统"></a>2. Megastore————分布式存储系统</h1><h2 id="2-1-产生原因（业务驱动）："><a href="#2-1-产生原因（业务驱动）：" class="headerlink" title="2.1. 产生原因（业务驱动）："></a>2.1. 产生原因（业务驱动）：</h2><ul>
 <li>高负载的交互式应用，传统关系型数据库通过连接（join）提升性能代价过于高昂</li>
 <li>业务需求中读操作远远大于写操作</li>
-<li>基于Bigtable这样的key/value存储系统之上，设计存储和查询级联数据的分布式存储系统非常方便</li>
+<li>基于Bigtable这样的key&#x2F;value存储系统之上，设计存储和查询级联数据的分布式存储系统非常方便</li>
 </ul>
 <h2 id="2-2-说明"><a href="#2-2-说明" class="headerlink" title="2.2. 说明"></a>2.2. 说明</h2><ul>
 <li>介于传统关系型数据库和NoSQL之间的存储技术，并尽可能地实现高可用性和高可扩展性的统一。</li>
@@ -396,7 +396,7 @@
 </ul>
 <p>性能</p>
 <ul>
-<li>平均读取延迟在<strong>万分之一毫秒</strong>之内，平均写入延迟在<strong>100至400毫秒</strong>之间 </li>
+<li>平均读取延迟在<strong>万分之一毫秒</strong>之内，平均写入延迟在<strong>100至400毫秒</strong>之间</li>
 </ul>
 <h2 id="2-3-Megastore数据模型"><a href="#2-3-Megastore数据模型" class="headerlink" title="2.3. Megastore数据模型"></a>2.3. Megastore数据模型</h2><ul>
 <li>同关系型数据库一样，Megastore的数据模型是在模式（schema）中定义的且是强类型的（strongly typed）</li>
@@ -415,7 +415,7 @@
 <th><strong>User.name</strong></th>
 <th><strong>Photo.time</strong></th>
 <th><strong>Photo.tag</strong></th>
-<th><strong>Photo._**</strong>url**</th>
+<th>**Photo._**<strong>url</strong></th>
 </tr>
 </thead>
 <tbody><tr>
@@ -477,13 +477,13 @@
 <li>利用本地读取实现快速读，带来更好的用户体验及更低的延迟</li>
 <li>关键是保证选择的副本上数据是最新的</li>
 <li>协调者是一个服务，该服务分布在每个副本的数据中心里面。它的主要作用就是跟踪一个实体组集合</li>
-<li>协调者的状态是由写算法来保证 </li>
+<li>协调者的状态是由写算法来保证</li>
 </ul>
 <h3 id="2-8-2-快速写"><a href="#2-8-2-快速写" class="headerlink" title="2.8.2. 快速写"></a>2.8.2. 快速写</h3><ul>
 <li>如果一次写成功，那么下一次写的时候就跳过准备过程，直接进入接受阶段</li>
 <li>Megastore没有使用专门的主服务器，而是使用leaders </li>
 <li>leader主要是来裁决哪个写入的值可以获取0号提议</li>
-<li>客户端、网络及Bigtable的故障都会导致一个写操作处于不确定的状态 </li>
+<li>客户端、网络及Bigtable的故障都会导致一个写操作处于不确定的状态</li>
 </ul>
 <h2 id="2-9-Megastore核心技术–复制"><a href="#2-9-Megastore核心技术–复制" class="headerlink" title="2.9. Megastore核心技术–复制"></a>2.9. Megastore核心技术–复制</h2><h3 id="2-9-1-复制的日志"><a href="#2-9-1-复制的日志" class="headerlink" title="2.9.1. 复制的日志"></a>2.9.1. 复制的日志</h3><ul>
 <li><p>每个副本都存有记录所有更新的数据</p>
@@ -499,7 +499,7 @@
 <h3 id="2-9-4-协调者的可用性"><a href="#2-9-4-协调者的可用性" class="headerlink" title="2.9.4. 协调者的可用性"></a>2.9.4. 协调者的可用性</h3><ul>
 <li>协调者在系统中是比较重要的——协调者的进程运行在每个数据中心。每次的写操作中都要涉及协调者，因此协调者的故障将会导致系统的不可用</li>
 <li>Megastore使用了Chubby锁服务，为了处理请求，一个协调者必须持有多数锁。一旦因为出现问题导致它丢失了大部分锁，协调者就会恢复到一个默认保守状态</li>
-<li>除了可用性问题，对于协调者的读写协议必须满足一系列的竞争条件 </li>
+<li>除了可用性问题，对于协调者的读写协议必须满足一系列的竞争条件</li>
 </ul>
 <h1 id="3-Dapper————大规模分布式系统的监控基础架构"><a href="#3-Dapper————大规模分布式系统的监控基础架构" class="headerlink" title="3. Dapper————大规模分布式系统的监控基础架构"></a>3. Dapper————大规模分布式系统的监控基础架构</h1><h2 id="3-1-三个基本概念"><a href="#3-1-三个基本概念" class="headerlink" title="3.1. 三个基本概念"></a>3.1. 三个基本概念</h2><ul>
 <li>监控树（Trace Tree）。一个同特定事件相关的所有消息</li>
@@ -515,8 +515,8 @@
 </ul>
 <h3 id="3-3-2-二次抽样技术"><a href="#3-3-2-二次抽样技术" class="headerlink" title="3.3.2. 二次抽样技术"></a>3.3.2. 二次抽样技术</h3><p>利用二次抽样技术成功地解决了<strong>低开销及广泛可部署性</strong>的问题。</p>
 <ol>
-<li>第一次抽样。实践中，设计人员发现当抽样率低至1/1024时也能够产生足够多的有效监控数据，即在1024个请求中抽取1个进行监控也是可行的，从而可以捕获有效数据</li>
-<li>第二次抽样。发生在数据写入Bigtable前，具体方法是将监控id散列成一个标量z（0≤z≤1），如果某个区间的z小于事先定义好的汇总抽样系数，则保留这个区间并将它写入Bigtable，否则丢弃 </li>
+<li>第一次抽样。实践中，设计人员发现当抽样率低至1&#x2F;1024时也能够产生足够多的有效监控数据，即在1024个请求中抽取1个进行监控也是可行的，从而可以捕获有效数据</li>
+<li>第二次抽样。发生在数据写入Bigtable前，具体方法是将监控id散列成一个标量z（0≤z≤1），如果某个区间的z小于事先定义好的汇总抽样系数，则保留这个区间并将它写入Bigtable，否则丢弃</li>
 </ol>
 <h2 id="3-4-Dapper使用心得"><a href="#3-4-Dapper使用心得" class="headerlink" title="3.4. Dapper使用心得"></a>3.4. Dapper使用心得</h2><ol>
 <li>新服务部署中Dapper的使用。利用Dapper对系统延迟情况进行一系列的跟踪，进而发现存在的问题</li>
@@ -524,7 +524,7 @@
 <li>推断服务间的依存关系（Inferring Service Dependencies）。Google的“服务依存关系”项目使用监控注释和DPAI的MapReduce接口实现了服务依存关系确定的自动化</li>
 <li>确定不同服务的网络使用情况。利用Dapper平台构建了一个连续不断更新的控制台，用来显示内部集群网络通信中最活跃的应用层终端</li>
 <li>分层的共享式存储系统。没有Dapper之类的工具的情况下对于这种共享式服务资源的争用也同样难以调试</li>
-<li>利用Dapper进行“火拼”（Firefighting with Dapper）。Dapper用户可以通过和Dapper守护进程的直接通信，将所需的最新数据汇总在一起 </li>
+<li>利用Dapper进行“火拼”（Firefighting with Dapper）。Dapper用户可以通过和Dapper守护进程的直接通信，将所需的最新数据汇总在一起</li>
 </ol>
 <h1 id="4-Dremel————海量数据的交互式分析工具"><a href="#4-Dremel————海量数据的交互式分析工具" class="headerlink" title="4. Dremel————海量数据的交互式分析工具"></a>4. Dremel————海量数据的交互式分析工具</h1><h2 id="4-1-Dremel支持的典型应用"><a href="#4-1-Dremel支持的典型应用" class="headerlink" title="4.1. Dremel支持的典型应用"></a>4.1. Dremel支持的典型应用</h2><ul>
 <li>Web文档的分析</li>
@@ -535,7 +535,7 @@
 <li>Google地图的调试</li>
 <li>Bigtable实例上的tablet迁移</li>
 <li>Google分布式构建系统的测试结果分析</li>
-<li>磁盘I/O信息的统计</li>
+<li>磁盘I&#x2F;O信息的统计</li>
 <li>Google数据中心上运行任务的资源监控</li>
 <li>Google代码库的符号和依赖关系分析</li>
 </ul>
@@ -557,8 +557,8 @@
 </ul>
 <h1 id="6-PowerDrill————内存大数据分析系统"><a href="#6-PowerDrill————内存大数据分析系统" class="headerlink" title="6. PowerDrill————内存大数据分析系统"></a>6. PowerDrill————内存大数据分析系统</h1><h2 id="6-1-PowerDrill产生背景与设计目标"><a href="#6-1-PowerDrill产生背景与设计目标" class="headerlink" title="6.1. PowerDrill产生背景与设计目标"></a>6.1. PowerDrill产生背景与设计目标</h2><p>现象：</p>
 <ul>
-<li>在查询过程中，平均<strong>92.41%**的数据被略去</strong>5.02%<strong>的数据会直接被缓存命中，一般仅须扫描</strong>2.66%**的数据即可得到查询结果</li>
-<li>超过<strong>70%**的查询是不需要从磁盘访问任何数据的这些查询的平均访问延迟大约是</strong>25秒<strong>，</strong>96.5%<strong>的查询需要访问的磁盘量不超过</strong>1GB**</li>
+<li>在查询过程中，平均**92.41%<strong>的数据被略去</strong>5.02%<strong>的数据会直接被缓存命中，一般仅须扫描</strong>2.66%**的数据即可得到查询结果</li>
+<li>超过<strong>70%<strong>的查询是不需要从磁盘访问任何数据的这些查询的平均访问延迟大约是</strong>25秒</strong>，<strong>96.5%<strong>的查询需要访问的磁盘量不超过</strong>1GB</strong></li>
 </ul>
 <p>背景：</p>
 <ul>

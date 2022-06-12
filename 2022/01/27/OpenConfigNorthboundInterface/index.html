@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -285,7 +285,7 @@
         <h1 id="1-北向接口简介"><a href="#1-北向接口简介" class="headerlink" title="1. 北向接口简介"></a>1. 北向接口简介</h1><h2 id="1-1-背景"><a href="#1-1-背景" class="headerlink" title="1.1. 背景"></a>1.1. 背景</h2><p>SDN（Software-Defined Networking，软件定义网络）能够很好地实现网络服务的可定制化，包括网络的可编程性、控制与转发相分离和集中化控制。用户可通过 SDN 的北向接口对网络资源进行编排以定制出满足自身需求的服务</p>
 <a id="more"></a>
 
-<p>SDN控制器有南/北向两个接口，其中:</p>
+<p>SDN控制器有南&#x2F;北向两个接口，其中:</p>
 <ul>
 <li>南向接口：用于连接底层网络。以 OpenFlow 为理论基础实现的南向接口已经在业内得到了广泛共识</li>
 <li>北向接口：用于连接上层应用。由于网络资源的编排复杂度较高，各厂商技术积累和利益相关差异，导致北向接口尚未在业内形成统一标准</li>
@@ -302,7 +302,7 @@
 <li>赋能云网一体化平台</li>
 <li>网络虚拟化——计算联动</li>
 </ul>
-<h2 id="2-1-应用场景1：提升部署运维管理效率"><a href="#2-1-应用场景1：提升部署运维管理效率" class="headerlink" title="2.1. 应用场景1：提升部署运维管理效率"></a>2.1. 应用场景1：提升部署运维管理效率</h2><p>华为开发了 AgileController-DCN，提供标准北向接口（支持协议：OpenFlow/OVSDB/NetConf/SNMP），可实现：</p>
+<h2 id="2-1-应用场景1：提升部署运维管理效率"><a href="#2-1-应用场景1：提升部署运维管理效率" class="headerlink" title="2.1. 应用场景1：提升部署运维管理效率"></a>2.1. 应用场景1：提升部署运维管理效率</h2><p>华为开发了 AgileController-DCN，提供标准北向接口（支持协议：OpenFlow&#x2F;OVSDB&#x2F;NetConf&#x2F;SNMP），可实现：</p>
 <ul>
 <li>基于租户网络资源的动态发放</li>
 <li>方便快捷的网络开通和资源调整</li>
@@ -345,12 +345,12 @@
 </tr>
 <tr>
 <td align="left">Netconf</td>
-<td align="left">与设备的具体命令解耦，管理/配置仅需关注各厂商提供Netconf内容层的配置和状态数据（Json、XML）</td>
+<td align="left">与设备的具体命令解耦，管理&#x2F;配置仅需关注各厂商提供Netconf内容层的配置和状态数据（Json、XML）</td>
 <td align="left">不同厂商的配置数据结构不同，管理侧需适配不同厂商的Netconf配置数据结构;<br>管理侧无法基于一套JSON（或XML）数据结构适配所有厂商的设备</td>
 </tr>
 <tr>
 <td align="left">NetConf 与结合 YANG</td>
-<td align="left">与具体的配置数据结构解耦（YANG）。开发配置简单，仅需关注YANG模型定义的配置数据/状态数据结构，并按需传入相应读取/配置RESTful请求参数即可</td>
+<td align="left">与具体的配置数据结构解耦（YANG）。开发配置简单，仅需关注YANG模型定义的配置数据&#x2F;状态数据结构，并按需传入相应读取&#x2F;配置RESTful请求参数即可</td>
 <td align="left">各设备厂商的私有YANG模型不兼容；<br>各设备厂商需使用自己的 SDN Controller 控制自己的设备，且互不兼容；<br>需适配各厂商SDN Controller或自研一个通用的SDN Controller（管理侧仍需须兼容维护各厂商设备）</td>
 </tr>
 <tr>
@@ -391,6 +391,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2022/06/12/ImplementationOfSkipListOnCpp/" rel="next" title="基于 C++ 的 SkipList 数据结构设计与编码实现">
+                  基于 C++ 的 SkipList 数据结构设计与编码实现 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

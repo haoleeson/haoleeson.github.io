@@ -36,8 +36,8 @@
 <meta property="article:published_time" content="2022-06-12T09:54:30.000Z">
 <meta property="article:modified_time" content="2022-06-12T17:57:30.000Z">
 <meta property="article:author" content="EisenHao">
-<meta property="article:tag" content="C++">
 <meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/Skiplist_add_element.gif">
 
@@ -297,7 +297,7 @@
 <p>众所周知，AVL 树的查询时间复杂度严格为 O(logN)，但节点插入过程中需要多次旋转，会导致插入效率降低。后来出现的红黑树解决了节点插入的效率问题，但由于其在更新节点时需要多节点参与自身的平衡过程，故在并发场景时就需锁住更多的节点，使得并发效率降低。而 SkipList 由于实现简单，在更新数据时所需参与的节点较少，在并发场景应用较广，比如 Redis 和 Google 的 BigTable。</p>
 <h1 id="2-定义"><a href="#2-定义" class="headerlink" title="2. 定义"></a>2. 定义</h1><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Skip_list">Skip_list</a> 在 wikipedia 的描述为”a skip list is a probabilistic data structure that allows O(logN) search complexity as well as O(logN) insertion complexity within an ordered sequence of n elements. “，即跳表是一种概率数据结构，它在 n 个元素的有序序列中实现了 O(logN) 的查询复杂度和 O(logN) 的插入复杂度。</p>
 <h1 id="3-原理"><a href="#3-原理" class="headerlink" title="3. 原理"></a>3. 原理</h1><blockquote>
-<p>不同于一般单链表各节点只有 next 指针，SkipList 各节点有 x 个 next 指针（x 为随机生成），且这 x 个 next 指针还有“层级概念”</p>
+<p>不同于一般单链表各节点只有 1 个 next 指针，SkipList 各节点有 x 个 next 指针（x 为随机生成），且这 x 个 next 指针还有“层级概念”</p>
 </blockquote>
 <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/SkipList.png" class="full-image" />
 
@@ -369,24 +369,24 @@
       <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\12\24\BPlusTreeAndBStartTree\" rel="bookmark">B+树与B*树</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2018\10\16\MinHeapAndMaxHeap\" rel="bookmark">最小堆与最大堆</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\07\24\BitPrint\" rel="bookmark">测试内存中变量的存储方式</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2019\12\19\CppCompile\" rel="bookmark">C++编译过程总结</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\11\CppConfusedNotes\" rel="bookmark">C++易混淆知识点总结</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2019\01\23\ParkingSimulationSystem\" rel="bookmark">停车场仿真系统</a></div>
     </li>
   </ul>
 
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
               <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 数据结构</a>
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
           </div>
 
         

@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. 获取豆瓣一周口碑榜的电影列表执行结果展示： 1234567891011获取豆瓣一周口碑榜:复仇者联盟4：终局之战触不可及(美版)盗梦特攻队深红累之渊遇见女孩的感觉撞死了一只羊归家：碧昂斯电影作品西班牙之旅娑婆诃番石榴岛">
+<meta name="description" content="1. 查看豆瓣周口碑榜的电影列表执行结果展示： 1234567891011查看豆瓣一周口碑榜:复仇者联盟4：终局之战触不可及(美版)盗梦特攻队深红累之渊遇见女孩的感觉撞死了一只羊归家：碧昂斯电影作品西班牙之旅娑婆诃番石榴岛">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python获取网页内容小练习">
+<meta property="og:title" content="Python查看本周口碑电影">
 <meta property="og:url" content="https://eisenhao.cn/2019/04/30/PythonSimpleWebC/index.html">
 <meta property="og:site_name" content="EisenHao&#39;s Note">
-<meta property="og:description" content="1. 获取豆瓣一周口碑榜的电影列表执行结果展示： 1234567891011获取豆瓣一周口碑榜:复仇者联盟4：终局之战触不可及(美版)盗梦特攻队深红累之渊遇见女孩的感觉撞死了一只羊归家：碧昂斯电影作品西班牙之旅娑婆诃番石榴岛">
+<meta property="og:description" content="1. 查看豆瓣周口碑榜的电影列表执行结果展示： 1234567891011查看豆瓣一周口碑榜:复仇者联盟4：终局之战触不可及(美版)盗梦特攻队深红累之渊遇见女孩的感觉撞死了一只羊归家：碧昂斯电影作品西班牙之旅娑婆诃番石榴岛">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest.jpg">
 <meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest2.jpg">
@@ -42,10 +42,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2019/04/30/PythonSimpleWebC/","path":"2019/04/30/PythonSimpleWebC/","title":"Python获取网页内容小练习"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2019/04/30/PythonSimpleWebC/","path":"2019/04/30/PythonSimpleWebC/","title":"Python查看本周口碑电影"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Python获取网页内容小练习 | EisenHao's Note</title>
+<title>Python查看本周口碑电影 | EisenHao's Note</title>
   
 
 
@@ -150,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E8%B1%86%E7%93%A3%E4%B8%80%E5%91%A8%E5%8F%A3%E7%A2%91%E6%A6%9C%E7%9A%84%E7%94%B5%E5%BD%B1%E5%88%97%E8%A1%A8"><span class="nav-text">1. 获取豆瓣一周口碑榜的电影列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">2. 准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%BC%80%E5%A7%8B%E5%8A%A8%E6%89%8B%E5%90%A7"><span class="nav-text">3. 开始动手吧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-text">4. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E8%8E%B7%E5%8F%96%E7%BD%91%E9%A1%B5%E6%8C%87%E5%AE%9A%E5%86%85%E5%AE%B9%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%9A"><span class="nav-text">4.1. 获取网页指定内容关键点：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E7%BD%91%E9%A1%B5%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="nav-text">4.2. 网页数据格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%A4%87%E6%B3%A8"><span class="nav-text">5. 备注</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%8B%93%E5%B1%95"><span class="nav-text">6. 拓展</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%9F%A5%E7%9C%8B%E8%B1%86%E7%93%A3%E5%91%A8%E5%8F%A3%E7%A2%91%E6%A6%9C%E7%9A%84%E7%94%B5%E5%BD%B1%E5%88%97%E8%A1%A8"><span class="nav-text">1. 查看豆瓣周口碑榜的电影列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">2. 准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%BB%83%E4%B9%A01%EF%BC%9A%E6%9F%A5%E7%9C%8B%E8%B1%86%E7%93%A3%E4%B8%80%E5%91%A8%E5%8F%A3%E7%A2%91%E6%A6%9C"><span class="nav-text">3. 练习1：查看豆瓣一周口碑榜</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%BB%83%E4%B9%A02%EF%BC%9A%E6%9F%A5%E7%9C%8B%E8%B1%86%E7%93%A3-%E8%A5%BF%E5%AE%89-%E5%BD%B1%E8%AE%AF-%E4%B8%8A%E6%98%A0%E5%86%85%E5%AE%B9"><span class="nav-text">4. 练习2：查看豆瓣-西安-影讯-上映内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%A4%87%E6%B3%A8"><span class="nav-text">5. 备注</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -254,7 +254,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Python获取网页内容小练习
+          Python查看本周口碑电影
         </h1>
 
         <div class="post-meta-container">
@@ -269,7 +269,7 @@
     </span>
 
   
-    <span id="/2019/04/30/PythonSimpleWebC/" class="post-meta-item leancloud_visitors" data-flag-title="Python获取网页内容小练习" title="浏览">
+    <span id="/2019/04/30/PythonSimpleWebC/" class="post-meta-item leancloud_visitors" data-flag-title="Python查看本周口碑电影" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -287,8 +287,9 @@
     <div class="post-body" itemprop="articleBody">
         <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest.jpg" class="full-image" />
 
-<h1 id="1-获取豆瓣一周口碑榜的电影列表"><a href="#1-获取豆瓣一周口碑榜的电影列表" class="headerlink" title="1. 获取豆瓣一周口碑榜的电影列表"></a>1. 获取豆瓣一周口碑榜的电影列表</h1><p>执行结果展示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">获取豆瓣一周口碑榜:</span><br><span class="line">复仇者联盟<span class="number">4</span>：终局之战</span><br><span class="line">触不可及(美版)</span><br><span class="line">盗梦特攻队</span><br><span class="line">深红累之渊</span><br><span class="line">遇见女孩的感觉</span><br><span class="line">撞死了一只羊</span><br><span class="line">归家：碧昂斯电影作品</span><br><span class="line">西班牙之旅</span><br><span class="line">娑婆诃</span><br><span class="line">番石榴岛</span><br></pre></td></tr></table></figure>
+<h1 id="1-查看豆瓣周口碑榜的电影列表"><a href="#1-查看豆瓣周口碑榜的电影列表" class="headerlink" title="1. 查看豆瓣周口碑榜的电影列表"></a>1. 查看豆瓣周口碑榜的电影列表</h1><p>执行结果展示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">查看豆瓣一周口碑榜:</span><br><span class="line">复仇者联盟<span class="number">4</span>：终局之战</span><br><span class="line">触不可及(美版)</span><br><span class="line">盗梦特攻队</span><br><span class="line">深红累之渊</span><br><span class="line">遇见女孩的感觉</span><br><span class="line">撞死了一只羊</span><br><span class="line">归家：碧昂斯电影作品</span><br><span class="line">西班牙之旅</span><br><span class="line">娑婆诃</span><br><span class="line">番石榴岛</span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
 
 <h1 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2. 准备工作"></a>2. 准备工作</h1><ul>
@@ -296,34 +297,34 @@
 <li>使用pip3安装requests、lxml模块。参考<a href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/#%E4%BD%BF%E7%94%A8pip3%E5%AE%89%E8%A3%85Numpy%E6%A8%A1%E5%9D%97">使用pip3安装Numpy模块</a></li>
 <li>运行平台：终端或Python IDE软件(eg.<a target="_blank" rel="noopener" href="http://www.jetbrains.com/pycharm/">PyCharm</a>)</li>
 </ul>
-<h1 id="3-开始动手吧"><a href="#3-开始动手吧" class="headerlink" title="3. 开始动手吧"></a>3. 开始动手吧</h1><p>代码比较简单，如下所示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取豆瓣一周口碑榜 https://movie.douban.com/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/&#x27;</span> <span class="comment">#需要获取数据的网址</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//td[@class=&quot;title&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="comment"># //td ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;title&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式输出</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;获取豆瓣一周口碑榜:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(i, end=<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="3-练习1：查看豆瓣一周口碑榜"><a href="#3-练习1：查看豆瓣一周口碑榜" class="headerlink" title="3. 练习1：查看豆瓣一周口碑榜"></a>3. 练习1：查看豆瓣一周口碑榜</h1><p>代码比较简单，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看豆瓣一周口碑榜 https://movie.douban.com/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/&#x27;</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//td[@class=&quot;title&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="comment"># //td ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;title&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式输出</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;查看豆瓣一周口碑榜:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(i, end=<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><h2 id="4-1-获取网页指定内容关键点："><a href="#4-1-获取网页指定内容关键点：" class="headerlink" title="4.1. 获取网页指定内容关键点："></a>4.1. 获取网页指定内容关键点：</h2><ul>
-<li>待获取网页指定内容地址，eg.上述事例代码中的’<a target="_blank" rel="noopener" href="https://movie.douban.com/&#39;">https://movie.douban.com/&#39;</a></li>
-<li>待获取网页指定内容数据格式，eg.上述事例代码中的’&#x2F;&#x2F;td[@class&#x3D;”title”]&#x2F;&#x2F;a&#x2F;text()’</li>
-</ul>
-<h2 id="4-2-网页数据格式"><a href="#4-2-网页数据格式" class="headerlink" title="4.2. 网页数据格式"></a>4.2. 网页数据格式</h2><p>对于第二点获取网页数据格式，只能通过在网页浏览器F12查看HTML源码归纳总结得出<br>点击菜单栏左上按钮后再点击网页的待获取内容，此时浏览器会跳转到该内容部分对应的HTML源码的对应代码，归纳总结源码得出正则表达式。<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest2.jpg" class="full-image" /><br>可以看出上图中选中的HTML代码部分与归纳得出的规则<code>'//td[@class="title"]//a/text()'</code>具有很大的相似度。<br>其中：</p>
+<p>关键点总结：</p>
 <ul>
-<li>&#x2F;&#x2F;td ：这个相当于指定是大目录；</li>
-<li>[@class&#x3D;”title”]：这个相当于指定的小目录；</li>
-<li>&#x2F;&#x2F;a ：这个相当于最小的目录；</li>
-<li>&#x2F;text()：这个是提取其中的数据。</li>
+<li>网址，eg.上述事例代码中的<code><a target="_blank" rel="noopener" href="https://movie.douban.com/">https://movie.douban.com/</a></code></li>
+<li>数据格式，eg.上述事例代码中的<code>'//td[@class="title"]//a/text()'</code><ul>
+<li>具有一定规律，可通过查看 HTML 源码（浏览器 F12）得出<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest2.jpg" class="full-image" /></li>
+<li>其中：<ul>
+<li><code>//td</code> ：相当于大目录；</li>
+<li><code>[@class="title"]</code>：相当于小目录；</li>
+<li><code>//a</code> ：这个相当于最小的目录；</li>
+<li><code>/text()</code>：这个是提取其中的数据。</li>
 </ul>
-<h1 id="5-备注"><a href="#5-备注" class="headerlink" title="5. 备注"></a>5. 备注</h1><p>针对上例获取网页指定内容关注的两点：</p>
-<ul>
-<li>待获取网页指定内容地址，eg.上述事例代码中的’<a target="_blank" rel="noopener" href="https://movie.douban.com/cinema/later/xian/&#39;">https://movie.douban.com/cinema/later/xian/&#39;</a></li>
-<li>待获取网页指定内容数据格式，eg.上述事例代码中的’&#x2F;&#x2F;div[@class&#x3D;”intro”]&#x2F;&#x2F;a&#x2F;text()’</li>
+</li>
 </ul>
-<figure class="highlight python"><figcaption><span>源码文件:webCrawlerTest2.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取网页内容练习2： 获取豆瓣-西安-影讯-即将上映内容 https://movie.douban.com/cinema/later/xian/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/cinema/later/xian/&#x27;</span> <span class="comment">#需要获取数据的网址：豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line"><span class="comment"># //div ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;intro&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//div[@class=&quot;intro&quot;]//a/text()&#x27;</span>) <span class="comment">#获取豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 格式输出</span></span><br><span class="line"><span class="comment"># print(&quot;获取豆瓣-西安-影讯-即将上映内容&quot;)</span></span><br><span class="line"><span class="comment"># for i in result:</span></span><br><span class="line"><span class="comment">#     print(i, end=&#x27;\n&#x27;)</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="4-练习2：查看豆瓣-西安-影讯-上映内容"><a href="#4-练习2：查看豆瓣-西安-影讯-上映内容" class="headerlink" title="4. 练习2：查看豆瓣-西安-影讯-上映内容"></a>4. 练习2：查看豆瓣-西安-影讯-上映内容</h1><p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/cinema/later/xian/&#x27;</span> <span class="comment"># 数据的网址：豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line"><span class="comment"># //div ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;intro&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//div[@class=&quot;intro&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 格式输出</span></span><br><span class="line"><span class="comment"># print(&quot;查看豆瓣-西安-影讯-即将上映内容&quot;)</span></span><br><span class="line"><span class="comment"># for i in result:</span></span><br><span class="line"><span class="comment">#     print(i, end=&#x27;\n&#x27;)</span></span><br></pre></td></tr></table></figure>
 
 <p>运行结果：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;港珠澳大桥&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;下一任：前任&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;悟空奇遇记&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;猫公主苏菲&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;国礼&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大破天门阵&#x27;</span>, <span class="string">&#x27;柔情史&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;罗马&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大侦探皮卡丘&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;进京城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一个母亲的复仇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;欢迎来北方II&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;半边天&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一路疯癫&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;周恩来回延安&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;海蒂和爷爷&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;企鹅公路&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;妈阁是座城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;致命梦魇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;音乐家&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;你好现任&#x27;</span>]</span><br></pre></td></tr></table></figure>
 
-<h1 id="6-拓展"><a href="#6-拓展" class="headerlink" title="6. 拓展"></a>6. 拓展</h1><p>虽然实例代码比较简单，但实际中运行时仍会面临很多问题，比如： </p>
+<h1 id="5-备注"><a href="#5-备注" class="headerlink" title="5. 备注"></a>5. 备注</h1><p>虽然实例代码比较简单，但实际中运行时仍会面临很多问题，比如： </p>
 <ul>
 <li>网页数据内容的规则难以归纳 </li>
-<li>获取的数据不规范（需进一步处理） </li>
+<li>查看的数据不规范（需进一步处理） </li>
 <li>大部分网站拥有反Pa机制等</li>
 </ul>
 

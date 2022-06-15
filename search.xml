@@ -261,90 +261,6 @@
       </tags>
   </entry>
   <entry>
-    <title>B+树与B*树</title>
-    <url>/2020/12/24/BPlusTreeAndBStartTree/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree1.jpg" class="full-image" />
-
-<h1 id="1-B-树"><a href="#1-B-树" class="headerlink" title="1. B+树"></a>1. B+树</h1><h2 id="1-1-B-树简介"><a href="#1-1-B-树简介" class="headerlink" title="1.1. B+树简介"></a>1.1. B+树简介</h2><p>B+树是一种树数据结构，是一个n叉树，每个节点通常有多个孩子，一棵B+树包含根节点、内部节点和叶子节点。根节点可能是一个叶子节点，也可能是一个包含两个或两个以上孩子节点的节点。</p>
-<a id="more"></a>
-
-<h2 id="1-2-B-树应用场景"><a href="#1-2-B-树应用场景" class="headerlink" title="1.2. B+树应用场景"></a>1.2. B+树应用场景</h2><p>B+树通常用于数据库和操作系统的文件系统中。NTFS, ReiserFS, NSS, XFS, JFS, ReFS 和BFS等文件系统都在使用B+树作为元数据索引。B+树的特点是能够保持数据稳定有序，其插入与修改拥有较稳定的对数时间复杂度。B+树元素自底向上插入。</p>
-<h2 id="1-3-B-树定义"><a href="#1-3-B-树定义" class="headerlink" title="1.3. B+树定义"></a>1.3. B+树定义</h2><ul>
-<li>B+树是应文件系统所需而出的一种B树的变型树。一棵m阶的B+树和m阶的B树的差异在于：<ul>
-<li>有n棵子树的结点中含有n个关键字，每个关键字不保存数据，只用来索引，所有数据都保存在叶子节点。</li>
-<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
-<li>所有的非终端结点可以看成是索引部分，结点中仅含其子树（根结点）中的最大（或最小）关键字。</li>
-</ul>
-</li>
-</ul>
-<p>备注：通常在B+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</p>
-<ul>
-<li>B+树是B树的变体，也是一种多路搜索树，其定义除以下存有差异的定义外基本与B树同：<ul>
-<li>非叶子结点的子树指针与关键字个数相同；</li>
-<li>非叶子结点的子树指针P[i]，指向关键字值属于[K[i], K[i+1])的子树（B树是开区间）；</li>
-<li>为所有叶子结点增加一个链指针；</li>
-<li>所有关键字都在叶子结点出现；</li>
-</ul>
-</li>
-</ul>
-<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree2.PNG" alt="B+树"></p>
-<p>备注：B+的搜索与B树也基本相同，区别是B+树只有达到叶子结点才命中（B树可以在非叶子结点命中），其性能也等价于在关键字全集做一次二分查找；</p>
-<h2 id="1-4-B-的特性"><a href="#1-4-B-的特性" class="headerlink" title="1.4. B+的特性"></a>1.4. B+的特性</h2><ul>
-<li>所有关键字都出现在叶子结点的链表中（稠密索引），且链表中的关键字恰好是有序的；</li>
-<li>不可能在非叶子结点命中；</li>
-<li>非叶子结点相当于是叶子结点的索引（稀疏索引），叶子结点相当于是存储（关键字）数据的数据层；</li>
-<li>更适合文件索引系统；</li>
-</ul>
-<h1 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B*树"></a>2. B*树</h1><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BStartTree.PNG" alt="B*树"></p>
-<h2 id="2-1-B-树的定义"><a href="#2-1-B-树的定义" class="headerlink" title="2.1. B*树的定义"></a>2.1. B*树的定义</h2><ul>
-<li>是B+树的变体，在B+树的非根和非叶子结点再增加<strong>指向兄弟的指针</strong>；</li>
-<li>B*树定义了非叶子结点关键字个数至少为(2&#x2F;3)*M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
-</ul>
-<h1 id="3-B树，B-树，B-树小结"><a href="#3-B树，B-树，B-树小结" class="headerlink" title="3. B树，B+树，B*树小结"></a>3. B树，B+树，B*树小结</h1><table>
-<thead>
-<tr>
-<th align="left">数据结构</th>
-<th align="left">小结</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">B树</td>
-<td align="left">多路搜索树，每个结点存储M&#x2F;2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；</td>
-</tr>
-<tr>
-<td align="left">B+树</td>
-<td align="left">在B树基础上，为叶子结点增加链表指针，所有关键字都在叶子结点中出现，非叶子结点作为叶子结点的索引；B+树总是到叶子结点才命中；</td>
-</tr>
-<tr>
-<td align="left">B*树</td>
-<td align="left">在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1&#x2F;2提高到2&#x2F;3；</td>
-</tr>
-</tbody></table>
-<h1 id="4-B树，B-树与B-树的优缺点比较"><a href="#4-B树，B-树与B-树的优缺点比较" class="headerlink" title="4. B树，B+树与B*树的优缺点比较"></a>4. B树，B+树与B*树的优缺点比较</h1><p>备注：B-树就是B树，”-“是个连字符号，不是减号。</p>
-<h2 id="4-1-B树-vs-B-树"><a href="#4-1-B树-vs-B-树" class="headerlink" title="4.1. B树 vs B+树"></a>4.1. B树 vs B+树</h2><ul>
-<li>B树是一种平衡的多路查找(又称排序)树，在文件系统中有所应用。主要用作文件的索引。其中的B就表示平衡(Balance)</li>
-<li>B+树有一个最大的好处，方便扫库，B树必须用中序遍历的方法按序扫库，而B+树直接从叶子结点挨个扫一遍就完了。</li>
-<li>B+树支持range-query(区间查询)非常方便，而B树不支持。这是数据库选用B+树的最主要原因。比如要查 5-10之间的，B+树一把到5这个标记，再一把到10，然后串起来就行了，B树就非常麻烦。B树的好处，就是成功查询特别有利，因为树的高度总体要比B+树矮。不成功的情况下，B树也比B+树稍稍占一点点便宜。</li>
-<li>B树的优势是当你要查找的值恰好处在一个非叶子节点时，查找到该节点就会成功并结束查询，而B+树由于非叶节点只是索引部分，这些节点中只含有其子树中的最大(或最小)关键字，当非终端节点上的关键字等于给点值时，查找并不终止，而是继续向下直到叶子节点。因此在B+树中，无论查找成功与否，都是走了一条从根到叶子节点的路径。有很多基于频率的搜索是选用B树，越频繁query的结点越往根上走，前提是需要对query做统计，而且要对key做一些变化。</li>
-<li>另外B树也好B+树也好，根或者上面几层因为被反复query，所以这几块基本都在内存中，不会出现读磁盘IO，一般已启动的时候，就会主动换入内存。 mysql底层存储是用B+树实现的，因为内存中B+树是没有优势的，但是一到磁盘，B+树的威力就出来了。</li>
-</ul>
-<h2 id="4-2-B-树-vs-B-树"><a href="#4-2-B-树-vs-B-树" class="headerlink" title="4.2. B+树 vs B*树"></a>4.2. B+树 vs B*树</h2><ul>
-<li>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针；B树定义了非叶子结点关键字个数至少为(2&#x2F;3)M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
-<li>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1&#x2F;2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</li>
-<li>B*树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1&#x2F;3的数据到新结点，最后在父结点增加新结点的指针； 所以，B*树分配新结点的概率比B+树要低，空间使用率更高；</li>
-</ul>
-<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
-<li><a href="https://www.jianshu.com/p/7323130d351b">讲点”B树”，一文详解B树，B+树，B*树及其优缺点比较</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法分析与设计练习</title>
     <url>/2019/01/03/AnalysisOfAlgorithmsLesson/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AnalysisOfAlgorithmsLesson.jpg" class="full-image" />
@@ -454,6 +370,175 @@
       </categories>
       <tags>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>B+树与B*树</title>
+    <url>/2020/12/24/BPlusTreeAndBStartTree/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree1.jpg" class="full-image" />
+
+<h1 id="1-B-树"><a href="#1-B-树" class="headerlink" title="1. B+树"></a>1. B+树</h1><h2 id="1-1-B-树简介"><a href="#1-1-B-树简介" class="headerlink" title="1.1. B+树简介"></a>1.1. B+树简介</h2><p>B+树是一种树数据结构，是一个n叉树，每个节点通常有多个孩子，一棵B+树包含根节点、内部节点和叶子节点。根节点可能是一个叶子节点，也可能是一个包含两个或两个以上孩子节点的节点。</p>
+<a id="more"></a>
+
+<h2 id="1-2-B-树应用场景"><a href="#1-2-B-树应用场景" class="headerlink" title="1.2. B+树应用场景"></a>1.2. B+树应用场景</h2><p>B+树通常用于数据库和操作系统的文件系统中。NTFS, ReiserFS, NSS, XFS, JFS, ReFS 和BFS等文件系统都在使用B+树作为元数据索引。B+树的特点是能够保持数据稳定有序，其插入与修改拥有较稳定的对数时间复杂度。B+树元素自底向上插入。</p>
+<h2 id="1-3-B-树定义"><a href="#1-3-B-树定义" class="headerlink" title="1.3. B+树定义"></a>1.3. B+树定义</h2><ul>
+<li>B+树是应文件系统所需而出的一种B树的变型树。一棵m阶的B+树和m阶的B树的差异在于：<ul>
+<li>有n棵子树的结点中含有n个关键字，每个关键字不保存数据，只用来索引，所有数据都保存在叶子节点。</li>
+<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
+<li>所有的非终端结点可以看成是索引部分，结点中仅含其子树（根结点）中的最大（或最小）关键字。</li>
+</ul>
+</li>
+</ul>
+<p>备注：通常在B+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</p>
+<ul>
+<li>B+树是B树的变体，也是一种多路搜索树，其定义除以下存有差异的定义外基本与B树同：<ul>
+<li>非叶子结点的子树指针与关键字个数相同；</li>
+<li>非叶子结点的子树指针P[i]，指向关键字值属于[K[i], K[i+1])的子树（B树是开区间）；</li>
+<li>为所有叶子结点增加一个链指针；</li>
+<li>所有关键字都在叶子结点出现；</li>
+</ul>
+</li>
+</ul>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree2.PNG" alt="B+树"></p>
+<p>备注：B+的搜索与B树也基本相同，区别是B+树只有达到叶子结点才命中（B树可以在非叶子结点命中），其性能也等价于在关键字全集做一次二分查找；</p>
+<h2 id="1-4-B-的特性"><a href="#1-4-B-的特性" class="headerlink" title="1.4. B+的特性"></a>1.4. B+的特性</h2><ul>
+<li>所有关键字都出现在叶子结点的链表中（稠密索引），且链表中的关键字恰好是有序的；</li>
+<li>不可能在非叶子结点命中；</li>
+<li>非叶子结点相当于是叶子结点的索引（稀疏索引），叶子结点相当于是存储（关键字）数据的数据层；</li>
+<li>更适合文件索引系统；</li>
+</ul>
+<h1 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B*树"></a>2. B*树</h1><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BStartTree.PNG" alt="B*树"></p>
+<h2 id="2-1-B-树的定义"><a href="#2-1-B-树的定义" class="headerlink" title="2.1. B*树的定义"></a>2.1. B*树的定义</h2><ul>
+<li>是B+树的变体，在B+树的非根和非叶子结点再增加<strong>指向兄弟的指针</strong>；</li>
+<li>B*树定义了非叶子结点关键字个数至少为(2&#x2F;3)*M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
+</ul>
+<h1 id="3-B树，B-树，B-树小结"><a href="#3-B树，B-树，B-树小结" class="headerlink" title="3. B树，B+树，B*树小结"></a>3. B树，B+树，B*树小结</h1><table>
+<thead>
+<tr>
+<th align="left">数据结构</th>
+<th align="left">小结</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">B树</td>
+<td align="left">多路搜索树，每个结点存储M&#x2F;2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；</td>
+</tr>
+<tr>
+<td align="left">B+树</td>
+<td align="left">在B树基础上，为叶子结点增加链表指针，所有关键字都在叶子结点中出现，非叶子结点作为叶子结点的索引；B+树总是到叶子结点才命中；</td>
+</tr>
+<tr>
+<td align="left">B*树</td>
+<td align="left">在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1&#x2F;2提高到2&#x2F;3；</td>
+</tr>
+</tbody></table>
+<h1 id="4-B树，B-树与B-树的优缺点比较"><a href="#4-B树，B-树与B-树的优缺点比较" class="headerlink" title="4. B树，B+树与B*树的优缺点比较"></a>4. B树，B+树与B*树的优缺点比较</h1><p>备注：B-树就是B树，”-“是个连字符号，不是减号。</p>
+<h2 id="4-1-B树-vs-B-树"><a href="#4-1-B树-vs-B-树" class="headerlink" title="4.1. B树 vs B+树"></a>4.1. B树 vs B+树</h2><ul>
+<li>B树是一种平衡的多路查找(又称排序)树，在文件系统中有所应用。主要用作文件的索引。其中的B就表示平衡(Balance)</li>
+<li>B+树有一个最大的好处，方便扫库，B树必须用中序遍历的方法按序扫库，而B+树直接从叶子结点挨个扫一遍就完了。</li>
+<li>B+树支持range-query(区间查询)非常方便，而B树不支持。这是数据库选用B+树的最主要原因。比如要查 5-10之间的，B+树一把到5这个标记，再一把到10，然后串起来就行了，B树就非常麻烦。B树的好处，就是成功查询特别有利，因为树的高度总体要比B+树矮。不成功的情况下，B树也比B+树稍稍占一点点便宜。</li>
+<li>B树的优势是当你要查找的值恰好处在一个非叶子节点时，查找到该节点就会成功并结束查询，而B+树由于非叶节点只是索引部分，这些节点中只含有其子树中的最大(或最小)关键字，当非终端节点上的关键字等于给点值时，查找并不终止，而是继续向下直到叶子节点。因此在B+树中，无论查找成功与否，都是走了一条从根到叶子节点的路径。有很多基于频率的搜索是选用B树，越频繁query的结点越往根上走，前提是需要对query做统计，而且要对key做一些变化。</li>
+<li>另外B树也好B+树也好，根或者上面几层因为被反复query，所以这几块基本都在内存中，不会出现读磁盘IO，一般已启动的时候，就会主动换入内存。 mysql底层存储是用B+树实现的，因为内存中B+树是没有优势的，但是一到磁盘，B+树的威力就出来了。</li>
+</ul>
+<h2 id="4-2-B-树-vs-B-树"><a href="#4-2-B-树-vs-B-树" class="headerlink" title="4.2. B+树 vs B*树"></a>4.2. B+树 vs B*树</h2><ul>
+<li>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针；B树定义了非叶子结点关键字个数至少为(2&#x2F;3)M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
+<li>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1&#x2F;2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</li>
+<li>B*树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1&#x2F;3的数据到新结点，最后在父结点增加新结点的指针； 所以，B*树分配新结点的概率比B+树要低，空间使用率更高；</li>
+</ul>
+<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
+<li><a href="https://www.jianshu.com/p/7323130d351b">讲点”B树”，一文详解B树，B+树，B*树及其优缺点比较</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>测试内存中变量的存储方式</title>
+    <url>/2019/07/24/BitPrint/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/bitPrint.jpg" class="full-image" />
+
+<p>众所周知，程序中的变量存放于计算机内存中，程序对这些变量执行特定的赋值和计算等操作以实现某种功能。你是否好奇变量是如何被存储和表示于内存之中呢？</p>
+<a id="more"></a>
+
+<p>不同类型的变量所占字节大小不同、相同类型的变量在不同操作系统内所占字节大小也可能不同。而对于超过1字节的变量，根据不同的操作系统，还涉及字节序、字节对齐、大端or小端等其他问题。接下来让我们探究一下变量在内存中的表示与存放吧！</p>
+<p><strong>关键词:</strong> 比特打印、字节序、字节对齐</p>
+<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>一般初学一门编程语言时，最开始了解的就是这门语言支持的基本变量类型、其大小（占多少字节），可表示的数值范围。如在C&#x2F;C++语言中，char类型的变量占一个字节(一个字节含8bit，为减少内存管理负担，一字节通常也是操作系统内存的最小单位，但应用时各bit可被赋予不同的语义）。char变量有8bit，除去最高位为符号位用于表示数的正负外，剩余的低7位可以表示到(0 ~ 2^7 - 1，即0～127)，加上符号位即 + - (0～127)，又由于”-0”(0x80)与我们常用的数学方式不符，而被译为-128，故在C&#x2F;C++程序语言中，一个char类型的变量，仅占用一个字节，却被可以表示 -128 ~ 127 的数值范围。</p>
+<h1 id="2-存储方式探究"><a href="#2-存储方式探究" class="headerlink" title="2. 存储方式探究"></a>2. 存储方式探究</h1><h2 id="2-1-打印各比特原理概述"><a href="#2-1-打印各比特原理概述" class="headerlink" title="2.1. 打印各比特原理概述"></a>2.1. 打印各比特原理概述</h2><p>运用C&#x2F;C++中提供的位操作符和与操作原理“a &amp; 1 &#x3D; a” 和 “a &amp; 0 &#x3D; 0”获得各位的0&#x2F;1值。依次从最高位开始提取，若为1则打印“1”，若为0则打印“0”，然后提取次高位的0&#x2F;1值并打印，直至提取打印到最低位。至此一个字节的各比特的值都以打印出来。</p>
+<h2 id="2-2-编码测试"><a href="#2-2-编码测试" class="headerlink" title="2.2. 编码测试"></a>2.2. 编码测试</h2><h3 id="2-2-1-byte-变量各比特位打印实现"><a href="#2-2-1-byte-变量各比特位打印实现" class="headerlink" title="2.2.1. byte 变量各比特位打印实现"></a>2.2.1. byte 变量各比特位打印实现</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 byte 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位</span></span><br><span class="line"><span class="comment"> * eg. 0x80  --&gt; [1000 0000]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Byte</span><span class="params">(<span class="keyword">const</span> byte val)</span> </span>&#123;</span><br><span class="line">    byte comp = <span class="number">0x80</span>;<span class="comment">//相当于标尺，当前取最高位</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot; [&quot;</span>;</span><br><span class="line">    <span class="keyword">while</span> (comp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (comp == <span class="number">0x08</span>)</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">if</span> ((val &amp; comp) == comp)</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;0&quot;</span>;</span><br><span class="line">        comp &gt;&gt;= <span class="number">1</span>;<span class="comment">//逻辑右移，依次取各位</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;]&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数0x55时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">[<span class="number">0101</span> <span class="number">0101</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：<br>由于传入参数0x55其高低字节都为5，二进制中表示为0101，而我们可以看到其在内存中存储结果其高低字节分别为[0101 0101]，与分析相符。</p>
+<h3 id="2-2-2-char-变量各比特的打印实现"><a href="#2-2-2-char-变量各比特的打印实现" class="headerlink" title="2.2.2. char 变量各比特的打印实现"></a>2.2.2. char 变量各比特的打印实现</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 char 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位</span></span><br><span class="line"><span class="comment"> * eg. 0x80  --&gt; [1000 0000]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Char</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> val)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;char = &quot;</span> &lt;&lt; val &lt;&lt; endl &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="built_in">bitPrint_Byte</span>((byte)val);</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数’M’时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> = M</span><br><span class="line">Bits: [<span class="number">0100</span> <span class="number">1101</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：<br>char类型与byte类型十分相似，都占用一个字节，但其最高位拥有特殊语义，最高位为0表示正数，最高位为1表示负数。当传入参数为’M’，查询ASCII（美国信息交换标准代码）表可知’M’的为表中第77个字符，用0x4D表示。其中高字节4二进制表示为0100，低字节D二进制表示为1101，且最高位（最左位）为0表示正数，结果与分析一致。</p>
+<h3 id="2-2-3-int-变量各比特的打印实现"><a href="#2-2-3-int-变量各比特的打印实现" class="headerlink" title="2.2.3. int 变量各比特的打印实现"></a>2.2.3. int 变量各比特的打印实现</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 int 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位,</span></span><br><span class="line"><span class="comment"> * 默认从左至右为内存地址的增长方向</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * eg. 0x00001234</span></span><br><span class="line"><span class="comment"> * 小端（正序） [0011 0100] [0001 0010] [0000 0000] [0000 0000]</span></span><br><span class="line"><span class="comment"> * 大端（逆序） [0000 0000] [0000 0000] [0001 0010] [0011 0100]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Int</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">    byte* byteBuf = (byte *) &amp;val;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;int = &quot;</span> &lt;&lt; val &lt;&lt; endl &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;IntLen; i++) &#123;</span><br><span class="line">        <span class="built_in">bitPrint_Byte</span>(byteBuf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数19088743时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> = <span class="number">19088743</span></span><br><span class="line">Bits: [<span class="number">0110</span> <span class="number">0111</span>] [<span class="number">0100</span> <span class="number">0101</span>] [<span class="number">0010</span> <span class="number">0011</span>] [<span class="number">0000</span> <span class="number">0001</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>int变量类型占用四个字节，其最高位拥有特殊语义，最高位为0表示正数，最高位为1表示负数。int变量占四个字节，所以就会引发这样一个问题——“字节在电脑中存放时的序列与输入（输出）时的序列是先到的在前还是后到的在前？”针对此问题，产生两种不同的字节序，即规定多字节变量在内存中连续存放时的顺序是低地址对应高字节or低地址对应低字节。产生了两种字节序：</p>
+<ul>
+<li>小端字节序（正序）：高字节对应内存的高地址</li>
+<li>大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）<br>由于不同的系统采用的字节序不同，正好也可验证下自己的操作系统采用哪种字节序。<br>当传入参数为19088743，其十六进制表示为0x01234567。而分析其执行结果，低地址存放为[0110 0111]，十六进制为0x67，对应int值的低字节；而高地址存放为[0000 0001]，十六进制为0x01，对应int值的高字节。故可得知博主操作系统字节序为小端字节序（正序）。</li>
+</ul>
+<h2 id="2-3-扩展延伸"><a href="#2-3-扩展延伸" class="headerlink" title="2.3. 扩展延伸"></a>2.3. 扩展延伸</h2><h3 id="2-3-1-打印-任意-变量的各比特"><a href="#2-3-1-打印-任意-变量的各比特" class="headerlink" title="2.3.1. 打印 任意 变量的各比特"></a>2.3.1. 打印 任意 变量的各比特</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 任意 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位,</span></span><br><span class="line"><span class="comment"> * 默认从左至右为内存地址的增长方向</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * eg. 0x00001234</span></span><br><span class="line"><span class="comment"> * 小端（正序） [0011 0100] [0001 0010] [0000 0000] [0000 0000]</span></span><br><span class="line"><span class="comment"> * 大端（逆序） [0000 0000] [0000 0000] [0001 0010] [0011 0100]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Element</span><span class="params">(<span class="keyword">void</span> *val, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">    byte* byteBuf = <span class="keyword">new</span> byte[len];<span class="comment">//申请len长度的内存用于存放变量的所有字节</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">memcpy</span>(byteBuf, val, len);<span class="comment">//深拷贝</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++) &#123;</span><br><span class="line">        <span class="built_in">bitPrint_Byte</span>(byteBuf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">delete</span> byteBuf;<span class="comment">//释放byteBuf内存</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当在调用该函数并传入参数为一个自定义类（或结构体）时，其执行结果为:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//传入参数：学生成绩类的首地址</span></span><br><span class="line"><span class="comment">//学生成绩类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">char</span> id;</span><br><span class="line">    <span class="keyword">int</span> score;</span><br><span class="line">    <span class="built_in">Student</span>(<span class="keyword">char</span> id, <span class="keyword">int</span> score) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;id = id;</span><br><span class="line">        <span class="keyword">this</span>-&gt;score = score;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//主函数内运行</span></span><br><span class="line">Student* xiaoming = <span class="keyword">new</span> <span class="built_in">Student</span>(<span class="string">&#x27;A&#x27;</span>, <span class="number">88</span>);</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;class = &#123;&quot;</span> &lt;&lt; xiaoming-&gt;id &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; xiaoming-&gt;score &lt;&lt; <span class="string">&quot;&#125;&quot;</span> &lt;&lt; endl;</span><br><span class="line">bitPrint-&gt;<span class="built_in">bitPrint_Element</span>(xiaoming, <span class="built_in"><span class="keyword">sizeof</span></span>(Student));</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> =</span> &#123;A, <span class="number">88</span>&#125;</span><br><span class="line">Bits: [<span class="number">0100</span> <span class="number">0001</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0101</span> <span class="number">1000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：<br>从学生成绩类的定义可以看出，此类含有两个属性：char类型的学生编号id 和 int类型的学生成绩score，按理说这个类实例化后分配的内存应该是（1+4）为5个字节，但结果确是8个字节，这是为了方便快速地寻址，编译器会采用字节对齐，将下一个变量地址放置在系统能快速读取的位置（如：32位系统，放在偶地址的变量能够1个读周期取到值，而放在奇地址的变量却需要2个读周期才能取到值，故会存在字节对齐）。所以在第一个char变量后跳过了3个字节，将第二个int变量首地址设置为第5个字节。故此Student类在内存中的存放为：0x41、连续3个0x00对齐字节，4个字节的int变量[0101 1000] [0000 0000] [0000 0000] [0000 0000]，合计8个字节。</p>
+<h3 id="2-3-2-判断系统是否为大端字节序"><a href="#2-3-2-判断系统是否为大端字节序" class="headerlink" title="2.3.2. 判断系统是否为大端字节序"></a>2.3.2. 判断系统是否为大端字节序</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 判断系统是否为大端字节序</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * @Return 是大端字节序（true）；是小端字节序（false）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">BitPrint::isBigEndian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> test = <span class="number">0x01</span>;</span><br><span class="line">    byte* byteBuf = (byte *) &amp;test;</span><br><span class="line">    <span class="comment">//取低地址的一个字节为Byte变量，若其值等于低字节0x01则为正序（小端）</span></span><br><span class="line">    <span class="keyword">return</span> (byteBuf[<span class="number">0</span>] == <span class="number">0x01</span>) ? <span class="literal">false</span> : <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//主函数内运行 main.cpp</span></span><br><span class="line"><span class="comment">//判断系统是否为大端字节序</span></span><br><span class="line"><span class="keyword">if</span> (bitPrint-&gt;<span class="built_in">isBigEndian</span>()) &#123;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Yes, this system is Big Endian System&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;No, this system is Small Endian System&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line">No, <span class="keyword">this</span> system is Small Endian System</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>通过判断特定的int变量在内存中存放的次序即可判断当前系统采用的字节序。实际操作为取特定值为0x01的int变量的低地址的一个字节为Byte变量，若其值等于低字节0x01则为正序（小端），反之则为大端字节序。</p>
+<h1 id="3-字节对齐"><a href="#3-字节对齐" class="headerlink" title="3. 字节对齐"></a>3. 字节对齐</h1><p>前面分析到为了方便快速地寻址，编译器会采用字节对齐，将下一个变量地址放置在系统能快速读取的位置（如：32位系统，放在偶地址的变量能够1个读周期取到值，而放在奇地址的变量却需要2个读周期才能取到值，故会存在字节对齐）。<br>即对待结构体内的各位元素就像对待sizeof为n的数组一样，从结构体首地址开始依次向后为每个成员寻找第一个满足“addr % N &#x3D;&#x3D; 0”的地址，如果不够则在前一个成员变量后补空字节使之满足条件。上面的N为对齐参数(N &#x3D; min(sizeof(第i个成员类型),n))，n，可以设置，在c++中缺省值为8。<br>下面一起来验证一下吧！</p>
+<h2 id="3-1-先自定义一个包含多类型变量的结构体"><a href="#3-1-先自定义一个包含多类型变量的结构体" class="headerlink" title="3.1. 先自定义一个包含多类型变量的结构体"></a>3.1. 先自定义一个包含多类型变量的结构体</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG1</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> ID[<span class="number">16</span>];<span class="comment">// 16</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> type;<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">char</span> flag;<span class="comment">// 1  --&gt;   字节对齐（其后闲置1字节，共占2字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiHashValue;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiDataLen;<span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> contentData[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG0</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> ID[<span class="number">16</span>];<span class="comment">// 16</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> type;<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">char</span> flag; <span class="comment">// 1  --&gt;   字节对齐（其后闲置1字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiHashValue;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiDataLen;<span class="comment">// 4  --&gt;   字节对齐（其后闲置4字节，共占8字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> ulStartTime;<span class="comment">// 8</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> ulEndTime;<span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> contentData[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>定义一个该结构体变量并打印出各成员变量的地址如下</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MSG1 msg1;</span><br><span class="line">    cout &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1:\t\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.ID:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.ID &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.ID - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.type:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.type &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.type - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.flag:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.flag &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.flag - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.uiHashValue:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.uiHashValue &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.uiHashValue - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.uiDataLen:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.uiDataLen &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.uiDataLen - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.contentData:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)msg1.contentData &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.contentData - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    MSG0 msg0;</span><br><span class="line">    cout &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0:\t\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ID:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ID &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ID - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.type:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.type &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.type - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.flag:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.flag &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.flag - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.uiHashValue:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.uiHashValue &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.uiHashValue - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.uiDataLen:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.uiDataLen &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.uiDataLen - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ulStartTime:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ulStartTime &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ulStartTime - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ulEndTime:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ulEndTime &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ulEndTime - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.contentData:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)msg0.contentData &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.contentData - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line">&amp;msg1:				<span class="number">0x7ffeed56a8d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.ID:			<span class="number">0x7ffeed56a8d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.type:			<span class="number">0x7ffeed56a8e8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg1.flag:			<span class="number">0x7ffeed56a8ea</span> , <span class="number">18</span></span><br><span class="line">&amp;msg1.uiHashValue:	<span class="number">0x7ffeed56a8ec</span> , <span class="number">20</span></span><br><span class="line">&amp;msg1.uiDataLen:	<span class="number">0x7ffeed56a8f0</span> , <span class="number">24</span></span><br><span class="line">&amp;msg1.contentData:	<span class="number">0x7ffeed56a8f4</span> , <span class="number">28</span></span><br><span class="line"></span><br><span class="line">&amp;msg0:				<span class="number">0x7ffeecdd38c0</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.ID:			<span class="number">0x7ffeecdd38c0</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.type:			<span class="number">0x7ffeecdd38d0</span> , <span class="number">16</span></span><br><span class="line">&amp;msg0.flag:			<span class="number">0x7ffeecdd38d2</span> , <span class="number">18</span></span><br><span class="line">&amp;msg0.uiHashValue:	<span class="number">0x7ffeecdd38d4</span> , <span class="number">20</span></span><br><span class="line">&amp;msg0.uiDataLen:	<span class="number">0x7ffeecdd38d8</span> , <span class="number">24</span></span><br><span class="line">&amp;msg0.ulStartTime:	<span class="number">0x7ffeecdd38e0</span> , <span class="number">32</span></span><br><span class="line">&amp;msg0.ulEndTime:	<span class="number">0x7ffeecdd38e8</span> , <span class="number">40</span></span><br><span class="line">&amp;msg0.contentData:	<span class="number">0x7ffeecdd38f0</span> , <span class="number">48</span></span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>通过结构体MSG1定义的变量，其成员变量的地址于首地址的偏差可以看出，第三个成员变量flag虽为char类型，只占1字节，但编译器为了访问后续自变量更方便（放在偶地址，若为奇地址需要2个读周期才能取到值），所以编译器将下一个变量uiHashValue的首地址向后挪动一位到偏移地址为20处（偶地址的变量能够1个读周期取到值），相当于第三个成员变量占用2各字节（后一字节闲置）</p>
+<ul>
+<li>第一个成员地址为0，已对齐。</li>
+<li>第二个成员，由于上一个成员大小为16所以当前准地址为：16，N &#x3D; min(sizeof(unsigned short),8)等于2，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+<li>第三个成员，由于上一个成员大小为2所以当前准地址为：18，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+<li>第四个成员，由于上一个成员大小为1所以当前准地址为：19，N &#x3D; min(sizeof(unsigned int),8)等于4，不满足“addr % N &#x3D;&#x3D; 0”，19%4余1，故在前一个变量后补1个字节，使当前地址20满足“addr % N &#x3D;&#x3D; 0”</li>
+<li>第五个成员，由于上一个成员大小为4所以当前准地址为：24，N &#x3D; min(sizeof(unsigned int),8)等于4，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+<li>第六个成员，由于上一个成员大小为4所以当前准地址为：28，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+</ul>
+<p>同理对结构体MSG0的实际变量定义的变量，齐成员变量的地址于首地址的偏差可看出除了同样在第三个成员变量flag后跳过了1个字节，将下一个变量uiHashValue的首地址向后挪动一位到偏移地址为20处外，还在第5个变量uiDataLen后插入4字节闲置字节{8+8},{2+(1+1)+4},{(4+4)},{8},{8}。</p>
+<ul>
+<li>第一个成员地址为0，已对齐。</li>
+<li>第二个成员，由于上一个成员大小为16所以当前准地址为：16，N &#x3D; min(sizeof(unsigned short),8)等于2，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+<li>第三个成员，由于上一个成员大小为2所以当前准地址为：18，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+<li>第四个成员，由于上一个成员大小为1所以当前准地址为：19，N &#x3D; min(sizeof(unsigned int),8)等于4，不满足“addr % N &#x3D;&#x3D; 0”，19%4余1，故在前一个成员后补1个字节，使当前地址20满足“addr % N &#x3D;&#x3D; 0”</li>
+<li>第五个成员，由于上一个成员大小为4所以当前准地址为：24，N &#x3D; min(sizeof(unsigned int),8)等于4，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+<li>第六个成员，由于上一个成员大小为4所以当前准地址为：28，N &#x3D; min(sizeof(unsigned long long int),8)等于8，不满足“addr % N &#x3D;&#x3D; 0”，28%8余4，故在前一字成员后补4个字节，使当前地址为32满足“addr % N &#x3D;&#x3D; 0”</li>
+<li>第七个成员，由于上一个成员大小为8所以当前准地址为：40，N &#x3D; min(sizeof(unsigned int),8)等于8，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+<li>第八个成员，由于上一个成员大小为8所以当前准地址为：48，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
+</ul>
+<h2 id="3-2-禁止编译器自动字节对齐"><a href="#3-2-禁止编译器自动字节对齐" class="headerlink" title="3.2. 禁止编译器自动字节对齐"></a>3.2. 禁止编译器自动字节对齐</h2><p>我们可以在定义结构体上方加一句配置，设置对齐参数为1字节从而实现关闭编译器自动对齐的目的（可能带来性能损失或其他错误）。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(1) <span class="comment">// 编译使用1字节对齐，未设置则自动字节对齐</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG1</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG0</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印出各成员变量的地址如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">&amp;msg1:				<span class="number">0x7ffee5ce28d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.ID:			<span class="number">0x7ffee5ce28d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.type:			<span class="number">0x7ffee5ce28e8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg1.flag:			<span class="number">0x7ffee5ce28ea</span> , <span class="number">18</span></span><br><span class="line">&amp;msg1.uiHashValue:	<span class="number">0x7ffee5ce28eb</span> , <span class="number">19</span></span><br><span class="line">&amp;msg1.uiDataLen:	<span class="number">0x7ffee5ce28ef</span> , <span class="number">23</span></span><br><span class="line">&amp;msg1.contentData:	<span class="number">0x7ffee5ce28f3</span> , <span class="number">27</span></span><br><span class="line"></span><br><span class="line">&amp;msg0:				<span class="number">0x7ffee5ce28a8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.ID:			<span class="number">0x7ffee5ce28a8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.type:			<span class="number">0x7ffee5ce28b8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg0.flag:			<span class="number">0x7ffee5ce28ba</span> , <span class="number">18</span></span><br><span class="line">&amp;msg0.uiHashValue:	<span class="number">0x7ffee5ce28bb</span> , <span class="number">19</span></span><br><span class="line">&amp;msg0.uiDataLen:	<span class="number">0x7ffee5ce28bf</span> , <span class="number">23</span></span><br><span class="line">&amp;msg0.ulStartTime:	<span class="number">0x7ffee5ce28c3</span> , <span class="number">27</span></span><br><span class="line">&amp;msg0.ulEndTime:	<span class="number">0x7ffee5ce28cb</span> , <span class="number">35</span></span><br><span class="line">&amp;msg0.contentData:	<span class="number">0x7ffee5ce28d3</span> , <span class="number">43</span></span><br></pre></td></tr></table></figure>
+<p>可以看出设置字节对齐参数为1字节后，相当于关闭了字节对齐</p>
+<h1 id="4-按字节访问"><a href="#4-按字节访问" class="headerlink" title="4. 按字节访问"></a>4. 按字节访问</h1><p>所有对结构体成员的指针访问，都可以理解为用特定的类型去解读一个地址。下方为示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MSG1_HEAD_LEN  (offsetof(MSG1,contentData))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MSG0_HEAD_LEN  (offsetof(MSG0,contentData))</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; MSG0_HEAD_LEN &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; MSG1_HEAD_LEN &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    MSG0 msg0;</span><br><span class="line">    msg0.ulStartTime = <span class="number">20181112ULL</span>;</span><br><span class="line">    msg0.ulEndTime = <span class="number">561341235ULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span>* p = &amp;msg0;</span><br><span class="line"></span><br><span class="line">    MSG1* msg1Ptr = (MSG1*)p;</span><br><span class="line"></span><br><span class="line">    cout  &lt;&lt; <span class="string">&quot;(msg1Ptr-&gt;contentData): &quot;</span> &lt;&lt; (<span class="keyword">void</span> *)(msg1Ptr-&gt;contentData) &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt;  *(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span>*)(msg1Ptr-&gt;contentData)  &lt;&lt; <span class="string">&quot; ULL&quot;</span> &lt;&lt; endl;</span><br><span class="line">    cout  &lt;&lt; <span class="string">&quot;(msg1Ptr-&gt;contentData + 8): &quot;</span> &lt;&lt; (<span class="keyword">void</span> *)(msg1Ptr-&gt;contentData + <span class="number">8</span>)&lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt;  *(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span>*)(msg1Ptr-&gt;contentData + <span class="number">8</span>) &lt;&lt; <span class="string">&quot; ULL&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">43</span></span><br><span class="line"><span class="number">27</span></span><br><span class="line">(msg1Ptr-&gt;contentData): <span class="number">0x7ffeeb5118e3</span>, <span class="number">20181112</span> ULL</span><br><span class="line">(msg1Ptr-&gt;contentData + <span class="number">8</span>): <span class="number">0x7ffeeb5118eb</span>, <span class="number">561341235</span> ULL</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<p>代码主要是有结构体MSG0定义了一个变量并未其相对于MSG1多出的两个变量赋值，然后实现用MSG1类型的指针访问MSG0中多出的变量（默认没有指针），来例证c++的访问变量的机制为“以特定的类型去解读一个地址”，无论其是否真的被定义成那样（前提条件：该地址是被定义过的且可访问的地址，否则会被认为内存越界）。</p>
+<p>附录：完整代码详见个人git仓库：<a href="https://github.com/EisenHao/Cpp_Learning/blob/master/BitPrint.cpp">BitPrint.cpp</a>,<a href="https://github.com/EisenHao/Cpp_Learning/blob/master/BitPrint.h">BitPrint.h</a></p>
+<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
+<li><a href="https://wenku.baidu.com/view/ec9cba000740be1e650e9aa5.html">结构体内存分配分析</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -809,91 +894,6 @@
       </categories>
       <tags>
         <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>测试内存中变量的存储方式</title>
-    <url>/2019/07/24/BitPrint/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/bitPrint.jpg" class="full-image" />
-
-<p>众所周知，程序中的变量存放于计算机内存中，程序对这些变量执行特定的赋值和计算等操作以实现某种功能。你是否好奇变量是如何被存储和表示于内存之中呢？</p>
-<a id="more"></a>
-
-<p>不同类型的变量所占字节大小不同、相同类型的变量在不同操作系统内所占字节大小也可能不同。而对于超过1字节的变量，根据不同的操作系统，还涉及字节序、字节对齐、大端or小端等其他问题。接下来让我们探究一下变量在内存中的表示与存放吧！</p>
-<p><strong>关键词:</strong> 比特打印、字节序、字节对齐</p>
-<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>一般初学一门编程语言时，最开始了解的就是这门语言支持的基本变量类型、其大小（占多少字节），可表示的数值范围。如在C&#x2F;C++语言中，char类型的变量占一个字节(一个字节含8bit，为减少内存管理负担，一字节通常也是操作系统内存的最小单位，但应用时各bit可被赋予不同的语义）。char变量有8bit，除去最高位为符号位用于表示数的正负外，剩余的低7位可以表示到(0 ~ 2^7 - 1，即0～127)，加上符号位即 + - (0～127)，又由于”-0”(0x80)与我们常用的数学方式不符，而被译为-128，故在C&#x2F;C++程序语言中，一个char类型的变量，仅占用一个字节，却被可以表示 -128 ~ 127 的数值范围。</p>
-<h1 id="2-存储方式探究"><a href="#2-存储方式探究" class="headerlink" title="2. 存储方式探究"></a>2. 存储方式探究</h1><h2 id="2-1-打印各比特原理概述"><a href="#2-1-打印各比特原理概述" class="headerlink" title="2.1. 打印各比特原理概述"></a>2.1. 打印各比特原理概述</h2><p>运用C&#x2F;C++中提供的位操作符和与操作原理“a &amp; 1 &#x3D; a” 和 “a &amp; 0 &#x3D; 0”获得各位的0&#x2F;1值。依次从最高位开始提取，若为1则打印“1”，若为0则打印“0”，然后提取次高位的0&#x2F;1值并打印，直至提取打印到最低位。至此一个字节的各比特的值都以打印出来。</p>
-<h2 id="2-2-编码测试"><a href="#2-2-编码测试" class="headerlink" title="2.2. 编码测试"></a>2.2. 编码测试</h2><h3 id="2-2-1-byte-变量各比特位打印实现"><a href="#2-2-1-byte-变量各比特位打印实现" class="headerlink" title="2.2.1. byte 变量各比特位打印实现"></a>2.2.1. byte 变量各比特位打印实现</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 byte 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位</span></span><br><span class="line"><span class="comment"> * eg. 0x80  --&gt; [1000 0000]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Byte</span><span class="params">(<span class="keyword">const</span> byte val)</span> </span>&#123;</span><br><span class="line">    byte comp = <span class="number">0x80</span>;<span class="comment">//相当于标尺，当前取最高位</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot; [&quot;</span>;</span><br><span class="line">    <span class="keyword">while</span> (comp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (comp == <span class="number">0x08</span>)</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">if</span> ((val &amp; comp) == comp)</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;0&quot;</span>;</span><br><span class="line">        comp &gt;&gt;= <span class="number">1</span>;<span class="comment">//逻辑右移，依次取各位</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;]&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当在调用该函数并传入参数0x55时，其执行结果为:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">[<span class="number">0101</span> <span class="number">0101</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>分析</strong>：<br>由于传入参数0x55其高低字节都为5，二进制中表示为0101，而我们可以看到其在内存中存储结果其高低字节分别为[0101 0101]，与分析相符。</p>
-<h3 id="2-2-2-char-变量各比特的打印实现"><a href="#2-2-2-char-变量各比特的打印实现" class="headerlink" title="2.2.2. char 变量各比特的打印实现"></a>2.2.2. char 变量各比特的打印实现</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 char 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位</span></span><br><span class="line"><span class="comment"> * eg. 0x80  --&gt; [1000 0000]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Char</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> val)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;char = &quot;</span> &lt;&lt; val &lt;&lt; endl &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="built_in">bitPrint_Byte</span>((byte)val);</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当在调用该函数并传入参数’M’时，其执行结果为:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> = M</span><br><span class="line">Bits: [<span class="number">0100</span> <span class="number">1101</span>]</span><br></pre></td></tr></table></figure>
-
-<p><strong>分析</strong>：<br>char类型与byte类型十分相似，都占用一个字节，但其最高位拥有特殊语义，最高位为0表示正数，最高位为1表示负数。当传入参数为’M’，查询ASCII（美国信息交换标准代码）表可知’M’的为表中第77个字符，用0x4D表示。其中高字节4二进制表示为0100，低字节D二进制表示为1101，且最高位（最左位）为0表示正数，结果与分析一致。</p>
-<h3 id="2-2-3-int-变量各比特的打印实现"><a href="#2-2-3-int-变量各比特的打印实现" class="headerlink" title="2.2.3. int 变量各比特的打印实现"></a>2.2.3. int 变量各比特的打印实现</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 int 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位,</span></span><br><span class="line"><span class="comment"> * 默认从左至右为内存地址的增长方向</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * eg. 0x00001234</span></span><br><span class="line"><span class="comment"> * 小端（正序） [0011 0100] [0001 0010] [0000 0000] [0000 0000]</span></span><br><span class="line"><span class="comment"> * 大端（逆序） [0000 0000] [0000 0000] [0001 0010] [0011 0100]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Int</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">    byte* byteBuf = (byte *) &amp;val;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;int = &quot;</span> &lt;&lt; val &lt;&lt; endl &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;IntLen; i++) &#123;</span><br><span class="line">        <span class="built_in">bitPrint_Byte</span>(byteBuf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当在调用该函数并传入参数19088743时，其执行结果为:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> = <span class="number">19088743</span></span><br><span class="line">Bits: [<span class="number">0110</span> <span class="number">0111</span>] [<span class="number">0100</span> <span class="number">0101</span>] [<span class="number">0010</span> <span class="number">0011</span>] [<span class="number">0000</span> <span class="number">0001</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>分析</strong>：</p>
-<p>int变量类型占用四个字节，其最高位拥有特殊语义，最高位为0表示正数，最高位为1表示负数。int变量占四个字节，所以就会引发这样一个问题——“字节在电脑中存放时的序列与输入（输出）时的序列是先到的在前还是后到的在前？”针对此问题，产生两种不同的字节序，即规定多字节变量在内存中连续存放时的顺序是低地址对应高字节or低地址对应低字节。产生了两种字节序：</p>
-<ul>
-<li>小端字节序（正序）：高字节对应内存的高地址</li>
-<li>大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）<br>由于不同的系统采用的字节序不同，正好也可验证下自己的操作系统采用哪种字节序。<br>当传入参数为19088743，其十六进制表示为0x01234567。而分析其执行结果，低地址存放为[0110 0111]，十六进制为0x67，对应int值的低字节；而高地址存放为[0000 0001]，十六进制为0x01，对应int值的高字节。故可得知博主操作系统字节序为小端字节序（正序）。</li>
-</ul>
-<h2 id="2-3-扩展延伸"><a href="#2-3-扩展延伸" class="headerlink" title="2.3. 扩展延伸"></a>2.3. 扩展延伸</h2><h3 id="2-3-1-打印-任意-变量的各比特"><a href="#2-3-1-打印-任意-变量的各比特" class="headerlink" title="2.3.1. 打印 任意 变量的各比特"></a>2.3.1. 打印 任意 变量的各比特</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 打印一个 任意 变量的各位</span></span><br><span class="line"><span class="comment"> * 默认各字节从左至右 对应 高位至地位,</span></span><br><span class="line"><span class="comment"> * 默认从左至右为内存地址的增长方向</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * eg. 0x00001234</span></span><br><span class="line"><span class="comment"> * 小端（正序） [0011 0100] [0001 0010] [0000 0000] [0000 0000]</span></span><br><span class="line"><span class="comment"> * 大端（逆序） [0000 0000] [0000 0000] [0001 0010] [0011 0100]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BitPrint::bitPrint_Element</span><span class="params">(<span class="keyword">void</span> *val, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">    byte* byteBuf = <span class="keyword">new</span> byte[len];<span class="comment">//申请len长度的内存用于存放变量的所有字节</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">memcpy</span>(byteBuf, val, len);<span class="comment">//深拷贝</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Bits:&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++) &#123;</span><br><span class="line">        <span class="built_in">bitPrint_Byte</span>(byteBuf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">delete</span> byteBuf;<span class="comment">//释放byteBuf内存</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当在调用该函数并传入参数为一个自定义类（或结构体）时，其执行结果为:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//传入参数：学生成绩类的首地址</span></span><br><span class="line"><span class="comment">//学生成绩类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">char</span> id;</span><br><span class="line">    <span class="keyword">int</span> score;</span><br><span class="line">    <span class="built_in">Student</span>(<span class="keyword">char</span> id, <span class="keyword">int</span> score) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;id = id;</span><br><span class="line">        <span class="keyword">this</span>-&gt;score = score;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//主函数内运行</span></span><br><span class="line">Student* xiaoming = <span class="keyword">new</span> <span class="built_in">Student</span>(<span class="string">&#x27;A&#x27;</span>, <span class="number">88</span>);</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;class = &#123;&quot;</span> &lt;&lt; xiaoming-&gt;id &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; xiaoming-&gt;score &lt;&lt; <span class="string">&quot;&#125;&quot;</span> &lt;&lt; endl;</span><br><span class="line">bitPrint-&gt;<span class="built_in">bitPrint_Element</span>(xiaoming, <span class="built_in"><span class="keyword">sizeof</span></span>(Student));</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> =</span> &#123;A, <span class="number">88</span>&#125;</span><br><span class="line">Bits: [<span class="number">0100</span> <span class="number">0001</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0101</span> <span class="number">1000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>] [<span class="number">0000</span> <span class="number">0000</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>分析</strong>：<br>从学生成绩类的定义可以看出，此类含有两个属性：char类型的学生编号id 和 int类型的学生成绩score，按理说这个类实例化后分配的内存应该是（1+4）为5个字节，但结果确是8个字节，这是为了方便快速地寻址，编译器会采用字节对齐，将下一个变量地址放置在系统能快速读取的位置（如：32位系统，放在偶地址的变量能够1个读周期取到值，而放在奇地址的变量却需要2个读周期才能取到值，故会存在字节对齐）。所以在第一个char变量后跳过了3个字节，将第二个int变量首地址设置为第5个字节。故此Student类在内存中的存放为：0x41、连续3个0x00对齐字节，4个字节的int变量[0101 1000] [0000 0000] [0000 0000] [0000 0000]，合计8个字节。</p>
-<h3 id="2-3-2-判断系统是否为大端字节序"><a href="#2-3-2-判断系统是否为大端字节序" class="headerlink" title="2.3.2. 判断系统是否为大端字节序"></a>2.3.2. 判断系统是否为大端字节序</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 判断系统是否为大端字节序</span></span><br><span class="line"><span class="comment"> * 小端字节序（正序）：高字节对应内存的高地址</span></span><br><span class="line"><span class="comment"> * 大端字节序（逆序）：高字节对应内存的低地址（网络传输统一用大端字节序）</span></span><br><span class="line"><span class="comment"> * @Return 是大端字节序（true）；是小端字节序（false）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">BitPrint::isBigEndian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> test = <span class="number">0x01</span>;</span><br><span class="line">    byte* byteBuf = (byte *) &amp;test;</span><br><span class="line">    <span class="comment">//取低地址的一个字节为Byte变量，若其值等于低字节0x01则为正序（小端）</span></span><br><span class="line">    <span class="keyword">return</span> (byteBuf[<span class="number">0</span>] == <span class="number">0x01</span>) ? <span class="literal">false</span> : <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//主函数内运行 main.cpp</span></span><br><span class="line"><span class="comment">//判断系统是否为大端字节序</span></span><br><span class="line"><span class="keyword">if</span> (bitPrint-&gt;<span class="built_in">isBigEndian</span>()) &#123;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Yes, this system is Big Endian System&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;No, this system is Small Endian System&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line">No, <span class="keyword">this</span> system is Small Endian System</span><br></pre></td></tr></table></figure>
-<p><strong>分析</strong>：</p>
-<p>通过判断特定的int变量在内存中存放的次序即可判断当前系统采用的字节序。实际操作为取特定值为0x01的int变量的低地址的一个字节为Byte变量，若其值等于低字节0x01则为正序（小端），反之则为大端字节序。</p>
-<h1 id="3-字节对齐"><a href="#3-字节对齐" class="headerlink" title="3. 字节对齐"></a>3. 字节对齐</h1><p>前面分析到为了方便快速地寻址，编译器会采用字节对齐，将下一个变量地址放置在系统能快速读取的位置（如：32位系统，放在偶地址的变量能够1个读周期取到值，而放在奇地址的变量却需要2个读周期才能取到值，故会存在字节对齐）。<br>即对待结构体内的各位元素就像对待sizeof为n的数组一样，从结构体首地址开始依次向后为每个成员寻找第一个满足“addr % N &#x3D;&#x3D; 0”的地址，如果不够则在前一个成员变量后补空字节使之满足条件。上面的N为对齐参数(N &#x3D; min(sizeof(第i个成员类型),n))，n，可以设置，在c++中缺省值为8。<br>下面一起来验证一下吧！</p>
-<h2 id="3-1-先自定义一个包含多类型变量的结构体"><a href="#3-1-先自定义一个包含多类型变量的结构体" class="headerlink" title="3.1. 先自定义一个包含多类型变量的结构体"></a>3.1. 先自定义一个包含多类型变量的结构体</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG1</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> ID[<span class="number">16</span>];<span class="comment">// 16</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> type;<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">char</span> flag;<span class="comment">// 1  --&gt;   字节对齐（其后闲置1字节，共占2字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiHashValue;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiDataLen;<span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> contentData[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG0</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> ID[<span class="number">16</span>];<span class="comment">// 16</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> type;<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">char</span> flag; <span class="comment">// 1  --&gt;   字节对齐（其后闲置1字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiHashValue;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uiDataLen;<span class="comment">// 4  --&gt;   字节对齐（其后闲置4字节，共占8字节）</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> ulStartTime;<span class="comment">// 8</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> ulEndTime;<span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> contentData[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>定义一个该结构体变量并打印出各成员变量的地址如下</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MSG1 msg1;</span><br><span class="line">    cout &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1:\t\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.ID:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.ID &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.ID - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.type:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.type &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.type - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.flag:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.flag &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.flag - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.uiHashValue:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.uiHashValue &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.uiHashValue - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.uiDataLen:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg1.uiDataLen &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.uiDataLen - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg1.contentData:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)msg1.contentData &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1.contentData - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg1 &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    MSG0 msg0;</span><br><span class="line">    cout &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0:\t\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ID:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ID &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ID - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.type:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.type &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.type - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.flag:\t\t\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.flag &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.flag - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.uiHashValue:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.uiHashValue &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.uiHashValue - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.uiDataLen:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.uiDataLen &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.uiDataLen - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ulStartTime:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ulStartTime &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ulStartTime - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.ulEndTime:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)&amp;msg0.ulEndTime &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.ulEndTime - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt;</span><br><span class="line">        <span class="string">&quot;&amp;msg0.contentData:\t&quot;</span> &lt;&lt; (<span class="keyword">void</span>*)msg0.contentData &lt;&lt; <span class="string">&quot; , &quot;</span> &lt;&lt; (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0.contentData - (<span class="keyword">uint64_t</span>)(<span class="keyword">void</span>*)&amp;msg0 &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//运行结果为：</span></span><br><span class="line">&amp;msg1:				<span class="number">0x7ffeed56a8d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.ID:			<span class="number">0x7ffeed56a8d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.type:			<span class="number">0x7ffeed56a8e8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg1.flag:			<span class="number">0x7ffeed56a8ea</span> , <span class="number">18</span></span><br><span class="line">&amp;msg1.uiHashValue:	<span class="number">0x7ffeed56a8ec</span> , <span class="number">20</span></span><br><span class="line">&amp;msg1.uiDataLen:	<span class="number">0x7ffeed56a8f0</span> , <span class="number">24</span></span><br><span class="line">&amp;msg1.contentData:	<span class="number">0x7ffeed56a8f4</span> , <span class="number">28</span></span><br><span class="line"></span><br><span class="line">&amp;msg0:				<span class="number">0x7ffeecdd38c0</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.ID:			<span class="number">0x7ffeecdd38c0</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.type:			<span class="number">0x7ffeecdd38d0</span> , <span class="number">16</span></span><br><span class="line">&amp;msg0.flag:			<span class="number">0x7ffeecdd38d2</span> , <span class="number">18</span></span><br><span class="line">&amp;msg0.uiHashValue:	<span class="number">0x7ffeecdd38d4</span> , <span class="number">20</span></span><br><span class="line">&amp;msg0.uiDataLen:	<span class="number">0x7ffeecdd38d8</span> , <span class="number">24</span></span><br><span class="line">&amp;msg0.ulStartTime:	<span class="number">0x7ffeecdd38e0</span> , <span class="number">32</span></span><br><span class="line">&amp;msg0.ulEndTime:	<span class="number">0x7ffeecdd38e8</span> , <span class="number">40</span></span><br><span class="line">&amp;msg0.contentData:	<span class="number">0x7ffeecdd38f0</span> , <span class="number">48</span></span><br></pre></td></tr></table></figure>
-<p><strong>分析</strong>：</p>
-<p>通过结构体MSG1定义的变量，其成员变量的地址于首地址的偏差可以看出，第三个成员变量flag虽为char类型，只占1字节，但编译器为了访问后续自变量更方便（放在偶地址，若为奇地址需要2个读周期才能取到值），所以编译器将下一个变量uiHashValue的首地址向后挪动一位到偏移地址为20处（偶地址的变量能够1个读周期取到值），相当于第三个成员变量占用2各字节（后一字节闲置）</p>
-<ul>
-<li>第一个成员地址为0，已对齐。</li>
-<li>第二个成员，由于上一个成员大小为16所以当前准地址为：16，N &#x3D; min(sizeof(unsigned short),8)等于2，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-<li>第三个成员，由于上一个成员大小为2所以当前准地址为：18，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-<li>第四个成员，由于上一个成员大小为1所以当前准地址为：19，N &#x3D; min(sizeof(unsigned int),8)等于4，不满足“addr % N &#x3D;&#x3D; 0”，19%4余1，故在前一个变量后补1个字节，使当前地址20满足“addr % N &#x3D;&#x3D; 0”</li>
-<li>第五个成员，由于上一个成员大小为4所以当前准地址为：24，N &#x3D; min(sizeof(unsigned int),8)等于4，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-<li>第六个成员，由于上一个成员大小为4所以当前准地址为：28，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-</ul>
-<p>同理对结构体MSG0的实际变量定义的变量，齐成员变量的地址于首地址的偏差可看出除了同样在第三个成员变量flag后跳过了1个字节，将下一个变量uiHashValue的首地址向后挪动一位到偏移地址为20处外，还在第5个变量uiDataLen后插入4字节闲置字节{8+8},{2+(1+1)+4},{(4+4)},{8},{8}。</p>
-<ul>
-<li>第一个成员地址为0，已对齐。</li>
-<li>第二个成员，由于上一个成员大小为16所以当前准地址为：16，N &#x3D; min(sizeof(unsigned short),8)等于2，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-<li>第三个成员，由于上一个成员大小为2所以当前准地址为：18，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-<li>第四个成员，由于上一个成员大小为1所以当前准地址为：19，N &#x3D; min(sizeof(unsigned int),8)等于4，不满足“addr % N &#x3D;&#x3D; 0”，19%4余1，故在前一个成员后补1个字节，使当前地址20满足“addr % N &#x3D;&#x3D; 0”</li>
-<li>第五个成员，由于上一个成员大小为4所以当前准地址为：24，N &#x3D; min(sizeof(unsigned int),8)等于4，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-<li>第六个成员，由于上一个成员大小为4所以当前准地址为：28，N &#x3D; min(sizeof(unsigned long long int),8)等于8，不满足“addr % N &#x3D;&#x3D; 0”，28%8余4，故在前一字成员后补4个字节，使当前地址为32满足“addr % N &#x3D;&#x3D; 0”</li>
-<li>第七个成员，由于上一个成员大小为8所以当前准地址为：40，N &#x3D; min(sizeof(unsigned int),8)等于8，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-<li>第八个成员，由于上一个成员大小为8所以当前准地址为：48，N &#x3D; min(sizeof(char),8)等于1，满足“addr % N &#x3D;&#x3D; 0”，已对齐</li>
-</ul>
-<h2 id="3-2-禁止编译器自动字节对齐"><a href="#3-2-禁止编译器自动字节对齐" class="headerlink" title="3.2. 禁止编译器自动字节对齐"></a>3.2. 禁止编译器自动字节对齐</h2><p>我们可以在定义结构体上方加一句配置，设置对齐参数为1字节从而实现关闭编译器自动对齐的目的（可能带来性能损失或其他错误）。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(1) <span class="comment">// 编译使用1字节对齐，未设置则自动字节对齐</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG1</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MSG0</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印出各成员变量的地址如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">&amp;msg1:				<span class="number">0x7ffee5ce28d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.ID:			<span class="number">0x7ffee5ce28d8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg1.type:			<span class="number">0x7ffee5ce28e8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg1.flag:			<span class="number">0x7ffee5ce28ea</span> , <span class="number">18</span></span><br><span class="line">&amp;msg1.uiHashValue:	<span class="number">0x7ffee5ce28eb</span> , <span class="number">19</span></span><br><span class="line">&amp;msg1.uiDataLen:	<span class="number">0x7ffee5ce28ef</span> , <span class="number">23</span></span><br><span class="line">&amp;msg1.contentData:	<span class="number">0x7ffee5ce28f3</span> , <span class="number">27</span></span><br><span class="line"></span><br><span class="line">&amp;msg0:				<span class="number">0x7ffee5ce28a8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.ID:			<span class="number">0x7ffee5ce28a8</span> , <span class="number">0</span></span><br><span class="line">&amp;msg0.type:			<span class="number">0x7ffee5ce28b8</span> , <span class="number">16</span></span><br><span class="line">&amp;msg0.flag:			<span class="number">0x7ffee5ce28ba</span> , <span class="number">18</span></span><br><span class="line">&amp;msg0.uiHashValue:	<span class="number">0x7ffee5ce28bb</span> , <span class="number">19</span></span><br><span class="line">&amp;msg0.uiDataLen:	<span class="number">0x7ffee5ce28bf</span> , <span class="number">23</span></span><br><span class="line">&amp;msg0.ulStartTime:	<span class="number">0x7ffee5ce28c3</span> , <span class="number">27</span></span><br><span class="line">&amp;msg0.ulEndTime:	<span class="number">0x7ffee5ce28cb</span> , <span class="number">35</span></span><br><span class="line">&amp;msg0.contentData:	<span class="number">0x7ffee5ce28d3</span> , <span class="number">43</span></span><br></pre></td></tr></table></figure>
-<p>可以看出设置字节对齐参数为1字节后，相当于关闭了字节对齐</p>
-<h1 id="4-按字节访问"><a href="#4-按字节访问" class="headerlink" title="4. 按字节访问"></a>4. 按字节访问</h1><p>所有对结构体成员的指针访问，都可以理解为用特定的类型去解读一个地址。下方为示例：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MSG1_HEAD_LEN  (offsetof(MSG1,contentData))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MSG0_HEAD_LEN  (offsetof(MSG0,contentData))</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; MSG0_HEAD_LEN &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; MSG1_HEAD_LEN &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    MSG0 msg0;</span><br><span class="line">    msg0.ulStartTime = <span class="number">20181112ULL</span>;</span><br><span class="line">    msg0.ulEndTime = <span class="number">561341235ULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span>* p = &amp;msg0;</span><br><span class="line"></span><br><span class="line">    MSG1* msg1Ptr = (MSG1*)p;</span><br><span class="line"></span><br><span class="line">    cout  &lt;&lt; <span class="string">&quot;(msg1Ptr-&gt;contentData): &quot;</span> &lt;&lt; (<span class="keyword">void</span> *)(msg1Ptr-&gt;contentData) &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt;  *(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span>*)(msg1Ptr-&gt;contentData)  &lt;&lt; <span class="string">&quot; ULL&quot;</span> &lt;&lt; endl;</span><br><span class="line">    cout  &lt;&lt; <span class="string">&quot;(msg1Ptr-&gt;contentData + 8): &quot;</span> &lt;&lt; (<span class="keyword">void</span> *)(msg1Ptr-&gt;contentData + <span class="number">8</span>)&lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt;  *(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span>*)(msg1Ptr-&gt;contentData + <span class="number">8</span>) &lt;&lt; <span class="string">&quot; ULL&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">43</span></span><br><span class="line"><span class="number">27</span></span><br><span class="line">(msg1Ptr-&gt;contentData): <span class="number">0x7ffeeb5118e3</span>, <span class="number">20181112</span> ULL</span><br><span class="line">(msg1Ptr-&gt;contentData + <span class="number">8</span>): <span class="number">0x7ffeeb5118eb</span>, <span class="number">561341235</span> ULL</span><br></pre></td></tr></table></figure>
-<p><strong>分析</strong>：</p>
-<p>代码主要是有结构体MSG0定义了一个变量并未其相对于MSG1多出的两个变量赋值，然后实现用MSG1类型的指针访问MSG0中多出的变量（默认没有指针），来例证c++的访问变量的机制为“以特定的类型去解读一个地址”，无论其是否真的被定义成那样（前提条件：该地址是被定义过的且可访问的地址，否则会被认为内存越界）。</p>
-<p>附录：完整代码详见个人git仓库：<a href="https://github.com/EisenHao/Cpp_Learning/blob/master/BitPrint.cpp">BitPrint.cpp</a>,<a href="https://github.com/EisenHao/Cpp_Learning/blob/master/BitPrint.h">BitPrint.h</a></p>
-<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
-<li><a href="https://wenku.baidu.com/view/ec9cba000740be1e650e9aa5.html">结构体内存分配分析</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -1467,152 +1467,6 @@
       </tags>
   </entry>
   <entry>
-    <title>数据挖掘简介与发展动向</title>
-    <url>/2018/09/27/DataMining_Introduction/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Introduction.jpg" class="full-image" />
-
-<blockquote class="blockquote-center">
-<p>Data mining, the science of extracting useful knowledge from such huge data repositories, has emerged as a young and interdisciplinary field in computer science.  – by <strong>KDD</strong></p>
-
-</blockquote>
-
-<h1 id="1-数据挖掘简介"><a href="#1-数据挖掘简介" class="headerlink" title="1. 数据挖掘简介"></a>1. 数据挖掘简介</h1><a id="more"></a>
-
-<ul>
-<li>数据挖掘是一个动态的、强势快速扩展的领域。可简要将数据挖掘研究的主要问题分为五组：挖掘方法、用户交互、有效性与可伸缩性、数据类型的多样性、数据挖掘与社会。</li>
-<li>数据挖掘吸纳了诸如<strong>统计学</strong>、<strong>机器学习</strong>、<strong>模式识别</strong>、<strong>数据库和数据仓库</strong>、<strong>信息检索</strong>、<strong>可视化</strong>、<strong>算法</strong>、<strong>高性能计算</strong>和许多应用领域的大量技术。</li>
-</ul>
-<h2 id="1-1-数据挖掘的意义"><a href="#1-1-数据挖掘的意义" class="headerlink" title="1.1. 数据挖掘的意义"></a>1.1. 数据挖掘的意义</h2><ul>
-<li>利用大数据帮助做出<strong>预测</strong>或<strong>决策</strong></li>
-<li>发现数据中潜在的<strong>有趣模式</strong>或<strong>知识</strong></li>
-</ul>
-<h1 id="2-最新技术与发展动向"><a href="#2-最新技术与发展动向" class="headerlink" title="2. 最新技术与发展动向"></a>2. 最新技术与发展动向</h1><h2 id="2-1-数据挖掘最新技术"><a href="#2-1-数据挖掘最新技术" class="headerlink" title="2.1. 数据挖掘最新技术"></a>2.1. 数据挖掘最新技术</h2><ul>
-<li>超越传统技术和数据分析工具的能力的数据集催生了许多新的技术和工具–by<a href="https://link.springer.com/content/pdf/10.1007/978-3-319-08254-7.pdf">Information granularity, big data, and computational intelligence</a></li>
-</ul>
-<p>面对数据挖掘中3V的挑战（即：超大数据量、多样化的数据种类、处理数据的速度要求），如大型零售商的客户交易，天气监测，情报收集等数据集快速超越传统技术和数据分析工具的能力等问题，驱使数据可视化，采集和序列化中诞生了许多新的技术和工具。</p>
-<h3 id="2-1-1-数据预处理技术"><a href="#2-1-1-数据预处理技术" class="headerlink" title="2.1.1. 数据预处理技术"></a>2.1.1. 数据预处理技术</h3><p>数据清理、数据集成、数据归约、数据变换和数据离散化。</p>
-<ul>
-<li>Deren Li methods 2015，为了揭示空间数据挖掘的各向异性，挖掘视图方法利用尺度、层次和粒度来区分不同的需求。Deren Li方法对数据进行预处理，为进一步的知识发现做准备，方法是选择一个权重进行迭代，以便尽可能多地清理观察到的空间数据。–by<a href="https://link.springer.com/content/pdf/10.1007/978-3-662-48538-5.pdf">Spatial data mining</a></li>
-</ul>
-<h3 id="2-1-2-数据仓库、OLAP、数据立方体技术"><a href="#2-1-2-数据仓库、OLAP、数据立方体技术" class="headerlink" title="2.1.2. 数据仓库、OLAP、数据立方体技术"></a>2.1.2. 数据仓库、OLAP、数据立方体技术</h3><p><strong>数据仓库</strong>：是一种数据库，它与单位的操作数据库分别维护。数据仓库的建立为工商企业主管提供了体系结构和工具，以便他们系统地组织、理解和使用数据进行决策。</p>
-<p><strong>OLAP</strong>：OLAP是在线分析处理的缩写。OLAP实现业务数据的多维分析，并提供复杂计算、趋势分析和复杂数据建模的能力。</p>
-<p><strong>数据立方体</strong>：一种多维数据模型。数据立方体创建了灵活而强有力的手段，对数据的子集分组和聚集。它们使得用户可以在多维组合和变化的聚集粒度上探索数据。这种能力极大地开阔了分析的范围，有助于从数据中有效地发现有趣的模式和知识。</p>
-<h3 id="2-1-3-Apriori算法及其变形"><a href="#2-1-3-Apriori算法及其变形" class="headerlink" title="2.1.3. Apriori算法及其变形"></a>2.1.3. Apriori算法及其变形</h3><p>Apriori是一种用于在事务数据库上进行频繁项集挖掘和关联规则学习的算法。 它通过识别数据库中的频繁单个项目并将它们扩展到越来越大的项目集来进行，只要这些项目集在数据库中经常出现。</p>
-<h3 id="2-1-4-基于约束模式挖掘和挖掘近似模式"><a href="#2-1-4-基于约束模式挖掘和挖掘近似模式" class="headerlink" title="2.1.4. 基于约束模式挖掘和挖掘近似模式"></a>2.1.4. 基于约束模式挖掘和挖掘近似模式</h3><p>一种好的启发式方法是让用户说明他们对挖掘导致的有趣模式的直观或期望，作为限制搜索空间的约束条件。这种策略称为基于约束的挖掘。</p>
-<h3 id="2-1-5-分类"><a href="#2-1-5-分类" class="headerlink" title="2.1.5. 分类"></a>2.1.5. 分类</h3><p><strong>基本分类方法</strong>：包括决策树归纳、贝叶斯分类和基于规则的分类。</p>
-<p><strong>高级分类方法</strong>：贝叶斯信念网络、后向传播的神经网络技术、支持向量机、使用频繁模式的分类、k-最邻近分类、基于案例的推理、遗传算法、模糊集方法、多类分类、半监督分类、主动学习和迁移学习。</p>
-<h4 id="2-1-5-1-数据挖掘中的分类算法对比"><a href="#2-1-5-1-数据挖掘中的分类算法对比" class="headerlink" title="2.1.5.1. 数据挖掘中的分类算法对比"></a>2.1.5.1. 数据挖掘中的分类算法对比</h4><p>分类是一种重要的数据挖掘技术，具有广泛的应用前景。分类用于找出在给定数据集中每个数据实例在哪个组中相关。分类算法主要有：<strong>C4.5</strong>、<strong>ID3</strong>、<strong>k近邻分类器</strong>、<strong>朴素贝叶斯</strong>、<strong>SVM</strong>、<strong>ANN</strong>等。分类技术一般采用统计方法、机器学习方法和神经网络方法进行分类。Nikam对不同的分类算法及其特点和局限性进行了全面的综述。</p>
-<p>– <a href="https://pdfs.semanticscholar.org/7c97/57ee09afa570db37f04e3b6cc4da0e2f3571.pdf">A comparative study of classification techniques in data mining algorithms</a></p>
-<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AdvantagesAndDisadvantagesOfClassificationAlgorithm.png" alt="AdvantagesAndDisadvantagesOfClassificationAlgorithm"></p>
-<ul>
-<li>基于<strong>神经网络</strong>和<strong>遗传算法</strong>的数据挖掘技术</li>
-</ul>
-<p><strong>Ali, Sayyed Muzammil</strong>概述了常见的知识发现任务以及解决这些任务的方法。总结了数据挖掘的概念，阐述了数据挖掘对其方法论的意义。详细研究了基于神经网络和遗传算法的数据挖掘技术，综述了实现神经网络和遗传算法数据挖掘的关键技术和方法。</p>
-<p>– <a href="http://www.academia.edu/download/33555810/V3I4201499a89.pdf">data mining Techniques</a></p>
-<h3 id="2-1-6-聚类分析"><a href="#2-1-6-聚类分析" class="headerlink" title="2.1.6. 聚类分析"></a>2.1.6. 聚类分析</h3><p><strong>基本聚类分析</strong>：</p>
-<ul>
-<li>k-均值和k-中心点划分算法、凝聚的与分裂的层次聚类算法、</li>
-<li>基于密度的DBSCAN、OPTICS、DENCLUE聚类分析</li>
-<li>基于网络的STING、CLIQUE聚类分析</li>
-</ul>
-<p><strong>高级聚类分析</strong>：</p>
-<ul>
-<li><p>基于概率模型的模糊簇、期望最大化算法的聚类分析</p>
-</li>
-<li><p>子空间聚类方法、双聚类（聚类高维数据）</p>
-</li>
-<li><p>SCAN算法（用于聚类图数据）</p>
-</li>
-<li><p>具有约束的COP-k-均值算法</p>
-</li>
-<li><p>数据挖掘问题的<strong>多目标进化算法</strong>的最新进展</p>
-</li>
-</ul>
-<p><strong>Mukhopadhyay, Anirban</strong>对数据挖掘问题的多目标进化算法的最新进展进行了全面的综述。本文第一部分给出了多目标优化和数据挖掘的一些基本概念。随后，对两大数据挖掘任务特征选择和分类的多目标演化方法进行了研究。在本文的第二部分中，我们调查了用于聚类、关联规则挖掘等多个数据挖掘任务的不同多目标进化算法，并对该领域未来的研究范围进行了一般性讨论。</p>
-<p>– <a href="https://ieeexplore.ieee.org/iel7/4235/4358751/06658835.pdf">A Survey of Multiobjective Evolutionary Algorithms for data mining: Part I.</a></p>
-<h3 id="2-1-7-基于随机选择选项的算法"><a href="#2-1-7-基于随机选择选项的算法" class="headerlink" title="2.1.7. 基于随机选择选项的算法"></a>2.1.7. 基于随机选择选项的算法</h3><p>有时基于<strong>随机选择选项</strong>的算法收效良好。在数据挖掘和控制领域，当一个问题需要“蛮力”选择选项时，基于<strong>随机选择选项</strong>的算法在有限的时间内提供了一定概率的良好结果，并显著减少了操作量。</p>
-<p>– <a href="https://pdfs.semanticscholar.org/7c97/57ee09afa570db37f04e3b6cc4da0e2f3571.pdf">A comparative study of classification techniques in data mining algorithms</a></p>
-<h3 id="2-1-8-流算法"><a href="#2-1-8-流算法" class="headerlink" title="2.1.8. 流算法"></a>2.1.8. 流算法</h3><ul>
-<li><strong>APSO加速粒子群优化算法</strong></li>
-</ul>
-<p><strong>Fong, Simon</strong>为解决当涉及到在高维数据上的挖掘时，获得最优特征子集的搜索空间以指数级增长，这导致了计算上的一个棘手需求这一问题，<strong>提出了一种新的轻量级特征选择方法</strong>。该特征选择是为了实时挖掘流数据，采用加速粒子群优化算法(APSO)，在合理的处理时间内提高了分析精度。</p>
-<p>– <a href="https://ieeexplore.ieee.org/iel7/4629386/4629387/07115942.pdf">Accelerated PSO swarm search feature selection for data stream mining big data</a></p>
-<h3 id="2-1-9-分布式数据挖掘"><a href="#2-1-9-分布式数据挖掘" class="headerlink" title="2.1.9. 分布式数据挖掘"></a>2.1.9. 分布式数据挖掘</h3><p><strong>Le-Khac, Nhien-An</strong>提出了一个新的框架，开发新的和创新的数据挖掘技术，以处理非常大的分布式异构数据集在商业和学术应用。详细介绍了其中的主要组件及其接口，允许用户在Globus ToolKit、DGET等网格平台上高效地开发和实现其数据挖掘应用程序技术。</p>
-<p> – <a href="https://arxiv.org/abs/1703.09756">ADMIRE framework: Distributed data mining on data grid platforms</a></p>
-<p><strong>Janez Kranjc</strong>介绍了一种分布式计算平台，利用最新的软件技术和计算范式开发出了支持大数据挖掘的平台。这个平台称为ClowdFlows，它是一个基于云的web应用程序，具有图形用户界面，支持数据挖掘工作流的构建和执行，其中包括作为工作流组件使用的web服务。</p>
-<p> – <a href="https://www.sciencedirect.com/science/article/pii/S0167739X16302709">ClowdFlows: Online workflows for distributed big data mining</a></p>
-<h2 id="2-2-数据挖掘发展动向"><a href="#2-2-数据挖掘发展动向" class="headerlink" title="2.2. 数据挖掘发展动向"></a>2.2. 数据挖掘发展动向</h2><h3 id="2-2-1-与物联网相结合"><a href="#2-2-1-与物联网相结合" class="headerlink" title="2.2.1. 与物联网相结合"></a>2.2.1. 与物联网相结合</h3><p>对许多人来说，物联网生成或捕获的海量数据被认为具有非常有用和有价值的信息。数据挖掘无疑将在使这种系统足够智能以提供更方便的服务和环境方面发挥关键作用。<br><strong>Chun-Wei Tsai</strong>从物联网开始讨论，简要回顾了“物联网数据”和“物联网数据挖掘”的特点，最后，讨论了该领域的变化、潜力、开放问题和未来趋势。</p>
-<p>– <a href="https://ieeexplore.ieee.org/iel7/9739/6734839/06674155.pdf">data mining for Internet of Things: A survey.</a></p>
-<h3 id="2-2-2-基于云计算的数据挖掘更低成本"><a href="#2-2-2-基于云计算的数据挖掘更低成本" class="headerlink" title="2.2.2. 基于云计算的数据挖掘更低成本"></a>2.2.2. 基于云计算的数据挖掘更低成本</h3><p>数据挖掘技术和应用程序可以有效地用于云计算范式。云计算是一种能够支持广泛应用的通用技术。基于云计算的数据挖掘技术的实现将允许用户从几乎集成的数据仓库中检索有意义的信息，从而**降低基础设施和存储的成本，并且可以从云检索有用的和潜在的信息。</p>
-<p>– <a href="http://ijrise.org/asset/archive/15SANKALP1.pdf">A review on data mining based cloud computing</a></p>
-<h3 id="2-2-3-与统计与机器学习结合"><a href="#2-2-3-与统计与机器学习结合" class="headerlink" title="2.2.3. 与统计与机器学习结合"></a>2.2.3. 与统计与机器学习结合</h3><p>– <a href="https://books.google.com/books?hl=en&lr=&id=ETwuDwAAQBAJ&oi=fnd&pg=PR19&dq=data+mining+Development+trend&ots=2NWgjl2RLK&sig=sQBatbtbXqXyebsmDBRzPVYNL_8">Data mining for business analytics: concepts, techniques, and applications in R</a></p>
-<h3 id="2-2-4-数据挖掘实现的集成库及平台化"><a href="#2-2-4-数据挖掘实现的集成库及平台化" class="headerlink" title="2.2.4. 数据挖掘实现的集成库及平台化"></a>2.2.4. 数据挖掘实现的集成库及平台化</h3><ul>
-<li><strong>SPMF——一个开源数据挖掘库</strong> 2014</li>
-</ul>
-<p><strong>Fournier-Viger</strong>提供了一个用Java实现的跨平台库——<strong>SPMF</strong>，一个开源数据挖掘库**，提供了超过55种数据挖掘算法的实现。<br>SPMF专门用于发现事务和序列数据库中的模式，如频繁项目集、关联规则和顺序模式。<br>源代码可以集成到其他Java程序中。<br>此外，SPMF还提供了命令行界面和简单的图形界面来进行快速测试。</p>
-<p>– <a href="http://www.jmlr.org/papers/volume15/fournierviger14a/fournierviger14a.pdf">SPMF: a Java open-source pattern mining library</a></p>
-<ul>
-<li><strong>SAMOA——一个挖掘大数据流的平台</strong> 2015</li>
-</ul>
-<p><strong>Morales GD</strong>提供了一个挖掘大数据流的平台——<strong>SAMOA</strong>。它提供了一组分布式流算法，用于最常见的数据挖掘和机器学习任务，如分类、聚类和回归，以及开发新算法的编程抽象。它具有一个可插入的体系结构，允许它在多个分布式流处理引擎(如Storm、S4和Samza)上运行。萨摩亚是用Java编写的，是开源的，可以在<a href="http://samoa-project.net的apache/">http://samoa-project.net的Apache</a> Software License version 2.0下访问。</p>
-<p>– <a href="http://www.jmlr.org/papers/volume16/morales15a/morales15a.pdf">SAMOA: scalable advanced massive online analysis.</a></p>
-<ul>
-<li>与应用相结合 </li>
-<li>研制和开发数据挖掘标准 </li>
-<li>支持移动环境</li>
-</ul>
-<h1 id="3-应用领域及行业应用"><a href="#3-应用领域及行业应用" class="headerlink" title="3. 应用领域及行业应用"></a>3. 应用领域及行业应用</h1><h2 id="3-1-应用领域"><a href="#3-1-应用领域" class="headerlink" title="3.1. 应用领域"></a>3.1. 应用领域</h2><p><strong>数据挖掘有许多成功的应用，如电子商务、Web搜索、生物信息学、卫生保健信息学、商务智能、金融、数字图书馆和政府等。</strong></p>
-<h2 id="3-2-行业应用"><a href="#3-2-行业应用" class="headerlink" title="3.2. 行业应用"></a>3.2. 行业应用</h2><h3 id="3-2-1-动态资源的新闻识别"><a href="#3-2-1-动态资源的新闻识别" class="headerlink" title="3.2.1. 动态资源的新闻识别"></a>3.2.1. 动态资源的新闻识别</h3><p><strong>Kalmegh, Sushilkumar</strong>讨论了动态资源的新闻识别可以通过所提出的模型来完成，使用REPTree、Simple Cart和RandomTree三种分类器来分析数据集。结果表明，随机树算法在对新闻进行分类时表现最佳。REPTree和Simple Cart算法的整体性能是不可接受的，因为可以看出，这两种算法都只能正确地对政治新闻进行分类。</p>
-<p>– <a href="https://pdfs.semanticscholar.org/26d6/73f140807942313545489b38241c1f0401d0.pdf">Analysis of WEKA data mining algorithm REPTree, Simple CART and RandomTree for classification of Indian news</a></p>
-<h3 id="3-2-2-教育数据挖掘-EDM-领域"><a href="#3-2-2-教育数据挖掘-EDM-领域" class="headerlink" title="3.2.2. 教育数据挖掘(EDM)领域"></a>3.2.2. 教育数据挖掘(EDM)领域</h3><ul>
-<li>教育数据挖掘和学习分析</li>
-</ul>
-<p><strong>Sin, Katrina</strong>近年来，学习管理系统在教育中的应用越来越多。学生们已经开始使用移动电话，主要是智能手机，它们已经成为他们日常生活的一部分，以获取在线内容。学生的在线活动产生了大量未使用的数据，由于传统的学习分析无法处理这些数据，这些数据被浪费了。这使得大数据技术和工具渗透到教育中，处理大量的数据。本研究探讨了大数据技术在教育领域的最新应用，并对教育数据挖掘和学习分析方面的文献进行了综述。</p>
-<p>– <a href="http://www.academia.edu/download/51542496/APPLICATION_OF_BIG_DATA_IN_EDUCATION_DAT.pdf">APPLICATION OF BIG data IN EDUCATION data mining AND LEARNING ANALYTICS–A LITERATURE REVIEW.</a></p>
-<ul>
-<li>挖掘学生入学率、考勤记录以及他们的考试数据，使之有利于教育质量的改进与提高。</li>
-</ul>
-<p>–  <a href="https://ieeexplore.ieee.org/iel7/6287639/6514899/07820050.pdf">A systematic review on educational data mining</a></p>
-<h3 id="3-2-3-地理信息科学和遥感方面"><a href="#3-2-3-地理信息科学和遥感方面" class="headerlink" title="3.2.3. 地理信息科学和遥感方面"></a>3.2.3. 地理信息科学和遥感方面</h3><ul>
-<li>空间数据挖掘应用于<strong>地理信息科学和遥感方面</strong></li>
-</ul>
-<p><strong>Li, Deren</strong>提供了空间数据挖掘在地理信息科学和遥感方面的应用实例。实践项目包括用于维护公共安全的时空视频数据挖掘、用于评估叙利亚危机严重程度的夜间灯光序列图像挖掘、以及在政府“一带一路”项目中的应用。</p>
-<p>– <a href="https://link.springer.com/content/pdf/10.1007/978-3-662-48538-5.pdf">Spatial data mining</a></p>
-<h3 id="3-2-4-医疗大数据"><a href="#3-2-4-医疗大数据" class="headerlink" title="3.2.4. 医疗大数据"></a>3.2.4. 医疗大数据</h3><ul>
-<li>医疗大数据创新路径包括三个阶段：疾病早期发现、诊断、治疗和预后阶段、生命健康促进阶段和护理阶段。</li>
-<li>研究热点主要集中在三个维度：疾病维度(如流行病学、乳腺癌、肥胖、糖尿病)、技术维度(如数据挖掘、机器学习)、健康服务维度(如定制服务、养老护理)</li>
-</ul>
-<p> – <a href="https://www.sciencedirect.com/science/article/pii/S1386505616302556">Visualizing the knowledge structure and evolution of big data research in healthcare informatics</a></p>
-<ul>
-<li>与云技术结合提供医疗服务</li>
-</ul>
-<p><strong>Zhang, Yin</strong>提出了一个基于云和大数据分析技术的以患者为中心的医疗应用和服务的网络物理系统，称为Health-CPS。该系统由具有统一标准的数据采集层、用于分布式存储和并行计算的数据管理层和面向数据的服务层组成。研究结果表明，云技术和大数据技术可以提高医疗系统的性能，使人们可以享受各种智能医疗应用和服务。</p>
-<p> – <a href="https://ieeexplore.ieee.org/abstract/document/7219371/">Health-CPS: Healthcare cyber-physical system assisted by cloud and big data</a></p>
-<ul>
-<li>医学大数据研究的文献计量分析与可视化 –<a href="https://www.mdpi.com/2071-1050/10/1/166"><strong>A bibliometric analysis</strong> and <strong>visualization</strong> of <strong>medical big data research</strong></a></li>
-<li>预测和解决乳腺癌生存率 –<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2994925">Data mining techniques: To predict and resolve breast cancer survivability</a></li>
-</ul>
-<h3 id="3-2-5-能源评估"><a href="#3-2-5-能源评估" class="headerlink" title="3.2.5. 能源评估"></a>3.2.5. 能源评估</h3><ul>
-<li>全球水资源趋势和可持续发展的未来前景 –<a href="https://www.sciencedirect.com/science/article/pii/S0959652617321182">Global water <strong>trends</strong> and future scenarios for sustainable development: The case of Russia</a></li>
-<li>对智能电网环境下用电量数据的数据质量分析 –<a href="https://www.sciencedirect.com/science/article/pii/S1364032116307109">data quality of electricity consumption data in a smart grid environment</a></li>
-</ul>
-<h3 id="3-2-6-业务运营和风险管理"><a href="#3-2-6-业务运营和风险管理" class="headerlink" title="3.2.6. 业务运营和风险管理"></a>3.2.6. 业务运营和风险管理</h3><ul>
-<li>工业系统的可靠性和安全性以及它们的操作风险管理 –<a href="https://ieeexplore.ieee.org/abstract/document/7378465/">Recent development in big data analytics for business operations and risk management</a></li>
-<li>业务分析的数据挖掘 –<a href="https://books.google.com/books?hl=en&lr=&id=ETwuDwAAQBAJ&oi=fnd&pg=PR19&dq=data+mining+Development+trend&ots=2NWgjl2RLK&sig=sQBatbtbXqXyebsmDBRzPVYNL_8">Data mining for business analytics: concepts, techniques, and applications in R</a></li>
-</ul>
-<h3 id="3-2-7-用于保险行业"><a href="#3-2-7-用于保险行业" class="headerlink" title="3.2.7. 用于保险行业"></a>3.2.7. 用于保险行业</h3><p>数据挖掘技术在人寿保险中的应用 –<a href="https://www.researchgate.net/institution/Chh_Shahu_Institute_of_Business_Education_Research/publications">Applications of Data mining techniques in life insurance</a></p>
-<h3 id="3-2-8-用于政府机构"><a href="#3-2-8-用于政府机构" class="headerlink" title="3.2.8. 用于政府机构"></a>3.2.8. 用于政府机构</h3><ul>
-<li>可持续自然资源管理评价污染防治 –<a href="https://www.sciencedirect.com/science/article/pii/S0959652616317115">How would big data support societal development and environmental sustainability? Insights and practices</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>数据挖掘</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>预处理——数据挖掘</title>
     <url>/2018/10/21/DataMining_DataPreprocess/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DataPreprocess.jpg" class="full-image" />
@@ -1770,6 +1624,152 @@
       </categories>
       <tags>
         <tag>算法</tag>
+        <tag>数据挖掘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据挖掘简介与发展动向</title>
+    <url>/2018/09/27/DataMining_Introduction/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_Introduction.jpg" class="full-image" />
+
+<blockquote class="blockquote-center">
+<p>Data mining, the science of extracting useful knowledge from such huge data repositories, has emerged as a young and interdisciplinary field in computer science.  – by <strong>KDD</strong></p>
+
+</blockquote>
+
+<h1 id="1-数据挖掘简介"><a href="#1-数据挖掘简介" class="headerlink" title="1. 数据挖掘简介"></a>1. 数据挖掘简介</h1><a id="more"></a>
+
+<ul>
+<li>数据挖掘是一个动态的、强势快速扩展的领域。可简要将数据挖掘研究的主要问题分为五组：挖掘方法、用户交互、有效性与可伸缩性、数据类型的多样性、数据挖掘与社会。</li>
+<li>数据挖掘吸纳了诸如<strong>统计学</strong>、<strong>机器学习</strong>、<strong>模式识别</strong>、<strong>数据库和数据仓库</strong>、<strong>信息检索</strong>、<strong>可视化</strong>、<strong>算法</strong>、<strong>高性能计算</strong>和许多应用领域的大量技术。</li>
+</ul>
+<h2 id="1-1-数据挖掘的意义"><a href="#1-1-数据挖掘的意义" class="headerlink" title="1.1. 数据挖掘的意义"></a>1.1. 数据挖掘的意义</h2><ul>
+<li>利用大数据帮助做出<strong>预测</strong>或<strong>决策</strong></li>
+<li>发现数据中潜在的<strong>有趣模式</strong>或<strong>知识</strong></li>
+</ul>
+<h1 id="2-最新技术与发展动向"><a href="#2-最新技术与发展动向" class="headerlink" title="2. 最新技术与发展动向"></a>2. 最新技术与发展动向</h1><h2 id="2-1-数据挖掘最新技术"><a href="#2-1-数据挖掘最新技术" class="headerlink" title="2.1. 数据挖掘最新技术"></a>2.1. 数据挖掘最新技术</h2><ul>
+<li>超越传统技术和数据分析工具的能力的数据集催生了许多新的技术和工具–by<a href="https://link.springer.com/content/pdf/10.1007/978-3-319-08254-7.pdf">Information granularity, big data, and computational intelligence</a></li>
+</ul>
+<p>面对数据挖掘中3V的挑战（即：超大数据量、多样化的数据种类、处理数据的速度要求），如大型零售商的客户交易，天气监测，情报收集等数据集快速超越传统技术和数据分析工具的能力等问题，驱使数据可视化，采集和序列化中诞生了许多新的技术和工具。</p>
+<h3 id="2-1-1-数据预处理技术"><a href="#2-1-1-数据预处理技术" class="headerlink" title="2.1.1. 数据预处理技术"></a>2.1.1. 数据预处理技术</h3><p>数据清理、数据集成、数据归约、数据变换和数据离散化。</p>
+<ul>
+<li>Deren Li methods 2015，为了揭示空间数据挖掘的各向异性，挖掘视图方法利用尺度、层次和粒度来区分不同的需求。Deren Li方法对数据进行预处理，为进一步的知识发现做准备，方法是选择一个权重进行迭代，以便尽可能多地清理观察到的空间数据。–by<a href="https://link.springer.com/content/pdf/10.1007/978-3-662-48538-5.pdf">Spatial data mining</a></li>
+</ul>
+<h3 id="2-1-2-数据仓库、OLAP、数据立方体技术"><a href="#2-1-2-数据仓库、OLAP、数据立方体技术" class="headerlink" title="2.1.2. 数据仓库、OLAP、数据立方体技术"></a>2.1.2. 数据仓库、OLAP、数据立方体技术</h3><p><strong>数据仓库</strong>：是一种数据库，它与单位的操作数据库分别维护。数据仓库的建立为工商企业主管提供了体系结构和工具，以便他们系统地组织、理解和使用数据进行决策。</p>
+<p><strong>OLAP</strong>：OLAP是在线分析处理的缩写。OLAP实现业务数据的多维分析，并提供复杂计算、趋势分析和复杂数据建模的能力。</p>
+<p><strong>数据立方体</strong>：一种多维数据模型。数据立方体创建了灵活而强有力的手段，对数据的子集分组和聚集。它们使得用户可以在多维组合和变化的聚集粒度上探索数据。这种能力极大地开阔了分析的范围，有助于从数据中有效地发现有趣的模式和知识。</p>
+<h3 id="2-1-3-Apriori算法及其变形"><a href="#2-1-3-Apriori算法及其变形" class="headerlink" title="2.1.3. Apriori算法及其变形"></a>2.1.3. Apriori算法及其变形</h3><p>Apriori是一种用于在事务数据库上进行频繁项集挖掘和关联规则学习的算法。 它通过识别数据库中的频繁单个项目并将它们扩展到越来越大的项目集来进行，只要这些项目集在数据库中经常出现。</p>
+<h3 id="2-1-4-基于约束模式挖掘和挖掘近似模式"><a href="#2-1-4-基于约束模式挖掘和挖掘近似模式" class="headerlink" title="2.1.4. 基于约束模式挖掘和挖掘近似模式"></a>2.1.4. 基于约束模式挖掘和挖掘近似模式</h3><p>一种好的启发式方法是让用户说明他们对挖掘导致的有趣模式的直观或期望，作为限制搜索空间的约束条件。这种策略称为基于约束的挖掘。</p>
+<h3 id="2-1-5-分类"><a href="#2-1-5-分类" class="headerlink" title="2.1.5. 分类"></a>2.1.5. 分类</h3><p><strong>基本分类方法</strong>：包括决策树归纳、贝叶斯分类和基于规则的分类。</p>
+<p><strong>高级分类方法</strong>：贝叶斯信念网络、后向传播的神经网络技术、支持向量机、使用频繁模式的分类、k-最邻近分类、基于案例的推理、遗传算法、模糊集方法、多类分类、半监督分类、主动学习和迁移学习。</p>
+<h4 id="2-1-5-1-数据挖掘中的分类算法对比"><a href="#2-1-5-1-数据挖掘中的分类算法对比" class="headerlink" title="2.1.5.1. 数据挖掘中的分类算法对比"></a>2.1.5.1. 数据挖掘中的分类算法对比</h4><p>分类是一种重要的数据挖掘技术，具有广泛的应用前景。分类用于找出在给定数据集中每个数据实例在哪个组中相关。分类算法主要有：<strong>C4.5</strong>、<strong>ID3</strong>、<strong>k近邻分类器</strong>、<strong>朴素贝叶斯</strong>、<strong>SVM</strong>、<strong>ANN</strong>等。分类技术一般采用统计方法、机器学习方法和神经网络方法进行分类。Nikam对不同的分类算法及其特点和局限性进行了全面的综述。</p>
+<p>– <a href="https://pdfs.semanticscholar.org/7c97/57ee09afa570db37f04e3b6cc4da0e2f3571.pdf">A comparative study of classification techniques in data mining algorithms</a></p>
+<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AdvantagesAndDisadvantagesOfClassificationAlgorithm.png" alt="AdvantagesAndDisadvantagesOfClassificationAlgorithm"></p>
+<ul>
+<li>基于<strong>神经网络</strong>和<strong>遗传算法</strong>的数据挖掘技术</li>
+</ul>
+<p><strong>Ali, Sayyed Muzammil</strong>概述了常见的知识发现任务以及解决这些任务的方法。总结了数据挖掘的概念，阐述了数据挖掘对其方法论的意义。详细研究了基于神经网络和遗传算法的数据挖掘技术，综述了实现神经网络和遗传算法数据挖掘的关键技术和方法。</p>
+<p>– <a href="http://www.academia.edu/download/33555810/V3I4201499a89.pdf">data mining Techniques</a></p>
+<h3 id="2-1-6-聚类分析"><a href="#2-1-6-聚类分析" class="headerlink" title="2.1.6. 聚类分析"></a>2.1.6. 聚类分析</h3><p><strong>基本聚类分析</strong>：</p>
+<ul>
+<li>k-均值和k-中心点划分算法、凝聚的与分裂的层次聚类算法、</li>
+<li>基于密度的DBSCAN、OPTICS、DENCLUE聚类分析</li>
+<li>基于网络的STING、CLIQUE聚类分析</li>
+</ul>
+<p><strong>高级聚类分析</strong>：</p>
+<ul>
+<li><p>基于概率模型的模糊簇、期望最大化算法的聚类分析</p>
+</li>
+<li><p>子空间聚类方法、双聚类（聚类高维数据）</p>
+</li>
+<li><p>SCAN算法（用于聚类图数据）</p>
+</li>
+<li><p>具有约束的COP-k-均值算法</p>
+</li>
+<li><p>数据挖掘问题的<strong>多目标进化算法</strong>的最新进展</p>
+</li>
+</ul>
+<p><strong>Mukhopadhyay, Anirban</strong>对数据挖掘问题的多目标进化算法的最新进展进行了全面的综述。本文第一部分给出了多目标优化和数据挖掘的一些基本概念。随后，对两大数据挖掘任务特征选择和分类的多目标演化方法进行了研究。在本文的第二部分中，我们调查了用于聚类、关联规则挖掘等多个数据挖掘任务的不同多目标进化算法，并对该领域未来的研究范围进行了一般性讨论。</p>
+<p>– <a href="https://ieeexplore.ieee.org/iel7/4235/4358751/06658835.pdf">A Survey of Multiobjective Evolutionary Algorithms for data mining: Part I.</a></p>
+<h3 id="2-1-7-基于随机选择选项的算法"><a href="#2-1-7-基于随机选择选项的算法" class="headerlink" title="2.1.7. 基于随机选择选项的算法"></a>2.1.7. 基于随机选择选项的算法</h3><p>有时基于<strong>随机选择选项</strong>的算法收效良好。在数据挖掘和控制领域，当一个问题需要“蛮力”选择选项时，基于<strong>随机选择选项</strong>的算法在有限的时间内提供了一定概率的良好结果，并显著减少了操作量。</p>
+<p>– <a href="https://pdfs.semanticscholar.org/7c97/57ee09afa570db37f04e3b6cc4da0e2f3571.pdf">A comparative study of classification techniques in data mining algorithms</a></p>
+<h3 id="2-1-8-流算法"><a href="#2-1-8-流算法" class="headerlink" title="2.1.8. 流算法"></a>2.1.8. 流算法</h3><ul>
+<li><strong>APSO加速粒子群优化算法</strong></li>
+</ul>
+<p><strong>Fong, Simon</strong>为解决当涉及到在高维数据上的挖掘时，获得最优特征子集的搜索空间以指数级增长，这导致了计算上的一个棘手需求这一问题，<strong>提出了一种新的轻量级特征选择方法</strong>。该特征选择是为了实时挖掘流数据，采用加速粒子群优化算法(APSO)，在合理的处理时间内提高了分析精度。</p>
+<p>– <a href="https://ieeexplore.ieee.org/iel7/4629386/4629387/07115942.pdf">Accelerated PSO swarm search feature selection for data stream mining big data</a></p>
+<h3 id="2-1-9-分布式数据挖掘"><a href="#2-1-9-分布式数据挖掘" class="headerlink" title="2.1.9. 分布式数据挖掘"></a>2.1.9. 分布式数据挖掘</h3><p><strong>Le-Khac, Nhien-An</strong>提出了一个新的框架，开发新的和创新的数据挖掘技术，以处理非常大的分布式异构数据集在商业和学术应用。详细介绍了其中的主要组件及其接口，允许用户在Globus ToolKit、DGET等网格平台上高效地开发和实现其数据挖掘应用程序技术。</p>
+<p> – <a href="https://arxiv.org/abs/1703.09756">ADMIRE framework: Distributed data mining on data grid platforms</a></p>
+<p><strong>Janez Kranjc</strong>介绍了一种分布式计算平台，利用最新的软件技术和计算范式开发出了支持大数据挖掘的平台。这个平台称为ClowdFlows，它是一个基于云的web应用程序，具有图形用户界面，支持数据挖掘工作流的构建和执行，其中包括作为工作流组件使用的web服务。</p>
+<p> – <a href="https://www.sciencedirect.com/science/article/pii/S0167739X16302709">ClowdFlows: Online workflows for distributed big data mining</a></p>
+<h2 id="2-2-数据挖掘发展动向"><a href="#2-2-数据挖掘发展动向" class="headerlink" title="2.2. 数据挖掘发展动向"></a>2.2. 数据挖掘发展动向</h2><h3 id="2-2-1-与物联网相结合"><a href="#2-2-1-与物联网相结合" class="headerlink" title="2.2.1. 与物联网相结合"></a>2.2.1. 与物联网相结合</h3><p>对许多人来说，物联网生成或捕获的海量数据被认为具有非常有用和有价值的信息。数据挖掘无疑将在使这种系统足够智能以提供更方便的服务和环境方面发挥关键作用。<br><strong>Chun-Wei Tsai</strong>从物联网开始讨论，简要回顾了“物联网数据”和“物联网数据挖掘”的特点，最后，讨论了该领域的变化、潜力、开放问题和未来趋势。</p>
+<p>– <a href="https://ieeexplore.ieee.org/iel7/9739/6734839/06674155.pdf">data mining for Internet of Things: A survey.</a></p>
+<h3 id="2-2-2-基于云计算的数据挖掘更低成本"><a href="#2-2-2-基于云计算的数据挖掘更低成本" class="headerlink" title="2.2.2. 基于云计算的数据挖掘更低成本"></a>2.2.2. 基于云计算的数据挖掘更低成本</h3><p>数据挖掘技术和应用程序可以有效地用于云计算范式。云计算是一种能够支持广泛应用的通用技术。基于云计算的数据挖掘技术的实现将允许用户从几乎集成的数据仓库中检索有意义的信息，从而**降低基础设施和存储的成本，并且可以从云检索有用的和潜在的信息。</p>
+<p>– <a href="http://ijrise.org/asset/archive/15SANKALP1.pdf">A review on data mining based cloud computing</a></p>
+<h3 id="2-2-3-与统计与机器学习结合"><a href="#2-2-3-与统计与机器学习结合" class="headerlink" title="2.2.3. 与统计与机器学习结合"></a>2.2.3. 与统计与机器学习结合</h3><p>– <a href="https://books.google.com/books?hl=en&lr=&id=ETwuDwAAQBAJ&oi=fnd&pg=PR19&dq=data+mining+Development+trend&ots=2NWgjl2RLK&sig=sQBatbtbXqXyebsmDBRzPVYNL_8">Data mining for business analytics: concepts, techniques, and applications in R</a></p>
+<h3 id="2-2-4-数据挖掘实现的集成库及平台化"><a href="#2-2-4-数据挖掘实现的集成库及平台化" class="headerlink" title="2.2.4. 数据挖掘实现的集成库及平台化"></a>2.2.4. 数据挖掘实现的集成库及平台化</h3><ul>
+<li><strong>SPMF——一个开源数据挖掘库</strong> 2014</li>
+</ul>
+<p><strong>Fournier-Viger</strong>提供了一个用Java实现的跨平台库——<strong>SPMF</strong>，一个开源数据挖掘库**，提供了超过55种数据挖掘算法的实现。<br>SPMF专门用于发现事务和序列数据库中的模式，如频繁项目集、关联规则和顺序模式。<br>源代码可以集成到其他Java程序中。<br>此外，SPMF还提供了命令行界面和简单的图形界面来进行快速测试。</p>
+<p>– <a href="http://www.jmlr.org/papers/volume15/fournierviger14a/fournierviger14a.pdf">SPMF: a Java open-source pattern mining library</a></p>
+<ul>
+<li><strong>SAMOA——一个挖掘大数据流的平台</strong> 2015</li>
+</ul>
+<p><strong>Morales GD</strong>提供了一个挖掘大数据流的平台——<strong>SAMOA</strong>。它提供了一组分布式流算法，用于最常见的数据挖掘和机器学习任务，如分类、聚类和回归，以及开发新算法的编程抽象。它具有一个可插入的体系结构，允许它在多个分布式流处理引擎(如Storm、S4和Samza)上运行。萨摩亚是用Java编写的，是开源的，可以在<a href="http://samoa-project.net的apache/">http://samoa-project.net的Apache</a> Software License version 2.0下访问。</p>
+<p>– <a href="http://www.jmlr.org/papers/volume16/morales15a/morales15a.pdf">SAMOA: scalable advanced massive online analysis.</a></p>
+<ul>
+<li>与应用相结合 </li>
+<li>研制和开发数据挖掘标准 </li>
+<li>支持移动环境</li>
+</ul>
+<h1 id="3-应用领域及行业应用"><a href="#3-应用领域及行业应用" class="headerlink" title="3. 应用领域及行业应用"></a>3. 应用领域及行业应用</h1><h2 id="3-1-应用领域"><a href="#3-1-应用领域" class="headerlink" title="3.1. 应用领域"></a>3.1. 应用领域</h2><p><strong>数据挖掘有许多成功的应用，如电子商务、Web搜索、生物信息学、卫生保健信息学、商务智能、金融、数字图书馆和政府等。</strong></p>
+<h2 id="3-2-行业应用"><a href="#3-2-行业应用" class="headerlink" title="3.2. 行业应用"></a>3.2. 行业应用</h2><h3 id="3-2-1-动态资源的新闻识别"><a href="#3-2-1-动态资源的新闻识别" class="headerlink" title="3.2.1. 动态资源的新闻识别"></a>3.2.1. 动态资源的新闻识别</h3><p><strong>Kalmegh, Sushilkumar</strong>讨论了动态资源的新闻识别可以通过所提出的模型来完成，使用REPTree、Simple Cart和RandomTree三种分类器来分析数据集。结果表明，随机树算法在对新闻进行分类时表现最佳。REPTree和Simple Cart算法的整体性能是不可接受的，因为可以看出，这两种算法都只能正确地对政治新闻进行分类。</p>
+<p>– <a href="https://pdfs.semanticscholar.org/26d6/73f140807942313545489b38241c1f0401d0.pdf">Analysis of WEKA data mining algorithm REPTree, Simple CART and RandomTree for classification of Indian news</a></p>
+<h3 id="3-2-2-教育数据挖掘-EDM-领域"><a href="#3-2-2-教育数据挖掘-EDM-领域" class="headerlink" title="3.2.2. 教育数据挖掘(EDM)领域"></a>3.2.2. 教育数据挖掘(EDM)领域</h3><ul>
+<li>教育数据挖掘和学习分析</li>
+</ul>
+<p><strong>Sin, Katrina</strong>近年来，学习管理系统在教育中的应用越来越多。学生们已经开始使用移动电话，主要是智能手机，它们已经成为他们日常生活的一部分，以获取在线内容。学生的在线活动产生了大量未使用的数据，由于传统的学习分析无法处理这些数据，这些数据被浪费了。这使得大数据技术和工具渗透到教育中，处理大量的数据。本研究探讨了大数据技术在教育领域的最新应用，并对教育数据挖掘和学习分析方面的文献进行了综述。</p>
+<p>– <a href="http://www.academia.edu/download/51542496/APPLICATION_OF_BIG_DATA_IN_EDUCATION_DAT.pdf">APPLICATION OF BIG data IN EDUCATION data mining AND LEARNING ANALYTICS–A LITERATURE REVIEW.</a></p>
+<ul>
+<li>挖掘学生入学率、考勤记录以及他们的考试数据，使之有利于教育质量的改进与提高。</li>
+</ul>
+<p>–  <a href="https://ieeexplore.ieee.org/iel7/6287639/6514899/07820050.pdf">A systematic review on educational data mining</a></p>
+<h3 id="3-2-3-地理信息科学和遥感方面"><a href="#3-2-3-地理信息科学和遥感方面" class="headerlink" title="3.2.3. 地理信息科学和遥感方面"></a>3.2.3. 地理信息科学和遥感方面</h3><ul>
+<li>空间数据挖掘应用于<strong>地理信息科学和遥感方面</strong></li>
+</ul>
+<p><strong>Li, Deren</strong>提供了空间数据挖掘在地理信息科学和遥感方面的应用实例。实践项目包括用于维护公共安全的时空视频数据挖掘、用于评估叙利亚危机严重程度的夜间灯光序列图像挖掘、以及在政府“一带一路”项目中的应用。</p>
+<p>– <a href="https://link.springer.com/content/pdf/10.1007/978-3-662-48538-5.pdf">Spatial data mining</a></p>
+<h3 id="3-2-4-医疗大数据"><a href="#3-2-4-医疗大数据" class="headerlink" title="3.2.4. 医疗大数据"></a>3.2.4. 医疗大数据</h3><ul>
+<li>医疗大数据创新路径包括三个阶段：疾病早期发现、诊断、治疗和预后阶段、生命健康促进阶段和护理阶段。</li>
+<li>研究热点主要集中在三个维度：疾病维度(如流行病学、乳腺癌、肥胖、糖尿病)、技术维度(如数据挖掘、机器学习)、健康服务维度(如定制服务、养老护理)</li>
+</ul>
+<p> – <a href="https://www.sciencedirect.com/science/article/pii/S1386505616302556">Visualizing the knowledge structure and evolution of big data research in healthcare informatics</a></p>
+<ul>
+<li>与云技术结合提供医疗服务</li>
+</ul>
+<p><strong>Zhang, Yin</strong>提出了一个基于云和大数据分析技术的以患者为中心的医疗应用和服务的网络物理系统，称为Health-CPS。该系统由具有统一标准的数据采集层、用于分布式存储和并行计算的数据管理层和面向数据的服务层组成。研究结果表明，云技术和大数据技术可以提高医疗系统的性能，使人们可以享受各种智能医疗应用和服务。</p>
+<p> – <a href="https://ieeexplore.ieee.org/abstract/document/7219371/">Health-CPS: Healthcare cyber-physical system assisted by cloud and big data</a></p>
+<ul>
+<li>医学大数据研究的文献计量分析与可视化 –<a href="https://www.mdpi.com/2071-1050/10/1/166"><strong>A bibliometric analysis</strong> and <strong>visualization</strong> of <strong>medical big data research</strong></a></li>
+<li>预测和解决乳腺癌生存率 –<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2994925">Data mining techniques: To predict and resolve breast cancer survivability</a></li>
+</ul>
+<h3 id="3-2-5-能源评估"><a href="#3-2-5-能源评估" class="headerlink" title="3.2.5. 能源评估"></a>3.2.5. 能源评估</h3><ul>
+<li>全球水资源趋势和可持续发展的未来前景 –<a href="https://www.sciencedirect.com/science/article/pii/S0959652617321182">Global water <strong>trends</strong> and future scenarios for sustainable development: The case of Russia</a></li>
+<li>对智能电网环境下用电量数据的数据质量分析 –<a href="https://www.sciencedirect.com/science/article/pii/S1364032116307109">data quality of electricity consumption data in a smart grid environment</a></li>
+</ul>
+<h3 id="3-2-6-业务运营和风险管理"><a href="#3-2-6-业务运营和风险管理" class="headerlink" title="3.2.6. 业务运营和风险管理"></a>3.2.6. 业务运营和风险管理</h3><ul>
+<li>工业系统的可靠性和安全性以及它们的操作风险管理 –<a href="https://ieeexplore.ieee.org/abstract/document/7378465/">Recent development in big data analytics for business operations and risk management</a></li>
+<li>业务分析的数据挖掘 –<a href="https://books.google.com/books?hl=en&lr=&id=ETwuDwAAQBAJ&oi=fnd&pg=PR19&dq=data+mining+Development+trend&ots=2NWgjl2RLK&sig=sQBatbtbXqXyebsmDBRzPVYNL_8">Data mining for business analytics: concepts, techniques, and applications in R</a></li>
+</ul>
+<h3 id="3-2-7-用于保险行业"><a href="#3-2-7-用于保险行业" class="headerlink" title="3.2.7. 用于保险行业"></a>3.2.7. 用于保险行业</h3><p>数据挖掘技术在人寿保险中的应用 –<a href="https://www.researchgate.net/institution/Chh_Shahu_Institute_of_Business_Education_Research/publications">Applications of Data mining techniques in life insurance</a></p>
+<h3 id="3-2-8-用于政府机构"><a href="#3-2-8-用于政府机构" class="headerlink" title="3.2.8. 用于政府机构"></a>3.2.8. 用于政府机构</h3><ul>
+<li>可持续自然资源管理评价污染防治 –<a href="https://www.sciencedirect.com/science/article/pii/S0959652616317115">How would big data support societal development and environmental sustainability? Insights and practices</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
         <tag>数据挖掘</tag>
       </tags>
   </entry>
@@ -2898,6 +2898,57 @@
       </tags>
   </entry>
   <entry>
+    <title>机器学习概述（简单了解）</title>
+    <url>/2019/11/23/MachineLearningOverview/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文记录机器学习基础与框架的简单介绍</p>
+<h1 id="1-机器学习是什么"><a href="#1-机器学习是什么" class="headerlink" title="1. 机器学习是什么"></a>1. 机器学习是什么</h1><ul>
+<li>机器从数据中学习</li>
+<li>机器学习（≈ 寻找一个函数）</li>
+</ul>
+<a id="more"></a>
+
+<p>f( 一段语音 ) &#x3D; 语义</p>
+<p>f( 一张图片 ) &#x3D; 识别对象</p>
+<p>f( 棋局 ) &#x3D; 最优解</p>
+<p>f( 语义 ) &#x3D; 反馈语义</p>
+<h1 id="2-机器学习的三种分类"><a href="#2-机器学习的三种分类" class="headerlink" title="2. 机器学习的三种分类"></a>2. 机器学习的三种分类</h1><ul>
+<li><strong>监督学习（有标签）</strong></li>
+</ul>
+<p>任务驱动：识别、分类、回归</p>
+<ul>
+<li><strong>非监督学习（无标签）</strong></li>
+</ul>
+<p>数据驱动：聚类</p>
+<ul>
+<li><strong>强化学习</strong></li>
+</ul>
+<p>与环境互动</p>
+<h1 id="3-理解机器学习的框架"><a href="#3-理解机器学习的框架" class="headerlink" title="3. 理解机器学习的框架"></a>3. 理解机器学习的框架</h1><p>以图像识别为例，讲解监督学习框架的四个步骤：</p>
+<ul>
+<li>收集数据</li>
+<li>选择模型。模型：函数的集合（无穷个）</li>
+<li>调整参数。定义模型中函数的好坏</li>
+<li>找到最优（函数 f*）</li>
+</ul>
+<h1 id="4-机器学习应用实例与方法"><a href="#4-机器学习应用实例与方法" class="headerlink" title="4. 机器学习应用实例与方法"></a>4. 机器学习应用实例与方法</h1><ul>
+<li>线性回归。房价预测</li>
+<li>梯度下降</li>
+<li>判决树</li>
+<li>逻辑回归</li>
+<li>神经网络</li>
+<li>支持向量机</li>
+<li>朴素贝叶斯</li>
+<li>聚类</li>
+</ul>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>logrotate日志轮转工具简介</title>
     <url>/2021/08/23/Logrotate/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>日志轮转 log rotation 解读：日志轮转是系统管理中使用的一个自动化过程，在此过程中，一旦日志文件太旧或太大，就会对其进行压缩、移动（存档）、重命名或删除。</p>
@@ -3111,57 +3162,6 @@
       </categories>
       <tags>
         <tag>syslog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>机器学习概述（简单了解）</title>
-    <url>/2019/11/23/MachineLearningOverview/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文记录机器学习基础与框架的简单介绍</p>
-<h1 id="1-机器学习是什么"><a href="#1-机器学习是什么" class="headerlink" title="1. 机器学习是什么"></a>1. 机器学习是什么</h1><ul>
-<li>机器从数据中学习</li>
-<li>机器学习（≈ 寻找一个函数）</li>
-</ul>
-<a id="more"></a>
-
-<p>f( 一段语音 ) &#x3D; 语义</p>
-<p>f( 一张图片 ) &#x3D; 识别对象</p>
-<p>f( 棋局 ) &#x3D; 最优解</p>
-<p>f( 语义 ) &#x3D; 反馈语义</p>
-<h1 id="2-机器学习的三种分类"><a href="#2-机器学习的三种分类" class="headerlink" title="2. 机器学习的三种分类"></a>2. 机器学习的三种分类</h1><ul>
-<li><strong>监督学习（有标签）</strong></li>
-</ul>
-<p>任务驱动：识别、分类、回归</p>
-<ul>
-<li><strong>非监督学习（无标签）</strong></li>
-</ul>
-<p>数据驱动：聚类</p>
-<ul>
-<li><strong>强化学习</strong></li>
-</ul>
-<p>与环境互动</p>
-<h1 id="3-理解机器学习的框架"><a href="#3-理解机器学习的框架" class="headerlink" title="3. 理解机器学习的框架"></a>3. 理解机器学习的框架</h1><p>以图像识别为例，讲解监督学习框架的四个步骤：</p>
-<ul>
-<li>收集数据</li>
-<li>选择模型。模型：函数的集合（无穷个）</li>
-<li>调整参数。定义模型中函数的好坏</li>
-<li>找到最优（函数 f*）</li>
-</ul>
-<h1 id="4-机器学习应用实例与方法"><a href="#4-机器学习应用实例与方法" class="headerlink" title="4. 机器学习应用实例与方法"></a>4. 机器学习应用实例与方法</h1><ul>
-<li>线性回归。房价预测</li>
-<li>梯度下降</li>
-<li>判决树</li>
-<li>逻辑回归</li>
-<li>神经网络</li>
-<li>支持向量机</li>
-<li>朴素贝叶斯</li>
-<li>聚类</li>
-</ul>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -3671,12 +3671,13 @@
       </tags>
   </entry>
   <entry>
-    <title>Python获取网页内容小练习</title>
+    <title>Python查看本周口碑电影</title>
     <url>/2019/04/30/PythonSimpleWebC/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest.jpg" class="full-image" />
 
-<h1 id="1-获取豆瓣一周口碑榜的电影列表"><a href="#1-获取豆瓣一周口碑榜的电影列表" class="headerlink" title="1. 获取豆瓣一周口碑榜的电影列表"></a>1. 获取豆瓣一周口碑榜的电影列表</h1><p>执行结果展示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">获取豆瓣一周口碑榜:</span><br><span class="line">复仇者联盟<span class="number">4</span>：终局之战</span><br><span class="line">触不可及(美版)</span><br><span class="line">盗梦特攻队</span><br><span class="line">深红累之渊</span><br><span class="line">遇见女孩的感觉</span><br><span class="line">撞死了一只羊</span><br><span class="line">归家：碧昂斯电影作品</span><br><span class="line">西班牙之旅</span><br><span class="line">娑婆诃</span><br><span class="line">番石榴岛</span><br></pre></td></tr></table></figure>
+<h1 id="1-查看豆瓣周口碑榜的电影列表"><a href="#1-查看豆瓣周口碑榜的电影列表" class="headerlink" title="1. 查看豆瓣周口碑榜的电影列表"></a>1. 查看豆瓣周口碑榜的电影列表</h1><p>执行结果展示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">查看豆瓣一周口碑榜:</span><br><span class="line">复仇者联盟<span class="number">4</span>：终局之战</span><br><span class="line">触不可及(美版)</span><br><span class="line">盗梦特攻队</span><br><span class="line">深红累之渊</span><br><span class="line">遇见女孩的感觉</span><br><span class="line">撞死了一只羊</span><br><span class="line">归家：碧昂斯电影作品</span><br><span class="line">西班牙之旅</span><br><span class="line">娑婆诃</span><br><span class="line">番石榴岛</span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
 
 <h1 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2. 准备工作"></a>2. 准备工作</h1><ul>
@@ -3684,34 +3685,34 @@
 <li>使用pip3安装requests、lxml模块。参考<a href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/#%E4%BD%BF%E7%94%A8pip3%E5%AE%89%E8%A3%85Numpy%E6%A8%A1%E5%9D%97">使用pip3安装Numpy模块</a></li>
 <li>运行平台：终端或Python IDE软件(eg.<a href="http://www.jetbrains.com/pycharm/">PyCharm</a>)</li>
 </ul>
-<h1 id="3-开始动手吧"><a href="#3-开始动手吧" class="headerlink" title="3. 开始动手吧"></a>3. 开始动手吧</h1><p>代码比较简单，如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取豆瓣一周口碑榜 https://movie.douban.com/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/&#x27;</span> <span class="comment">#需要获取数据的网址</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//td[@class=&quot;title&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="comment"># //td ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;title&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式输出</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;获取豆瓣一周口碑榜:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(i, end=<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="3-练习1：查看豆瓣一周口碑榜"><a href="#3-练习1：查看豆瓣一周口碑榜" class="headerlink" title="3. 练习1：查看豆瓣一周口碑榜"></a>3. 练习1：查看豆瓣一周口碑榜</h1><p>代码比较简单，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看豆瓣一周口碑榜 https://movie.douban.com/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/&#x27;</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//td[@class=&quot;title&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="comment"># //td ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;title&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式输出</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;查看豆瓣一周口碑榜:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(i, end=<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><h2 id="4-1-获取网页指定内容关键点："><a href="#4-1-获取网页指定内容关键点：" class="headerlink" title="4.1. 获取网页指定内容关键点："></a>4.1. 获取网页指定内容关键点：</h2><ul>
-<li>待获取网页指定内容地址，eg.上述事例代码中的’<a href="https://movie.douban.com/&#39;">https://movie.douban.com/&#39;</a></li>
-<li>待获取网页指定内容数据格式，eg.上述事例代码中的’&#x2F;&#x2F;td[@class&#x3D;”title”]&#x2F;&#x2F;a&#x2F;text()’</li>
-</ul>
-<h2 id="4-2-网页数据格式"><a href="#4-2-网页数据格式" class="headerlink" title="4.2. 网页数据格式"></a>4.2. 网页数据格式</h2><p>对于第二点获取网页数据格式，只能通过在网页浏览器F12查看HTML源码归纳总结得出<br>点击菜单栏左上按钮后再点击网页的待获取内容，此时浏览器会跳转到该内容部分对应的HTML源码的对应代码，归纳总结源码得出正则表达式。<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest2.jpg" class="full-image" /><br>可以看出上图中选中的HTML代码部分与归纳得出的规则<code>'//td[@class="title"]//a/text()'</code>具有很大的相似度。<br>其中：</p>
+<p>关键点总结：</p>
 <ul>
-<li>&#x2F;&#x2F;td ：这个相当于指定是大目录；</li>
-<li>[@class&#x3D;”title”]：这个相当于指定的小目录；</li>
-<li>&#x2F;&#x2F;a ：这个相当于最小的目录；</li>
-<li>&#x2F;text()：这个是提取其中的数据。</li>
+<li>网址，eg.上述事例代码中的<code><a href="https://movie.douban.com/">https://movie.douban.com/</a></code></li>
+<li>数据格式，eg.上述事例代码中的<code>'//td[@class="title"]//a/text()'</code><ul>
+<li>具有一定规律，可通过查看 HTML 源码（浏览器 F12）得出<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/PythonSimpleWebCTest2.jpg" class="full-image" /></li>
+<li>其中：<ul>
+<li><code>//td</code> ：相当于大目录；</li>
+<li><code>[@class="title"]</code>：相当于小目录；</li>
+<li><code>//a</code> ：这个相当于最小的目录；</li>
+<li><code>/text()</code>：这个是提取其中的数据。</li>
 </ul>
-<h1 id="5-备注"><a href="#5-备注" class="headerlink" title="5. 备注"></a>5. 备注</h1><p>针对上例获取网页指定内容关注的两点：</p>
-<ul>
-<li>待获取网页指定内容地址，eg.上述事例代码中的’<a href="https://movie.douban.com/cinema/later/xian/&#39;">https://movie.douban.com/cinema/later/xian/&#39;</a></li>
-<li>待获取网页指定内容数据格式，eg.上述事例代码中的’&#x2F;&#x2F;div[@class&#x3D;”intro”]&#x2F;&#x2F;a&#x2F;text()’</li>
+</li>
 </ul>
-<figure class="highlight python"><figcaption><span>源码文件:webCrawlerTest2.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取网页内容练习2： 获取豆瓣-西安-影讯-即将上映内容 https://movie.douban.com/cinema/later/xian/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/cinema/later/xian/&#x27;</span> <span class="comment">#需要获取数据的网址：豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line"><span class="comment"># //div ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;intro&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//div[@class=&quot;intro&quot;]//a/text()&#x27;</span>) <span class="comment">#获取豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 格式输出</span></span><br><span class="line"><span class="comment"># print(&quot;获取豆瓣-西安-影讯-即将上映内容&quot;)</span></span><br><span class="line"><span class="comment"># for i in result:</span></span><br><span class="line"><span class="comment">#     print(i, end=&#x27;\n&#x27;)</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="4-练习2：查看豆瓣-西安-影讯-上映内容"><a href="#4-练习2：查看豆瓣-西安-影讯-上映内容" class="headerlink" title="4. 练习2：查看豆瓣-西安-影讯-上映内容"></a>4. 练习2：查看豆瓣-西安-影讯-上映内容</h1><p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/cinema/later/xian/&#x27;</span> <span class="comment"># 数据的网址：豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line"><span class="comment"># //div ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;intro&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//div[@class=&quot;intro&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 格式输出</span></span><br><span class="line"><span class="comment"># print(&quot;查看豆瓣-西安-影讯-即将上映内容&quot;)</span></span><br><span class="line"><span class="comment"># for i in result:</span></span><br><span class="line"><span class="comment">#     print(i, end=&#x27;\n&#x27;)</span></span><br></pre></td></tr></table></figure>
 
 <p>运行结果：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[<span class="string">&#x27;港珠澳大桥&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;下一任：前任&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;悟空奇遇记&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;猫公主苏菲&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;国礼&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大破天门阵&#x27;</span>, <span class="string">&#x27;柔情史&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;罗马&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大侦探皮卡丘&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;进京城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一个母亲的复仇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;欢迎来北方II&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;半边天&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一路疯癫&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;周恩来回延安&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;海蒂和爷爷&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;企鹅公路&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;妈阁是座城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;致命梦魇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;音乐家&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;你好现任&#x27;</span>]</span><br></pre></td></tr></table></figure>
 
-<h1 id="6-拓展"><a href="#6-拓展" class="headerlink" title="6. 拓展"></a>6. 拓展</h1><p>虽然实例代码比较简单，但实际中运行时仍会面临很多问题，比如： </p>
+<h1 id="5-备注"><a href="#5-备注" class="headerlink" title="5. 备注"></a>5. 备注</h1><p>虽然实例代码比较简单，但实际中运行时仍会面临很多问题，比如： </p>
 <ul>
 <li>网页数据内容的规则难以归纳 </li>
-<li>获取的数据不规范（需进一步处理） </li>
+<li>查看的数据不规范（需进一步处理） </li>
 <li>大部分网站拥有反Pa机制等</li>
 </ul>
 ]]></content>
@@ -3826,7 +3827,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
 <p>一般此时查询的结果只有一个Fork仓库远端（共两行fetch + push）eg.</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">origin      ssh:&#x2F;&#x2F;git@xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.git (fetch)</span><br><span class="line">origin      ssh:&#x2F;&#x2F;git@xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
-<p>其中 “origin” （默认值）为本地设置的Fork远端仓库的远端别名， 而“ssh:&#x2F;&#x2F;<a href="mailto:&#x67;&#105;&#116;&#64;&#x78;&#x78;&#120;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#x78;&#120;&#120;&#120;&#120;&#120;&#120;&#x78;&#120;&#120;&#46;&#x67;&#x69;&#x74;">&#x67;&#105;&#116;&#64;&#x78;&#x78;&#120;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#x78;&#120;&#120;&#120;&#120;&#120;&#120;&#x78;&#120;&#120;&#46;&#x67;&#x69;&#x74;</a>“ 对应为你的Fork仓库地址</p>
+<p>其中 “origin” （默认值）为本地设置的Fork远端仓库的远端别名， 而“ssh:&#x2F;&#x2F;<a href="mailto:&#103;&#x69;&#x74;&#64;&#x78;&#x78;&#120;&#x78;&#x78;&#x78;&#120;&#120;&#120;&#120;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#x78;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#x78;&#x78;&#46;&#x67;&#105;&#x74;">&#103;&#x69;&#x74;&#64;&#x78;&#x78;&#120;&#x78;&#x78;&#x78;&#120;&#120;&#120;&#120;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#x78;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#x78;&#x78;&#46;&#x67;&#105;&#x74;</a>“ 对应为你的Fork仓库地址</p>
 <h2 id="1-2-添加官方源仓库远端"><a href="#1-2-添加官方源仓库远端" class="headerlink" title="1.2. 添加官方源仓库远端"></a>1.2. 添加官方源仓库远端</h2><p>添加官方源仓库远端到本地Fork仓库，使具有两个远端</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin_official https:&#x2F;&#x2F;oooooooooooooooooooooooooooooo.git</span><br></pre></td></tr></table></figure>
 <p>其中 “origin_official” 为自定义官方源仓库在本地的远端别名， “<a href="https://oooooooooooooooooooooooooooooo.git&quot;/">https://oooooooooooooooooooooooooooooo.git&quot;</a> 为官方源仓库地址</p>
@@ -5702,6 +5703,29 @@
       </tags>
   </entry>
   <entry>
+    <title>抛开怯懦，勇于挑战</title>
+    <url>/2017/09/17/challenge-yourself/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/challenge-yourself.jpg" class="full-image" />
+
+<!-- 标签方式引用，要求版本在0.4.5或以上 -->
+<blockquote class="blockquote-center">
+<p> 你是否擅长去做某件事情，在你没有做之前是不知道的。人对于陌生的事情总是有点害怕和胆怯的。就像我们看到一条陌生的狗，你一般不太敢靠近，而自己家里养的狗就敢随便靠近。我们面对不擅长的陌生领域，就像遇到了一条陌生狗的状态。只要我们勇敢地迎着这条狗走过去，你会发现买际上大部分的狗是不敢咬你的。</p>
+<div align = right>----俞敏洪</div>
+</blockquote>
+
+<a id="more"></a>
+
+<p>切莫对陌生领域过于胆怯，<strong>勇敢地踏出舒适区，挑战自己</strong>。</p>
+<p>望与君共勉！</p>
+]]></content>
+      <categories>
+        <category>心灵成长</category>
+      </categories>
+      <tags>
+        <tag>自驱</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>VLAN</title>
     <url>/2021/08/03/VLAN/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><ul>
@@ -5907,29 +5931,6 @@
       </categories>
       <tags>
         <tag>Network</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>抛开怯懦，勇于挑战</title>
-    <url>/2017/09/17/challenge-yourself/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/challenge-yourself.jpg" class="full-image" />
-
-<!-- 标签方式引用，要求版本在0.4.5或以上 -->
-<blockquote class="blockquote-center">
-<p> 你是否擅长去做某件事情，在你没有做之前是不知道的。人对于陌生的事情总是有点害怕和胆怯的。就像我们看到一条陌生的狗，你一般不太敢靠近，而自己家里养的狗就敢随便靠近。我们面对不擅长的陌生领域，就像遇到了一条陌生狗的状态。只要我们勇敢地迎着这条狗走过去，你会发现买际上大部分的狗是不敢咬你的。</p>
-<div align = right>----俞敏洪</div>
-</blockquote>
-
-<a id="more"></a>
-
-<p>切莫对陌生领域过于胆怯，<strong>勇敢地踏出舒适区，挑战自己</strong>。</p>
-<p>望与君共勉！</p>
-]]></content>
-      <categories>
-        <category>心灵成长</category>
-      </categories>
-      <tags>
-        <tag>自驱</tag>
       </tags>
   </entry>
   <entry>
@@ -7219,12 +7220,12 @@
 
 <a id="more"></a>
 
-<div id="aplayer-yQuHRofT" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+<div id="aplayer-MlPNJXxX" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
 				<pre class="aplayer-lrc-content">[00:00.25]Kimberley(陈芳语) - 爱你[00:06.43]我闭上眼睛 贴着你心跳呼吸[00:13.42]而此刻地球 只剩我们而已[00:20.16]你微笑的唇型 总勾着我的心[00:26.73]每一秒初吻 我每一秒都想要吻你[00:36.11]就这样 爱你 爱你 爱你 随时都要一起[00:42.43]我喜欢 爱你 外套 味道 还有你的怀里[00:49.11]把我们 衣服 钮扣 互扣 那就不用分离[00:56.49]美好爱情 我就爱这样贴近 因为你[01:16.85]有时没生气 故意闹脾气[01:23.42]你的紧张在意 让我觉得安心[01:30.04]从你某个角度 我总看见自己[01:36.76]到底你懂我 或其时我本来就像你[01:46.17]就这样 爱你 爱你 爱你 随时都要一起[01:52.70]我喜欢 爱你 外套 味道 还有你的怀里[01:59.28]把我们 衣服 钮扣 互扣 那就不用分离[02:06.80]美好爱情 我就爱这样贴近 因为你[02:17.73]想变成你的氧气 溜进你身体里[02:31.49]好好看看在你心里 你有多麽宝贝 我爱你[02:44.44]就这样 爱你 爱你 爱你 随时都要一起 （爱你）[02:49.27]我喜欢 爱你 外套 味道 还有你的怀里[02:55.92]把我们 衣服 钮扣 互扣 那就不用分离[03:03.50]美好爱情 我就爱这样贴近 因为你[03:10.28]我们爱情 会一直没有距离 最美丽</pre>
 			</div>
 			<script>
 				var ap = new APlayer({
-					element: document.getElementById("aplayer-yQuHRofT"),
+					element: document.getElementById("aplayer-MlPNJXxX"),
 					narrow: false,
 					autoplay: false,
 					showlrc: 2,
@@ -7658,12 +7659,12 @@
 <h2 id="8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）："><a href="#8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）：" class="headerlink" title="8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）："></a>8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% aplayer &quot;爱你&quot; &quot;陈芳语&quot; &quot;https:&#x2F;&#x2F;eisenhao.coding.net&#x2F;p&#x2F;eisenhao&#x2F;d&#x2F;eisenhao&#x2F;git&#x2F;raw&#x2F;master&#x2F;uploads&#x2F;22852057.mp3&quot; &quot;https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;loveYou.jpg&quot; &quot;lrc:https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc&quot; %&#125;</span><br></pre></td></tr></table></figure>
 
 
-        <div id="aplayer-JKguPOVl" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-MGtQYCUg" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-JKguPOVl"),
+            element: document.getElementById("aplayer-MGtQYCUg"),
             narrow: false,
             autoplay: false,
             showlrc: 3,
@@ -7681,12 +7682,12 @@
 
 <h2 id="8-5-下方测试插件插入内嵌音乐歌词："><a href="#8-5-下方测试插件插入内嵌音乐歌词：" class="headerlink" title="8.5. 下方测试插件插入内嵌音乐歌词："></a>8.5. 下方测试插件插入内嵌音乐歌词：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% aplayerlrc &quot;爱你&quot; &quot;陈芳语&quot; &quot;https:&#x2F;&#x2F;eisenhao.coding.net&#x2F;p&#x2F;eisenhao&#x2F;d&#x2F;eisenhao&#x2F;git&#x2F;raw&#x2F;master&#x2F;uploads&#x2F;22852057.mp3&quot; &quot;https:&#x2F;&#x2F;eisenhao.coding.net&#x2F;p&#x2F;eisenhao&#x2F;d&#x2F;eisenhao&#x2F;git&#x2F;raw&#x2F;master&#x2F;uploads&#x2F;loveYou.jpg&quot; %&#125;</span><br><span class="line">[00:00.25]Kimberley(陈芳语) - 爱你[00:06.43]我闭上眼睛 贴着你心跳呼吸[00:13.42]而此刻地球 只剩我们而已[00:20.16]你微笑的唇型 总勾着我的心[00:26.73]每一秒初吻 我每一秒都想要吻你[00:36.11]就这样 爱你 爱你 爱你 随时都要一起[00:42.43]我喜欢 爱你 外套 味道 还有你的怀里[00:49.11]把我们 衣服 钮扣 互扣 那就不用分离[00:56.49]美好爱情 我就爱这样贴近 因为你[01:16.85]有时没生气 故意闹脾气[01:23.42]你的紧张在意 让我觉得安心[01:30.04]从你某个角度 我总看见自己[01:36.76]到底你懂我 或其时我本来就像你[01:46.17]就这样 爱你 爱你 爱你 随时都要一起[01:52.70]我喜欢 爱你 外套 味道 还有你的怀里[01:59.28]把我们 衣服 钮扣 互扣 那就不用分离[02:06.80]美好爱情 我就爱这样贴近 因为你[02:17.73]想变成你的氧气 溜进你身体里[02:31.49]好好看看在你心里 你有多麽宝贝 我爱你[02:44.44]就这样 爱你 爱你 爱你 随时都要一起 （爱你）[02:49.27]我喜欢 爱你 外套 味道 还有你的怀里[02:55.92]把我们 衣服 钮扣 互扣 那就不用分离[03:03.50]美好爱情 我就爱这样贴近 因为你[03:10.28]我们爱情 会一直没有距离 最美丽</span><br><span class="line">&#123;% endaplayerlrc %&#125;</span><br></pre></td></tr></table></figure>
 
-<div id="aplayer-rShoMSWr" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+<div id="aplayer-CHIhpqVZ" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
 				<pre class="aplayer-lrc-content">[00:00.25]Kimberley(陈芳语) - 爱你[00:06.43]我闭上眼睛 贴着你心跳呼吸[00:13.42]而此刻地球 只剩我们而已[00:20.16]你微笑的唇型 总勾着我的心[00:26.73]每一秒初吻 我每一秒都想要吻你[00:36.11]就这样 爱你 爱你 爱你 随时都要一起[00:42.43]我喜欢 爱你 外套 味道 还有你的怀里[00:49.11]把我们 衣服 钮扣 互扣 那就不用分离[00:56.49]美好爱情 我就爱这样贴近 因为你[01:16.85]有时没生气 故意闹脾气[01:23.42]你的紧张在意 让我觉得安心[01:30.04]从你某个角度 我总看见自己[01:36.76]到底你懂我 或其时我本来就像你[01:46.17]就这样 爱你 爱你 爱你 随时都要一起[01:52.70]我喜欢 爱你 外套 味道 还有你的怀里[01:59.28]把我们 衣服 钮扣 互扣 那就不用分离[02:06.80]美好爱情 我就爱这样贴近 因为你[02:17.73]想变成你的氧气 溜进你身体里[02:31.49]好好看看在你心里 你有多麽宝贝 我爱你[02:44.44]就这样 爱你 爱你 爱你 随时都要一起 （爱你）[02:49.27]我喜欢 爱你 外套 味道 还有你的怀里[02:55.92]把我们 衣服 钮扣 互扣 那就不用分离[03:03.50]美好爱情 我就爱这样贴近 因为你[03:10.28]我们爱情 会一直没有距离 最美丽</pre>
 			</div>
 			<script>
 				var ap = new APlayer({
-					element: document.getElementById("aplayer-rShoMSWr"),
+					element: document.getElementById("aplayer-CHIhpqVZ"),
 					narrow: false,
 					autoplay: false,
 					showlrc: 2,

@@ -28,23 +28,23 @@
 <meta property="og:site_name" content="EisenHao&#39;s Note">
 <meta property="og:description" content="1. DBSCAN算法简介 基于密度的噪声应用空间聚类（DBSCAN）是Martin Ester，Hans-Peter Kriegel，JörgSander和Xiaowei Xu于1996年提出的数据聚类算法。 它是一种基于密度的聚类算法：给定一些空间中的一组点，它将紧密堆积在一起的点（具有许多邻近邻居的点）组合在一起，标记为单独位于低密度区域的离群点（最近的点）邻居们太远了）。 DBSCAN">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.08MinPts=7ResultCluster=6.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.1MinPts=7ResultCluster=3.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.18MinPts=7ResultCluster=2.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.08MinPts=5ResultCluster=5.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.15MinPts=8ResultCluster=2.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_moonEps=0.11MinPts=5ResultCluster=2.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_sizes5Eps=1.32MinPts=10ResultCluster=4.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_smileEps=0.08MinPts=10ResultCluster=3.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_spiralEps=1MinPts=8ResultCluster=2.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_longEps=0.08MinPts=7ResultCluster=6.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_longEps=0.1MinPts=7ResultCluster=3.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_longEps=0.18MinPts=7ResultCluster=2.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_longEps=0.08MinPts=5ResultCluster=5.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_longEps=0.15MinPts=8ResultCluster=2.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_moonEps=0.11MinPts=5ResultCluster=2.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_sizes5Eps=1.32MinPts=10ResultCluster=4.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_smileEps=0.08MinPts=10ResultCluster=3.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN_spiralEps=1MinPts=8ResultCluster=2.png">
 <meta property="article:published_time" content="2018-11-10T03:05:30.000Z">
 <meta property="article:modified_time" content="2019-02-18T08:07:45.000Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="数据挖掘">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN.png">
+<meta name="twitter:image" content="https://eisenhao.cn/uploads/DataMining_DBSCAN.png">
 
 
 <link rel="canonical" href="https://eisenhao.cn/2018/11/10/DataMining_DBSCAN/">
@@ -175,7 +175,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -186,7 +186,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -294,7 +294,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN.png" class="full-image" />
+        <img data-src="../../../../uploads/DataMining_DBSCAN.png" class="full-image" />
 
 <h1 id="1-DBSCAN算法简介"><a href="#1-DBSCAN算法简介" class="headerlink" title="1. DBSCAN算法简介"></a>1. DBSCAN算法简介</h1><ul>
 <li>基于密度的噪声应用空间聚类（DBSCAN）是Martin Ester，Hans-Peter Kriegel，JörgSander和Xiaowei Xu于1996年提出的数据聚类算法。</li>
@@ -329,17 +329,17 @@
 <h2 id="4-2-主函数"><a href="#4-2-主函数" class="headerlink" title="4.2. 主函数"></a>4.2. 主函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main函数</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 加载long.mat数据</span></span><br><span class="line">    data = loadDataFile(<span class="string">&#x27;long.mat&#x27;</span>)</span><br><span class="line">    data = data[<span class="string">&#x27;long1&#x27;</span>] <span class="comment">#Eps=0.15， MinPts=8，最终分类数：2</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># DBSCAN两个重要参数</span></span><br><span class="line">    Eps = <span class="number">0.15</span> <span class="comment">#邻域半径</span></span><br><span class="line">    MinPts = <span class="number">8</span> <span class="comment">#邻域内元素个数（包括点P）</span></span><br><span class="line">    Cluster = DBSCAN(data, Eps, MinPts) <span class="comment"># 执行 DBSCAN 算法，返回聚类后的下标二维数组</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;All Done&#x27;</span>)</span><br><span class="line">    PrintCluster(Cluster) <span class="comment"># 打印簇信息</span></span><br><span class="line">    showClusterImage(data, Cluster, Eps, MinPts) <span class="comment"># 绘制基于密度的DBSCAN算法后的效果图</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="4-3-long-mat文件的DBSCAN算法聚类效果"><a href="#4-3-long-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.3. long.mat文件的DBSCAN算法聚类效果"></a>4.3. long.mat文件的DBSCAN算法聚类效果</h2><p>尝试设置Eps#邻域半径、MinPts#邻域内元素个数（包括点P）两个参数，由于Eps及MinPts两个参数没设置好导致被分成许多类，不方便绘图显示每个类。调试参数时也确认了两个参数设置的重要性，参数对分类结果的影响如下：</p>
-<h3 id="Eps-x3D-0-08-MinPts-x3D-7"><a href="#Eps-x3D-0-08-MinPts-x3D-7" class="headerlink" title="Eps&#x3D;0.08, MinPts&#x3D;7"></a>Eps&#x3D;0.08, MinPts&#x3D;7</h3><p>当设置Eps&#x3D;0.08, MinPts&#x3D;7时已经能够成功绘制图形，但数据被分成6个类，效果不是很理想，如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.08MinPts=7ResultCluster=6.png" alt="Eps=0.08,MinPts=7的效果图"><br><strong>分析：</strong>虽然能从图中明确看出被分成6个类，但视觉分析应该分成2个类更合适，间接说明分类数过多，表明在扩展其中两个大类时与另外两个类“断开了”，下面分别尝试增加领域半径Eps值、减小MinPts#邻域内元素个数，尝试让小类与大类“连接”起来。</p>
-<h3 id="Eps-x3D-0-1-MinPts-x3D-7"><a href="#Eps-x3D-0-1-MinPts-x3D-7" class="headerlink" title="Eps&#x3D;0.1, MinPts&#x3D;7"></a>Eps&#x3D;0.1, MinPts&#x3D;7</h3><p>当只增加领域半径Eps值，MinPts不变，设置Eps&#x3D;0.1, MinPts&#x3D;7，分类结果如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.1MinPts=7ResultCluster=3.png" alt="Eps=0.1,MinPts=7的效果图"><br><strong>分析：</strong>增加领域半径Eps值已有明显效果，此时分类数为3，继续尝试增大领域半径Eps值</p>
-<h3 id="Eps-x3D-0-18-MinPts-x3D-7"><a href="#Eps-x3D-0-18-MinPts-x3D-7" class="headerlink" title="Eps&#x3D;0.18, MinPts&#x3D;7"></a>Eps&#x3D;0.18, MinPts&#x3D;7</h3><p>继续增大Eps值直到Eps&#x3D;0.18, MinPts&#x3D;7时才能被分为两类，分类结果如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.18MinPts=7ResultCluster=2.png" alt="Eps=0.18,MinPts=7的效果图"><br><strong>分析：</strong>虽然此时按密度被成功聚类为2类，但相比之下每个类变得更“松散”，包括了许多不需要的边界非核心对象</p>
-<h3 id="Eps-x3D-0-08，MinPts-x3D-5"><a href="#Eps-x3D-0-08，MinPts-x3D-5" class="headerlink" title="Eps&#x3D;0.08，MinPts&#x3D;5"></a>Eps&#x3D;0.08，MinPts&#x3D;5</h3><p>当只减小MinPts，领域半径Eps值不变，设置Eps&#x3D;0.08, MinPts&#x3D;5时，数据分类数为5，如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.08MinPts=5ResultCluster=5.png" alt="Eps=0.08,MinPts=5的效果图"><br><strong>分析：</strong>一味只减少MinPts并没有得到很好的聚类结果，尝试减少MinPts并不能实现只分为两类的效果</p>
-<h3 id="Eps-x3D-0-15，MinPts-x3D-8"><a href="#Eps-x3D-0-15，MinPts-x3D-8" class="headerlink" title="Eps&#x3D;0.15，MinPts&#x3D;8"></a>Eps&#x3D;0.15，MinPts&#x3D;8</h3><p>综合调节Eps邻域半径大小与MinPts邻域内元素个数，设置Eps&#x3D;0.15, MinPts&#x3D;8时分类数为2，分类结果如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_longEps=0.15MinPts=8ResultCluster=2.png" alt="Eps=0.15,MinPts=8的效果图"><br><strong>分析：</strong>联合调整参数Eps和MinPts比只更改单一变量更难调节，在能够分类成2个类的结果下，Eps邻域半径越小、MinPts邻域内元素个数越小，得到的聚类内部对象间隔越“紧密”</p>
+<h3 id="Eps-x3D-0-08-MinPts-x3D-7"><a href="#Eps-x3D-0-08-MinPts-x3D-7" class="headerlink" title="Eps&#x3D;0.08, MinPts&#x3D;7"></a>Eps&#x3D;0.08, MinPts&#x3D;7</h3><p>当设置Eps&#x3D;0.08, MinPts&#x3D;7时已经能够成功绘制图形，但数据被分成6个类，效果不是很理想，如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_longEps=0.08MinPts=7ResultCluster=6.png" alt="Eps=0.08,MinPts=7的效果图"><br><strong>分析：</strong>虽然能从图中明确看出被分成6个类，但视觉分析应该分成2个类更合适，间接说明分类数过多，表明在扩展其中两个大类时与另外两个类“断开了”，下面分别尝试增加领域半径Eps值、减小MinPts#邻域内元素个数，尝试让小类与大类“连接”起来。</p>
+<h3 id="Eps-x3D-0-1-MinPts-x3D-7"><a href="#Eps-x3D-0-1-MinPts-x3D-7" class="headerlink" title="Eps&#x3D;0.1, MinPts&#x3D;7"></a>Eps&#x3D;0.1, MinPts&#x3D;7</h3><p>当只增加领域半径Eps值，MinPts不变，设置Eps&#x3D;0.1, MinPts&#x3D;7，分类结果如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_longEps=0.1MinPts=7ResultCluster=3.png" alt="Eps=0.1,MinPts=7的效果图"><br><strong>分析：</strong>增加领域半径Eps值已有明显效果，此时分类数为3，继续尝试增大领域半径Eps值</p>
+<h3 id="Eps-x3D-0-18-MinPts-x3D-7"><a href="#Eps-x3D-0-18-MinPts-x3D-7" class="headerlink" title="Eps&#x3D;0.18, MinPts&#x3D;7"></a>Eps&#x3D;0.18, MinPts&#x3D;7</h3><p>继续增大Eps值直到Eps&#x3D;0.18, MinPts&#x3D;7时才能被分为两类，分类结果如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_longEps=0.18MinPts=7ResultCluster=2.png" alt="Eps=0.18,MinPts=7的效果图"><br><strong>分析：</strong>虽然此时按密度被成功聚类为2类，但相比之下每个类变得更“松散”，包括了许多不需要的边界非核心对象</p>
+<h3 id="Eps-x3D-0-08，MinPts-x3D-5"><a href="#Eps-x3D-0-08，MinPts-x3D-5" class="headerlink" title="Eps&#x3D;0.08，MinPts&#x3D;5"></a>Eps&#x3D;0.08，MinPts&#x3D;5</h3><p>当只减小MinPts，领域半径Eps值不变，设置Eps&#x3D;0.08, MinPts&#x3D;5时，数据分类数为5，如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_longEps=0.08MinPts=5ResultCluster=5.png" alt="Eps=0.08,MinPts=5的效果图"><br><strong>分析：</strong>一味只减少MinPts并没有得到很好的聚类结果，尝试减少MinPts并不能实现只分为两类的效果</p>
+<h3 id="Eps-x3D-0-15，MinPts-x3D-8"><a href="#Eps-x3D-0-15，MinPts-x3D-8" class="headerlink" title="Eps&#x3D;0.15，MinPts&#x3D;8"></a>Eps&#x3D;0.15，MinPts&#x3D;8</h3><p>综合调节Eps邻域半径大小与MinPts邻域内元素个数，设置Eps&#x3D;0.15, MinPts&#x3D;8时分类数为2，分类结果如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_longEps=0.15MinPts=8ResultCluster=2.png" alt="Eps=0.15,MinPts=8的效果图"><br><strong>分析：</strong>联合调整参数Eps和MinPts比只更改单一变量更难调节，在能够分类成2个类的结果下，Eps邻域半径越小、MinPts邻域内元素个数越小，得到的聚类内部对象间隔越“紧密”</p>
 <h2 id="4-4-其他文件数据的DBSCAN聚类结果"><a href="#4-4-其他文件数据的DBSCAN聚类结果" class="headerlink" title="4.4. 其他文件数据的DBSCAN聚类结果"></a>4.4. 其他文件数据的DBSCAN聚类结果</h2><p>由于调整Eps#邻域半径、MinPts#邻域内元素个数参数方法与上面一致，为直观显示效果，只给出聚类较理想的结果图及其对应Eps、MinPts参数</p>
-<h3 id="4-4-1-moon-mat文件的DBSCAN算法聚类效果"><a href="#4-4-1-moon-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.1. moon.mat文件的DBSCAN算法聚类效果"></a>4.4.1. moon.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;0.11, MinPts&#x3D;5时，数据被分成2个类，效果较理想，如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_moonEps=0.11MinPts=5ResultCluster=2.png" alt="Eps=0.11,MinPts=5的效果图"></p>
-<h3 id="4-4-2-sizes5-mat文件的DBSCAN算法聚类效果"><a href="#4-4-2-sizes5-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.2. sizes5.mat文件的DBSCAN算法聚类效果"></a>4.4.2. sizes5.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;1.32, MinPts&#x3D;10时，数据分类数Cluster&#x3D;4，效果较理想，如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_sizes5Eps=1.32MinPts=10ResultCluster=4.png" alt="Eps=1.32,MinPts=10的效果图"></p>
-<h3 id="4-4-3-smile-mat文件的DBSCAN算法聚类效果"><a href="#4-4-3-smile-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.3. smile.mat文件的DBSCAN算法聚类效果"></a>4.4.3. smile.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;0.08, MinPts&#x3D;10时，数据分类数Cluster&#x3D;3，效果较理想，如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_smileEps=0.08MinPts=10ResultCluster=3.png" alt="Eps=0.08,MinPts=10的效果图"></p>
-<h3 id="4-4-4-spiral-mat文件的DBSCAN算法聚类效果"><a href="#4-4-4-spiral-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.4. spiral.mat文件的DBSCAN算法聚类效果"></a>4.4.4. spiral.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;1, MinPts&#x3D;8时，数据分类数Cluster&#x3D;2，效果较理想，如下图所示<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_DBSCAN_spiralEps=1MinPts=8ResultCluster=2.png" alt="Eps=1,MinPts=8的效果图"></p>
-<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>待聚类数据集文件</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/long.mat">long.mat</a>、<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/moon.mat">moon.mat</a>、<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/sizes5.mat">sizes5.mat</a>、<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/smile.mat">smile.mat</a>、<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/spiral.mat">spiral.mat</a><br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DensityBasedClustering.py">DensityBasedClustering.py</a></p>
+<h3 id="4-4-1-moon-mat文件的DBSCAN算法聚类效果"><a href="#4-4-1-moon-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.1. moon.mat文件的DBSCAN算法聚类效果"></a>4.4.1. moon.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;0.11, MinPts&#x3D;5时，数据被分成2个类，效果较理想，如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_moonEps=0.11MinPts=5ResultCluster=2.png" alt="Eps=0.11,MinPts=5的效果图"></p>
+<h3 id="4-4-2-sizes5-mat文件的DBSCAN算法聚类效果"><a href="#4-4-2-sizes5-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.2. sizes5.mat文件的DBSCAN算法聚类效果"></a>4.4.2. sizes5.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;1.32, MinPts&#x3D;10时，数据分类数Cluster&#x3D;4，效果较理想，如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_sizes5Eps=1.32MinPts=10ResultCluster=4.png" alt="Eps=1.32,MinPts=10的效果图"></p>
+<h3 id="4-4-3-smile-mat文件的DBSCAN算法聚类效果"><a href="#4-4-3-smile-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.3. smile.mat文件的DBSCAN算法聚类效果"></a>4.4.3. smile.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;0.08, MinPts&#x3D;10时，数据分类数Cluster&#x3D;3，效果较理想，如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_smileEps=0.08MinPts=10ResultCluster=3.png" alt="Eps=0.08,MinPts=10的效果图"></p>
+<h3 id="4-4-4-spiral-mat文件的DBSCAN算法聚类效果"><a href="#4-4-4-spiral-mat文件的DBSCAN算法聚类效果" class="headerlink" title="4.4.4. spiral.mat文件的DBSCAN算法聚类效果"></a>4.4.4. spiral.mat文件的DBSCAN算法聚类效果</h3><p>当设置Eps&#x3D;1, MinPts&#x3D;8时，数据分类数Cluster&#x3D;2，效果较理想，如下图所示<br><img data-src="/../../../../uploads/DataMining_DBSCAN_spiralEps=1MinPts=8ResultCluster=2.png" alt="Eps=1,MinPts=8的效果图"></p>
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>待聚类数据集文件</strong>：<a href="../../../../uploads/long.mat">long.mat</a>、<a href="../../../../uploads/moon.mat">moon.mat</a>、<a href="../../../../uploads/sizes5.mat">sizes5.mat</a>、<a href="../../../../uploads/smile.mat">smile.mat</a>、<a href="../../../../uploads/spiral.mat">spiral.mat</a><br><strong>源代码</strong>：<a href="../../../../uploads/DensityBasedClustering.py">DensityBasedClustering.py</a></p>
 </div>
 
     </div>

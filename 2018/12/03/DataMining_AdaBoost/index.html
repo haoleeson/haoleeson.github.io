@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="EisenHao&#39;s Note">
 <meta property="og:description" content="1. 集成学习AdaBoost算法简介AdaBoost全称是adaptive boosting，该算法基本思想:多个结构较为简单，分类或预测精度较低的弱学习算法可以通过某种方式结合成具有较强学习能力的强学习算法。根据统计学习方法的三要素，AdaBoost 方法&#x3D;加法模型+指数损失函数(策略)+前向分步 算法。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_AdaBoost.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/DataMining_AdaBoost.png">
 <meta property="article:published_time" content="2018-12-03T06:05:30.000Z">
 <meta property="article:modified_time" content="2019-02-18T09:05:45.000Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="数据挖掘">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_AdaBoost.png">
+<meta name="twitter:image" content="https://eisenhao.cn/uploads/DataMining_AdaBoost.png">
 
 
 <link rel="canonical" href="https://eisenhao.cn/2018/12/03/DataMining_AdaBoost/">
@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -285,7 +285,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/DataMining_AdaBoost.png" class="full-image" />
+        <img data-src="../../../../uploads/DataMining_AdaBoost.png" class="full-image" />
 
 <h1 id="1-集成学习AdaBoost算法简介"><a href="#1-集成学习AdaBoost算法简介" class="headerlink" title="1. 集成学习AdaBoost算法简介"></a>1. 集成学习AdaBoost算法简介</h1><p>AdaBoost全称是adaptive boosting，该算法基本思想:多个结构较为简单，分类或预测精度较低的弱学习算法可以通过某种方式结合成具有较强学习能力的强学习算法。根据统计学习方法的三要素，AdaBoost 方法&#x3D;加法模型+指数损失函数(策略)+前向分步 算法。</p>
 <a id="more"></a>
@@ -322,7 +322,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">D.T: [[<span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.2</span>]]</span><br><span class="line">alpha: <span class="number">0.6931471805599453</span></span><br><span class="line">classEst: [[-<span class="number">1.</span>]</span><br><span class="line">[ <span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[ <span class="number">1.</span>]]</span><br><span class="line">aggClassEst: [[-<span class="number">0.69314718</span> <span class="number">0.69314718</span> -<span class="number">0.69314718</span> -<span class="number">0.69314718</span> <span class="number">0.69314718</span>]]</span><br><span class="line">[[ <span class="literal">True</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]]</span><br><span class="line">aggError [[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]]</span><br><span class="line">total error: <span class="number">0.2</span></span><br><span class="line">i: <span class="number">1</span></span><br><span class="line">D.T: [[<span class="number">0.5</span></span><br><span class="line"><span class="number">0.125</span> <span class="number">0.125</span> <span class="number">0.125</span> <span class="number">0.125</span>]]</span><br><span class="line">alpha: <span class="number">0.9729550745276565</span></span><br><span class="line">classEst: [[ <span class="number">1.</span>]</span><br><span class="line">[ <span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]</span><br><span class="line">[-<span class="number">1.</span>]]</span><br><span class="line">aggClassEst: [[ <span class="number">0.27980789</span> <span class="number">1.66610226</span> -<span class="number">1.66610226</span> -<span class="number">1.66610226</span> -<span class="number">0.27980789</span>]]</span><br><span class="line">[[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[ <span class="literal">True</span>]]</span><br><span class="line">aggError [[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">1.</span>]]</span><br><span class="line">total error: <span class="number">0.2</span></span><br><span class="line">i: <span class="number">2</span></span><br><span class="line">D.T: [[<span class="number">0.28571429</span> <span class="number">0.07142857</span> <span class="number">0.07142857</span> <span class="number">0.07142857</span> <span class="number">0.5</span>  ]]</span><br><span class="line">alpha: <span class="number">0.8958797346140273</span></span><br><span class="line">classEst: [[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]</span><br><span class="line">[<span class="number">1.</span>]]</span><br><span class="line">aggClassEst: [[ <span class="number">1.17568763</span> <span class="number">2.56198199</span> -<span class="number">0.77022252</span> -<span class="number">0.77022252</span> <span class="number">0.61607184</span>]]</span><br><span class="line">[[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]</span><br><span class="line">[<span class="literal">False</span>]]</span><br><span class="line">aggError [[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]</span><br><span class="line">[<span class="number">0.</span>]]</span><br><span class="line">total error: <span class="number">0.0</span></span><br><span class="line">第 <span class="number">0</span> 个弱分类器权值: [[-<span class="number">0.69314718</span>]]</span><br><span class="line">第 <span class="number">1</span> 个弱分类器权值: [[-<span class="number">1.66610226</span>]]</span><br><span class="line">第 <span class="number">2</span> 个弱分类器权值: [[-<span class="number">2.56198199</span>]]</span><br><span class="line">最终分类标签: [[-<span class="number">1.</span>]]</span><br></pre></td></tr></table></figure>
 
 
-<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>源代码</strong>：<a target="_blank" rel="noopener" href="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/AdaBoost.py">AdaBoost.py</a></p>
+<div class="note success"><p><strong>备注</strong><br><strong>运行平台</strong>：Arch Linux<br><strong>运行环境</strong>：Intellij IDEA<br><strong>源代码</strong>：<a href="../../../../uploads/AdaBoost.py">AdaBoost.py</a></p>
 </div>
 
 

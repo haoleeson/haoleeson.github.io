@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="EisenHao&#39;s Note">
 <meta property="og:description" content="1. Java基础知识1.1. 引用 &amp; 对象 对象：类的实例化，实质为运行时堆内为类内各属性值顺序分配的一组内存空间。类变量(static)只在堆内分配一次，类内方法只在代码段内存一次。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/JavaStudyNote.png">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/Inheritance-relationship-of-common-collection-classes.jpg">
+<meta property="og:image" content="https://eisenhao.cn/uploads/JavaStudyNote.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/Inheritance-relationship-of-common-collection-classes.jpg">
 <meta property="article:published_time" content="2019-04-05T07:10:30.000Z">
 <meta property="article:modified_time" content="2019-04-21T11:12:45.000Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/JavaStudyNote.png">
+<meta name="twitter:image" content="https://eisenhao.cn/uploads/JavaStudyNote.png">
 
 
 <link rel="canonical" href="https://eisenhao.cn/2019/04/05/JavaStudyNote/">
@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -285,7 +285,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/JavaStudyNote.png" class="full-image" />
+        <img data-src="../../../../uploads/JavaStudyNote.png" class="full-image" />
 
 <h1 id="1-Java基础知识"><a href="#1-Java基础知识" class="headerlink" title="1. Java基础知识"></a>1. Java基础知识</h1><h2 id="1-1-引用-amp-对象"><a href="#1-1-引用-amp-对象" class="headerlink" title="1.1. 引用 &amp; 对象"></a>1.1. 引用 &amp; 对象</h2><ul>
 <li><strong>对象</strong>：类的实例化，实质为运行时堆内为类内各属性值顺序分配的一组内存空间。<br>类变量(static)只在堆内分配一次，类内方法只在代码段内存一次。<a id="more"></a></li>
@@ -384,7 +384,7 @@
 
 <h3 id="2-4-2-捕获异常"><a href="#2-4-2-捕获异常" class="headerlink" title="2.4.2. 捕获异常"></a>2.4.2. 捕获异常</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="comment">//定义可能会抛出异常的方法，在方法中抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">average</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> <span class="keyword">throws</span> MyException</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (num1 &lt; <span class="number">0</span> || num2 &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> MyException(<span class="string">&quot;数字不能为负&quot;</span>);<span class="comment">//若条件为真执行到throw，在throw抛出异常后，此函数后续部分都不会执行</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (num1 &gt; <span class="number">100</span> || num2 &gt; <span class="number">100</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> MyException(<span class="string">&quot;数字不能超过100&quot;</span>);<span class="comment">//若条件为真执行到throw，在throw抛出异常后，此函数后续部分都不会执行</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (num1 + num2) / <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x=<span class="number">102</span>, y=<span class="number">5</span>, z=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">boolean</span> isExceptionFlag = <span class="keyword">true</span>;<span class="comment">//是否发生异常标志</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            z = average(x, y);<span class="comment">//可能抛出异常的代码，放在try&#123;&#125;内执行，若异常发生就不会执行try&#123;&#125;内的下方代码</span></span><br><span class="line">            z += x / y;<span class="comment">//可能会抛出除数为0异常</span></span><br><span class="line">            isExceptionFlag = <span class="keyword">false</span>;<span class="comment">//当执行到此处，说明上方函数未发生异常</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (MyException e) &#123;</span><br><span class="line">            <span class="comment">// 若捕获到抛出的自定义异常，会执行下面代码</span></span><br><span class="line">            System.out.println(e.getMessage());<span class="comment">//输出异常携带的消息</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (ArithmeticException e) &#123;</span><br><span class="line">            <span class="comment">// 捕获异常类型2（除数为0异常），异常处理代码</span></span><br><span class="line">            System.out.println(<span class="string">&quot;除数不能为0&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//无论是否抛出异常，都会执行此块内代码</span></span><br><span class="line">            <span class="keyword">if</span> (isExceptionFlag)</span><br><span class="line">                System.out.println(<span class="string">&quot;发生异常&quot;</span>);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                System.out.println(<span class="string">&quot;未发生异常&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">1）当x=102, y=5时，运行结果：</span></span><br><span class="line"><span class="comment">数字不能超过100</span></span><br><span class="line"><span class="comment">发生异常</span></span><br><span class="line"><span class="comment">2）当x=10，y=0时，运行结果：</span></span><br><span class="line"><span class="comment">除数不能为0</span></span><br><span class="line"><span class="comment">发生异常</span></span><br><span class="line"><span class="comment">3）当x=10，y=5时，运行结果：</span></span><br><span class="line"><span class="comment">未发生异常</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="2-5-Swing程序设计（跳过）"><a href="#2-5-Swing程序设计（跳过）" class="headerlink" title="2.5. Swing程序设计（跳过）"></a>2.5. Swing程序设计（跳过）</h2><h2 id="2-6-集合类"><a href="#2-6-集合类" class="headerlink" title="2.6. 集合类"></a>2.6. 集合类</h2><p>集合类，又称容器。常见的集合类有：List集合, Set集合, Map集合，其中List与Set继承了Collection接口。<br><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/Inheritance-relationship-of-common-collection-classes.jpg" alt="常见集合类的继承关系"><br><strong>与数组区别</strong>：</p>
+<h2 id="2-5-Swing程序设计（跳过）"><a href="#2-5-Swing程序设计（跳过）" class="headerlink" title="2.5. Swing程序设计（跳过）"></a>2.5. Swing程序设计（跳过）</h2><h2 id="2-6-集合类"><a href="#2-6-集合类" class="headerlink" title="2.6. 集合类"></a>2.6. 集合类</h2><p>集合类，又称容器。常见的集合类有：List集合, Set集合, Map集合，其中List与Set继承了Collection接口。<br><img data-src="/../../../../uploads/Inheritance-relationship-of-common-collection-classes.jpg" alt="常见集合类的继承关系"><br><strong>与数组区别</strong>：</p>
 <ul>
 <li>数组的长度固定，而集合的长度可变；</li>
 <li>数组存放基本类型的数据，集合存放对象的引用。</li>

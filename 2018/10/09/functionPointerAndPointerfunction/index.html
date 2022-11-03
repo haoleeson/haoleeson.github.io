@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="EisenHao&#39;s Note">
 <meta property="og:description" content="1. 指针函数1int* fun(char ch);&#x2F;&#x2F;指针函数 指针函数，即返回值为指针地址的函数。实质仍为函数，与普通函数的差异仅在于返回值比较特殊，为一个指针地址（当然需要告知编译器一个特定的类型处理数据类型）。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pointerFunction.jpg">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/functionPointer.jpg">
+<meta property="og:image" content="https://eisenhao.cn/uploads/pointerFunction.jpg">
+<meta property="og:image" content="https://eisenhao.cn/uploads/functionPointer.jpg">
 <meta property="article:published_time" content="2018-10-09T03:30:30.000Z">
 <meta property="article:modified_time" content="2018-10-10T14:55:45.000Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pointerFunction.jpg">
+<meta name="twitter:image" content="https://eisenhao.cn/uploads/pointerFunction.jpg">
 
 
 <link rel="canonical" href="https://eisenhao.cn/2018/10/09/functionPointerAndPointerfunction/">
@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -285,7 +285,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/pointerFunction.jpg" class="full-image" />
+        <img data-src="../../../../uploads/pointerFunction.jpg" class="full-image" />
 
 <h1 id="1-指针函数"><a href="#1-指针函数" class="headerlink" title="1. 指针函数"></a>1. 指针函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">fun</span><span class="params">(<span class="keyword">char</span> ch)</span></span>;<span class="comment">//指针函数</span></span><br></pre></td></tr></table></figure>
 <p>指针函数，即返回值为指针地址的函数。实质仍为函数，与普通函数的差异仅在于返回值比较特殊，为一个指针地址（当然需要告知编译器一个特定的类型处理数据类型）。</p>
@@ -297,7 +297,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span> &#123;</span></span><br><span class="line">    string userName;</span><br><span class="line">    string userPassword;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showUser</span> <span class="params">( struct UserMessage* user )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( user == <span class="literal">NULL</span> ) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Error: register failed!&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Success: register success:)&quot;</span> &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;User: &quot;</span> &lt;&lt; user-&gt;userName &lt;&lt; endl &lt;&lt; <span class="string">&quot;Psw: &quot;</span> &lt;&lt; user-&gt;userPassword &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct UserMessage* <span class="title">Register</span> <span class="params">( <span class="keyword">void</span> )</span> </span>&#123;</span><br><span class="line">    string str0, str1, str2;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input UserName:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str0;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input Password:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str1;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input Password again:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str2;</span><br><span class="line">    <span class="keyword">if</span> ( str1.<span class="built_in">compare</span>(str2) == <span class="number">0</span> ) &#123;</span><br><span class="line">        <span class="comment">//(string)(user-&gt;userName) = str0; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="comment">//(string)(user-&gt;userPassword) = str1; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">user</span> =</span> <span class="keyword">new</span> UserMessage;</span><br><span class="line">        *user = &#123; str0, str1 &#125;;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">Test</span> =</span> <span class="built_in">Register</span>();</span><br><span class="line">    <span class="built_in">showUser</span>(Test);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/functionPointer.jpg" class="full-image" />
+<img data-src="../../../../uploads/functionPointer.jpg" class="full-image" />
 # 2. 函数指针
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">int</span></span> (*fun)(<span class="keyword">char</span> ch);<span class="comment">//函数指针</span></span><br></pre></td></tr></table></figure>
 函数指针，即指针地址指向一个函数入口地址的指针。实质任为指针。我们可以通过改变这个指针的不同地址调用同型的不同函数。

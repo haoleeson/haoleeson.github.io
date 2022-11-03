@@ -28,15 +28,15 @@
 <meta property="og:site_name" content="EisenHao&#39;s Note">
 <meta property="og:description" content="1. B+树1.1. B+树简介B+树是一种树数据结构，是一个n叉树，每个节点通常有多个孩子，一棵B+树包含根节点、内部节点和叶子节点。根节点可能是一个叶子节点，也可能是一个包含两个或两个以上孩子节点的节点。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree1.jpg">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree2.PNG">
-<meta property="og:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BStartTree.PNG">
+<meta property="og:image" content="https://eisenhao.cn/uploads/BPlusTree1.jpg">
+<meta property="og:image" content="https://eisenhao.cn/uploads/BPlusTree2.PNG">
+<meta property="og:image" content="https://eisenhao.cn/uploads/BStartTree.PNG">
 <meta property="article:published_time" content="2020-12-24T09:54:30.000Z">
-<meta property="article:modified_time" content="2022-06-12T16:58:19.648Z">
+<meta property="article:modified_time" content="2022-11-03T14:46:58.099Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree1.jpg">
+<meta name="twitter:image" content="https://eisenhao.cn/uploads/BPlusTree1.jpg">
 
 
 <link rel="canonical" href="https://eisenhao.cn/2020/12/24/BPlusTreeAndBStartTree/">
@@ -167,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -178,7 +178,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -286,7 +286,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree1.jpg" class="full-image" />
+        <img data-src="../../../../uploads/BPlusTree1.jpg" class="full-image" />
 
 <h1 id="1-B-树"><a href="#1-B-树" class="headerlink" title="1. B+树"></a>1. B+树</h1><h2 id="1-1-B-树简介"><a href="#1-1-B-树简介" class="headerlink" title="1.1. B+树简介"></a>1.1. B+树简介</h2><p>B+树是一种树数据结构，是一个n叉树，每个节点通常有多个孩子，一棵B+树包含根节点、内部节点和叶子节点。根节点可能是一个叶子节点，也可能是一个包含两个或两个以上孩子节点的节点。</p>
 <a id="more"></a>
@@ -310,7 +310,7 @@
 </ul>
 </li>
 </ul>
-<p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BPlusTree2.PNG" alt="B+树"></p>
+<p><img data-src="/../../../../uploads/BPlusTree2.PNG" alt="B+树"></p>
 <p>备注：B+的搜索与B树也基本相同，区别是B+树只有达到叶子结点才命中（B树可以在非叶子结点命中），其性能也等价于在关键字全集做一次二分查找；</p>
 <h2 id="1-4-B-的特性"><a href="#1-4-B-的特性" class="headerlink" title="1.4. B+的特性"></a>1.4. B+的特性</h2><ul>
 <li>所有关键字都出现在叶子结点的链表中（稠密索引），且链表中的关键字恰好是有序的；</li>
@@ -318,7 +318,7 @@
 <li>非叶子结点相当于是叶子结点的索引（稀疏索引），叶子结点相当于是存储（关键字）数据的数据层；</li>
 <li>更适合文件索引系统；</li>
 </ul>
-<h1 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B*树"></a>2. B*树</h1><p><img data-src="https://eisenhao.coding.net/p/eisenhao/d/eisenhao/git/raw/master/uploads/BStartTree.PNG" alt="B*树"></p>
+<h1 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B*树"></a>2. B*树</h1><p><img data-src="/../../../../uploads/BStartTree.PNG" alt="B*树"></p>
 <h2 id="2-1-B-树的定义"><a href="#2-1-B-树的定义" class="headerlink" title="2.1. B*树的定义"></a>2.1. B*树的定义</h2><ul>
 <li>是B+树的变体，在B+树的非根和非叶子结点再增加<strong>指向兄弟的指针</strong>；</li>
 <li>B*树定义了非叶子结点关键字个数至少为(2&#x2F;3)*M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>

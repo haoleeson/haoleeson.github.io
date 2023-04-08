@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="sonic_version 201911  1. 全量编译&#x2F;更换版本步骤回顾1.1. 全量编译命令 编译环境：开发机  1234cd $SONIC_CODE_DIRrm -rf target&#x2F;make configure PLATFORM&#x3D;broadcommake target&#x2F;sonic.bin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sonic 全量编译及指定容器编译简介">
+<meta property="og:url" content="https://eisenhao.cn/2021/09/26/building_sonic/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="sonic_version 201911  1. 全量编译&#x2F;更换版本步骤回顾1.1. 全量编译命令 编译环境：开发机  1234cd $SONIC_CODE_DIRrm -rf target&#x2F;make configure PLATFORM&#x3D;broadcommake target&#x2F;sonic.bin">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-26T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-09-26T14:40:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="sonic">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/09/26/building_sonic/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/09/26/building_sonic/","path":"2021/09/26/building_sonic/","title":"sonic 全量编译及指定容器编译简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>sonic 全量编译及指定容器编译简介 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%85%A8%E9%87%8F%E7%BC%96%E8%AF%91-x2F-%E6%9B%B4%E6%8D%A2%E7%89%88%E6%9C%AC%E6%AD%A5%E9%AA%A4%E5%9B%9E%E9%A1%BE"><span class="nav-text">1. 全量编译&#x2F;更换版本步骤回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%85%A8%E9%87%8F%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4"><span class="nav-text">1.1. 全量编译命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%85%A8%E9%87%8F%E6%9B%B4%E6%8D%A2%E7%89%88%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-text">1.2. 全量更换版本命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BC%96%E8%AF%91%E5%8F%8A%E6%9B%B4%E6%96%B0%E5%8D%95%E4%B8%AA%E5%AE%B9%E5%99%A8%E6%AD%A5%E9%AA%A4"><span class="nav-text">2. 编译及更新单个容器步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%BB%A5-bgp-%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.1. 以 bgp 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%BB%A5-lldp-%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.2. 以 lldp 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E4%BB%A5-pmon-%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.3. 以 pmon 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E4%BB%A5-radv-%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.4. 以 radv 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E4%BB%A5-swss-%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.5. 以 swss 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E4%BB%A5-snmp-%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.6. 以 snmp 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-%E4%BB%A5-teamd-%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.7. 以 teamd 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-8-%E4%BB%A5-syncd-%E4%B8%BA%E4%BE%8B%EF%BC%88sonic-installer-%E4%B8%8D%E6%94%AF%E6%8C%81%E5%8D%95%E7%8B%AC%E6%9B%B4%E6%8D%A2%E6%AD%A4%E5%AE%B9%E5%99%A8%EF%BC%89"><span class="nav-text">2.8. 以 syncd 为例（sonic_installer 不支持单独更换此容器）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%BC%BA%E5%88%B6%E6%9B%BF%E6%8D%A2%E5%90%8C%E7%89%88%E6%9C%AC%E9%95%9C%E5%83%8F%E6%96%B9%E5%BC%8F"><span class="nav-text">3. 强制替换同版本镜像方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E4%BB%A5-syncd-%E4%B8%BA%E4%BE%8B"><span class="nav-text">3.1. 以 syncd 为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E4%BB%A5-swss-%E4%B8%BA%E4%BE%8B"><span class="nav-text">3.2. 以 swss 为例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%A4%87%E6%B3%A8"><span class="nav-text">4. 备注</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/09/26/building_sonic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sonic 全量编译及指定容器编译简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-09-26 22:30:45" itemprop="dateCreated datePublished" datetime="2021-09-26T22:30:45+08:00">2021-09-26</time>
+    </span>
+
+  
+    <span id="/2021/09/26/building_sonic/" class="post-meta-item leancloud_visitors" data-flag-title="sonic 全量编译及指定容器编译简介" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>sonic_version 201911</p>
+</blockquote>
+<h1 id="1-全量编译-x2F-更换版本步骤回顾"><a href="#1-全量编译-x2F-更换版本步骤回顾" class="headerlink" title="1. 全量编译&#x2F;更换版本步骤回顾"></a>1. 全量编译&#x2F;更换版本步骤回顾</h1><h2 id="1-1-全量编译命令"><a href="#1-1-全量编译命令" class="headerlink" title="1.1. 全量编译命令"></a>1.1. 全量编译命令</h2><blockquote>
+<p>编译环境：开发机</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd $SONIC_CODE_DIR</span><br><span class="line">rm -rf target/</span><br><span class="line">make configure PLATFORM=broadcom</span><br><span class="line">make target/sonic.bin</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="1-2-全量更换版本命令"><a href="#1-2-全量更换版本命令" class="headerlink" title="1.2. 全量更换版本命令"></a>1.2. 全量更换版本命令</h2><blockquote>
+<p>安装环境：交换机<br>将全量安装包 sonic.bin 上传到交换机后执行</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo sonic_installer install -f /home/admin/sonic.bin</span><br><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-编译及更新单个容器步骤"><a href="#2-编译及更新单个容器步骤" class="headerlink" title="2. 编译及更新单个容器步骤"></a>2. 编译及更新单个容器步骤</h1><h2 id="2-1-以-bgp-为例"><a href="#2-1-以-bgp-为例" class="headerlink" title="2.1. 以 bgp 为例"></a>2.1. 以 bgp 为例</h2><blockquote>
+<p>bgp 容器镜像文件： <code>docker-fpm-frr.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-fpm-frr.gz</span><br><span class="line">rm target/debs/stretch/frr_7.2-sonic-0_amd64.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 bgp 容器镜像包（约 8 min）</span></span><br><span class="line">make target/docker-fpm-frr.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-fpm-frr.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-fpm-frr.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-fpm-frr.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 bgp 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image bgp /home/admin/docker-fpm-frr.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-以-lldp-为例"><a href="#2-2-以-lldp-为例" class="headerlink" title="2.2. 以 lldp 为例"></a>2.2. 以 lldp 为例</h2><blockquote>
+<p>lldp 容器镜像文件： <code>docker-lldp-sv2.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-lldp-sv2.gz</span><br><span class="line">rm target/debs/lldpd_1.0.4-1_amd64.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 lldp 容器镜像包（约 8 min）</span></span><br><span class="line">make  target/docker-lldp-sv2.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-lldp-sv2.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-lldp-sv2.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-lldp-sv2.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 lldp 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image lldp /home/admin/docker-lldp-sv2.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-以-pmon-为例"><a href="#2-3-以-pmon-为例" class="headerlink" title="2.3. 以 pmon 为例"></a>2.3. 以 pmon 为例</h2><blockquote>
+<p>pmon 容器镜像文件： <code>docker-platform-monitor.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-platform-monitor.gz</span><br><span class="line">rm target/python-debs/python-sonic-hwmgrd_1.0-1_all.deb</span><br><span class="line">rm target/python-debs/python-sonic-syseepromd_1.0-1_all.deb</span><br><span class="line">rm target/python-debs/python-sonic-psud_1.0-1_all.deb</span><br><span class="line">rm target/python-debs/python-sonic-xcvrd_1.0-1_all.deb</span><br><span class="line">rm target/python-debs/python-sonic-ledd_1.1-1_all.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 pmon 容器镜像包（约  min）</span></span><br><span class="line">make target/docker-platform-monitor.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-platform-monitor.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-platform-monitor.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-platform-monitor.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 pmon 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image pmon /home/admin/docker-platform-monitor.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-以-radv-为例"><a href="#2-4-以-radv-为例" class="headerlink" title="2.4. 以 radv 为例"></a>2.4. 以 radv 为例</h2><blockquote>
+<p>radv 容器镜像文件： <code>docker-router-advertiser.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-router-advertiser.gz</span><br><span class="line">rm target/debs/stretch/radvd-dbgsym_2.17-2~bpo9+1_amd64.deb</span><br><span class="line">rm target/debs/stretch/radvd_2.17-2~bpo9+1_amd64.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 radv 容器镜像包（约 10 min）</span></span><br><span class="line">make target/docker-router-advertiser.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-router-advertiser.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-router-advertiser.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-router-advertiser.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 radv 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image radv /home/admin/docker-router-advertiser.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-以-swss-为例"><a href="#2-5-以-swss-为例" class="headerlink" title="2.5. 以 swss 为例"></a>2.5. 以 swss 为例</h2><blockquote>
+<p>swss 容器镜像文件： <code>docker-orchagent.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-orchagent.gz</span><br><span class="line">rm target/debs/stretch/swss_1.0.0_amd64.deb</span><br><span class="line">rm target/debs/stretch/libswsscommon_1.0.0_amd64.deb</span><br><span class="line">rm target/debs/stretch/python-swsscommon_1.0.0_amd64.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 swss 容器镜像包（约 13 min）</span></span><br><span class="line">make target/docker-orchagent.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-orchagent.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-orchagent.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"><span class="meta">$</span><span class="bash">$</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-orchagent.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 swss 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image swss /home/admin/docker-orchagent.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-6-以-snmp-为例"><a href="#2-6-以-snmp-为例" class="headerlink" title="2.6. 以 snmp 为例"></a>2.6. 以 snmp 为例</h2><blockquote>
+<p>snmp 容器镜像文件： <code>docker-snmp-sv2.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-snmp-sv2.gz</span><br><span class="line">rm target/debs/stretch/libsnmp30_5.7.3+dfsg-1.5_amd64.deb</span><br><span class="line">rm target/debs/stretch/libsnmp-base_5.7.3+dfsg-1.5_all.deb</span><br><span class="line">rm target/debs/stretch/libsnmp-dev_5.7.3+dfsg-1.5_amd64.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 snmp 容器镜像包</span></span><br><span class="line">make target/docker-snmp-sv2.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-snmp-sv2.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-snmp-sv2.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-snmp-sv2.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 snmp 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image snmp /home/admin/docker-snmp-sv2.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-7-以-teamd-为例"><a href="#2-7-以-teamd-为例" class="headerlink" title="2.7. 以 teamd 为例"></a>2.7. 以 teamd 为例</h2><blockquote>
+<p>teamd 容器镜像文件： <code>docker-teamd.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">cd $SONIC_CODE_DIR</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-teamd.gz</span><br><span class="line">rm target/debs/stretch/libteam5_1.28-1_amd64.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 teamd 容器镜像包（约 8 min）</span></span><br><span class="line">make target/docker-teamd.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-teamd.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-teamd.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-teamd.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 teamd 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image teamd /home/admin/docker-teamd.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-8-以-syncd-为例（sonic-installer-不支持单独更换此容器）"><a href="#2-8-以-syncd-为例（sonic-installer-不支持单独更换此容器）" class="headerlink" title="2.8. 以 syncd 为例（sonic_installer 不支持单独更换此容器）"></a>2.8. <del>以 syncd 为例</del>（sonic_installer 不支持单独更换此容器）</h2><blockquote>
+<p>syncd 容器镜像文件： <code>docker-syncd-brcm.gz</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在编译机的代码库的 &lt;code&gt;<span class="variable">$SONIC_CODE_DIR</span>&lt;/code&gt; 路径下，删除（待编译容器镜像）旧的镜像包</span></span><br><span class="line">rm target/docker-syncd-brcm.gz</span><br><span class="line">rm target/debs/stretch/syncd_1.0.0_amd64.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 syncd 容器镜像包（约  min）</span></span><br><span class="line">make target/docker-syncd-brcm.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到交换机</span></span><br><span class="line">ls -l $SONIC_CODE_DIR/target/docker-syncd-brcm.gz</span><br><span class="line">scp $SONIC_CODE_DIR/target/docker-syncd-brcm.gz admin@A.B.C.D:/home/admin/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录交换机</span></span><br><span class="line">ssh admin@A.B.C.D</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确认容器镜像包信息</span></span><br><span class="line">ls -l /home/admin/docker-syncd-brcm.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 单独更新 syncd 容器（无需 reboot 宿主机）</span></span><br><span class="line">sudo sonic_installer upgrade_docker --cleanup_image syncd /home/admin/docker-syncd-brcm.gz</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-强制替换同版本镜像方式"><a href="#3-强制替换同版本镜像方式" class="headerlink" title="3. 强制替换同版本镜像方式"></a>3. 强制替换同版本镜像方式</h1><h2 id="3-1-以-syncd-为例"><a href="#3-1-以-syncd-为例" class="headerlink" title="3.1. 以 syncd 为例"></a>3.1. 以 syncd 为例</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 停止旧 syncd 容器</span></span><br><span class="line">docker stop syncd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除旧 syncd 容器</span></span><br><span class="line">sudo docker rm -f syncd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除旧 syncd 镜像</span></span><br><span class="line">sudo docker rmi -f $(docker images | grep syncd  | awk &#x27;&#123; print $3 &#125;&#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 加载新 syncd 镜像包</span></span><br><span class="line">sudo docker load &lt; /home/admin/docker-syncd-brcm.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过服务的方式自动创建新 syncd 容器</span></span><br><span class="line">sudo service syncd restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-以-swss-为例"><a href="#3-2-以-swss-为例" class="headerlink" title="3.2. 以 swss 为例"></a>3.2. 以 swss 为例</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 停止旧 swss 容器</span></span><br><span class="line">docker stop swss</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除旧 swss 容器</span></span><br><span class="line">sudo docker rm -f swss</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除旧 swss 镜像</span></span><br><span class="line">sudo docker rmi -f $(docker images | grep docker-orchagent  | awk &#x27;&#123; print $3 &#125;&#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 加载新 swss 镜像包</span></span><br><span class="line">sudo docker load &lt; /home/admin/docker-orchagent.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过服务的方式自动创建新 swss 容器</span></span><br><span class="line">sudo service swss restart</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-备注"><a href="#4-备注" class="headerlink" title="4. 备注"></a>4. 备注</h1><ul>
+<li>编译时若报 Telemetry 失败可修改 <code>rules/config</code> 中如下配置，以关闭使能Telemetry：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENABLE_SYSTEM_TELEMETRY = n</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>sonic_installer upgrade_docker</code>的 OPTION参数说明如下：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo sonic_installer upgrade_docker --help</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果</span></span><br><span class="line">Usage: sonic_installer upgrade_docker [OPTIONS] &lt;container_name&gt; URL</span><br><span class="line"></span><br><span class="line">  Upgrade docker image from local binary or URL</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -y, --yes</span><br><span class="line">  --cleanup_image  Clean up old docker image</span><br><span class="line">  --skip_check     Skip task check for docker upgrade</span><br><span class="line">  --tag TEXT       Tag for the new docker image</span><br><span class="line">  --warm           Perform warm upgrade</span><br><span class="line">  --help           Show this message and exit.</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONiC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\28\install_sonic\" rel="bookmark">安装sonic</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\11\22\sonic201911_lost_swss_rec_history_log_problem_and_fix\" rel="bookmark">sonic201911 丢失 swss.rec 历史日志问题及修复</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\12\17\sonic_underscore_prefixes_remaining_in_Redis_loglevel_db\" rel="bookmark">Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\02\14\sonicLogs\" rel="bookmark">sonic各类告警日志梳理</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sonic/" rel="tag"><i class="fa fa-tag"></i> sonic</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/14/workplace_note_6_cross_team_collaboration/" rel="prev" title="职场笔记：跨团队协作的沟通高速路">
+                  <i class="fa fa-chevron-left"></i> 职场笔记：跨团队协作的沟通高速路
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/28/install_sonic/" rel="next" title="安装sonic">
+                  安装sonic <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/09/26/building_sonic/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="缩写词 全称 说明    DCN Data Communicate Network 数据通信网络   ADC Advance Data center Core 高级数据中心，承载普通IDC数据中心到B1流量和不同机房间的直通流量   CADC Cloud Advance Data center Core 高级云数据中心，承载公有云数据中心到B1流量和不同AZ间的直通流量   DC Data">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据中心网络DCN常见缩写词">
+<meta property="og:url" content="https://eisenhao.cn/2022/01/23/Common_acronyms_for_data_center_network_DCN/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="缩写词 全称 说明    DCN Data Communicate Network 数据通信网络   ADC Advance Data center Core 高级数据中心，承载普通IDC数据中心到B1流量和不同机房间的直通流量   CADC Cloud Advance Data center Core 高级云数据中心，承载公有云数据中心到B1流量和不同AZ间的直通流量   DC Data">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-23T14:30:45.000Z">
+<meta property="article:modified_time" content="2022-01-23T14:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2022/01/23/Common_acronyms_for_data_center_network_DCN/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2022/01/23/Common_acronyms_for_data_center_network_DCN/","path":"2022/01/23/Common_acronyms_for_data_center_network_DCN/","title":"数据中心网络DCN常见缩写词"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据中心网络DCN常见缩写词 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2022/01/23/Common_acronyms_for_data_center_network_DCN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据中心网络DCN常见缩写词
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2022-01-23 22:30:45" itemprop="dateCreated datePublished" datetime="2022-01-23T22:30:45+08:00">2022-01-23</time>
+    </span>
+
+  
+    <span id="/2022/01/23/Common_acronyms_for_data_center_network_DCN/" class="post-meta-item leancloud_visitors" data-flag-title="数据中心网络DCN常见缩写词" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <table>
+<thead>
+<tr>
+<th align="left">缩写词</th>
+<th align="left">全称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">DCN</td>
+<td align="left">Data Communicate Network</td>
+<td align="left">数据通信网络</td>
+</tr>
+<tr>
+<td align="left">ADC</td>
+<td align="left">Advance Data center Core</td>
+<td align="left">高级数据中心，承载普通IDC数据中心到B1流量和不同机房间的直通流量</td>
+</tr>
+<tr>
+<td align="left">CADC</td>
+<td align="left">Cloud Advance Data center Core</td>
+<td align="left">高级云数据中心，承载公有云数据中心到B1流量和不同AZ间的直通流量</td>
+</tr>
+<tr>
+<td align="left">DC</td>
+<td align="left">Data Center</td>
+<td align="left">数据中心，承担普通IDC机房内集群间流量。当机房内多于一个集群时，增加DC设备，避免集群数量多、ADC设备端口紧张的问题，例如阳泉机房</td>
+</tr>
+<tr>
+<td align="left">CDC</td>
+<td align="left">Cloud Data center Core</td>
+<td align="left">公有云数据中心，承担公有云机房内集群间流量，当机房内多于一个集群时，增加CDC设备</td>
+</tr>
+<tr>
+<td align="left">IC</td>
+<td align="left">Internal Core</td>
+<td align="left">普通IDC数据中心中的内网核心</td>
+</tr>
+<tr>
+<td align="left">CIC</td>
+<td align="left">Cloud Internal Core</td>
+<td align="left">公有云机房中的内网核心</td>
+</tr>
+<tr>
+<td align="left">IB</td>
+<td align="left">Internal Border</td>
+<td align="left">普通IDC数据中心的ToR设备</td>
+</tr>
+<tr>
+<td align="left">CIB</td>
+<td align="left">Cloud Internal Border</td>
+<td align="left">公有云数据中心的ToR设备</td>
+</tr>
+<tr>
+<td align="left">EC</td>
+<td align="left">External Core</td>
+<td align="left">外网核心层交换机</td>
+</tr>
+<tr>
+<td align="left">EB</td>
+<td align="left">External Border</td>
+<td align="left">外网汇聚层交换机</td>
+</tr>
+<tr>
+<td align="left">BC</td>
+<td align="left">Backbone Core</td>
+<td align="left">外网核心层交换机</td>
+</tr>
+<tr>
+<td align="left">TOR</td>
+<td align="left">Top of Rack</td>
+<td align="left">接入层交换机</td>
+</tr>
+<tr>
+<td align="left">IB</td>
+<td align="left">Inner Border</td>
+<td align="left">内网接入层交换机</td>
+</tr>
+<tr>
+<td align="left">IC</td>
+<td align="left">Inner Core</td>
+<td align="left">内网核心层交换机</td>
+</tr>
+<tr>
+<td align="left">SC</td>
+<td align="left">Super Core</td>
+<td align="left">内网超级核心层交换机</td>
+</tr>
+<tr>
+<td align="left">4 Post</td>
+<td align="left"></td>
+<td align="left">一个集群由四个数据中心普通核心组成的网络架构，集群内为两层结构（ToR-IC），扩展性较弱</td>
+</tr>
+<tr>
+<td align="left">CLOS</td>
+<td align="left"></td>
+<td align="left">利用三层无阻塞网络构成组成集群的网络架构，集群内为三层结构（ToR-Leaf-Spine），扩展、备份、容灾性强</td>
+</tr>
+<tr>
+<td align="left">Spine</td>
+<td align="left"></td>
+<td align="left">核心层Spine交换机，在不同Pod间负责无阻塞连通的网络元素</td>
+</tr>
+<tr>
+<td align="left">Leaf</td>
+<td align="left"></td>
+<td align="left">汇聚层Leaf交换机，连接ToR的网络元素</td>
+</tr>
+<tr>
+<td align="left">SV</td>
+<td align="left"></td>
+<td align="left">Server服务器</td>
+</tr>
+<tr>
+<td align="left">PoD</td>
+<td align="left"></td>
+<td align="left">CLOS架构下，四个Leaf及下联设备构成的单元</td>
+</tr>
+<tr>
+<td align="left">服务器PoD</td>
+<td align="left"></td>
+<td align="left">仅包含业务服务器的PoD</td>
+</tr>
+<tr>
+<td align="left">基础服务PoD</td>
+<td align="left"></td>
+<td align="left">包含基础服务IBGW、BIGNAT服务器的PoD</td>
+</tr>
+<tr>
+<td align="left">出口PoD</td>
+<td align="left"></td>
+<td align="left">负责集群间连接的PoD</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\23\EthernetAndMac\" rel="bookmark">以太帧与MAC</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\20\OSISevenLevelModel\" rel="bookmark">OSI七层网络模型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\03\VLAN\" rel="bookmark">VLAN</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\05\TwoOrThreeLevelForwarding\" rel="bookmark">二三层转发</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\09\switch\" rel="bookmark">交换机基础简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/17/sonic_underscore_prefixes_remaining_in_Redis_loglevel_db/" rel="prev" title="Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题">
+                  <i class="fa fa-chevron-left"></i> Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/27/OpenConfigNorthboundInterface/" rel="next" title="OpenConfig北向接口简介">
+                  OpenConfig北向接口简介 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2022/01/23/Common_acronyms_for_data_center_network_DCN/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

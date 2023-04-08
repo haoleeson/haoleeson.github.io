@@ -159,18 +159,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -233,7 +233,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2020/05/29/ConfusedShellLang/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/07/24/GitUsefullCmd/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -246,7 +246,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/05/29/ConfusedShellLang/" class="post-title-link" itemprop="url">Shell 实用指令记录</a>
+          <a href="/2021/07/24/GitUsefullCmd/" class="post-title-link" itemprop="url">Git 实用命令记录</a>
         </h2>
 
         <div class="post-meta-container">
@@ -257,11 +257,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2020-05-29 21:44:30" itemprop="dateCreated datePublished" datetime="2020-05-29T21:44:30+08:00">2020-05-29</time>
+      <time title="创建：2021-07-24 17:54:30" itemprop="dateCreated datePublished" datetime="2021-07-24T17:54:30+08:00">2021-07-24</time>
     </span>
 
   
-    <span id="/2020/05/29/ConfusedShellLang/" class="post-meta-item leancloud_visitors" data-flag-title="Shell 实用指令记录" title="浏览">
+    <span id="/2021/07/24/GitUsefullCmd/" class="post-meta-item leancloud_visitors" data-flag-title="Git 实用命令记录" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -277,12 +277,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/ConfusedShellLang.jpg" class="full-image" />
+          <img src="../../../../uploads/gitRevert.jpg" style="zoom:45%;"  />
 
-<p>博文记录了一些实用 Shell 指令，以备不时之需。</p>
+<p>记录Git生僻进阶用法，以备不时之需</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/05/29/ConfusedShellLang/#more" rel="contents">
+              <a class="btn" href="/2021/07/24/GitUsefullCmd/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -313,7 +313,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/12/23/ResourcePoolAndThreadPool/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/07/23/EthernetAndMac/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -326,7 +326,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/12/23/ResourcePoolAndThreadPool/" class="post-title-link" itemprop="url">资源池与线程池</a>
+          <a href="/2021/07/23/EthernetAndMac/" class="post-title-link" itemprop="url">以太帧与MAC</a>
         </h2>
 
         <div class="post-meta-container">
@@ -337,11 +337,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2019-12-23 22:30:45" itemprop="dateCreated datePublished" datetime="2019-12-23T22:30:45+08:00">2019-12-23</time>
+      <time title="创建：2021-07-23 22:30:45" itemprop="dateCreated datePublished" datetime="2021-07-23T22:30:45+08:00">2021-07-23</time>
     </span>
 
   
-    <span id="/2019/12/23/ResourcePoolAndThreadPool/" class="post-meta-item leancloud_visitors" data-flag-title="资源池与线程池" title="浏览">
+    <span id="/2021/07/23/EthernetAndMac/" class="post-meta-item leancloud_visitors" data-flag-title="以太帧与MAC" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -357,13 +357,92 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="1-资源池"><a href="#1-资源池" class="headerlink" title="1. 资源池"></a>1. 资源池</h1><h2 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1. 简介"></a>1.1. 简介</h2><ul>
-<li>是一种配置机制，用于对主机资源进行分区。当某一个资源使用完后，资源池把相关的资源的忙标示清除掉，以示该资源可以再被下一个请求使用</li>
-<li>每个主机均具有一个默认的资源池，所有的进程最初均与该资源池绑定。新创建的资源池会从默认池中获取处理器</li>
+          <h1 id="1-以太网数据帧结构"><a href="#1-以太网数据帧结构" class="headerlink" title="1. 以太网数据帧结构"></a>1. 以太网数据帧结构</h1><h2 id="1-1-802-3-Type-以太帧数据结构（又称-Ethernet-II-封装，目前使用最广泛）："><a href="#1-1-802-3-Type-以太帧数据结构（又称-Ethernet-II-封装，目前使用最广泛）：" class="headerlink" title="1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）："></a>1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）：</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/23/EthernetAndMac/#more" rel="contents">
+                展开阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/07/20/OSISevenLevelModel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/20/OSISevenLevelModel/" class="post-title-link" itemprop="url">OSI七层网络模型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-07-20 22:30:45" itemprop="dateCreated datePublished" datetime="2021-07-20T22:30:45+08:00">2021-07-20</time>
+    </span>
+
+  
+    <span id="/2021/07/20/OSISevenLevelModel/" class="post-meta-item leancloud_visitors" data-flag-title="OSI七层网络模型" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-OSI网络模型优势"><a href="#1-OSI网络模型优势" class="headerlink" title="1. OSI网络模型优势"></a>1. OSI网络模型优势</h1><ul>
+<li>定义了模型每层执行的功能功能，促成行业网络组件标准化，让满足模型的不同类型网络硬件和软件能够彼此通信，也能让各厂商能够协作开发</li>
+<li>将网络通信过程划分成更小、更简单的组件，这有助于组件的开发、设计和故障排除</li>
+<li>避免让对一层的修改影响其他层，从而避免妨碍开发工作</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/12/23/ResourcePoolAndThreadPool/#more" rel="contents">
+              <a class="btn" href="/2021/07/20/OSISevenLevelModel/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -394,7 +473,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/12/19/CppCompile/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/07/14/CodeSpecificationNote/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -407,7 +486,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/12/19/CppCompile/" class="post-title-link" itemprop="url">C++编译过程总结</a>
+          <a href="/2021/07/14/CodeSpecificationNote/" class="post-title-link" itemprop="url">编码规范笔记</a>
         </h2>
 
         <div class="post-meta-container">
@@ -418,11 +497,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2019-12-19 19:30:30" itemprop="dateCreated datePublished" datetime="2019-12-19T19:30:30+08:00">2019-12-19</time>
+      <time title="创建：2021-07-14 22:30:45" itemprop="dateCreated datePublished" datetime="2021-07-14T22:30:45+08:00">2021-07-14</time>
     </span>
 
   
-    <span id="/2019/12/19/CppCompile/" class="post-meta-item leancloud_visitors" data-flag-title="C++编译过程总结" title="浏览">
+    <span id="/2021/07/14/CodeSpecificationNote/" class="post-meta-item leancloud_visitors" data-flag-title="编码规范笔记" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -438,13 +517,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/CppCompile.jpg" class="full-image" />
-
-
-<h1 id="1-step1-预编译"><a href="#1-step1-预编译" class="headerlink" title="1. step1.预编译"></a>1. step1.预编译</h1><p>“宏展开”，也就是对那些#***的命令的一种展开。例如define MAX 1000就是建立起MAX和1000之间的对等关系，好在编译阶段进行替换。例如ifdef&#x2F;ifndef就是从一个文件中有选择性的挑出一些符合条件的代码来交给下一步的编译阶段来处理。这里面最复杂的莫过于include了，相当于把那个对应的文件里面的内容一下子替换到这条include***语句的地方来。</p>
+          <h1 id="1-排版与格式"><a href="#1-排版与格式" class="headerlink" title="1. 排版与格式"></a>1. 排版与格式</h1><h2 id="1-1-include"><a href="#1-1-include" class="headerlink" title="1.1. include"></a>1.1. include</h2><p>include guards 或#pragma once<br>include guards 必须使用<CODEPATH>_<FILE>_H（或 HPP）的全大写形式。CODEPATH 中需要去掉标示主干&#x2F;分支的关键词如：trunk, branch-xxx </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/12/19/CppCompile/#more" rel="contents">
+              <a class="btn" href="/2021/07/14/CodeSpecificationNote/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -475,7 +551,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/11/23/MachineLearningOverview/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/01/28/ReadingAndBeingAMan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -488,7 +564,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/11/23/MachineLearningOverview/" class="post-title-link" itemprop="url">机器学习概述（简单了解）</a>
+          <a href="/2021/01/28/ReadingAndBeingAMan/" class="post-title-link" itemprop="url">钱穆：读书与做人</a>
         </h2>
 
         <div class="post-meta-container">
@@ -499,11 +575,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2019-11-23 22:30:45" itemprop="dateCreated datePublished" datetime="2019-11-23T22:30:45+08:00">2019-11-23</time>
+      <time title="创建：2021-01-28 10:46:30" itemprop="dateCreated datePublished" datetime="2021-01-28T10:46:30+08:00">2021-01-28</time>
     </span>
 
   
-    <span id="/2019/11/23/MachineLearningOverview/" class="post-meta-item leancloud_visitors" data-flag-title="机器学习概述（简单了解）" title="浏览">
+    <span id="/2021/01/28/ReadingAndBeingAMan/" class="post-meta-item leancloud_visitors" data-flag-title="钱穆：读书与做人" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -519,94 +595,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>本文记录机器学习基础与框架的简单介绍</p>
-<h1 id="1-机器学习是什么"><a href="#1-机器学习是什么" class="headerlink" title="1. 机器学习是什么"></a>1. 机器学习是什么</h1><ul>
-<li>机器从数据中学习</li>
-<li>机器学习（≈ 寻找一个函数）</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/23/MachineLearningOverview/#more" rel="contents">
-                展开阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
+          <img src="../../../../uploads/QianMu.jpg" class="full-image" />
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
+<div class="note success"><p>钱穆（1895年7月30日-1990年8月30日），字宾四，笔名公沙，江苏省无锡人，中国现代历史学家。<br>其毕生弘扬中国传统文化，高举现代新儒家的旗帜，创办了新亚书院，与吕思勉、陈垣、陈寅恪并称为“史学四大家”，代表著作有《钱宾四先生全集》等。</p>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2019/11/18/RefreshForkRepositorie/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/my-avatar.png">
-      <meta itemprop="name" content="EisenHao">
-      <meta itemprop="description" content="记录成长，享受生活！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="EisenHao's Note">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/11/18/RefreshForkRepositorie/" class="post-title-link" itemprop="url">Fork仓库同步官方源仓库的更新</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">编写</span>
-
-      <time title="创建：2019-11-18 21:31:30" itemprop="dateCreated datePublished" datetime="2019-11-18T21:31:30+08:00">2019-11-18</time>
-    </span>
-
-  
-    <span id="/2019/11/18/RefreshForkRepositorie/" class="post-meta-item leancloud_visitors" data-flag-title="Fork仓库同步官方源仓库的更新" title="浏览">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">浏览：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/RefreshForkRepositorie.png" class="full-image" />
-
-<p>Fork仓库是对应官方源仓库的一份完全备份（类似快照，但却不能再接收到官方源仓库的更新内容），然而有时咱们需要Fork仓库涵盖官方源仓库的最新提交代码。</p>
+<p>本文转自钱穆先生在二十世纪六十年代应邀在复兴中国文化会第十次学术会议中发表的演讲《读书与做人》。原文如下，妄自在钱穆先生演讲中加上小标题以便网页快速定位，还望包涵！</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/11/18/RefreshForkRepositorie/#more" rel="contents">
+              <a class="btn" href="/2021/01/28/ReadingAndBeingAMan/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -630,7 +627,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

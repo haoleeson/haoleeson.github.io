@@ -31,8 +31,8 @@
 <meta property="og:image" content="https://eisenhao.cn/uploads/The_first_time_a_temporary_table_appears_as_a_monitoring_record_of_a_normal_table_item.png">
 <meta property="og:image" content="https://eisenhao.cn/uploads/redis_loglevel_db_abnormal_first_monitoring.png">
 <meta property="og:image" content="https://eisenhao.cn/uploads/redis_loglevel_db_abnormal_second_monitoring.png">
-<meta property="og:image" content="https://eisenhao.cn/uploads/redis_loglevel_db_The_code_calls_setLoglevel_without_filtering_temporary_entries.png">
-<meta property="og:image" content="https://eisenhao.cn/uploads/redis_loglevel_db_analysis_log_level.c++_code_is_not_judged_empty.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/redis_loglevel_db_The_code_calls_setLoglevel.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/redis_loglevel_db_analysis_log_level.png">
 <meta property="article:published_time" content="2021-12-17T14:30:45.000Z">
 <meta property="article:modified_time" content="2021-12-17T15:10:45.000Z">
 <meta property="article:author" content="EisenHao">
@@ -169,18 +169,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -325,13 +325,13 @@
 <li><code>src/sonic-swss-common/common/loglevel.cpp</code> 中的 <code>setLoglevel()</code> 。</li>
 <li>而调用其的地方没考虑到做过滤带下划线前缀临时表项的操作</li>
 </ul>
-<img data-src="../../../../uploads/redis_loglevel_db_The_code_calls_setLoglevel_without_filtering_temporary_entries.png" class="full-image" />
+<img data-src="../../../../uploads/redis_loglevel_db_The_code_calls_setLoglevel.png" class="full-image" />
 
 <h2 id="2-3-根因"><a href="#2-3-根因" class="headerlink" title="2.3. 根因"></a>2.3. 根因</h2><p>swssloglevel 未过滤 loglevel_db 中的临时表项。swss 启动时会调 <code>swssloglevel -l WARN -a</code>，由于 swssloglevel 程序的 <code>setLoglevel()</code> 未过滤带下划线前缀的临时表项，导致其也被当做正常表项处理。最终导致会增量创建“临时表项的临时表项”问题，重启 n 次则创建 n 个。</p>
 <h1 id="3-问题影响"><a href="#3-问题影响" class="headerlink" title="3. 问题影响"></a>3. 问题影响</h1><ul>
 <li>在 Redis loglevel_db 中存在下划线前缀的临时表项时，调用 swssloglevel 必出 core</li>
 </ul>
-<img data-src="../../../../uploads/redis_loglevel_db_analysis_log_level.c++_code_is_not_judged_empty.png" class="full-image" />
+<img data-src="../../../../uploads/redis_loglevel_db_analysis_log_level.png" class="full-image" />
 
 <ul>
 <li>冗余表项虽不影响 swss 正常运行，但多出的异常表项会占用内存资源，且会对定位排障造成一定干扰。</li>
@@ -356,6 +356,18 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONiC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\26\building_sonic\" rel="bookmark">sonic 全量编译及指定容器编译简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\28\install_sonic\" rel="bookmark">安装sonic</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\11\22\sonic201911_lost_swss_rec_history_log_problem_and_fix\" rel="bookmark">sonic201911 丢失 swss.rec 历史日志问题及修复</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2022\02\14\sonicLogs\" rel="bookmark">sonic各类告警日志梳理</a></div>
     </li>
   </ul>
@@ -370,13 +382,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/10/22/RegularExpressionSyntax/" rel="prev" title="正则表达式语法记录">
-                  <i class="fa fa-chevron-left"></i> 正则表达式语法记录
+                <a href="/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/" rel="prev" title="sonic201911 丢失 swss.rec 历史日志问题及修复">
+                  <i class="fa fa-chevron-left"></i> sonic201911 丢失 swss.rec 历史日志问题及修复
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/01/27/OpenConfigNorthboundInterface/" rel="next" title="OpenConfig北向接口简介">
-                  OpenConfig北向接口简介 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/01/23/Common_acronyms_for_data_center_network_DCN/" rel="next" title="数据中心网络DCN常见缩写词">
+                  数据中心网络DCN常见缩写词 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

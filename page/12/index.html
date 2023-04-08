@@ -159,18 +159,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">主题</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -233,7 +233,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/26/DataMining_PAM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -246,7 +246,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/09/23/AfterInstallManjaro/" class="post-title-link" itemprop="url">配置Manjaro</a>
+          <a href="/2018/10/26/DataMining_PAM/" class="post-title-link" itemprop="url">PAM算法——数据挖掘</a>
         </h2>
 
         <div class="post-meta-container">
@@ -257,11 +257,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2018-09-23 22:30:45" itemprop="dateCreated datePublished" datetime="2018-09-23T22:30:45+08:00">2018-09-23</time>
+      <time title="创建：2018-10-26 15:05:30" itemprop="dateCreated datePublished" datetime="2018-10-26T15:05:30+08:00">2018-10-26</time>
     </span>
 
   
-    <span id="/2018/09/23/AfterInstallManjaro/" class="post-meta-item leancloud_visitors" data-flag-title="配置Manjaro" title="浏览">
+    <span id="/2018/10/26/DataMining_PAM/" class="post-meta-item leancloud_visitors" data-flag-title="PAM算法——数据挖掘" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -277,12 +277,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/AfterInstallManjaro.png" class="full-image" />
+          <img src="../../../../uploads/DataMining_PAM.png" class="full-image" />
 
-<h1 id="1-Manjaro设置国内源"><a href="#1-Manjaro设置国内源" class="headerlink" title="1. Manjaro设置国内源"></a>1. Manjaro设置国内源</h1><h2 id="1-1-添加官方镜像源-包括-core-extra-community-multilib"><a href="#1-1-添加官方镜像源-包括-core-extra-community-multilib" class="headerlink" title="1.1. 添加官方镜像源(包括: core, extra, community, multilib)"></a>1.1. 添加官方镜像源(包括: core, extra, community, multilib)</h2><figure class="highlight plain"><figcaption><span>命令执行目录：~</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman-mirrors -i -c China -m rank &#x2F;&#x2F;更新镜像排名</span><br><span class="line">sudo pacman -Syy &#x2F;&#x2F;更新数据源</span><br></pre></td></tr></table></figure>
+<h1 id="1-实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类"><a href="#1-实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类" class="headerlink" title="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类"></a>1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类</h1><h2 id="1-1-PAM算法简介"><a href="#1-1-PAM算法简介" class="headerlink" title="1.1. PAM算法简介"></a>1.1. PAM算法简介</h2><ul>
+<li>PAM方法于1987年提出，用于l1范数和其他距离的工作。 </li>
+<li>k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离的平方和。</li>
+<li>可以将medoid定义为群集的对象，其与群集中的所有对象的平均差异最小。即，它是群集中位于最中心的点（迭代选取最中心的点，而非Kmeans的中心计算值，抗噪声能力更强）。</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/09/23/AfterInstallManjaro/#more" rel="contents">
+              <a class="btn" href="/2018/10/26/DataMining_PAM/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -313,7 +317,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/08/31/write-a-md-file/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/24/DataMining_Kmeans/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -326,7 +330,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/08/31/write-a-md-file/" class="post-title-link" itemprop="url">基于Hexo的Markdown博文语法简介</a>
+          <a href="/2018/10/24/DataMining_Kmeans/" class="post-title-link" itemprop="url">Kmeans算法——数据挖掘</a>
         </h2>
 
         <div class="post-meta-container">
@@ -337,11 +341,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2018-08-31 12:10:30" itemprop="dateCreated datePublished" datetime="2018-08-31T12:10:30+08:00">2018-08-31</time>
+      <time title="创建：2018-10-24 19:20:30" itemprop="dateCreated datePublished" datetime="2018-10-24T19:20:30+08:00">2018-10-24</time>
     </span>
 
   
-    <span id="/2018/08/31/write-a-md-file/" class="post-meta-item leancloud_visitors" data-flag-title="基于Hexo的Markdown博文语法简介" title="浏览">
+    <span id="/2018/10/24/DataMining_Kmeans/" class="post-meta-item leancloud_visitors" data-flag-title="Kmeans算法——数据挖掘" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -357,12 +361,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/write-a-md-file.jpg" class="full-image" />
+          <img src="../../../../uploads/DataMining_Kmeans.png" class="full-image" />
 
-<h1 id="1-md文件预定义参数"><a href="#1-md文件预定义参数" class="headerlink" title="1. md文件预定义参数"></a>1. md文件预定义参数</h1><h2 id="1-1-预定义参数"><a href="#1-1-预定义参数" class="headerlink" title="1.1. 预定义参数"></a>1.1. 预定义参数</h2><p>以下是预先定义的参数，您可在模板中使用这些参数值并加以利用。</p>
+<h1 id="1-实现K-means算法对无噪声的waveform数据集进行分割"><a href="#1-实现K-means算法对无噪声的waveform数据集进行分割" class="headerlink" title="1. 实现K-means算法对无噪声的waveform数据集进行分割"></a>1. 实现K-means算法对无噪声的waveform数据集进行分割</h1><h2 id="1-1-K-means算法简介"><a href="#1-1-K-means算法简介" class="headerlink" title="1.1. K-means算法简介"></a>1.1. K-means算法简介</h2><ul>
+<li>k均值聚类是一种矢量量化方法，最初来自信号处理，是数据挖掘中聚类分析的常用方法。</li>
+<li>k均值聚类的目的是将n个观测值划分为k个聚类，其中每个观测值属于具有最近均值的聚类，作为聚类的原型。这导致数据空间划分为Voronoi单元。</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/08/31/write-a-md-file/#more" rel="contents">
+              <a class="btn" href="/2018/10/24/DataMining_Kmeans/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -393,7 +400,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/08/29/post-debugging-steps/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/23/QuickSort/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -406,7 +413,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/08/29/post-debugging-steps/" class="post-title-link" itemprop="url">基于Hexo的博文编写调试发布流程简介</a>
+          <a href="/2018/10/23/QuickSort/" class="post-title-link" itemprop="url">QuickSort</a>
         </h2>
 
         <div class="post-meta-container">
@@ -417,11 +424,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2018-08-29 13:45:31" itemprop="dateCreated datePublished" datetime="2018-08-29T13:45:31+08:00">2018-08-29</time>
+      <time title="创建：2018-10-23 14:45:30" itemprop="dateCreated datePublished" datetime="2018-10-23T14:45:30+08:00">2018-10-23</time>
     </span>
 
   
-    <span id="/2018/08/29/post-debugging-steps/" class="post-meta-item leancloud_visitors" data-flag-title="基于Hexo的博文编写调试发布流程简介" title="浏览">
+    <span id="/2018/10/23/QuickSort/" class="post-meta-item leancloud_visitors" data-flag-title="QuickSort" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -437,14 +444,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/post-debugging-steps.png" class="full-image" />
+          <img src="../../../../uploads/QuickSort.jpg" class="full-image" />
 
-<h1 id="1-博客文章编写＆调试＆发布"><a href="#1-博客文章编写＆调试＆发布" class="headerlink" title="1. 博客文章编写＆调试＆发布"></a>1. 博客文章编写＆调试＆发布</h1><h2 id="1-1-进入Hexo根目录"><a href="#1-1-进入Hexo根目录" class="headerlink" title="1.1. 进入Hexo根目录"></a>1.1. 进入Hexo根目录</h2><ol>
-<li>输入密码,进入root用户模式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo su</span><br></pre></td></tr></table></figure></li>
-<li>进入Hexo站点根目录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io</span><br></pre></td></tr></table></figure>
+<h1 id="1-快速排序概念"><a href="#1-快速排序概念" class="headerlink" title="1. 快速排序概念"></a>1. 快速排序概念</h1><p>快速排序（Quick Sort）由C. A. R. Hoare在1962年提出。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。<br>快速排序是不稳定的算法，时间复杂度在最坏情况下是O(N^2)，平均的时间复杂度是O(N*lgN)。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/08/29/post-debugging-steps/#more" rel="contents">
+              <a class="btn" href="/2018/10/23/QuickSort/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -475,7 +480,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/04/24/talkAboutLoveCiteByAnonymousSenior/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/21/DataMining_DataPreprocess/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -488,7 +493,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/24/talkAboutLoveCiteByAnonymousSenior/" class="post-title-link" itemprop="url">恋爱观</a>
+          <a href="/2018/10/21/DataMining_DataPreprocess/" class="post-title-link" itemprop="url">预处理——数据挖掘</a>
         </h2>
 
         <div class="post-meta-container">
@@ -499,11 +504,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2018-04-24 14:30:30" itemprop="dateCreated datePublished" datetime="2018-04-24T14:30:30+08:00">2018-04-24</time>
+      <time title="创建：2018-10-21 19:20:30" itemprop="dateCreated datePublished" datetime="2018-10-21T19:20:30+08:00">2018-10-21</time>
     </span>
 
   
-    <span id="/2018/04/24/talkAboutLoveCiteByAnonymousSenior/" class="post-meta-item leancloud_visitors" data-flag-title="恋爱观" title="浏览">
+    <span id="/2018/10/21/DataMining_DataPreprocess/" class="post-meta-item leancloud_visitors" data-flag-title="预处理——数据挖掘" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -519,14 +524,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/talkAboutLoveCiteByAnonymousSenior.jpg" class="full-image" />
+          <img src="../../../../uploads/DataMining_DataPreprocess.jpg" class="full-image" />
 
-
-<div class="note success"><p><a target="_blank" rel="noopener" href="http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=935336">全文转自西电睿思学姐(内网)</a>分享了如何树立正确的爱情观（约束而又不失个性，理性与感性并存），观点很正，值得学习，遂与大家分享。</p>
-</div>
+<h1 id="1-在Linux系统安装Python及数据处理所需的numpy、pandas库"><a href="#1-在Linux系统安装Python及数据处理所需的numpy、pandas库" class="headerlink" title="1. 在Linux系统安装Python及数据处理所需的numpy、pandas库"></a>1. 在Linux系统安装Python及数据处理所需的numpy、pandas库</h1><p>之前尝试手动下载numpy库，解压，然后按提示安装，却发现numpy库依赖上级库nose,又下载nose库，但在手动安装pandas库时出错…后发现可通过pip的简单方式安装，自动解决依赖，相比于需要手动下载安装上级依赖的手动安装方式更方便，安装代码如下</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/04/24/talkAboutLoveCiteByAnonymousSenior/#more" rel="contents">
+              <a class="btn" href="/2018/10/21/DataMining_DataPreprocess/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -557,7 +560,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2017/11/12/GuofanZeng-six-rings/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2018/10/16/MinHeapAndMaxHeap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -570,7 +573,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/12/GuofanZeng-six-rings/" class="post-title-link" itemprop="url">曾国藩的“六戒五勤”（深度好文）</a>
+          <a href="/2018/10/16/MinHeapAndMaxHeap/" class="post-title-link" itemprop="url">最小堆与最大堆</a>
         </h2>
 
         <div class="post-meta-container">
@@ -581,11 +584,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2017-11-12 11:53:30" itemprop="dateCreated datePublished" datetime="2017-11-12T11:53:30+08:00">2017-11-12</time>
+      <time title="创建：2018-10-16 23:20:30" itemprop="dateCreated datePublished" datetime="2018-10-16T23:20:30+08:00">2018-10-16</time>
     </span>
 
   
-    <span id="/2017/11/12/GuofanZeng-six-rings/" class="post-meta-item leancloud_visitors" data-flag-title="曾国藩的“六戒五勤”（深度好文）" title="浏览">
+    <span id="/2018/10/16/MinHeapAndMaxHeap/" class="post-meta-item leancloud_visitors" data-flag-title="最小堆与最大堆" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -601,15 +604,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <img src="../../../../uploads/GuofanZeng-six-rings.jpg" class="full-image" />
+          <img src="../../../../uploads/MinHeapAndMaxHeap.jpg" class="full-image" />
 
-<blockquote class="blockquote-center">
-<p>一勤天下无难事<br>– by 曾国藩</p>
-
-</blockquote>
+<ul>
+<li>堆是一种经过排序的完全二叉树，对其中任一非终端节点，其数据值不大于（或不小于）其左右子节点的值。</li>
+<li>最小堆(最大堆)堆能保证堆顶元素最小(最大)，相比于用数组存放数据，如果要查找所有数据中最小(最大)的数据时，数组的时间复杂度为O(n)，而最小堆(最大堆)的时间复杂度为O(1)。</li>
+<li>而数据增删数据时，需要保证最小堆(最大堆)的动态可维护性仅需O(logN)。因此在特定的需求环境，最小堆(最大堆)这种数据结构非常高效。</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/12/GuofanZeng-six-rings/#more" rel="contents">
+              <a class="btn" href="/2018/10/16/MinHeapAndMaxHeap/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -633,7 +637,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

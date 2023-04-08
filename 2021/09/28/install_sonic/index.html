@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 准备工作1.1. 制作 sonic 安装U盘1.1.1. 依赖材料 一台带 USB 接口的白盒交换机（已安装 SONiC 系统） 一个空U盘 （容量高于2G） 两个安装文件：sonic.bin 和 sonic-recovery.bin   sonic.bin，全量安装 sonic 系统的二进制文件（六百多MB） sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装sonic">
+<meta property="og:url" content="https://eisenhao.cn/2021/09/28/install_sonic/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 准备工作1.1. 制作 sonic 安装U盘1.1.1. 依赖材料 一台带 USB 接口的白盒交换机（已安装 SONiC 系统） 一个空U盘 （容量高于2G） 两个安装文件：sonic.bin 和 sonic-recovery.bin   sonic.bin，全量安装 sonic 系统的二进制文件（六百多MB） sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-28T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-09-28T14:40:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="sonic">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/09/28/install_sonic/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/09/28/install_sonic/","path":"2021/09/28/install_sonic/","title":"安装sonic"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安装sonic | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">1. 准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%88%B6%E4%BD%9C-sonic-%E5%AE%89%E8%A3%85U%E7%9B%98"><span class="nav-text">1.1. 制作 sonic 安装U盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E4%BE%9D%E8%B5%96%E6%9D%90%E6%96%99"><span class="nav-text">1.1.1. 依赖材料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E5%88%B6%E4%BD%9C%E5%AE%89%E8%A3%85U%E7%9B%98"><span class="nav-text">1.1.2. 制作安装U盘</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%AE%89%E8%A3%85-x2F-%E9%85%8D%E7%BD%AE-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2. 安装&#x2F;配置 minicom 串口工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E5%AE%89%E8%A3%85-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2.1. 安装 minicom 串口工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E9%85%8D%E7%BD%AE-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2.2. 配置 minicom 串口工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E9%80%9A%E8%BF%87-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7%E7%99%BB%E5%BD%95%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="nav-text">1.2.3. 通过 minicom 串口工具登录交换机</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85-sonic"><span class="nav-text">2. 安装 sonic</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E9%80%9A%E8%BF%87-U-%E7%9B%98%E5%AE%89%E8%A3%85-sonic-%E7%B3%BB%E7%BB%9F"><span class="nav-text">2.1. 通过 U 盘安装 sonic 系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E4%BA%A4%E6%8D%A2%E6%9C%BAIP%E5%8F%8A%E7%AE%A1%E7%90%86%E7%BD%91%E8%B7%AF%E7%94%B1"><span class="nav-text">3. 配置交换机IP及管理网路由</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">4. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/09/28/install_sonic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安装sonic
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-09-28 22:30:45" itemprop="dateCreated datePublished" datetime="2021-09-28T22:30:45+08:00">2021-09-28</time>
+    </span>
+
+  
+    <span id="/2021/09/28/install_sonic/" class="post-meta-item leancloud_visitors" data-flag-title="安装sonic" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h1><h2 id="1-1-制作-sonic-安装U盘"><a href="#1-1-制作-sonic-安装U盘" class="headerlink" title="1.1. 制作 sonic 安装U盘"></a>1.1. 制作 sonic 安装U盘</h2><h3 id="1-1-1-依赖材料"><a href="#1-1-1-依赖材料" class="headerlink" title="1.1.1. 依赖材料"></a>1.1.1. 依赖材料</h3><ol>
+<li>一台带 USB 接口的白盒交换机（已安装 SONiC 系统）</li>
+<li>一个空U盘 （容量高于2G）</li>
+<li>两个<font color="red" style="">安装文件</font>：sonic.bin 和 sonic-recovery.bin</li>
+</ol>
+<ul>
+<li>sonic.bin，全量安装 sonic 系统的二进制文件（六百多MB）</li>
+<li>sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系统基础环境的二进制文件（约三百MB）</li>
+</ul>
+<a id="more"></a>
+
+<p>其中，sonic.bin 和 sonic-recovery.bin 的编译方式如下：</p>
+<blockquote>
+<p>备注：</p>
+<ul>
+<li>编译 sonic 版本需确保当前登录用户已加入 <b><font color="#7E3D76" style="">docker</font></b> 组</li>
+<li>查询当前 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表的命令为： <code>sudo cat /etc/group | grep docker</code> </li>
+<li>若当前登录用户不在 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表中，则需添加到 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表，命令为：  <code>sudo usermod -aG docker $&#123;当前用户名&#125; </code></li>
+</ul>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 进入 sonic 源码目录</span></span><br><span class="line">cd $SONIC_CODE_DIR</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 设置芯片厂商（eg. broadcom）</span></span><br><span class="line">make configure PLATFORM=broadcom</span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. 执行 make 编译 sonic.bin （编译用时约 1小时）</span></span><br><span class="line">make target/sonic.bin</span><br><span class="line"><span class="meta">#</span><span class="bash"> 4. 执行 make 编译 sonic-recovery.bin （编译用时约 10分钟）</span></span><br><span class="line">make target/sonic-recovery.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-2-制作安装U盘"><a href="#1-1-2-制作安装U盘" class="headerlink" title="1.1.2. 制作安装U盘"></a>1.1.2. 制作安装U盘</h3><ol>
+<li>上传两个<font color="red" style="">安装文件</font>到（用于制作安装U盘的）SONIC白盒交换机的 &#x2F;host&#x2F; 目录</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 拷贝安装文件到交换机（eg. 通过 scp 命令传输）</span></span><br><span class="line">scp sonic.bin admin@A.B.C.D:/home/admin</span><br><span class="line">scp sonic-recovery.bin admin@A.B.C.D:/home/admin</span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝安装文件到交换机的 /host/ 目录</span></span><br><span class="line">cp /home/admin/sonic.bin /host/</span><br><span class="line">cp /home/admin/sonic-recovery.bin /host/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 同步</span></span><br><span class="line">sync</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在（用于制作安装U盘的）白盒交换机上，安装 SONiC-OS recovery 基础镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入 /host/ 目录</span></span><br><span class="line">cd /host/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 SONiC-OS recovery 基础镜像</span></span><br><span class="line">./sonic-recovery.bin -L SONiC-OS –g</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>重启设备，进入上一步新安装的SONIC-OS recovery 基础镜像系统<br>（依据当前时间，在GRUB中选择进入上一步安装的系统版本）</li>
+<li>插入U盘，查看U盘盘符<br>（根据U盘容量判别，eg. 32G）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br><span class="line"><span class="meta">#</span><span class="bash"> 示例U盘盘符名：/dev/sdb</span></span><br><span class="line">Disk /dev/sdb: 28.8 GiB, 30943995904 bytes, 60437492 sectors</span><br><span class="line"><span class="meta">#</span><span class="bash"> 示例U盘分区名：/dev/sdb1~n</span></span><br><span class="line">Device      Start       End         Sectors     Size        Type</span><br><span class="line">/dev/sdb3   526370      60434458    59910000    28.6G       filesystem</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>制作安装U盘<br>（上一步获知的U盘盘符名： <code>/dev/sdb</code> ）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sonic-recovery.bin -u -n /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>同时将两个安装文件拷贝到U盘<br>（上一步获知的U盘分区名：&#x2F;dev&#x2F;sdb3）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 挂载U盘</span></span><br><span class="line">mount /dev/sdb3 /mnt/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝安装文件到 U 盘</span></span><br><span class="line">cp /host/sonic.bin /mnt/</span><br><span class="line">cp /host/sonic-recovery.bin /mnt/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 同步</span></span><br><span class="line">sync</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-安装-x2F-配置-minicom-串口工具"><a href="#1-2-安装-x2F-配置-minicom-串口工具" class="headerlink" title="1.2. 安装&#x2F;配置 minicom 串口工具"></a>1.2. 安装&#x2F;配置 minicom 串口工具</h2><p>minicom 对比 screen 优势：</p>
+<ul>
+<li>screen 方式连接串口设备： <code>screen /dev/tty.usbserial-110 115200</code><ul>
+<li>优势：系统自带，随用随取。</li>
+<li>短板：用完要关闭需要先按Ctrl+A，再按Ctrl+K来杀掉进程；可能遇到在关闭后&#x2F;dev路径没有Serial文件而无法使用的情况。</li>
+</ul>
+</li>
+<li>minicom 串口工具连接串口设备： <code>minicom -c on</code> <ul>
+<li>优势：使用便捷，仅需一次配置，后续自动调用连接配置；稳定性好；支持热插拔；功能丰富。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-1-安装-minicom-串口工具"><a href="#1-2-1-安装-minicom-串口工具" class="headerlink" title="1.2.1. 安装 minicom 串口工具"></a>1.2.1. 安装 minicom 串口工具</h3><ul>
+<li>执行 <code>brew install minicom</code> 命令安装 minicom （依赖工具 <a target="_blank" rel="noopener" href="https://brew.sh/">HomeBrew</a>）</li>
+</ul>
+<h3 id="1-2-2-配置-minicom-串口工具"><a href="#1-2-2-配置-minicom-串口工具" class="headerlink" title="1.2.2. 配置 minicom 串口工具"></a>1.2.2. 配置 minicom 串口工具</h3><ol>
+<li><b><font color="#7E3D76" style="">查询串口设备ID</font></b><br>（需在串口线连接 <strong>交换机</strong> 与 <strong>Mac笔记本</strong>后执行下方命令才能看到）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/tty.usb*</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果示例</span></span><br><span class="line">/dev/tty.usbserial-110</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><b><font color="#7E3D76" style="">进入 minicom 配置界面</font></b></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minicom -s</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><b><font color="#7E3D76" style="">进入串口配置项</font></b><br>上下方向键移动光标，选择“Serial port setup”，Enter 确认</li>
+<li><b><font color="#7E3D76" style="">更改串口设备 ID</font></b><br>按 A 进入“Serial Device”配置，删除默认值 &#x2F;dev&#x2F;modem，更改为第 1 步查询得到的设备 ID（eg. <code>/dev/tty.usbserial-110</code> ），Enter 确认更改</li>
+<li><b><font color="#7E3D76" style="">更改波特率</font></b><br>按 E 进入“Bps&#x2F;Par&#x2F;Bits”配置，选择适当波特率（如，按 E 切换波特率为 115200），Enter 确认更改</li>
+<li><b><font color="#7E3D76" style="">关闭硬件流控</font></b><br>按 F 切换“Hardware Flow Control”开关值，切换为“NO”<br>示例配置如下：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+-----------------------------------------------------------------------+</span><br><span class="line">| A -    Serial Device      : /dev/tty.usbserial-110                    |</span><br><span class="line">| B - Lockfile Location     : /opt/homebrew/Cellar/minicom/2.8/var      |</span><br><span class="line">| C -   Callin Program      :                                           |</span><br><span class="line">| D -  Callout Program      :                                           |</span><br><span class="line">| E -    Bps/Par/Bits       : 115200 8N1                                |</span><br><span class="line">| F - Hardware Flow Control : No                                        |</span><br><span class="line">| G - Software Flow Control : No                                        |</span><br><span class="line">| H -     RS485 Enable      : No                                        |</span><br><span class="line">| I -   RS485 Rts On Send   : No                                        |</span><br><span class="line">| J -  RS485 Rts After Send : No                                        |</span><br><span class="line">| K -  RS485 Rx During Tx   : No                                        |</span><br><span class="line">| L -  RS485 Terminate Bus  : No                                        |</span><br><span class="line">| M - RS485 Delay Rts Before: 0                                         |</span><br><span class="line">| N - RS485 Delay Rts After : 0                                         |</span><br><span class="line">|                                                                       |</span><br><span class="line">|    Change which setting?                                              |</span><br><span class="line">+-----------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><b><font color="#7E3D76" style="">保存配置</font></b><br>按 Enter 或 Esc 退回到“configuration”主界面，选择“Save setup as dfl”保存为默认配置，最后选择“Exit from Minicom”退出</li>
+</ol>
+<h3 id="1-2-3-通过-minicom-串口工具登录交换机"><a href="#1-2-3-通过-minicom-串口工具登录交换机" class="headerlink" title="1.2.3. 通过 minicom 串口工具登录交换机"></a>1.2.3. 通过 minicom 串口工具登录交换机</h3><ol>
+<li>用串口线连接 <strong>交换机</strong> 与 <strong>Mac笔记本</strong></li>
+<li>通过串口工具访问<strong>交换机</strong>（终端执行命令为： <code>minicom -c on</code> ）</li>
+</ol>
+<p>备注： ESC + Z 可调出 minicom 工具的命令菜单</p>
+<h1 id="2-安装-sonic"><a href="#2-安装-sonic" class="headerlink" title="2. 安装 sonic"></a>2. 安装 sonic</h1><h2 id="2-1-通过-U-盘安装-sonic-系统"><a href="#2-1-通过-U-盘安装-sonic-系统" class="headerlink" title="2.1. 通过 U 盘安装 sonic 系统"></a>2.1. 通过 U 盘安装 sonic 系统</h2><p><b><font color="#7E3D76" style="">1. 从U盘启动</font></b><br></p>
+<ul>
+<li>交换机插入安装U盘</li>
+<li>重启（BIOS 默认优先从U盘启动）</li>
+<li>输入U盘中 SONiC 系统的用户&#x2F;密码: admin&#x2F;admin</li>
+<li>进入 &#x2F;host&#x2F; 目录，确认存在两个<font color="red" style="">安装文件</font> ：sonic.bin 和 sonic-recovery.bin</li>
+</ul>
+<p><b><font color="#7E3D76" style="">2. （交换机）硬盘分区并准备SONIC-OS基础环境</font></b><br></p>
+<blockquote>
+<p>通过 sonic-recovery.bin 对（交换机）硬盘进行分区并准备 SONiC-OS 基础环境</p>
+</blockquote>
+<ul>
+<li>(1). 通过 <code>blkid</code> 命令查看交换机分区信息及了解硬盘类型（sda 或 nvme）</li>
+<li>(2a). 若执行blkid命令显示的信息中，硬盘类型为 <b><font color="red" style="">sda</font></b> ，则执行以下命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sonic-recovery.bin -n /dev/sda</span><br></pre></td></tr></table></figure>
+<ul>
+<li>(2b). 若执行blkid命令显示的信息中，硬盘类型为 <b><font color="red" style="">nvme</font></b> ，则执行以下命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sonic-recovery.bin -n /dev/nvme0n1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>(3). 再次通过 <code>blkid</code> 命令查看硬盘分区信息，确认硬盘分区信息囊括下方所有 <strong>LABEL</strong> <br>（GRUB、SONIC-OS、Recovery、Diag、Reserved、Log）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">3. 安装 sonic 系统</font></b></p>
+<p>执行下方命令安装 SONiC 系统</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sonic.bin</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="#7E3D76" style="">4. 拔掉U盘，重启</font></b></p>
+<h1 id="3-配置交换机IP及管理网路由"><a href="#3-配置交换机IP及管理网路由" class="headerlink" title="3. 配置交换机IP及管理网路由"></a>3. 配置交换机IP及管理网路由</h1><blockquote>
+<p>备注：</p>
+<ul>
+<li>建议串口访问下执行下述操作，ssh 访问可能会因重新分配 IP 导致断连</li>
+<li><b><font color="red" style="">重启后 IP 配置丢失根因</font></b>：ZTP 服务启动后若发现同时缺失配置文件 <code>/etc/sonic/config_db.json</code> 和 旧配置文件夹 <code>/etc/sonic/old_config/</code> ，将自动获取IP，强制覆盖已配置的静态 IP。<br>故在新设备配置IP，需先开启 ZTP 服务并执行 config save 生成配置文件，然后配置静态管理 IP，以防止重启后 ZTP 检测到无配置文件而去自动获取IP导致IP配置丢失。</li>
+<li>若发现设备缺失配置文件 <code>/etc/sonic/config_db.json</code> ，执行下方 3(a) 步即可配置IP并生成配置文件。</li>
+<li>若发现设备管理 IP 丢失（ <code>/etc/network/interfaces</code>文件被删 ），执行下方 3(b) 步即可配置静态 IP（此文件为生成文件，不推荐手动配置）。</li>
+</ul>
+</blockquote>
+<p>（现 sonic 已支持通过 cli 配置，可作为接线后临时测试的配置参考）</p>
+<ol>
+<li><b><font color="#7E3D76" style="">查看设备状态信息</font></b></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看此设备有无“用户配置”文件</span></span><br><span class="line">ls -l /etc/sonic/config_db.json</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看当前设备 IP</span></span><br><span class="line">ip addr | grep &#x27;scope global eth0&#x27; | awk &#x27;&#123; print $2 &#125;&#x27;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询 ZTP 服务启/停状态</span></span><br><span class="line">systemctl list-units --all --type=service | grep ztp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 ZTP 服务详细状态信息</span></span><br><span class="line">sudo service ztp status</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看生成的配置文件中是否包含管理IP字段</span></span><br><span class="line">sed -n &quot;$(grep -n &#x27;MGMT_INTERFACE&#x27; /etc/sonic/config_db.json | tail -1 | cut -d : -f 1), +5p&quot; /etc/sonic/config_db.json</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><b><font color="#7E3D76" style="">打开“零配置部署”功能（Zero Touch Provisioning，ZTP）</font></b></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 若 ztp 服务未开启，需执行下方命令开启 ZTP 服务</span></span><br><span class="line">sudo systemctl start ztp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 备注：</span></span><br><span class="line">sudo update-rc.d -f ztp remove      # 禁止 ZTP 服务开启自启  </span><br><span class="line">sudo update-rc.d ztp enable 2 3 4 5 # 开启 ZTP 服务开机自启</span><br></pre></td></tr></table></figure>
+<ul>
+<li>若设备缺失配置文件<code>/etc/sonic/config_db.json</code>且启动时 ztp 服务已开启，执行 <code>ip addr | grep eth0</code> 将能看到已自动获取的 IP（eg.10.0.0.2）</li>
+<li>若此时无 IP，执行下方 3(a) 步即可配置IP并生成配置文件。</li>
+</ul>
+<ol start="3">
+<li><b><font color="#7E3D76" style="">配置IP</font></b><br>（如配置交换机的 静态IP为：10.0.0.2&#x2F;24、网关为：10.0.0.0）<br><br><font color="black" style="">a. 方式一：通过调用cli命令配置IP（推荐）</font></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cli</span><br><span class="line"><span class="meta">sonic&gt;</span><span class="bash"> configure terminal</span></span><br><span class="line"><span class="meta">sonic(config)#</span><span class="bash"> interface-config</span></span><br><span class="line">sonic(interface config)# management</span><br><span class="line">sonic(interface mgmt)# ipv4-family</span><br><span class="line">sonic(interface mgmt v4)# address 10.0.0.2/24</span><br></pre></td></tr></table></figure>
+<p>或调 cli 命令行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 调命令配置静态IP和网关（静态IP为：10.0.0.2/24、网关为：10.0.0.0）</span></span><br><span class="line">sudo config interface eth0 ip add 10.0.0.2/24</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加到管理网路由（目的IP为：10.0.0.0/8、下一跳为网关：10.0.0.0）</span></span><br><span class="line">sudo config route mgmt add 10.0.0.0/8 10.0.0.0 eth0</span><br></pre></td></tr></table></figure>
+<p>生成配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo config save</span><br></pre></td></tr></table></figure>
+<p>查看生成的配置文件中是否包含管理IP字段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -n &quot;$(grep -n &#x27;MGMT_INTERFACE&#x27; /etc/sonic/config_db.json | tail -1 | cut -d : -f 1), +5p&quot; /etc/sonic/config_db.json</span><br></pre></td></tr></table></figure>
+<p><br><font color="black" style="">b. 方式二：通过直接修改网卡配置文件（临时，重启后失效）</font><br>通过 <code>sudo vi /etc/network/interfaces</code> 修改网卡配置文件，示例配置内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line"><span class="meta">#</span><span class="bash"> The management network interface</span></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">    address 10.0.0.2</span><br><span class="line">    netmask 255.255.255.0</span><br><span class="line">    # management network policy routing rules</span><br><span class="line">    # management port up rules</span><br><span class="line">    up ip -4 route add 10.0.0.0/24 dev eth0 table default</span><br><span class="line">    up ip -4 rule add from 10.0.0.2/32 table default</span><br><span class="line">    # management port down rules</span><br><span class="line">    down ip -4 route delete 10.0.0.0/24 dev eth0 table default</span><br><span class="line">    down ip -4 rule delete from 10.0.0.2/32 table default</span><br><span class="line">source /etc/network/interfaces.d/*</span><br></pre></td></tr></table></figure>
+<p>生效配置<br>（以下方式均可）</p>
+<ul>
+<li>a.重启网络：<code>sudo /etc/init.d/networking restart</code> 或 <code>sudo service networking restart</code><br><font color="black" style=""></li>
+<li>b.重启网卡（eg. eth0）： <code>sudo ifdown eth0</code> 或 <code>sudo ifup eth0</code></li>
+</ul>
+<h1 id="4-参考文档"><a href="#4-参考文档" class="headerlink" title="4. 参考文档"></a>4. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/dirksmaller/article/details/105063379">Mac笔记本 Pro 工具之 minicom安装与串口配置</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xig112635/p/14838651.html">linux route命令详解</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONiC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\26\building_sonic\" rel="bookmark">sonic 全量编译及指定容器编译简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\11\22\sonic201911_lost_swss_rec_history_log_problem_and_fix\" rel="bookmark">sonic201911 丢失 swss.rec 历史日志问题及修复</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\12\17\sonic_underscore_prefixes_remaining_in_Redis_loglevel_db\" rel="bookmark">Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\02\14\sonicLogs\" rel="bookmark">sonic各类告警日志梳理</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sonic/" rel="tag"><i class="fa fa-tag"></i> sonic</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/26/building_sonic/" rel="prev" title="sonic 全量编译及指定容器编译简介">
+                  <i class="fa fa-chevron-left"></i> sonic 全量编译及指定容器编译简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/22/RegularExpressionSyntax/" rel="next" title="正则表达式语法记录">
+                  正则表达式语法记录 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/09/28/install_sonic/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 问题描述sonic版本：201911 发现问题： swss.rec 无轮转文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sonic201911 丢失 swss.rec 历史日志问题及修复">
+<meta property="og:url" content="https://eisenhao.cn/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 问题描述sonic版本：201911 发现问题： swss.rec 无轮转文件">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.cn/uploads/Analyze_the_source_code_swss_rec.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/Comparison_of_swss_rec_and_sairedis_rec.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/Test_logfileReopen_the_swss.rec.png">
+<meta property="og:image" content="https://eisenhao.cn/uploads/Test_the_open_file_func_with_no_parameters_and_with_parameters.png">
+<meta property="article:published_time" content="2021-11-22T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-11-22T14:40:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="sonic">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.cn/uploads/Analyze_the_source_code_swss_rec.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/","path":"2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/","title":"sonic201911 丢失 swss.rec 历史日志问题及修复"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>sonic201911 丢失 swss.rec 历史日志问题及修复 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-text">1. 问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-text">2. 问题分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D"><span class="nav-text">2.1. 问题定位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%97%AE%E9%A2%98%E5%8F%AF%E8%83%BD%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-text">2.2. 问题可能性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E6%B5%8B%E8%AF%95-logfileReopen-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%89%8D%E5%90%8E-swss-rec-%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96"><span class="nav-text">2.2.1. 测试 logfileReopen() 函数调用前后 swss.rec 文件变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E6%B5%8B%E8%AF%95%E9%87%8D%E8%BD%BD%E6%B5%81%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E5%87%BD%E6%95%B0-open-%E6%98%AF%E5%90%A6%E6%90%BA%E5%B8%A6%E5%8F%82%E6%95%B0%E9%80%A0%E6%88%90%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-text">2.2.2. 测试重载流程中的关键函数 open() 是否携带参数造成的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-%E6%A0%B9%E5%9B%A0%E6%80%BB%E7%BB%93"><span class="nav-text">2.2.3. 根因总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E9%97%AE%E9%A2%98%E5%BD%B1%E5%93%8D"><span class="nav-text">2.3. 问题影响</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-text">3. 解决方案</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sonic201911 丢失 swss.rec 历史日志问题及修复
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-11-22 22:30:45" itemprop="dateCreated datePublished" datetime="2021-11-22T22:30:45+08:00">2021-11-22</time>
+    </span>
+
+  
+    <span id="/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/" class="post-meta-item leancloud_visitors" data-flag-title="sonic201911 丢失 swss.rec 历史日志问题及修复" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h1><p>sonic版本：201911</p>
+<p>发现问题： swss.rec 无轮转文件</p>
+<a id="more"></a>
+
+<h1 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h1><h2 id="2-1-问题定位"><a href="#2-1-问题定位" class="headerlink" title="2.1. 问题定位"></a>2.1. 问题定位</h2><p><code>/var/log/swss/swss.rec</code> 文件存在被其他未知程序误删或覆盖的操作</p>
+<h2 id="2-2-问题可能性分析"><a href="#2-2-问题可能性分析" class="headerlink" title="2.2. 问题可能性分析"></a>2.2. 问题可能性分析</h2><ul>
+<li>怀疑被其他未知程序或脚本误删或覆盖。<br>通过 <code>lsof /var/log/swss/swss.rec</code> 命令观测读写 <code>swss.rec</code> 文件的进程，仅发现 orchagent 及 轮转时 logrotated 进程，而同路径 <code>sairedis.rec</code> 正常，且测试<code>swss.rec</code>轮转正常，排除。</li>
+<li>怀疑为 Docker 同步问题。<br>&#x2F;var&#x2F;log&#x2F;swss&#x2F; 路径为 swss 容器（rw形式）挂载宿主机同路径文件夹，怀疑可能同步问题导致，但同路径 <code>sairedis.rec</code> 正常，排除。</li>
+<li>怀疑 orchagent 进程未正常关闭、重启可能导致正在打开的 <code>swss.rec</code> 内容丢失。<br>但相似模式的 <code>sairedis.rec</code> 无此问题，排除。</li>
+<li>怀疑 orchagent 进程对 <code>swss.rec</code> 读写业务流程中与 <code>sairedis.rec</code> 存在差异的地方导致的此问题。<br>分析源码 swss.rec 读写流涉及函数，发现 main.cpp 中必打的日志丢失。<img data-src="../../../../uploads/Analyze_the_source_code_swss_rec.png" class="full-image" /></li>
+<li>怀疑 “pgrep -x orchagent | xargs &#x2F;bin&#x2F;kill -HUP 2&gt;&#x2F;dev&#x2F;null || true” 触发 Orch::logfileReopen() 后，文件打开方式为默认，可能会覆盖之前内容。<br>swss.rec 与 sairedis.rec 重载参数对比：<img data-src="../../../../uploads/Comparison_of_swss_rec_and_sairedis_rec.png" class="full-image" /></li>
+</ul>
+<h3 id="2-2-1-测试-logfileReopen-函数调用前后-swss-rec-文件变化"><a href="#2-2-1-测试-logfileReopen-函数调用前后-swss-rec-文件变化" class="headerlink" title="2.2.1. 测试 logfileReopen() 函数调用前后 swss.rec 文件变化"></a>2.2.1. 测试 logfileReopen() 函数调用前后 swss.rec 文件变化</h3><img data-src="../../../../uploads/Test_logfileReopen_the_swss.rec.png" class="full-image" />
+
+<p>分析：给 orchagent 发送 HUP 信号，触发重载 <code>swss.rec</code> 文件后，后续写入的新内容将覆盖历史日志，造成日志丢失。</p>
+<h3 id="2-2-2-测试重载流程中的关键函数-open-是否携带参数造成的差异"><a href="#2-2-2-测试重载流程中的关键函数-open-是否携带参数造成的差异" class="headerlink" title="2.2.2. 测试重载流程中的关键函数 open() 是否携带参数造成的差异"></a>2.2.2. 测试重载流程中的关键函数 open() 是否携带参数造成的差异</h3><p>这也是 <code>swss.rec</code> 与 <code>sairedis.rec</code> 两个文件重载中的主要差异点。<br><img data-src="../../../../uploads/Test_the_open_file_func_with_no_parameters_and_with_parameters.png" class="full-image" /></p>
+<p>由测试结果可知：</p>
+<ul>
+<li>默认无参 open() 打开文件将覆盖旧内容，造成历史日志丢失。</li>
+<li>而带 out 及 app 参数的 open() 打开文件将采用追加形式写入新内容，历史内容会被保留。<ul>
+<li>ofstream::out，Open for output.  Default for @c ofstream and fstream.</li>
+<li>ofstream::app，eek to end before each write.</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-3-根因总结"><a href="#2-2-3-根因总结" class="headerlink" title="2.2.3. 根因总结"></a>2.2.3. 根因总结</h3><p>上述分析可知根因为： <code>swss.rec</code> 的重载函数中 open() 未携带 out 及 app 参数，导致后续内容覆盖了历史日志，造成日志丢失。</p>
+<h2 id="2-3-问题影响"><a href="#2-3-问题影响" class="headerlink" title="2.3. 问题影响"></a>2.3. 问题影响</h2><ul>
+<li><strong>问题后果</strong>：造成 <code>swss.rec</code> 日志记录丢失，影响排障定位。</li>
+<li><strong>触发条件</strong>：orchagent 在未达到轮转阈值前，就被误发送 HUP 信号问题“概率”引发），进而导致 orchagent 采用“覆盖”open()的形式打开 <code>swss.rec</code>，进而导致该文件的历史日志丢失。</li>
+</ul>
+<h1 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3. 解决方案"></a>3. 解决方案</h1><p>在 <code>swss.rec</code> 的重载函数中调 open()处增加 out 及 app 参数，使其以追加形式写入后续日志，以保留历史日志。改动如下：<br>src&#x2F;sonic-swss&#x2F;orchagent&#x2F;orch.cpp 的重载函数Orch::logfileReopen()，在调用 open()函数处增加 out 及 app 参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gRecordOfs.open(gRecordFile, std::ofstream::out | std::ofstream::app);</span><br></pre></td></tr></table></figure>
+
+<p>修复后换包自问题已修复， <code>swss.rec</code> 历史日志不再丢失。</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\12\SONIC\" rel="bookmark">开源白盒交换机系统 SONiC 简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\26\building_sonic\" rel="bookmark">sonic 全量编译及指定容器编译简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\09\28\install_sonic\" rel="bookmark">安装sonic</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\12\17\sonic_underscore_prefixes_remaining_in_Redis_loglevel_db\" rel="bookmark">Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\02\14\sonicLogs\" rel="bookmark">sonic各类告警日志梳理</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sonic/" rel="tag"><i class="fa fa-tag"></i> sonic</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/22/RegularExpressionSyntax/" rel="prev" title="正则表达式语法记录">
+                  <i class="fa fa-chevron-left"></i> 正则表达式语法记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/17/sonic_underscore_prefixes_remaining_in_Redis_loglevel_db/" rel="next" title="Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题">
+                  Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

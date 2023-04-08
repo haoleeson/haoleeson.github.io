@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Rsyslog 版本：8.24.0 1. 故障自检方法1.1. 无日志输出现象： 目标进程的预期日志文件无日志写入， tail -f 未检测到日志写入流">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Syslog 模块的故障自检方法及常见已知问题">
+<meta property="og:url" content="https://eisenhao.cn/2021/08/24/SyslogSelfDiagnosisAndCommonProblems/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="Rsyslog 版本：8.24.0 1. 故障自检方法1.1. 无日志输出现象： 目标进程的预期日志文件无日志写入， tail -f 未检测到日志写入流">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-24T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-08-23T15:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="syslog">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/08/24/SyslogSelfDiagnosisAndCommonProblems/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/08/24/SyslogSelfDiagnosisAndCommonProblems/","path":"2021/08/24/SyslogSelfDiagnosisAndCommonProblems/","title":"Syslog 模块的故障自检方法及常见已知问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Syslog 模块的故障自检方法及常见已知问题 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%95%85%E9%9A%9C%E8%87%AA%E6%A3%80%E6%96%B9%E6%B3%95"><span class="nav-text">1. 故障自检方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%97%A0%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA"><span class="nav-text">1.1. 无日志输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0-1%EF%BC%9A%E7%9B%AE%E6%A0%87%E8%BF%9B%E7%A8%8B%E6%9C%AA%E5%90%AF%E5%8A%A8%E6%88%96%E5%BC%82%E5%B8%B8"><span class="nav-text">1.1.1. 可能原因 1：目标进程未启动或异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0-2%EF%BC%9ARsyslog-%E6%9C%AA%E5%90%AF%E5%8A%A8"><span class="nav-text">1.1.2. 可能原因 2：Rsyslog 未启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0-3%EF%BC%9A%E6%97%A0%E7%A8%8B%E5%BA%8F%E6%89%93%E5%BC%80%E7%9B%AE%E6%A0%87%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-text">1.1.3. 可能原因 3：无程序打开目标日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0-4%EF%BC%9A-%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E9%99%90%E5%88%B6%E7%BA%A7%E5%88%AB%E8%AE%BE%E5%AE%9A%E8%BF%87%E9%AB%98"><span class="nav-text">1.1.4. 可能原因 4： 日志输出限制级别设定过高</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E6%97%A0%E6%B3%95%E8%BD%AE%E8%BD%AC%EF%BC%8C%E6%97%A0%E9%99%90%E5%88%B6%E5%A2%9E%E9%95%BF"><span class="nav-text">1.2. 日志文件无法轮转，无限制增长</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0-1%EF%BC%9Alogrotate-%E9%85%8D%E7%BD%AE%E5%BC%82%E5%B8%B8"><span class="nav-text">1.2.1. 可能原因 1：logrotate 配置异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0-2%EF%BC%9Acron-%E9%85%8D%E7%BD%AE%E5%BC%82%E5%B8%B8"><span class="nav-text">1.2.2. 可能原因 2：cron 配置异常</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%BD%AE%E8%BD%AC%E5%90%8E%E6%96%B0%E6%96%87%E4%BB%B6%E4%B8%8D%E8%AE%B0%E6%97%A5%E5%BF%97"><span class="nav-text">1.3. 轮转后新文件不记日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0%EF%BC%9ARsyslog-%E6%9C%AA%E6%94%B6%E5%88%B0-HUP-%E4%BF%A1%E5%8F%B7"><span class="nav-text">1.3.1. 可能原因：Rsyslog 未收到 HUP 信号</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%81%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98"><span class="nav-text">2. 常见已知问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E9%AB%98%E9%80%9F%E5%88%B7%E6%97%A5%E5%BF%97%E6%97%B6%E7%AA%81%E7%84%B6%E5%81%9C%E6%AD%A2%E8%BE%93%E5%87%BA"><span class="nav-text">2.1. 高速刷日志时突然停止输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Rsyslog-%E6%94%B6%E5%88%B0-HUP-%E4%BF%A1%E5%8F%B7"><span class="nav-text">2.2. Rsyslog 收到 HUP 信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Rsyslog-%E6%8A%98%E5%8F%A0%E9%87%8D%E5%A4%8D%E6%97%A5%E5%BF%97"><span class="nav-text">2.3. Rsyslog 折叠重复日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-Rsyslog-%E6%89%93%E5%8D%B0-2354-%E6%A0%87%E8%AF%86"><span class="nav-text">2.4. Rsyslog 打印 2354 标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-Rsyslog-%E6%89%93%E5%8D%B0-2359-%E6%A0%87%E8%AF%86"><span class="nav-text">2.5. Rsyslog 打印 2359 标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-Rsyslog-%E6%89%93%E5%8D%B0-2007-%E6%A0%87%E8%AF%86"><span class="nav-text">2.6. Rsyslog 打印 2007 标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-%E6%97%A0-Redis-%E8%87%AA%E8%BA%AB%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97"><span class="nav-text">2.7. 无 Redis 自身运行日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-8-%E4%BF%AE%E6%94%B9-Rsyslog-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%90%8E%E6%9C%AA%E7%94%9F%E6%95%88%EF%BC%9F"><span class="nav-text">2.8. 修改 Rsyslog 配置文件后未生效？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-9-%E4%B8%80%E6%9D%A1%E6%97%A5%E5%BF%97%E8%83%BD%E5%A4%9F%E9%87%8D%E5%AE%9A%E5%90%91%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E4%B9%88%EF%BC%9F"><span class="nav-text">2.9. 一条日志能够重定向到多个日志文件么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-10-Rsyslog-%E6%94%AF%E6%8C%81%E4%BF%AE%E6%94%B9%E6%97%A5%E5%BF%97%E7%9A%84-facility-%E4%B9%88%EF%BC%9F"><span class="nav-text">2.10. Rsyslog 支持修改日志的 facility 么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-11-%E8%8E%B7%E7%9F%A5%E7%A8%8B%E5%BA%8F%E5%AF%B9%E5%BA%94%E7%9A%84%E6%97%A5%E5%BF%97%E8%B7%AF%E5%BE%84%EF%BC%9F"><span class="nav-text">2.11. 获知程序对应的日志路径？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-12-%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AA%E6%94%B6%E5%88%B0%E4%B8%8A%E6%8A%A5%E6%97%A5%E5%BF%97%EF%BC%9F"><span class="nav-text">2.12. 日志服务器未收到上报日志？</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/08/24/SyslogSelfDiagnosisAndCommonProblems/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Syslog 模块的故障自检方法及常见已知问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-08-24 22:30:45" itemprop="dateCreated datePublished" datetime="2021-08-24T22:30:45+08:00">2021-08-24</time>
+    </span>
+
+  
+    <span id="/2021/08/24/SyslogSelfDiagnosisAndCommonProblems/" class="post-meta-item leancloud_visitors" data-flag-title="Syslog 模块的故障自检方法及常见已知问题" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Rsyslog 版本：8.24.0</p>
+<h1 id="1-故障自检方法"><a href="#1-故障自检方法" class="headerlink" title="1. 故障自检方法"></a>1. 故障自检方法</h1><h2 id="1-1-无日志输出"><a href="#1-1-无日志输出" class="headerlink" title="1.1. 无日志输出"></a>1.1. 无日志输出</h2><p><strong>现象</strong>：</p>
+<p>目标进程的预期日志文件无日志写入， <code>tail -f</code> 未检测到日志写入流</p>
+<a id="more"></a>
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tail -f /var/log/syslog</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-1-可能原因-1：目标进程未启动或异常"><a href="#1-1-1-可能原因-1：目标进程未启动或异常" class="headerlink" title="1.1.1. 可能原因 1：目标进程未启动或异常"></a>1.1.1. 可能原因 1：目标进程未启动或异常</h3><p>自检方法：排查目标进程运行状态，或结合进程自身特性判断</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">  检查业务进程是否正常运行（eg. swss 容器中的 fdbmgrd 进程 ）</span></span><br><span class="line">docker exec -it swss ps -ef | grep -v &quot;grep&quot; | grep &quot;fdbmgrd&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-2-可能原因-2：Rsyslog-未启动"><a href="#1-1-2-可能原因-2：Rsyslog-未启动" class="headerlink" title="1.1.2. 可能原因 2：Rsyslog 未启动"></a>1.1.2. 可能原因 2：Rsyslog 未启动</h3><p><strong>可能原因 2-1</strong>：</p>
+<p>系统日志软件 Rsyslog 进程被 Kill</p>
+<p>自检方法：检查 Rsyslog 是否运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 检查交换机中 Rsyslog 是否运行</span></span><br><span class="line">ps -ef | grep -v &quot;grep&quot; | grep &quot;rsyslogd&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 检查对应容器（eg. swss）中 Rsyslog 是否运行</span></span><br><span class="line">docker exec -it swss ps -ef | grep rsyslogd</span><br></pre></td></tr></table></figure>
+
+<p><strong>可能原因 2-2</strong>：</p>
+<p>Rsyslog 的自身配置文件 <code>/etc/rsyslog.conf</code> 或自定义配置文件夹下 <code>/etc/rsyslog.d/</code> 的配置有错，导致 Rsyslog 启动失败</p>
+<p>自检方法：对照正常设备的配置</p>
+<h3 id="1-1-3-可能原因-3：无程序打开目标日志文件"><a href="#1-1-3-可能原因-3：无程序打开目标日志文件" class="headerlink" title="1.1.3. 可能原因 3：无程序打开目标日志文件"></a>1.1.3. 可能原因 3：无程序打开目标日志文件</h3><p>自检方法：查看是否有进程打开目标日志文件（eg. <code>/var/log/syslog</code>）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 检查有无进程“打开了”目标日志文件</span></span><br><span class="line">sudo lsof /var/log/syslog</span><br></pre></td></tr></table></figure>
+<p>一般情况如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">rsyslogd 2181 root    8w   REG    8,3 57735831   56 /var/log/syslog</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-4-可能原因-4：-日志输出限制级别设定过高"><a href="#1-1-4-可能原因-4：-日志输出限制级别设定过高" class="headerlink" title="1.1.4. 可能原因 4： 日志输出限制级别设定过高"></a>1.1.4. 可能原因 4： 日志输出限制级别设定过高</h3><p>自检方法：通过 swssloglevel 或 logctl 命令检查日志输出限制级别是否过高</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看当前日志输出限制级别</span></span><br><span class="line">swssloglevel -p | grep fdbmgrd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">logctl -p -c swss#fdbmgrd</span><br></pre></td></tr></table></figure>
+
+<p><strong>应对方法</strong>：</p>
+<ul>
+<li>更改输出限制级别</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 降低目标进程（eg. fdbmgrd）日志输出限制级别</span></span><br><span class="line">swssloglevel -l INFO -c fdbmgrd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">logctl -l INFO -c swss#fdbmgrd</span><br></pre></td></tr></table></figure>
+<p>备注：查看更改日志输出限制级别用法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">swssloglevel -h</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">logctl -h</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-日志文件无法轮转，无限制增长"><a href="#1-2-日志文件无法轮转，无限制增长" class="headerlink" title="1.2. 日志文件无法轮转，无限制增长"></a>1.2. 日志文件无法轮转，无限制增长</h2><p><strong>现象</strong>：</p>
+<p>日志文件无限制增长，超过轮转阈值，却未被轮转压缩</p>
+<h3 id="1-2-1-可能原因-1：logrotate-配置异常"><a href="#1-2-1-可能原因-1：logrotate-配置异常" class="headerlink" title="1.2.1. 可能原因 1：logrotate 配置异常"></a>1.2.1. 可能原因 1：logrotate 配置异常</h3><p>自检方法：排查 logrotate 配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 检查有无安装 logrotate</span></span><br><span class="line">sudo which logrotate</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">ls -l /usr/sbin/logrotate</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 检查 logrotate 自身配置（对照正常设备配置）</span></span><br><span class="line">cat /etc/logrotate.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. 检查有无对目标日志文件的轮转配置（eg. <span class="string">&quot;daemon.log&quot;</span>）</span></span><br><span class="line">grep -A 5 &quot;daemon.log&quot; /etc/logrotate.d/rsyslog</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">grep -A 5 -Rw &quot;daemon.log&quot; /etc/logrotate.d/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4. 模拟执行以验证目标文件的轮转配置的正确性（<span class="string">&quot;-d&quot;</span>, 不会真正执行日志轮转）</span></span><br><span class="line">/usr/sbin/logrotate -d /etc/logrotate.d/rsyslog 2&gt;&amp;1 | grep -A 5 &quot;daemon.log&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-2-可能原因-2：cron-配置异常"><a href="#1-2-2-可能原因-2：cron-配置异常" class="headerlink" title="1.2.2. 可能原因 2：cron 配置异常"></a>1.2.2. 可能原因 2：cron 配置异常</h3><blockquote>
+<p>logrotate 日志轮转依赖于被定时任务工具 cron 周期调起</p>
+</blockquote>
+<p>自检方法：排查 cron 配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 检查 cron 配置（对照正常设备配置）</span></span><br><span class="line">cat /etc/crontab</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 检查 cron 周期性调起 logrotate 的配置（对照正常设备配置）</span></span><br><span class="line">cat /etc/cron.d/logrotate</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">cat /etc/cron.daily/logrotate</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. 检查定时任务 cron 是否启动</span></span><br><span class="line">ps -ef | grep -v &quot;grep&quot; | grep &quot;cron&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4. 检查有无 cron 成功调起 logrotate 的日志（当前调起周期为十分钟）</span></span><br><span class="line">sudo grep &quot;logrotate&quot; /var/log/cron.log | tail -n 5</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="1-3-轮转后新文件不记日志"><a href="#1-3-轮转后新文件不记日志" class="headerlink" title="1.3. 轮转后新文件不记日志"></a>1.3. 轮转后新文件不记日志</h2><p><strong>现象</strong>：</p>
+<p>日志文件大小为 0，已自检不是“1.1. 无输出日志”的问题</p>
+<h3 id="1-3-1-可能原因：Rsyslog-未收到-HUP-信号"><a href="#1-3-1-可能原因：Rsyslog-未收到-HUP-信号" class="headerlink" title="1.3.1. 可能原因：Rsyslog 未收到 HUP 信号"></a>1.3.1. 可能原因：Rsyslog 未收到 HUP 信号</h3><blockquote>
+<p>日志轮转工具 logrotate 在轮转 <code>xxx.log</code> 文件后，理应给 Rsyslog 发 HUP 挂起信号，以使 Rsyslog 进程能够重新加载 新的 <code>xxx.log</code> 文件的（文件 inode 号变更）进行记日志。</p>
+</blockquote>
+<p>Rsyslog 未收到 HUP 信号，其仍根据旧 inode 向不存在的前 <code>xxx.log</code> 写日志。</p>
+<p>自检方法：检查该日志文件对应的 lorotate 轮转配置文件（eg.  <code>/etc/logrotate.d/rsyslog</code> ），确保 postrotate 执行块内，存在向 Rsyslog 发送 HUP 信号的操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">postrotate</span><br><span class="line">    /bin/kill -HUP $(cat /var/run/rsyslogd.pid) 2&gt;/dev/null || true</span><br><span class="line">endscript</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="2-常见已知问题"><a href="#2-常见已知问题" class="headerlink" title="2. 常见已知问题"></a>2. 常见已知问题</h1><h2 id="2-1-高速刷日志时突然停止输出"><a href="#2-1-高速刷日志时突然停止输出" class="headerlink" title="2.1. 高速刷日志时突然停止输出"></a>2.1. 高速刷日志时突然停止输出</h2><p><strong>现象</strong>：</p>
+<p>短时输出大量日志时突然无征兆中断输出，5 分钟后日志又恢复输出，循环往复，导致日志呈现周期性断续输出现象</p>
+<p><strong>根因</strong>：</p>
+<p>日志吞吐量过高时，会触发容器中 Rsyslog 配置的“熔断”值（2 万条&#x2F;每 5 分钟），此时容器中 Rsyslog 会停止转发日志消息到宿主机 Rsyslog，故宿主机端观检测不到日志输出。不过，进入下一 5 分钟周期计数清零后，日志又恢复输出。</p>
+<p>注意：“熔断”期间的输出日志会丢失。</p>
+<p>自检方法：查看目标容器（eg. bgp）中的 Rsyslog 配置文件 <code>/etc/rsyslog.conf</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it bgp grep -C 2 &quot;SystemLogRateLimitInterval&quot; /etc/rsyslog.conf</span><br></pre></td></tr></table></figure>
+
+<p>默认配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Set a rate <span class="built_in">limit</span> on messages from the container</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="variable">$SystemLogRateLimitInterval</span> 300</span></span><br><span class="line"><span class="meta">$</span><span class="bash">SystemLogRateLimitBurst 20000</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>应对方法</strong>：</p>
+<ul>
+<li>更参考1.1.4改日志输出的级别，以降低日志输出速率</li>
+<li>临时调高 Rsyslog 配置的“熔断”值</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 修改目标容器（eg. bgp）中 Rsyslog 的“熔断”配置值</span></span><br><span class="line">docker exec -it bgp sed -i &#x27;s/SystemLogRateLimitBurst [0-9]\+/SystemLogRateLimitBurst 30000/g&#x27; /etc/rsyslog.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重启目标容器（eg. bgp）中的 Rsyslog 服务以生效配置</span></span><br><span class="line">docker exec -it bgp service rsyslog restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-Rsyslog-收到-HUP-信号"><a href="#2-2-Rsyslog-收到-HUP-信号" class="headerlink" title="2.2. Rsyslog 收到 HUP 信号"></a>2.2. Rsyslog 收到 HUP 信号</h2><p><strong>现象</strong>：</p>
+<p>Rsyslog 收到 HUP 信号并输出下方的 INFO 级别日志。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-10-16 03:50:01.212971 HOSTNAMR &lt;local7.info&gt; INFO liblogging-stdlog:  [origin software=&quot;rsyslogd&quot; swVersion=&quot;8.24.0&quot; x-pid=&quot;1732&quot; x-info=&quot;http://www.rsyslog.com&quot;] rsyslogd was HUPed</span><br></pre></td></tr></table></figure>
+
+<p><strong>根因</strong>：</p>
+<p>符合预期的正常情况。当日志文件发生轮转时，Rsyslog 会收到 logrotate 发送的 HUP 信号，重新加载文件，包括停止往已改名的“准轮转文件”写日志，而是写日志到新建的一个同名文件中。</p>
+<h2 id="2-3-Rsyslog-折叠重复日志"><a href="#2-3-Rsyslog-折叠重复日志" class="headerlink" title="2.3. Rsyslog 折叠重复日志"></a>2.3. Rsyslog 折叠重复日志</h2><p><strong>现象</strong>：</p>
+<p>Rsyslog 输出下方的折叠日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-10-27 15:57:44.222512 HOSTNAMR &lt;local2.err&gt; ERR swss#orchagent: message repeated 1636 times: [ :- doTask: op: SET, key: vlan23:8.1.1.2]</span><br></pre></td></tr></table></figure>
+
+<p><strong>根因</strong>：</p>
+<p>出现 <code>message repeated 1636 times</code> ，是由于容器中的 Rsyslog 开启了“减少重复日志” 开关（默认开启），以避免一千多行重复冗余日志转发的性能消耗，是符合预期的正常情况。</p>
+<p>自检方法：查看目标容器（eg. bgp）中的 Rsyslog 配置文件 <code>/etc/rsyslog.conf</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it bgp grep -B 2 &quot;RepeatedMsgReduction&quot; /etc/rsyslog.conf</span><br></pre></td></tr></table></figure>
+<p>默认配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Suppress duplicate messages and report <span class="string">&quot;message repeated n times&quot;</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="variable">$RepeatedMsgReduction</span> on</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-Rsyslog-打印-2354-标识"><a href="#2-4-Rsyslog-打印-2354-标识" class="headerlink" title="2.4. Rsyslog 打印 2354 标识"></a>2.4. Rsyslog 打印 2354 标识</h2><p><strong>现象</strong>：</p>
+<p>Rsyslog 输出下方日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2021-09-26 11:20:58.668466 HOSTNAMR &lt;local7.err&gt; ERR liblogging-stdlog: omfwd: error 11 sending via udp: Resource temporarily unavailable [v8.24.0 try http://www.rsyslog.com/e/2354 ]</span><br><span class="line"></span><br><span class="line">2022-02-10 10:16:31.392826 HOSTNAMR &lt;local7.err&gt; ERR liblogging-stdlog: omfwd: error 101 sending via udp: Network is unreachable [v8.24.0 try http://www.rsyslog.com/e/2354 ]</span><br></pre></td></tr></table></figure>
+
+<p>Rsyslog 打<a target="_blank" rel="noopener" href="https://www.rsyslog.com/rsyslog-error-2354/">2354 标识日志</a>表明很可能是<strong>系统的 UDP 缓冲区空间不足</strong>。</p>
+<p>（注：旧版本（如 8.24）也无法发送接近或大于 64KiB 的日志消息）</p>
+<p><strong>根因</strong>：</p>
+<p>系统的 UDP 缓冲区空间不足。还需监控系统的 UDP 缓存区占用情况来定位是哪些组件占用较大（可参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2289830/how-to-monitor-linux-udp-buffer-available-space">监控 UDP buffer 可用空间</a>）</p>
+<h2 id="2-5-Rsyslog-打印-2359-标识"><a href="#2-5-Rsyslog-打印-2359-标识" class="headerlink" title="2.5. Rsyslog 打印 2359 标识"></a>2.5. Rsyslog 打印 2359 标识</h2><p><strong>现象</strong>：</p>
+<p>Rsyslog 输出下方日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-09-26 10:35:02.802106 HOSTNAMR &lt;local7.info&gt; INFO liblogging-stdlog: action &#x27;action 0&#x27; resumed (module &#x27;builtin:omfwd&#x27;) [v8.24.0 try http://www.rsyslog.com/e/2359 ]</span><br></pre></td></tr></table></figure>
+<p><strong>根因</strong>：</p>
+<p>Rsyslog 恢复服务的提示日志，<a target="_blank" rel="noopener" href="http://www.rsyslog.com/e/2359">2359 标识</a> 表示 之前由于重连到服务器或资源不再紧缺时暂停的操作现已恢复执行，符合预期无需处理。</p>
+<h2 id="2-6-Rsyslog-打印-2007-标识"><a href="#2-6-Rsyslog-打印-2007-标识" class="headerlink" title="2.6. Rsyslog 打印 2007 标识"></a>2.6. Rsyslog 打印 2007 标识</h2><p><strong>现象：</strong><br>Rsyslog 输出下方日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-05-06 15:30:34.575869 HOSTNAMR &lt;local7.warning&gt; WARNING liblogging-stdlog: action &#x27;action 0&#x27; suspended, next retry is Fri May  6 15:31:04 2022 [v8.24.0 try http://www.rsyslog.com/e/2007 ]</span><br></pre></td></tr></table></figure>
+<p><strong>根因</strong>：<br><a target="_blank" rel="noopener" href="https://www.rsyslog.com/rsyslog-error-2007/">2007 标识</a>的常见原因为 Rsyslog 配置中包含向不可达组件写日志的错误配置，如配置了不可达的远程日志服务器，将导致输出大量2007标识的告警信息。</p>
+<p><strong>解决方法</strong>：<br>删除&#x2F;注释错误的远程日志服务器配置后重启rsyslog服务。</p>
+<h2 id="2-7-无-Redis-自身运行日志"><a href="#2-7-无-Redis-自身运行日志" class="headerlink" title="2.7. 无 Redis 自身运行日志"></a>2.7. 无 Redis 自身运行日志</h2><p><strong>现象</strong>：</p>
+<p>未记录 Database 中 Redis 的相关运行日志</p>
+<p><strong>根因</strong>：</p>
+<p>Database 容器里的 redis 配置中，默认未配置日志输出</p>
+<p>自检方法：查看 Redis 配置文件 <code>/etc/redis/redis.conf</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it database grep -B 2 &quot;syslog-enable&quot; /etc/redis/redis.conf</span><br></pre></td></tr></table></figure>
+<p>默认配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> To <span class="built_in">enable</span> logging to the system logger, just <span class="built_in">set</span> <span class="string">&#x27;syslog-enabled&#x27;</span> to yes,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> and optionally update the other syslog parameters to suit your needs.</span></span><br><span class="line">syslog-enabled no</span><br></pre></td></tr></table></figure>
+
+<p><strong>应对方法</strong>：</p>
+<ul>
+<li>修改 Redis 配置文件，添加日志输出配置，并重启 Redis 以生效（不建议线上设备执行此操作）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 备份原配置</span></span><br><span class="line">docker exec -it database cp /etc/redis/redis.conf /etc/redis/redis.conf_bak</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看备份文件</span></span><br><span class="line">docker exec -it database ls -l /etc/redis/redis.conf_bak</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 添加 Redis 输出日志路径配置</span></span><br><span class="line">docker exec -it database sed -i &#x27;s;logfile \&quot;\&quot;;logfile \&quot;/var/log/redis/redis.log\&quot;;g&#x27; /etc/redis/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. 添加 Redis 输出日志 ident 配置</span></span><br><span class="line">docker exec -it database sed -i &#x27;s;# syslog-ident redis;syslog-ident redis;g&#x27; /etc/redis/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 4. 添加 Redis 输出日志 facility 配置</span></span><br><span class="line">docker exec -it database sed -i &#x27;s;# syslog-facility local0;syslog-facility local0;g&#x27; /etc/redis/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 5. 打开 Redis 输出日志开关配置</span></span><br><span class="line">docker exec -it database sed -i &#x27;s;syslog-enabled no;syslog-enabled yes;g&#x27; /etc/redis/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 6. 停启 Database 容器以生效配置</span></span><br><span class="line">docker stop database; docker start database</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>redis-cli 虽然也支持热修改部分日志配置，但不支持热修改开启&#x2F;关闭日志输出</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 热修改 Redis 输出日志路径配置</span></span><br><span class="line">redis-cli -h 127.0.0.1 -p 6379 CONFIG SET logfile &quot;/var/log/redis/redis.log&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查变更</span></span><br><span class="line">redis-cli -h 127.0.0.1 -p 6379 CONFIG GET logfile</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 热修改 Redis 输出日志 facility 配置（支持八种 facility 属性：user、local0 ~ local7）</span></span><br><span class="line">redis-cli -h 127.0.0.1 -p 6379 CONFIG SET syslog-facility &quot;local0&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查变更</span></span><br><span class="line">redis-cli -h 127.0.0.1 -p 6379 CONFIG GET syslog-facility</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. 热修改 Redis 输出日志 loglevel 配置（支持四种级别：debug、verbose、notice、warning）</span></span><br><span class="line">redis-cli -h 127.0.0.1 -p 6379 CONFIG SET loglevel &quot;warning&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查变更</span></span><br><span class="line">redis-cli -h 127.0.0.1 -p 6379 CONFIG GET loglevel</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-8-修改-Rsyslog-配置文件后未生效？"><a href="#2-8-修改-Rsyslog-配置文件后未生效？" class="headerlink" title="2.8. 修改 Rsyslog 配置文件后未生效？"></a>2.8. 修改 Rsyslog 配置文件后未生效？</h2><p>修改 Rsyslog 配置文件后，需要重启服务以生效配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service rsyslog restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-9-一条日志能够重定向到多个日志文件么？"><a href="#2-9-一条日志能够重定向到多个日志文件么？" class="headerlink" title="2.9. 一条日志能够重定向到多个日志文件么？"></a>2.9. 一条日志能够重定向到多个日志文件么？</h2><p>可以，在 Rsyslog 配置中（<code>/etc/rsyslog.d/00-HOSTNAMR.conf</code>），若 syslog 消息匹配了多条自定义重定向（引流）规则（且规则执行块内无结束匹配关键字 stop），就能实现输出单条日志到多个文件</p>
+<p>多条自定义重定向（引流）单日志到多个文件如下：</p>
+<ol>
+<li>在配置文件 <code>/etc/rsyslog.d/00-HOSTNAMR.conf</code> 中添加两条自定义重定向（引流）规则</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># test rule1</span></span></span><br><span class="line">if $msg contains &quot;ABC&quot; then &#123;</span><br><span class="line">    /var/log/abc.log</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># test rule2</span></span></span><br><span class="line">if $msg contains &quot;DEF&quot; then &#123;</span><br><span class="line">    /var/log/def.log</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>模拟发送一个 syslog 消息</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger -p local5.info &quot;ABC DEF TEST1&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>可发现两个重定向（引流）日志文件都记录了该日志</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-12-29 15:14:18.698602 HOSTNAMR &lt;local.info&gt; INFO admin: ABC DEF TEST1</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-10-Rsyslog-支持修改日志的-facility-么？"><a href="#2-10-Rsyslog-支持修改日志的-facility-么？" class="headerlink" title="2.10. Rsyslog 支持修改日志的 facility 么？"></a>2.10. Rsyslog 支持修改日志的 facility 么？</h2><p>问题补充描述：程序打 local0 的日志，能否让 Rsyslog 在写日志文件时改为 local2 ？</p>
+<p>暂不支持，截止官网 8.2112.0 版本，Rsyslog 暂不支持修改日志 facility 的操作；网上也没有成功修改案例。</p>
+<p>虽然 Rsyslog 支持的“读已有日志文件并按行转发”功能中支持指定日志 facility，理论上存在“引流 local0 日志 &#x3D;&#x3D;&gt; 指定文件 &#x3D;&#x3D;&gt; 读文件转成 syslog 消息（指定 local2）”这种可能，但这种方式<strong>不具备可行性</strong>：</p>
+<ul>
+<li>首先是这种“二次转发”的日志会存在<strong>冗余消息前缀</strong>，如</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 原始日志</span></span><br><span class="line">2021-12-29 17:20:51.653444 HOSTNAMR &lt;local0.info&gt; INFO admin: ABC DEF TEST5</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 二次转发日志：二次转发的日志前缀（时间戳 2 local2 级别 2 设备属性 2） + 原始日志前缀（时间戳 1 local0 级别 1 设备属性 1）+ 原始消息正文</span></span><br><span class="line">2021-12-29 17:20:52.703466 HOSTNAMR &lt;local2.notice&gt; NOTICE testinput 2021-12-29 17:20:51.653444 HOSTNAMR &lt;local0.info&gt; INFO admin: ABC DEF TEST5</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其次，这种打日志后再读文件二次转发方式，由于写入文件与读文件二次转发逻辑问题，一条日志很容易陷入被<strong>无限打印循环</strong></li>
+</ul>
+<h2 id="2-11-获知程序对应的日志路径？"><a href="#2-11-获知程序对应的日志路径？" class="headerlink" title="2.11. 获知程序对应的日志路径？"></a>2.11. 获知程序对应的日志路径？</h2><p>由于 Rsyslog 主要基于程序打日志的 facility、或少量自定义的重定向（引流）规则明确记日志的文件 <code>/etc/rsyslog.d/00-HOSTNAMR.conf</code> ，故暂无进程与日志文件的明确对应关系。不过依然可以参考下方两种方式获知进程的日志文件路径：</p>
+<ul>
+<li>方法 1：查看梳理的各容器启停日志及各进程输出日志</li>
+<li>方法 2：手动检索 <code>/var/log/</code> 目录（检索字段：容器名#进程名）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -Rw &quot;swss#fdbmgrd&quot; /var/log/ | awk &#x27;&#123; print $1 &#125;&#x27; | uniq | sort | uniq</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行示例</span></span><br><span class="line">/var/log/auth.log:2022-01-30</span><br><span class="line">/var/log/syslog:2022-01-30</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-12-日志服务器未收到上报日志？"><a href="#2-12-日志服务器未收到上报日志？" class="headerlink" title="2.12. 日志服务器未收到上报日志？"></a>2.12. 日志服务器未收到上报日志？</h2><p>咱们的日志上报是CS架构，下方任一原因都可能导致日志服务器无法收到日志：</p>
+<p><strong>设备端：</strong></p>
+<ul>
+<li>Rsyslog 服务未运行？检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status rsyslog | grep Active</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设备上是否配置 远程日志服务器IP 检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -A 2 &#x27;remote syslog server&#x27; /etc/rsyslog.conf</span><br></pre></td></tr></table></figure>
+<ul>
+<li>日志服务器不可达？检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping $(grep -A 1 &#x27;remote syslog server&#x27; /etc/rsyslog.conf  | tail -n +2) </span><br></pre></td></tr></table></figure>
+<ul>
+<li>防火墙 配置？514 端口未打开？检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -L -n</span><br><span class="line">sudo lsof -i:514</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设备无异常日志输出？ 检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -E &#x27;NOTICE|WARNING|ERROR&#x27; /var/log/syslog | grep local2 | tail -20</span><br></pre></td></tr></table></figure>
+
+<p><strong>日志服务器端：</strong></p>
+<ul>
+<li>Rsyslog 服务未运行？检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status rsyslog | grep Active</span><br></pre></td></tr></table></figure>
+<ul>
+<li>防火墙 配置？514 端口未打开？检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -L -n</span><br><span class="line">sudo lsof -i:514</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Rsyslog 配置中 $UDPServerAddress 127.0.0.1 被打开了？服务器端需注释，否则只能接收本地日志检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#x27;UDPServerAddress&#x27; /etc/rsyslog.conf</span><br></pre></td></tr></table></figure>
+<ul>
+<li>服务器端配置了日志全转发？ 检查命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -A 2 &#x27;remote syslog server&#x27; /etc/rsyslog.conf </span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\23\Logrotate\" rel="bookmark">logrotate日志轮转工具简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\26\logSpecification\" rel="bookmark">日志规范</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\07\syslogProtocolAndRsyslog\" rel="bookmark">syslog协议与Rsyslog系统日志软件简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/syslog/" rel="tag"><i class="fa fa-tag"></i> syslog</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/23/Logrotate/" rel="prev" title="logrotate日志轮转工具简介">
+                  <i class="fa fa-chevron-left"></i> logrotate日志轮转工具简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/26/logSpecification/" rel="next" title="日志规范">
+                  日志规范 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/08/24/SyslogSelfDiagnosisAndCommonProblems/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

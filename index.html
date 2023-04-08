@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -283,6 +283,96 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/06/12/ImplementationOfSkipListByCpp/#more" rel="contents">
+                展开阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2022/02/14/sonicLogs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/14/sonicLogs/" class="post-title-link" itemprop="url">sonic各类告警日志梳理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2022-02-14 22:30:45" itemprop="dateCreated datePublished" datetime="2022-02-14T22:30:45+08:00">2022-02-14</time>
+    </span>
+
+  
+    <span id="/2022/02/14/sonicLogs/" class="post-meta-item leancloud_visitors" data-flag-title="sonic各类告警日志梳理" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-硬件类"><a href="#1-硬件类" class="headerlink" title="1. 硬件类"></a>1. 硬件类</h1><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;syslog</p>
+</blockquote>
+<h2 id="1-1-电源"><a href="#1-1-电源" class="headerlink" title="1.1. 电源"></a>1.1. 电源</h2><ul>
+<li><p>插入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时默认打印</span></span><br><span class="line">2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is plugged in. vendor: ARTESYN, serial number: L214VZ006005P</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拔出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂无操作日志，日志代码如下：</span></span><br><span class="line">logger.log_warning(device + &#x27; is pulled out. &#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 预估拔出电源日志</span></span><br><span class="line">2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is pulled out.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>异常</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 异常也可能为四种异常（<span class="string">&#x27;no power&#x27;</span>, <span class="string">&#x27;thermal error&#x27;</span>, <span class="string">&#x27;fan error&#x27;</span>, <span class="string">&#x27;vol error&#x27;</span>）的任意组合，共 15 种情况：</span></span><br><span class="line">2022-02-14 17:56:02.614955 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu2 is alarm: no power</span><br><span class="line">2021-12-22 03:42:27.825952 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu1 is alarm: from normal to no power, vol error</span><br></pre></td></tr></table></figure></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/14/sonicLogs/#more" rel="contents">
                 展开阅读全文 &raquo;
               </a>
             </div>
@@ -539,89 +629,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/09/05/TwoOrThreeLevelForwarding/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/my-avatar.png">
-      <meta itemprop="name" content="EisenHao">
-      <meta itemprop="description" content="记录成长，享受生活！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="EisenHao's Note">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/05/TwoOrThreeLevelForwarding/" class="post-title-link" itemprop="url">二三层转发</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">编写</span>
-
-      <time title="创建：2021-09-05 22:30:45" itemprop="dateCreated datePublished" datetime="2021-09-05T22:30:45+08:00">2021-09-05</time>
-    </span>
-
-  
-    <span id="/2021/09/05/TwoOrThreeLevelForwarding/" class="post-meta-item leancloud_visitors" data-flag-title="二三层转发" title="浏览">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">浏览：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="2-二层转发"><a href="#2-二层转发" class="headerlink" title="2. 二层转发"></a>2. 二层转发</h1><h2 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1. 简介"></a>2.1. 简介</h2><ul>
-<li>一种基于OSI中的<strong>数据链路层（第二层）</strong>的数据帧的存储转发技术，二层交换是依靠<strong>MAC地址和VID号</strong>来确定转发方向的。</li>
-<li>二层转发通过维护MAC地址表以及根据目的MAC查表转发，有效的利用了网络带宽，改善了网络性能。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/05/TwoOrThreeLevelForwarding/#more" rel="contents">
-                展开阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. 硬件类 本地日志：&#x2F;var&#x2F;log&#x2F;syslog  1.1. 电源 插入 12# 初始化时默认打印2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is plugged in. vendor: ARTE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sonic各类告警日志梳理">
+<meta property="og:url" content="https://eisenhao.cn/2022/02/14/sonicLogs/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. 硬件类 本地日志：&#x2F;var&#x2F;log&#x2F;syslog  1.1. 电源 插入 12# 初始化时默认打印2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is plugged in. vendor: ARTE">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eisenhao.cn/uploads/BGP_state.png">
+<meta property="article:published_time" content="2022-02-14T14:30:45.000Z">
+<meta property="article:modified_time" content="2022-02-14T15:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="sonic">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eisenhao.cn/uploads/BGP_state.png">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2022/02/14/sonicLogs/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2022/02/14/sonicLogs/","path":"2022/02/14/sonicLogs/","title":"sonic各类告警日志梳理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>sonic各类告警日志梳理 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%A1%AC%E4%BB%B6%E7%B1%BB"><span class="nav-text">1. 硬件类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%94%B5%E6%BA%90"><span class="nav-text">1.1. 电源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E9%A3%8E%E6%89%87"><span class="nav-text">1.2. 风扇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-CPU"><span class="nav-text">1.3. CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E5%86%85%E5%AD%98"><span class="nav-text">1.4. 内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E7%A1%AC%E7%9B%98"><span class="nav-text">1.5. 硬盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-%E5%85%89%E6%A8%A1%E5%9D%97"><span class="nav-text">1.6. 光模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-%E7%BA%BF%E5%8D%A1"><span class="nav-text">1.7. 线卡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-%E6%B8%A9%E5%BA%A6"><span class="nav-text">1.8. 温度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%AB%AF%E5%8F%A3%E7%B1%BB"><span class="nav-text">2. 端口类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%A1%AC%E4%BB%B6%E7%AB%AF%E5%8F%A3"><span class="nav-text">2.1. 硬件端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%B8%89%E5%B1%82%E6%8E%A5%E5%8F%A3"><span class="nav-text">2.2. 三层接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8D%8F%E8%AE%AE%E7%B1%BB%E5%BC%82%E5%B8%B8"><span class="nav-text">3. 协议类异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-BGP"><span class="nav-text">3.1. BGP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-BGP-%E5%AE%B9%E5%99%A8%E5%81%9C%E5%90%AF%E6%97%A5%E5%BF%97"><span class="nav-text">3.1.1. BGP 容器停启日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-BGP-%E5%AE%B9%E5%99%A8%E4%B8%AD%E5%85%B3%E9%94%AE%E5%AD%90%E8%BF%9B%E7%A8%8B%E9%80%80%E5%87%BA%E6%97%A5%E5%BF%97"><span class="nav-text">3.1.2. BGP 容器中关键子进程退出日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-3-BGP-%E5%BB%BA%E7%AB%8B-x2F-%E6%96%AD%E5%BC%80%E9%82%BB%E5%B1%85%E4%BA%8B%E4%BB%B6%E6%97%A5%E5%BF%97"><span class="nav-text">3.1.3. BGP 建立&#x2F;断开邻居事件日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-OSPF%E3%80%90%E6%9C%AA%E6%94%AF%E6%8C%81%E3%80%91"><span class="nav-text">3.2. OSPF【未支持】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-ISIS%E3%80%90%E6%9C%AA%E6%94%AF%E6%8C%81%E3%80%91"><span class="nav-text">3.3. ISIS【未支持】</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-MAC-%E7%B1%BB"><span class="nav-text">4. MAC 类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E7%B3%BB%E7%BB%9F%E7%B1%BB"><span class="nav-text">5. 系统类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E5%90%84%E5%AE%B9%E5%99%A8%E5%90%AF-x2F-%E5%81%9C%E7%8A%B6%E6%80%81%E6%97%A5%E5%BF%97%E6%9F%A5%E8%AF%A2"><span class="nav-text">5.1. 各容器启&#x2F;停状态日志查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-1-snmp-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.1. snmp 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-2-lldp-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.2. lldp 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-3-teamd-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.3. teamd 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-4-bgp-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.4. bgp 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-5-database-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.5. database 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-6-radv-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.6. radv 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-7-dhcp-relay-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.7. dhcp_relay 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-8-syncd-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.8. syncd 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-9-swss-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.9. swss 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-10-pmon-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.10. pmon 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-11-mgmt-framework-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.11. mgmt-framework 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-12-sflow-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.12. sflow 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-13-telemetry-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.1.13. telemetry 容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E5%90%84%E5%AE%B9%E5%99%A8%E5%86%85%E5%90%84%E8%BF%9B%E7%A8%8B%E5%AF%B9%E5%BA%94%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84"><span class="nav-text">5.2. 各容器内各进程对应日志文件路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-1-snmp-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.1. snmp 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-2-telemetry-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.2. telemetry 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-3-lldp-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.3. lldp 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-4-sflow-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.4. sflow 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-5-radv-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.5. radv 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-6-dhcp-relay-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.6. dhcp_relay 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-7-syncd-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.7. syncd 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-8-teamd-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.8. teamd 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-9-mgmt-framework-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.9. mgmt-framework 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-10-swss-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.10. swss 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-11-pmon-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.11. pmon 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-12-bgp-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.12. bgp 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-13-database-%E5%AE%B9%E5%99%A8"><span class="nav-text">5.2.13. database 容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E7%B3%BB%E7%BB%9F-Crash"><span class="nav-text">5.3. 系统 Crash</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2022/02/14/sonicLogs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sonic各类告警日志梳理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2022-02-14 22:30:45" itemprop="dateCreated datePublished" datetime="2022-02-14T22:30:45+08:00">2022-02-14</time>
+    </span>
+
+  
+    <span id="/2022/02/14/sonicLogs/" class="post-meta-item leancloud_visitors" data-flag-title="sonic各类告警日志梳理" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-硬件类"><a href="#1-硬件类" class="headerlink" title="1. 硬件类"></a>1. 硬件类</h1><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;syslog</p>
+</blockquote>
+<h2 id="1-1-电源"><a href="#1-1-电源" class="headerlink" title="1.1. 电源"></a>1.1. 电源</h2><ul>
+<li><p>插入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时默认打印</span></span><br><span class="line">2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is plugged in. vendor: ARTESYN, serial number: L214VZ006005P</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拔出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂无操作日志，日志代码如下：</span></span><br><span class="line">logger.log_warning(device + &#x27; is pulled out. &#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 预估拔出电源日志</span></span><br><span class="line">2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is pulled out.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>异常</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 异常也可能为四种异常（<span class="string">&#x27;no power&#x27;</span>, <span class="string">&#x27;thermal error&#x27;</span>, <span class="string">&#x27;fan error&#x27;</span>, <span class="string">&#x27;vol error&#x27;</span>）的任意组合，共 15 种情况：</span></span><br><span class="line">2022-02-14 17:56:02.614955 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu2 is alarm: no power</span><br><span class="line">2021-12-22 03:42:27.825952 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu1 is alarm: from normal to no power, vol error</span><br></pre></td></tr></table></figure></li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li>正常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时也会打印</span></span><br><span class="line">2022-02-14 17:56:02.596387 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu1 is normal</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-2-风扇"><a href="#1-2-风扇" class="headerlink" title="1.2. 风扇"></a>1.2. 风扇</h2><ul>
+<li><p>插入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时默认打印</span></span><br><span class="line">2022-02-14 10:25:37.481551 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Fan2 is plugged in. vendor: Inventec, serial number: 945301818370UZ</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拔出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂无操作日志，日志代码如下：</span></span><br><span class="line">logger.log_warning(device + &#x27; is pulled out. &#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 预估拔出风扇日志</span></span><br><span class="line">2022-02-14 10:25:37.481551 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Fan2 is pulled out.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>异常</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂无操作日志，日志代码如下：</span></span><br><span class="line">logger.log_warning(&#x27;%s is alarm&#x27; % device)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 预估风扇异常日志</span></span><br><span class="line">2022-02-14 17:56:15.038878 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Fan6 is alarm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>正常</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时正常默认打印</span></span><br><span class="line">2022-02-14 17:56:15.038878 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Fan6 is normal</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-3-CPU"><a href="#1-3-CPU" class="headerlink" title="1.3. CPU"></a>1.3. CPU</h2><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;monit.log</p>
+</blockquote>
+<ul>
+<li><p>monit 检测到用户态 CPU 使用率过高告警</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-17 16:05:47.705193 HOSTNAME &lt;local2.err&gt; ERR monit[652]: &#x27;HOSTNAME.TEST&#x27; cpu user usage of 93.1% matches resource limit [cpu user usage&gt;90.0%]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>monit 检测到内核态 CPU 使用率过高告警</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-17 16:16:06.390901 HOSTNAME &lt;local2.err&gt; ERR monit[615]: &#x27;HOSTNAME.TEST&#x27; cpu system usage of 99.8% matches resource limit [cpu system usage&gt;90.0%]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-4-内存"><a href="#1-4-内存" class="headerlink" title="1.4. 内存"></a>1.4. 内存</h2><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;monit.log</p>
+</blockquote>
+<ul>
+<li>monit 检测到内存使用率过高告警<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-17 16:46:05.407053 HOSTNAME &lt;local2.err&gt; ERR monit[641]: &#x27;HOSTNAME.TEST&#x27; mem usage of 85.9% matches resource limit [mem usage&gt;80.0%]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-5-硬盘"><a href="#1-5-硬盘" class="headerlink" title="1.5. 硬盘"></a>1.5. 硬盘</h2><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;monit.log</p>
+</blockquote>
+<ul>
+<li>monit 检测到总磁盘使用率过高告警<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-17 16:52:06.521099 HOSTNAME &lt;local2.err&gt; ERR monit[641]: &#x27;root-overlay&#x27; space usage 91.3% matches resource limit [space usage&gt;90.0%]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<!-- 
+
+磁盘不可写异常（ XorPlus 设备）
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Jan 1 11:44:33 100.122.166.72 HOSTNAME : [RTRMGR xorp_rtrmgr]Failed to save file /pica/config/pica_startup.boot: File /pica/config/pica_startup.boot.tmp exists, and can not be overwritten.#012Read-only file system</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!-- ## 2.5. 槽位号 slot【hwmgrd 未支持】 -->
+
+<h2 id="1-6-光模块"><a href="#1-6-光模块" class="headerlink" title="1.6. 光模块"></a>1.6. 光模块</h2><ul>
+<li><p>插入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时默认打印</span></span><br><span class="line">2022-02-14 17:56:26.450923 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Sff12 is plugged in. vendor: FINISAR, serial number: PZ611NQ</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拔出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-12-14 16:10:18.780321 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Sff1 is pulled out.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-7-线卡"><a href="#1-7-线卡" class="headerlink" title="1.7. 线卡"></a>1.7. 线卡</h2><ul>
+<li><p>插入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时默认打印</span></span><br><span class="line">2017-02-05 05:25:10.419415 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Linecard4 is plugged in. vendor: H3C, serial number: 210231AF1D020600001B</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拔出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂无操作日志，日志代码如下：</span></span><br><span class="line">logger.log_warning(device + &#x27; is pulled out. &#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 预估拔出板卡日志</span></span><br><span class="line">2017-02-05 05:25:10.419415 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Linecard4 is pulled out.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-8-温度"><a href="#1-8-温度" class="headerlink" title="1.8. 温度"></a>1.8. 温度</h2><ul>
+<li>高温告警<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-02 23:48:48.859650 HOSTNAME &lt;local2.warning&gt; WARNING pmon#drv: :dev_alarm_log:- Thermal alarm: hotspot11 : 93.00 Centigrade</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="2-端口类"><a href="#2-端口类" class="headerlink" title="2. 端口类"></a>2. 端口类</h1><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;syslog</p>
+</blockquote>
+<h2 id="2-1-硬件端口"><a href="#2-1-硬件端口" class="headerlink" title="2.1. 硬件端口"></a>2.1. 硬件端口</h2><ul>
+<li><p>端口 UP</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 10:32:54.573793 HOSTNAME &lt;local2.warning&gt; WARNING swss#orchagent: :- updatePortOperStatus: OperStatus of Port Ethernet38 (alias: he-1/1/38) changed from down to up</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>端口 DOWN</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 12:40:34.319598 HOSTNAME &lt;local2.warning&gt; WARNING swss#orchagent: :- updatePortOperStatus: OperStatus of Port Ethernet37 (alias: he-1/1/37) changed from up to down</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="2-2-三层接口"><a href="#2-2-三层接口" class="headerlink" title="2.2. 三层接口"></a>2.2. 三层接口</h2><ul>
+<li><p>三层接口 UP</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 10:32:54.583867 HOSTNAME &lt;local2.warning&gt; WARNING swss#orchagent: :- setHostVlanAdminState: OperStatus of L3Interface Vlan38 changed to up</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三层接口 DOWN</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 12:40:34.344832 HOSTNAME &lt;local2.warning&gt; WARNING swss#orchagent: :- setHostVlanAdminState: OperStatus of L3Interface Vlan40 changed to down</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="3-协议类异常"><a href="#3-协议类异常" class="headerlink" title="3. 协议类异常"></a>3. 协议类异常</h1><h2 id="3-1-BGP"><a href="#3-1-BGP" class="headerlink" title="3.1. BGP"></a>3.1. BGP</h2><blockquote>
+<p>模块代码： <code>src/HOSTNAME-frr/frr/bgpd/</code> </p>
+</blockquote>
+<ul>
+<li>异常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂未找到异常日志，日志代码如下：</span></span><br><span class="line">zlog_err(&quot;BGPd daemon failed: %s&quot;, strerror(errno));</span><br><span class="line">zlog_err(&quot;getsockopt of SO_SNDBUF failed %s\n&quot;, safe_strerror(errno));</span><br><span class="line">zlog_err(&quot;couldn&#x27;t create af structure for peer %s&quot;, peer-&gt;host);</span><br><span class="line">zlog_err (&quot;bgp_connect_success peer&#x27;s fd is negative value %d&quot;,</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-1-1-BGP-容器停启日志"><a href="#3-1-1-BGP-容器停启日志" class="headerlink" title="3.1.1. BGP 容器停启日志"></a>3.1.1. BGP 容器停启日志</h3><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;daemon.log</p>
+</blockquote>
+<ul>
+<li><p>BGP 容器启动日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-01-25 11:11:51.100344 HOSTNAME &lt;daemon.info&gt; INFO systemd[1]: Started BGP container.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>BGP 容器停止日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-12-24 11:20:50.749969 HOSTNAME &lt;daemon.info&gt; INFO systemd[1]: Stopping BGP container...</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-1-2-BGP-容器中关键子进程退出日志"><a href="#3-1-2-BGP-容器中关键子进程退出日志" class="headerlink" title="3.1.2. BGP 容器中关键子进程退出日志"></a>3.1.2. BGP 容器中关键子进程退出日志</h3><blockquote>
+<p>此 local0 日志为监控工具 supervisor 产生（ <code>/var/log/syslog</code> ），不会上传日志服务器</p>
+</blockquote>
+<ul>
+<li><p>zebra 退出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 15:53:36.202696 HOSTNAME &lt;local0.info&gt; INFO bgp#supervisord 2022-02-14 15:53:31,385 INFO exited: zebra (terminated by SIGKILL; not expected)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>staticd 退出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 15:58:56.443911 HOSTNAME &lt;local0.info&gt; INFO bgp#supervisord 2022-02-14 15:58:55,433 INFO exited: staticd (terminated by SIGKILL; not expected)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>bgpd 退出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 16:01:46.588714 HOSTNAME &lt;local0.info&gt; INFO bgp#supervisord 2022-02-14 16:01:44,320 INFO exited: bgpd (terminated by SIGKILL; not expected)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-1-3-BGP-建立-x2F-断开邻居事件日志"><a href="#3-1-3-BGP-建立-x2F-断开邻居事件日志" class="headerlink" title="3.1.3. BGP 建立&#x2F;断开邻居事件日志"></a>3.1.3. BGP 建立&#x2F;断开邻居事件日志</h3><blockquote>
+<p>本地日志：&#x2F;var&#x2F;log&#x2F;quagga&#x2F;bgpd.log</p>
+</blockquote>
+<img data-src="../../../../uploads/BGP_state.png" class="full-image" />
+
+<ul>
+<li><p>邻居建立</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2022-02-11 15:43:20.630737 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from Idle to Connect</span><br><span class="line">2022-02-11 15:43:20.631348 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from Connect to OpenSent</span><br><span class="line">2022-02-11 15:43:20.631844 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from OpenSent to OpenConfirm</span><br><span class="line">2022-02-11 15:43:20.633960 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from OpenConfirm to Established</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>邻居断开</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2022-02-13 00:19:45.015599 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from Established to Clearing</span><br><span class="line">2022-02-13 00:19:45.128939 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from Clearing to Idle</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-2-OSPF【未支持】"><a href="#3-2-OSPF【未支持】" class="headerlink" title="3.2. OSPF【未支持】"></a>3.2. OSPF【未支持】</h2><blockquote>
+<p>模块代码： <code>src/HOSTNAME-frr/frr/ospfd</code>、 <code>src/HOSTNAME-frr/frr/ospf6d</code> </p>
+</blockquote>
+<ul>
+<li>异常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 未启用，异常代码</span></span><br><span class="line">printf(&quot;Connecting to OSPF daemon on %s failed!\n&quot;, args[1]);</span><br><span class="line">vty_out (vty, &quot;   OSPF not enabled on this interface%s&quot;, VNL);</span><br><span class="line">flog_err(EC_OSPF_INIT_FAIL, &quot;OSPF instance init failed: %s&quot;, strerror(errno));</span><br><span class="line">flog_err(EC_LIB_SOCKET, &quot;%s: ospf_sock_init is unable to open a socket&quot;, __func__);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-3-ISIS【未支持】"><a href="#3-3-ISIS【未支持】" class="headerlink" title="3.3. ISIS【未支持】"></a>3.3. ISIS【未支持】</h2><blockquote>
+<p>模块代码： <code>src/HOSTNAME-frr/frr/isisd</code> </p>
+</blockquote>
+<ul>
+<li>异常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 未启用，异常代码</span></span><br><span class="line">flog_err(EC_ISIS_CONFIG, &quot;Could not bring up %s because of invalid config.&quot;, circuit-&gt;interface-&gt;name);</span><br><span class="line">flog_err(EC_ISIS_CONFIG, &quot;Clearing config for %s. Please re-examine it.&quot;, circuit-&gt;interface-&gt;name);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="4-MAC-类"><a href="#4-MAC-类" class="headerlink" title="4. MAC 类"></a>4. MAC 类</h1><blockquote>
+<p>这类异常发生在芯片层级，不会输出告警日志</p>
+</blockquote>
+<p>但可通过监听 BCM 系列线程异常状态（<code>bcmL2X</code>、<code>bcmCNTR</code>、<code>bcmLINK</code>、<code>bcmDPC</code>、<code>bcmINTR</code>、<code>bcmTX</code>、<code>bcmXGS3AsyncTX</code>、<code>bcmRX</code>、<code>bcmL2age</code>），推测设备大概率发生了 MAC 类异常</p>
+<p>各 BCM 线程异常退出&#x2F;重启日志如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">2022-02-16 01:27:59.712742 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmCNTR&#x27; status failed (9) -- Thread bcmCNTR has exited abnormally. It is being restarted now.</span><br><span class="line">2022-02-16 01:27:59.715515 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmDPC&#x27; status failed (9) -- Thread bcmDPC has exited abnormally.</span><br><span class="line">2022-02-16 01:27:59.716774 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmINTR&#x27; status failed (9) -- Thread bcmINTR has exited abnormally.</span><br><span class="line">2022-02-16 01:27:59.711377 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmL2&#x27; status failed (9) -- Thread bcmL2X has exited abnormally. It is being restarted now.</span><br><span class="line">2022-02-16 01:27:59.736919 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmL2age&#x27; status failed (9) -- Thread bcmL2age has exited abnormally.</span><br><span class="line">2022-02-16 01:27:59.714208 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmLINK&#x27; status failed (9) -- Thread bcmLINK has exited abnormally. It is being restarted now.</span><br><span class="line">2022-02-16 01:27:59.726623 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmRX&#x27; status failed (9) -- Thread bcmRX has exited abnormally.</span><br><span class="line">2022-02-16 01:27:59.722205 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmTX&#x27; status failed (9) -- Thread bcmTX has exited abnormally.</span><br><span class="line">2022-02-16 01:27:59.723675 HOSTNAME &lt;local2.err&gt; ERR monit[661]: &#x27;bcmXGS3AsyncTX&#x27; status failed (9) -- Thread bcmXGS3AsyncTX has exited abnormally.</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-系统类"><a href="#5-系统类" class="headerlink" title="5. 系统类"></a>5. 系统类</h1><h2 id="5-1-各容器启-x2F-停状态日志查询"><a href="#5-1-各容器启-x2F-停状态日志查询" class="headerlink" title="5.1. 各容器启&#x2F;停状态日志查询"></a>5.1. 各容器启&#x2F;停状态日志查询</h2><p><b><font color="red" style="">各容器启&#x2F;停日志查看命令：</font></b><br></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;$&#123;container_name&#125; container&quot; /var/log/daemon.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-1-snmp-容器"><a href="#5-1-1-snmp-容器" class="headerlink" title="5.1.1. snmp 容器"></a>5.1.1. snmp 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;snmp container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># snmp 容器启动日志</span></span></span><br><span class="line">2022-01-18 15:25:48.218932 sonic &lt;daemon.info&gt; INFO systemd[1]: Started SNMP container.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># snmp 容器停止日志</span></span></span><br><span class="line">2022-01-18 15:25:19.641467 sonic &lt;daemon.info&gt; INFO systemd[1]: Stopped SNMP container.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-2-lldp-容器"><a href="#5-1-2-lldp-容器" class="headerlink" title="5.1.2. lldp 容器"></a>5.1.2. lldp 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;lldp container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># lldp 容器启动日志</span></span></span><br><span class="line">2022-01-04 21:51:00.082042 sonic &lt;daemon.info&gt; INFO systemd[1]: Started LLDP container.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># lldp 容器停止日志</span></span></span><br><span class="line">2022-01-04 21:50:29.080276 sonic &lt;daemon.info&gt; INFO systemd[1]: Stopped LLDP container.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-3-teamd-容器"><a href="#5-1-3-teamd-容器" class="headerlink" title="5.1.3. teamd 容器"></a>5.1.3. teamd 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;teamd container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># teamd 容器启动日志</span></span></span><br><span class="line">2022-01-13 14:40:41.912032 sonic &lt;daemon.info&gt; INFO systemd[1]: Started TEAMD container.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># teamd 容器停止日志</span></span></span><br><span class="line">2022-01-18 15:25:05.472610 sonic &lt;daemon.info&gt; INFO systemd[1]: Stopped TEAMD container.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-4-bgp-容器"><a href="#5-1-4-bgp-容器" class="headerlink" title="5.1.4. bgp 容器"></a>5.1.4. bgp 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;bgp container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># bgp 容器启动日志</span></span></span><br><span class="line">2021-12-31 10:41:22.266584 sonic &lt;daemon.info&gt; INFO systemd[1]: Started BGP container.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># bgp 容器停止日志</span></span></span><br><span class="line">2022-01-04 21:50:43.337088 sonic &lt;daemon.info&gt; INFO systemd[1]: Stopped BGP container.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-5-database-容器"><a href="#5-1-5-database-容器" class="headerlink" title="5.1.5. database 容器"></a>5.1.5. database 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;database container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># database 容器启动日志</span></span></span><br><span class="line">2022-01-20 18:11:58.655729 sonic &lt;daemon.info&gt; INFO systemd[1]: Started Database container.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># database 容器停止日志</span></span></span><br><span class="line">2021-12-23 18:07:52.612817 sonic &lt;daemon.info&gt; INFO systemd[1]: Stopped Database container.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-6-radv-容器"><a href="#5-1-6-radv-容器" class="headerlink" title="5.1.6. radv 容器"></a>5.1.6. radv 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;radv container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># syncd 容器启动日志</span></span></span><br><span class="line">2022-01-11 17:14:24.665014 sonic &lt;daemon.info&gt; INFO radv.sh[2148]: Starting existing radv container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#（无容器退出日志，暂监听radv容器里的 supervisor-proc-exit-script 停止日志代替）</span></span></span><br><span class="line">sudo grep -a &quot;radv&quot; /var/log/syslog | grep &quot;supervisor-proc-exit-script&quot; | grep stop | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># radv 容器停止日志</span></span></span><br><span class="line">2022-01-11 11:54:36.009347 sonic &lt;local0.info&gt; INFO radv#supervisord 2022-01-11 11:53:52,755 INFO stopped: supervisor-proc-exit-script (terminated by SIGTERM)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-7-dhcp-relay-容器"><a href="#5-1-7-dhcp-relay-容器" class="headerlink" title="5.1.7. dhcp_relay 容器"></a>5.1.7. dhcp_relay 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;dhcp_relay container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># dhcp_relay 容器启动日志（或启动一个已有容器）</span></span></span><br><span class="line">2022-01-20 18:12:07.952541 sonic &lt;daemon.info&gt; INFO dhcp_relay.sh[3429]: Starting existing dhcp_relay container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># （无容器退出日志，暂监听dhcp_relay容器里的 supervisor-proc-exit-listener 停止日志代替）</span></span></span><br><span class="line">sudo grep -a &quot;dhcp_relay&quot; /var/log/syslog | grep &quot;supervisor-proc-exit-listener&quot; | grep stop | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># dhcp_relay 容器停止日志</span></span></span><br><span class="line">2022-01-11 11:54:38.304276 sonic &lt;local0.info&gt; INFO dhcp_relay#supervisord 2022-01-11 11:53:54,128 INFO stopped: supervisor-proc-exit-listener (terminated by SIGTERM)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-8-syncd-容器"><a href="#5-1-8-syncd-容器" class="headerlink" title="5.1.8. syncd 容器"></a>5.1.8. syncd 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;syncd container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># syncd 容器启动日志（创建一个新容器）</span></span></span><br><span class="line">2021-12-22 22:49:20.897248 sonic &lt;daemon.info&gt; INFO syncd.sh[25671]: Creating new syncd container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># syncd 容器启动日志（或启动一个已有容器）</span></span></span><br><span class="line">2022-01-20 18:12:06.333407 sonic &lt;daemon.info&gt; INFO syncd.sh[2920]: Starting existing syncd container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 无容器退出日志，暂监听syncd容器里的 supervisor-proc-exit-listener 停止日志代替）</span></span></span><br><span class="line">sudo grep -a &quot;syncd&quot; /var/log/syslog | grep &quot;supervisor-proc-exit-listener&quot; | grep stop | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># syncd 容器停止日志</span></span></span><br><span class="line">2022-01-11 11:54:32.373488 sonic &lt;local0.info&gt; INFO syncd#supervisord 2022-01-11 11:53:48,949 INFO stopped: supervisor-proc-exit-listener (terminated by SIGTERM)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-9-swss-容器"><a href="#5-1-9-swss-容器" class="headerlink" title="5.1.9. swss 容器"></a>5.1.9. swss 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;swss container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># swss 容器启动日志（创建一个新容器）</span></span></span><br><span class="line">2022-01-11 17:13:16.747983 sonic &lt;daemon.info&gt; INFO swss.sh[28958]: Creating new swss container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># swss 容器启动日志（或启动一个已有容器）</span></span></span><br><span class="line">2022-01-20 18:12:03.332602 sonic &lt;daemon.info&gt; INFO swss.sh[1950]: Starting existing swss container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># （无容器退出日志，暂监听swss容器里的 supervisor-proc-exit-listener 停止日志代替）</span></span></span><br><span class="line">sudo grep -a &quot;swss&quot; /var/log/syslog | grep &quot;supervisor-proc-exit-listener&quot; | grep stop | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># swss 容器停止日志</span></span></span><br><span class="line">2022-01-11 11:54:30.919836 sonic &lt;local0.info&gt; INFO swss#supervisord 2022-01-11 11:53:36,769 INFO stopped: supervisor-proc-exit-listener (terminated by SIGTERM)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-10-pmon-容器"><a href="#5-1-10-pmon-容器" class="headerlink" title="5.1.10. pmon 容器"></a>5.1.10. pmon 容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;pmon container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pmon 容器启动日志（创建一个新容器）</span></span></span><br><span class="line">2021-12-22 22:51:57.133310 sonic &lt;daemon.info&gt; INFO pmon.sh[2522]: Creating new pmon container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pmon 容器启动日志（或启动一个已有容器）</span></span></span><br><span class="line">2022-01-20 18:12:01.562897 sonic &lt;daemon.info&gt; INFO pmon.sh[1944]: Starting existing pmon container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># （无标志，暂监听pmon容器里的 hwmgrd 停止日志代替）</span></span></span><br><span class="line">sudo grep -a &quot;pmon&quot; /var/log/syslog | grep &quot;hwmgrd&quot; | grep stop | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pmon 容器停止日志</span></span></span><br><span class="line">2021-08-18 13:57:35.807813 &lt;local0.info&gt; sonic INFO pmon#supervisord 2021-08-18 05:57:19,661 INFO stopped: hwmgrd (terminated by SIGKILL)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-11-mgmt-framework-容器"><a href="#5-1-11-mgmt-framework-容器" class="headerlink" title="5.1.11. mgmt-framework 容器"></a>5.1.11. mgmt-framework 容器</h3><p>（暂未开启）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;mgmt-framework container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># mgmt-framework 容器启动日志（创建一个新容器）</span></span></span><br><span class="line">2021-07-15 16:13:55.808772 sonic &lt;daemon.info&gt; INFO mgmt-framework.sh[2766]: Creating new mgmt-framework container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># mgmt-framework 容器启动日志（或启动一个已有容器）</span></span></span><br><span class="line">2021-07-20 16:21:08.207138 sonic &lt;daemon.info&gt; INFO mgmt-framework.sh[2812]: Starting existing mgmt-framework container with HWSKU BT2575</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># （无容器退出日志，暂监听mgmt-framework容器里的 rsyslogd 停止日志代替）</span></span></span><br><span class="line">sudo grep -a &quot;mgmt-framework&quot; /var/log/syslog | grep &quot;rsyslogd&quot; | grep stop | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># mgmt-framework 容器停止日志</span></span></span><br><span class="line">2021-08-11 20:04:12.517360 sonic &lt;local0.info&gt; INFO mgmt-framework#supervisord 2021-08-11 12:02:59,842 INFO stopped: rsyslogd (exit status 0)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-12-sflow-容器"><a href="#5-1-12-sflow-容器" class="headerlink" title="5.1.12. sflow 容器"></a>5.1.12. sflow 容器</h3><p>（暂未开启）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;sflow container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># sflow 容器启动日志</span></span></span><br><span class="line">2021-08-17 22:14:23.550052 sonic &lt;daemon.info&gt; INFO systemd[1]: Started sFlow container.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># sflow 容器停止日志</span></span></span><br><span class="line">2021-08-17 22:14:22.418637 sonic &lt;daemon.info&gt; INFO systemd[1]: Stopped sFlow container.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-13-telemetry-容器"><a href="#5-1-13-telemetry-容器" class="headerlink" title="5.1.13. telemetry 容器"></a>5.1.13. telemetry 容器</h3><p>（暂未开启）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;telemetry container&quot; /var/log/daemon.log | tail -n 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># telemetry 容器启动日志</span></span></span><br><span class="line">2021-08-18 19:57:56.832442 sonic &lt;daemon.info&gt; INFO systemd[1]: Started Telemetry container.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># telemetry 容器停止日志</span></span></span><br><span class="line">2021-08-18 19:57:55.668585 sonic &lt;daemon.info&gt; INFO systemd[1]: Stopped Telemetry container.</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-各容器内各进程对应日志文件路径"><a href="#5-2-各容器内各进程对应日志文件路径" class="headerlink" title="5.2. 各容器内各进程对应日志文件路径"></a>5.2. 各容器内各进程对应日志文件路径</h2><p><br><b><font color="#7E3D76" style="">各容器进程对应日志文件路径表如下：</font></b></p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <th>容器</th>
+        <th>日志文件</th>
+        <th>写日志的进程</th>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >snmp</td>
+        <td>/var/log/daemon.log</td>
+        <td>snmp#snmp-subagent 进程运行日志<font color="red" style="">&lt;daemon.err/info/warning&gt;</font><br>snmp#snmpd进程 进程运行日志<font color="red" style="">&lt;daemon.warning&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>snmp#supervisord 守护进程日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>snmp#supervisord 守护进程日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="4" >telemetry</td>
+        <td>/var/log/daemon.log</td>
+        <td>守护进程日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/telemetry.log</td>
+        <td>telemetry 运行日志<font color="red" style="">&lt;user.info&gt;</font>,<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>telemetry#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>sonic systemd 日志<font color="red" style="">&lt;local0.info&gt;</font>,<font color="red" style="">&lt;local7.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="5" >lldp</td>
+        <td>/var/log/daemon.log</td>
+        <td>lldp#lldpd 进程运行日志<font color="red" style="">&lt;daemon.warning/info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>lldp#lldpmgrd 进程运行日志<font color="red" style="">&lt;user.err/warning/info/debug&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>lldp#supervisord 日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/messages</td>
+        <td>start_module lldp 日志<font color="red" style="">&lt;local0.info/warning&gt;</font>,<font color="red" style="">&lt;local2.warning&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/running.log</td>
+        <td>AUTOPROVISION pica_autoprovision 日志<font color="red" style="">&lt;local0.info/warning&gt;</font>,<font color="red" style="">&lt;local2.warning&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >sflow</td>
+        <td>/var/log/daemon.log</td>
+        <td>sflow 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>sflow#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>sflow#sflowmgrd 进程运行日志<font color="red" style="">&lt;local2.notice&gt;</font><br>sflow#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >radv</td>
+        <td>/var/log/daemon.log</td>
+        <td>radv 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>radv#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>radv#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >dhcp_relay</td>
+        <td>/var/log/daemon.log</td>
+        <td>dhcp_relay 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>dhcp_relay#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>dhcp_relay#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >syncd</td>
+        <td>/var/log/daemon.log</td>
+        <td>syncd 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>syncd#syncd 进程运行日志<font color="red" style="">&lt;user.info/debug&gt;</font><br>syncd#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font><br>syncd#dsserve 进程运行日志<font color="red" style="">&lt;user.notice&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>syncd#syncd 进程运行日志<font color="red" style="">&lt;local2.err/warning/debug/notice&gt;</font><br>syncd#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="4" >teamd</td>
+        <td>/var/log/daemon.log</td>
+        <td>teamd 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/teamd.log</td>
+        <td>teamd#teamd_PortChannel* 进程运行日志<font color="red" style="">&lt;daemon.debug&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>teamd#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>teamd#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font><br>teamd#teamsyncd/teammgrd 进程运行日志<font color="red" style="">&lt;local2.err/notice&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >mgmt-framework</td>
+        <td>/var/log/daemon.log</td>
+        <td>mgmt-framework 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>mgmt-framework#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>mgmt-framework#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >swss</td>
+        <td>/var/log/daemon.log</td>
+        <td>swss 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>swss#intmgrd/restore_neighbor/supervisor-proc-exit-listener 进程运行日志<font color="red" style="">&lt;user.err/info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>swss#orchagent/portsyncd/neighsyncd/vrfmgrd/vxlanmgrd/switchmgrd/<br>fdbmgrd/cfgmgrd/intmgrd/transmgrd 进程运行日志<font color="red" style="">&lt;local0/local2.err/warning/notice&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="3" >pmon</td>
+        <td>/var/log/daemon.log</td>
+        <td>pmon 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>pmon#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>pmon#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font><br>pmon#hwmgrd 进程运行日志<font color="red" style="">&lt;local2.err/info&gt;</font></td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="7" >bgp</td>
+        <td>/var/log/daemon.log</td>
+        <td>bgp 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/quagga/bgpd.log</td>
+        <td>bgp#bgpd 进程运行日志<font color="red" style="">&lt;local2.err/warning/info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/quagga/zebra.log</td>
+        <td>bgp#zebra 进程运行日志<font color="red" style="">&lt;local2.err/warning/notice&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td>bgp#bgpcfgd 进程运行日志<font color="red" style="">&lt;user.info&gt;</font><br>bgp#supervisord 进程运行日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/messages</td>
+        <td>BGP xorp_bgp 运行日志<font color="red" style="">&lt;local2.err/warning&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/running.log</td>
+        <td>RTRMGR xorp_rtrmgr 启动日志<font color="red" style="">&lt;local0.info&gt;</font><br>BGP xorp_bgp 运行日志<font color="red" style="">&lt;local2.err/info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>bgp#fpmsyncd/monitorlinkd/staticd 进程运行日志<font color="red" style="">&lt;local2.err/warning/notice&gt;</font>,<font color="red" style="">&lt;local7.info&gt;</font><br>bgp#supervisord 守护进程日志<font color="red" style="">&lt;local0.info&gt;</font> </td>
+    </tr>
+    <tr>
+        <td align="center"  rowspan="5" >database</td>
+        <td>/var/log/daemon.log</td>
+        <td>database 容器运行日志<font color="red" style="">&lt;daemon.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/user.log</td>
+        <td> database 容器运行日志<font color="red" style="">&lt;user.notice&gt;</font><br>database#supervisord 守护进程日志<font color="red" style="">&lt;user.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/syslog</td>
+        <td>database#supervisord 进程运行日志<font color="red" style="">&lt;local0.info&gt;</font></td>
+    </tr>
+    <tr>
+        <td>/var/log/messages</td>
+        <td>WARMBOOT_FINALIZER 等待日志</td>
+    </tr>
+    <tr>
+        <td>/var/log/running.log</td>
+        <td>WARMBOOT_FINALIZER 等待日志</td>
+    </tr>
+</table>
+
+<h3 id="5-2-1-snmp-容器"><a href="#5-2-1-snmp-容器" class="headerlink" title="5.2.1. snmp 容器"></a>5.2.1. snmp 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （snmp#snmp-subagent 进程运行日志&lt;daemon.err&#x2F;info&#x2F;warning&gt;；snmp#snmpd进程 进程运行日志&lt;daemon.warning&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （snmp#supervisord守护进程日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （snmp#supervisord守护进程日志&lt;local0.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】snmp#snmpd进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】snmp#snmp-subagent 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【3】snmp#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-2-telemetry-容器"><a href="#5-2-2-telemetry-容器" class="headerlink" title="5.2.2. telemetry 容器"></a>5.2.2. telemetry 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （守护进程日志&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;telemetry.log  （telemetry 运行日志&lt;user.info&gt;,&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （telemetry#supervisord 进程运行日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （sonic systemd日志&lt;local0.info&gt;,&lt;local7.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】telemetry#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;telemetry.log</li>
+</ul>
+<h3 id="5-2-3-lldp-容器"><a href="#5-2-3-lldp-容器" class="headerlink" title="5.2.3. lldp 容器"></a>5.2.3. lldp 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log         （lldp#lldpd 进程运行日志&lt;daemon.warning&#x2F;info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;user.log           （lldp#lldpmgrd 进程运行日志&lt;user.err&#x2F;warning&#x2F;info&#x2F;debug&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog             （lldp#supervisord 日志&lt;local0.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;messages           （start_module lldp日志&lt;local0.info&#x2F;warning&gt;,&lt;local2.warning&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;running.log        （AUTOPROVISION pica_autoprovision日志&lt;local0.info&#x2F;warning&gt;,&lt;local2.warning&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】lldp#lldpmgrd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】lldp#lldpd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【3】lldp#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-4-sflow-容器"><a href="#5-2-4-sflow-容器" class="headerlink" title="5.2.4. sflow 容器"></a>5.2.4. sflow 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log         （sflow容器运行日志&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;user.log           （sflow#supervisord 进程运行日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog             （sflow#sflowmgrd 进程运行日志&lt;local2.notice&gt;；sflow#supervisord 进程运行日志&lt;local0.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】sflow#sflowmgrd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】sflow#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-5-radv-容器"><a href="#5-2-5-radv-容器" class="headerlink" title="5.2.5. radv 容器"></a>5.2.5. radv 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （radv#supervisord运行日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （radv#supervisord运行日志&lt;local0.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （radv容器运行日志&lt;daemon.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】radv#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-6-dhcp-relay-容器"><a href="#5-2-6-dhcp-relay-容器" class="headerlink" title="5.2.6. dhcp_relay 容器"></a>5.2.6. dhcp_relay 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （dhcp_relay#supervisord 进程运行日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （dhcp_relay容器运行日志&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （dhcp_relay#supervisord 进程运行日志&lt;local0.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】dhcp_relay#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-7-syncd-容器"><a href="#5-2-7-syncd-容器" class="headerlink" title="5.2.7. syncd 容器"></a>5.2.7. syncd 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （syncd#syncd 进程运行日志&lt;user.info&#x2F;debug&gt;；syncd#supervisord 进程运行日志&lt;user.info&gt;；syncd#dsserve 进程运行日志&lt;user.notice&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （syncd容器运行日志&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （syncd#syncd 进程运行日志&lt;local2.*&gt;；syncd#supervisord 进程运行日志&lt;local0.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】syncd#syncd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】syncd#dsserve 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【3】syncd#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-8-teamd-容器"><a href="#5-2-8-teamd-容器" class="headerlink" title="5.2.8. teamd 容器"></a>5.2.8. teamd 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;teamd.log      （teamd#teamd_PortChannel* 进程运行日志&lt;daemon.debug&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （teamd#supervisord 进程运行日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （teamd 容器运行日志&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （teamd#supervisord 进程运行日志&lt;local0.info&gt;；teamd#teamsyncd&#x2F;teammgrd进程运行日志&lt;local2.err&#x2F;notice&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】teamd#teamd_PortChannel* 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;teamd.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】teamd#teamsyncd&#x2F;teammgrd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【3】teamd#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-9-mgmt-framework-容器"><a href="#5-2-9-mgmt-framework-容器" class="headerlink" title="5.2.9. mgmt-framework 容器"></a>5.2.9. mgmt-framework 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （mgmt-framework#supervisord 进程运行日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （mgmt-framework 容器运行日志，&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （mgmt-framework#supervisord 进程运行日志&lt;local0.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】mgmt-framework#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-10-swss-容器"><a href="#5-2-10-swss-容器" class="headerlink" title="5.2.10. swss 容器"></a>5.2.10. swss 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log           （swss#intmgrd&#x2F;restore_neighbor&#x2F;supervisor-proc-exit-listener 进程运行日志&lt;user.*&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log         （swss 容器运行日志&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog             （swss#orchagent&#x2F;portsyncd&#x2F;neighsyncd&#x2F;vrfmgrd&#x2F;vxlanmgrd&#x2F;switchmgrd&#x2F;fdbmgrd&#x2F;cfgmgrd&#x2F;intmgrd&#x2F;transmgrd 进程运行日志&lt;local0&#x2F;local2.err&#x2F;warning&#x2F;notice&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】swss#intmgrd&#x2F;restore_neighbor&#x2F;supervisor-proc-exit-listener 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】swss#orchagent&#x2F;portsyncd&#x2F;neighsyncd&#x2F;vrfmgrd&#x2F;vxlanmgrd&#x2F;switchmgrd&#x2F;fdbmgrd&#x2F;cfgmgrd&#x2F;intmgrd&#x2F;transmgrd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【3】swss#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-11-pmon-容器"><a href="#5-2-11-pmon-容器" class="headerlink" title="5.2.11. pmon 容器"></a>5.2.11. pmon 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （pmon#supervisord 进程运行日志，&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （pmon容器运行日志，&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （pmon#supervisord 进程运行日志，&lt;local0.info&gt;；pmon#hwmgrd 进程运行日志&lt;local2.info&#x2F;err&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】pmon#hwmgrd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】pmon#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+</ul>
+<h3 id="5-2-12-bgp-容器"><a href="#5-2-12-bgp-容器" class="headerlink" title="5.2.12. bgp 容器"></a>5.2.12. bgp 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;quagga&#x2F;bgpd.log        （bgp#bgpd 进程运行日志&lt;local2.err&#x2F;info&#x2F;warning&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;quagga&#x2F;zebra.log       （bgp#zebra 进程运行日志&lt;local2.err&#x2F;warning&#x2F;notice&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;user.log               （bgp#bgpcfgd 进程运行日志&lt;user.info&gt;；bgp#supervisord 进程运行日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log             （bgp 容器运行日志&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;messages               （BGP xorp_bgp 运行日志&lt;local2.err&#x2F;warning&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;running.log            （RTRMGR xorp_rtrmgr 启动日志&lt;local0.info&gt;；BGP xorp_bgp 运行日志&lt;local2.err&#x2F;info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog                 （bgp#fpmsyncd&#x2F;liblogging-stdlog&#x2F;monitorlinkd&#x2F;staticd 进程运行日志&lt;local2.err&#x2F;warning&#x2F;notice&gt;,&lt;local7.info&gt;；bgp#supervisord守护进程日志&lt;local0.info&gt; ）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】bgp#bgpd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;quagga&#x2F;bgpd.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【2】bgp#zebra 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;quagga&#x2F;zebra.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【3】bgp#bgpcfgd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【4】bgp#fpmsyncd&#x2F;liblogging-stdlog&#x2F;monitorlinkd&#x2F;staticd 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【5】bgp#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h3 id="5-2-13-database-容器"><a href="#5-2-13-database-容器" class="headerlink" title="5.2.13. database 容器"></a>5.2.13. database 容器</h3><p>日志文件：</p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log       （ database 容器运行日志&lt;user.notice&gt;；database#supervisord守护进程日志&lt;user.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;daemon.log     （database容器运行日志，&lt;daemon.info&gt;）</li>
+<li>&#x2F;var&#x2F;log&#x2F;messages       （WARMBOOT_FINALIZER 等待日志）</li>
+<li>&#x2F;var&#x2F;log&#x2F;running.log    （WARMBOOT_FINALIZER 等待日志）</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog         （database#supervisord 进程运行日志，&lt;local0.info&gt;）</li>
+</ul>
+<p><b><font color="#7E3D76" style="">【1】database#supervisord 进程</font></b></p>
+<ul>
+<li>&#x2F;var&#x2F;log&#x2F;user.log</li>
+<li>&#x2F;var&#x2F;log&#x2F;syslog</li>
+</ul>
+<h2 id="5-3-系统-Crash"><a href="#5-3-系统-Crash" class="headerlink" title="5.3. 系统 Crash"></a>5.3. 系统 Crash</h2><p>思考点：譬如内核异常，不会直接输出日志</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sonic/" rel="tag"><i class="fa fa-tag"></i> sonic</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/27/OpenConfigNorthboundInterface/" rel="prev" title="OpenConfig北向接口简介">
+                  <i class="fa fa-chevron-left"></i> OpenConfig北向接口简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/12/ImplementationOfSkipListByCpp/" rel="next" title="基于 C++ 的 SkipList 数据结构设计与编码实现">
+                  基于 C++ 的 SkipList 数据结构设计与编码实现 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2022/02/14/sonicLogs/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="logrotate 工具不会自启动，依赖 cron 定时任务工具调起或其他程序调用执行  1. 检查 logrotate 运行记录1.1. 查看待切分日志是否被切分1ls -l -A &#x2F;var&#x2F;log&#x2F;yourLogName.log">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logrotate 日志轮转未生效排障思路总结">
+<meta property="og:url" content="https://eisenhao.cn/2021/09/03/LogrotateTroubleshootingNote/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="logrotate 工具不会自启动，依赖 cron 定时任务工具调起或其他程序调用执行  1. 检查 logrotate 运行记录1.1. 查看待切分日志是否被切分1ls -l -A &#x2F;var&#x2F;log&#x2F;yourLogName.log">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-03T14:30:45.000Z">
+<meta property="article:modified_time" content="2021-09-03T15:10:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="syslog">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2021/09/03/LogrotateTroubleshootingNote/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/09/03/LogrotateTroubleshootingNote/","path":"2021/09/03/LogrotateTroubleshootingNote/","title":"logrotate 日志轮转未生效排障思路总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>logrotate 日志轮转未生效排障思路总结 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A3%80%E6%9F%A5-logrotate-%E8%BF%90%E8%A1%8C%E8%AE%B0%E5%BD%95"><span class="nav-text">1. 检查 logrotate 运行记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%9F%A5%E7%9C%8B%E5%BE%85%E5%88%87%E5%88%86%E6%97%A5%E5%BF%97%E6%98%AF%E5%90%A6%E8%A2%AB%E5%88%87%E5%88%86"><span class="nav-text">1.1. 查看待切分日志是否被切分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%A3%80%E6%9F%A5%E7%8E%AF%E5%A2%83%E6%9C%89%E6%97%A0%E5%AE%89%E8%A3%85-logrotate"><span class="nav-text">1.2. 检查环境有无安装 logrotate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%A3%80%E6%9F%A5-logrotate-%E8%87%AA%E8%BA%AB%E9%85%8D%E7%BD%AE"><span class="nav-text">1.3. 检查 logrotate 自身配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E6%A3%80%E6%9F%A5%E6%9C%89%E6%97%A0%E5%AF%B9%E5%BE%85%E5%88%87%E5%88%86%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E7%9A%84%E5%88%87%E5%88%86%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE"><span class="nav-text">1.4. 检查有无对待切分日志文件的切分规则配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E6%B5%8B%E8%AF%95%E8%AF%A5%E6%96%87%E4%BB%B6%E5%AF%B9%E5%BA%94%E7%9A%84%E6%97%A5%E5%BF%97%E5%88%87%E5%88%86%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E6%AD%A3%E7%A1%AE"><span class="nav-text">1.5. 测试该文件对应的日志切分配置是否正确</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-%E6%9F%A5%E7%9C%8B-logrotate-%E7%9A%84%E5%88%87%E5%88%86%E7%8A%B6%E6%80%81%E8%AE%B0%E5%BD%95"><span class="nav-text">1.6. 查看 logrotate 的切分状态记录</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-cron-%E6%98%AF%E5%90%A6%E6%AD%A3%E5%B8%B8%E5%B7%A5%E4%BD%9C%EF%BC%9F"><span class="nav-text">2. cron 是否正常工作？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%A3%80%E6%9F%A5%E6%9C%89%E6%97%A0%E5%AE%89%E8%A3%85-cron"><span class="nav-text">2.1. 检查有无安装 cron</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%A3%80%E6%B5%8B-cron-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81"><span class="nav-text">2.2. 检测 cron 运行状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E6%A3%80%E6%9F%A5-cron-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E5%B7%A5%E5%85%B7%E6%98%AF%E5%90%A6%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C"><span class="nav-text">2.2.1. 检查 cron 计划任务工具是否正在运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E6%A3%80%E6%9F%A5-cron-%E6%9C%89%E6%97%A0%E5%AE%9A%E6%97%B6%E8%B0%83%E8%B5%B7logrotate%E7%9A%84%E6%97%A5%E5%BF%97"><span class="nav-text">2.2.2. 检查 cron 有无定时调起logrotate的日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%A3%80%E6%B5%8B-cron-%E4%B8%AD-logrotate-%E7%9A%84%E5%AE%9A%E6%97%B6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9F"><span class="nav-text">2.3. 检测 cron 中 logrotate 的定时配置文件？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E6%9F%A5%E7%9C%8B-cron-%E7%9A%84%E5%AE%9A%E6%97%B6%E8%B0%83%E8%B5%B7%E9%85%8D%E7%BD%AE"><span class="nav-text">2.3.1. 查看 cron 的定时调起配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E6%89%8B%E5%8A%A8%E6%89%A7%E8%A1%8C-cron-%E9%85%8D%E7%BD%AE%E4%B8%AD-logrotate-%E7%9A%84%E6%AF%8F%E6%97%A5%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="nav-text">2.3.2. 手动执行 cron 配置中 logrotate 的每日计划任务配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E6%A3%80%E6%B5%8B-cron-%E8%83%BD%E5%90%A6%E5%87%86%E6%97%B6%E8%87%AA%E8%A1%8C%E8%B0%83%E8%B5%B7-logrotate-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="nav-text">2.4. 检测 cron 能否准时自行调起 logrotate 计划任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E9%87%8D%E5%90%AF-cron-%E6%9C%8D%E5%8A%A1"><span class="nav-text">2.5. 重启 cron 服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">3. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2021/09/03/LogrotateTroubleshootingNote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          logrotate 日志轮转未生效排障思路总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2021-09-03 22:30:45" itemprop="dateCreated datePublished" datetime="2021-09-03T22:30:45+08:00">2021-09-03</time>
+    </span>
+
+  
+    <span id="/2021/09/03/LogrotateTroubleshootingNote/" class="post-meta-item leancloud_visitors" data-flag-title="logrotate 日志轮转未生效排障思路总结" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>logrotate 工具不会自启动，依赖 cron 定时任务工具调起或其他程序调用执行</p>
+</blockquote>
+<h1 id="1-检查-logrotate-运行记录"><a href="#1-检查-logrotate-运行记录" class="headerlink" title="1. 检查 logrotate 运行记录"></a>1. 检查 logrotate 运行记录</h1><h2 id="1-1-查看待切分日志是否被切分"><a href="#1-1-查看待切分日志是否被切分" class="headerlink" title="1.1. 查看待切分日志是否被切分"></a>1.1. 查看待切分日志是否被切分</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l -A /var/log/yourLogName.log</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="1-2-检查环境有无安装-logrotate"><a href="#1-2-检查环境有无安装-logrotate" class="headerlink" title="1.2. 检查环境有无安装 logrotate"></a>1.2. 检查环境有无安装 logrotate</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">which logrotate</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">ls -l /usr/sbin/logrotate</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-检查-logrotate-自身配置"><a href="#1-3-检查-logrotate-自身配置" class="headerlink" title="1.3. 检查 logrotate 自身配置"></a>1.3. 检查 logrotate 自身配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/logrotate.conf</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-检查有无对待切分日志文件的切分规则配置"><a href="#1-4-检查有无对待切分日志文件的切分规则配置" class="headerlink" title="1.4. 检查有无对待切分日志文件的切分规则配置"></a>1.4. 检查有无对待切分日志文件的切分规则配置</h2><p>检查有无 logrotate 对应文件的日志切分规则配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l -A /etc/logrotate.d/</span><br><span class="line">cat /etc/logrotate.d/yourLogName</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-测试该文件对应的日志切分配置是否正确"><a href="#1-5-测试该文件对应的日志切分配置是否正确" class="headerlink" title="1.5. 测试该文件对应的日志切分配置是否正确"></a>1.5. 测试该文件对应的日志切分配置是否正确</h2><p>手动（加载配置）执行日志切分：</p>
+<ul>
+<li>先用 debug 参数测试（不会真正执行日志切分）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 调试执行 /etc/logrotate.d/frr 配置，为满足条件日志不会被轮转</span></span><br><span class="line">/usr/sbin/logrotate -d /etc/logrotate.d/frr</span><br><span class="line"><span class="meta">#</span><span class="bash"> -f 参数强制转储日志文件</span></span><br><span class="line">/usr/sbin/logrotate -d -f /etc/logrotate.d/frr</span><br></pre></td></tr></table></figure>
+<ul>
+<li>手动调 logrotate 执行对应日志文件的切分（强制执行）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/logrotate -vf /etc/logrotate.d/frr</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-6-查看-logrotate-的切分状态记录"><a href="#1-6-查看-logrotate-的切分状态记录" class="headerlink" title="1.6. 查看 logrotate 的切分状态记录"></a>1.6. 查看 logrotate 的切分状态记录</h2><p>logrotate 自身的日志：<code>/var/lib/logrotate/status</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/logrotate/status</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-cron-是否正常工作？"><a href="#2-cron-是否正常工作？" class="headerlink" title="2. cron 是否正常工作？"></a>2. cron 是否正常工作？</h1><h2 id="2-1-检查有无安装-cron"><a href="#2-1-检查有无安装-cron" class="headerlink" title="2.1. 检查有无安装 cron"></a>2.1. 检查有无安装 cron</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /usr/sbin/cron</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-检测-cron-运行状态"><a href="#2-2-检测-cron-运行状态" class="headerlink" title="2.2. 检测 cron 运行状态"></a>2.2. 检测 cron 运行状态</h2><h3 id="2-2-1-检查-cron-计划任务工具是否正在运行"><a href="#2-2-1-检查-cron-计划任务工具是否正在运行" class="headerlink" title="2.2.1. 检查 cron 计划任务工具是否正在运行"></a>2.2.1. 检查 cron 计划任务工具是否正在运行</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep cron | grep -v grep</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-2-检查-cron-有无定时调起logrotate的日志"><a href="#2-2-2-检查-cron-有无定时调起logrotate的日志" class="headerlink" title="2.2.2. 检查 cron 有无定时调起logrotate的日志"></a>2.2.2. 检查 cron 有无定时调起logrotate的日志</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -i &quot;logrotate&quot; /var/log/cron.log  | tail -n 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-检测-cron-中-logrotate-的定时配置文件？"><a href="#2-3-检测-cron-中-logrotate-的定时配置文件？" class="headerlink" title="2.3. 检测 cron 中 logrotate 的定时配置文件？"></a>2.3. 检测 cron 中 logrotate 的定时配置文件？</h2><h3 id="2-3-1-查看-cron-的定时调起配置"><a href="#2-3-1-查看-cron-的定时调起配置" class="headerlink" title="2.3.1. 查看 cron 的定时调起配置"></a>2.3.1. 查看 cron 的定时调起配置</h3><p>配置文件：<code>/etc/anacrontab</code>（老版本为：<code>/etc/crontab</code>）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/crontab</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-2-手动执行-cron-配置中-logrotate-的每日计划任务配置"><a href="#2-3-2-手动执行-cron-配置中-logrotate-的每日计划任务配置" class="headerlink" title="2.3.2. 手动执行 cron 配置中 logrotate 的每日计划任务配置"></a>2.3.2. 手动执行 cron 配置中 logrotate 的每日计划任务配置</h3><ul>
+<li>查看每日任务对应 logrotate 的每日计划任务配置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l -A /etc/cron.daily/</span><br><span class="line">cat /etc/cron.daily/logrotate</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>手动执行 cron 配置中 logrotate 的每日计划任务，检查能否成功调 logrotate 执行日志切分</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/cron.daily/logrotate</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看自定义对应 logrotate 计划任务配置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l /etc/cron.d/</span><br><span class="line">cat /etc/cron.d/your_logrotate_cfg</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-检测-cron-能否准时自行调起-logrotate-计划任务"><a href="#2-4-检测-cron-能否准时自行调起-logrotate-计划任务" class="headerlink" title="2.4. 检测 cron 能否准时自行调起 logrotate 计划任务"></a>2.4. 检测 cron 能否准时自行调起 logrotate 计划任务</h2><blockquote>
+<p>通过上文查看 cron 的定时调起配置可知，cron 每天的定时任务会在 6:25 执行</p>
+</blockquote>
+<ul>
+<li>在 <code>/etc/cron.daily/logrotate</code> logrotate 计划任务配置文件末追加打日志代码：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;$(date) logrotate runing&quot; &gt;&gt;/tmp/logrotate.out</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>更改系统时间到 6:24:30，测试 cron 能否自动调起logrotate</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">date -s &quot;2021-08-26 10:06:30&quot;   # 设置系统时间</span><br><span class="line">hwclock --systohc               # 将系统时间同步到硬件</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-重启-cron-服务"><a href="#2-5-重启-cron-服务" class="headerlink" title="2.5. 重启 cron 服务"></a>2.5. 重启 cron 服务</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 重启 cron 服务方式1</span></span><br><span class="line">service crond start     # 启动服务</span><br><span class="line">service crond stop      # 关闭服务</span><br><span class="line">service crond restart   # 重启服务</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重启 cron 服务方式2</span></span><br><span class="line">/etc/init.d/cron stop       # 关闭服务</span><br><span class="line">/etc/init.d/cron start      # 启动服务</span><br><span class="line">/etc/init.d/cron restart    # 重启服务</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-参考文档"><a href="#3-参考文档" class="headerlink" title="3. 参考文档"></a>3. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://serverfault.com/questions/302020/logrotate-wont-rotate-my-logs-automatically">logrotate won’t rotate my logs automatically</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\27\LogServerUnworkNote\" rel="bookmark">日志服务器未收到日志可能原因小记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\23\Logrotate\" rel="bookmark">logrotate日志轮转工具简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\24\SyslogSelfDiagnosisAndCommonProblems\" rel="bookmark">Syslog 模块的故障自检方法及常见已知问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\26\logSpecification\" rel="bookmark">日志规范</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\08\07\syslogProtocolAndRsyslog\" rel="bookmark">syslog协议与Rsyslog系统日志软件简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/syslog/" rel="tag"><i class="fa fa-tag"></i> syslog</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/27/LogServerUnworkNote/" rel="prev" title="日志服务器未收到日志可能原因小记">
+                  <i class="fa fa-chevron-left"></i> 日志服务器未收到日志可能原因小记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/05/TwoOrThreeLevelForwarding/" rel="next" title="二三层转发">
+                  二三层转发 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2021/09/03/LogrotateTroubleshootingNote/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

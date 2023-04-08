@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. RPC 回顾 RPC 简介：https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Remote_procedure_callRemote procedure call, RPC：远程程序调用  1.1. 需求场景 分布式计算场景中，一台计算机产生一个“需要在不同网络地址下的计算机中执行的”子程序，希望： 像调用本地程序一样调用这些需在远程执行的子程序 无需编写远程交互的详细代码 且编码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gRPC简介">
+<meta property="og:url" content="https://eisenhao.cn/2022/01/17/gRPCIntroduction/index.html">
+<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:description" content="1. RPC 回顾 RPC 简介：https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Remote_procedure_callRemote procedure call, RPC：远程程序调用  1.1. 需求场景 分布式计算场景中，一台计算机产生一个“需要在不同网络地址下的计算机中执行的”子程序，希望： 像调用本地程序一样调用这些需在远程执行的子程序 无需编写远程交互的详细代码 且编码">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-17T07:39:45.000Z">
+<meta property="article:modified_time" content="2022-01-17T08:34:45.000Z">
+<meta property="article:author" content="EisenHao">
+<meta property="article:tag" content="gRPC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://eisenhao.cn/2022/01/17/gRPCIntroduction/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2022/01/17/gRPCIntroduction/","path":"2022/01/17/gRPCIntroduction/","title":"gRPC简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>gRPC简介 | EisenHao's Note</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">EisenHao's Note</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-RPC-%E5%9B%9E%E9%A1%BE"><span class="nav-text">1. RPC 回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%9C%80%E6%B1%82%E5%9C%BA%E6%99%AF"><span class="nav-text">1.1. 需求场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E7%AE%80%E4%BB%8B"><span class="nav-text">1.2. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2"><span class="nav-text">1.3. 发展历史</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-gRPC"><span class="nav-text">2. gRPC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-gRPC-%E8%AF%9E%E7%94%9F%E5%8E%9F%E5%9B%A0%EF%BC%88%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89"><span class="nav-text">2.1. gRPC 诞生原因（解决什么问题）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-XML%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-text">2.1.1. XML优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-JSON-%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-text">2.1.2. JSON 优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-gRPC-%E4%BC%98%E5%8A%BF"><span class="nav-text">2.2. gRPC 优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-gRPC-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E3%80%81demo"><span class="nav-text">2.3. gRPC 如何使用、demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E5%AE%89%E8%A3%85-grpc-go"><span class="nav-text">2.4. 安装 grpc-go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E5%AE%89%E8%A3%85-Python-gRPC-%E6%8F%92%E4%BB%B6"><span class="nav-text">2.5. 安装 Python gRPC 插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E5%88%A9%E7%94%A8-grpc-go-%E4%B8%AD%E6%8F%90%E4%BE%9B%E7%9A%84-helloworld-example-%E5%AE%9E%E9%AA%8C"><span class="nav-text">2.6. 利用 grpc-go 中提供的 helloworld example 实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-Quick-start-%E8%AE%B0%E5%BD%95"><span class="nav-text">2.7. Quick start 记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-8-%E5%A4%87%E6%B3%A8"><span class="nav-text">2.8. 备注</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">3. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="EisenHao"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2022/01/17/gRPCIntroduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EisenHao's Note">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gRPC简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2022-01-17 15:39:45" itemprop="dateCreated datePublished" datetime="2022-01-17T15:39:45+08:00">2022-01-17</time>
+    </span>
+
+  
+    <span id="/2022/01/17/gRPCIntroduction/" class="post-meta-item leancloud_visitors" data-flag-title="gRPC简介" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-RPC-回顾"><a href="#1-RPC-回顾" class="headerlink" title="1. RPC 回顾"></a>1. RPC 回顾</h1><blockquote>
+<p>RPC 简介：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Remote_procedure_call">https://en.wikipedia.org/wiki/Remote_procedure_call</a><br>Remote procedure call, RPC：远程程序调用</p>
+</blockquote>
+<h2 id="1-1-需求场景"><a href="#1-1-需求场景" class="headerlink" title="1.1. 需求场景"></a>1.1. 需求场景</h2><ul>
+<li>分布式计算场景中，一台计算机产生一个“需要在不同网络地址下的计算机中执行的”子程序，希望：<ul>
+<li>像调用本地程序一样调用这些需在远程执行的子程序</li>
+<li>无需编写远程交互的详细代码</li>
+<li>且编码时只需完成简单的“调用方式选择”编码，即选择需调用的一个子程序的方式为：本地调用 or 远程调用</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="1-2-简介"><a href="#1-2-简介" class="headerlink" title="1.2. 简介"></a>1.2. 简介</h2><ul>
+<li><p><strong>一种请求响应协议（模式、机制）</strong></p>
+<ul>
+<li>支持本地计算机远程调用其他计算机中的程序。</li>
+<li>基于目标导向编程范式，RPC 通常又表现为<strong>远程方法调用</strong>(remote method invocation, RMI)</li>
+</ul>
+</li>
+<li><p><strong>CS架构</strong>：</p>
+<ul>
+<li>调用“执行某远程程序”的计算机为客户端（caller is client）</li>
+<li>远程真正执行该程序的计算机为服务端（executor is server）</li>
+</ul>
+</li>
+<li><p><strong>调用方式</strong>：</p>
+<ul>
+<li>基于请求-响应协议的消息传递方式调用</li>
+<li>通过进程间通信(inter-process communication, IPC)实现，客户端&#x2F;服务端程序位于不同的地址空间（若在同一物理机，也分别位于不同的虚拟地址空间中）</li>
+</ul>
+</li>
+<li><p><strong>备注</strong>：</p>
+<ul>
+<li>RPC 模型隐含了（对需远程调用子程序的）“位置暴露”的级别（划分）</li>
+<li>相比于本地调用子程序，远程调用子程序的常见特征：响应及时性要求低、与本地主程序依赖程度低</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-3-发展历史"><a href="#1-3-发展历史" class="headerlink" title="1.3. 发展历史"></a>1.3. 发展历史</h2><ul>
+<li>1960s早期，请求响应模式最早出现在早期的分布式计算中</li>
+<li>1970s，“将远程程序调用RPC作为网络操作的模型”的理论被提出<ul>
+<li>1978，Per Brinch Hansen提出分布式程序，是基于大量进程间的“外部请求”子程序调用构成的</li>
+</ul>
+</li>
+<li>1980s早期，RPC 才实际应用于实践<ul>
+<li>1982，Brian Randell和同事们将 RPC 实际应用于支持多台 UNIX 设备构建分布式系统所需的 Newcastle Connection 程序。</li>
+</ul>
+</li>
+<li>1990s，随着（object-oriented programming，OOP）的普及，多种远程方法调用（RMI）的模型相继出现：<ul>
+<li>1991，Common Object Request Broker Architecture，CORBA</li>
+<li>Java remote method invocation</li>
+</ul>
+</li>
+<li>2000s，随着因特网的崛起，远程方法调用模型（RMI）也被广泛应用</li>
+<li>2015年，谷歌开源了一款精简而强大的 RPC 协议（Google Remote Procedure Call, gRPC）</li>
+</ul>
+<h1 id="2-gRPC"><a href="#2-gRPC" class="headerlink" title="2. gRPC"></a>2. gRPC</h1><blockquote>
+<p>2015年，谷歌开源的一款精简而强大的下一代 RPC 协议（Google Remote Procedure Call, gRPC）。</p>
+<ul>
+<li>一款性能强大的开源通用 RPC 框架</li>
+</ul>
+<p>传输方式：<a target="_blank" rel="noopener" href="https://http2.github.io/">HTTP&#x2F;2.0</a></p>
+<p><a target="_blank" rel="noopener" href="https://grpc.io/">gRPC官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/grpc/grpc/tree/master/doc">grpc官方github文档</a></p>
+</blockquote>
+<h2 id="2-1-gRPC-诞生原因（解决什么问题）"><a href="#2-1-gRPC-诞生原因（解决什么问题）" class="headerlink" title="2.1. gRPC 诞生原因（解决什么问题）"></a>2.1. gRPC 诞生原因（解决什么问题）</h2><p>提升数据交换性能：</p>
+<ul>
+<li>提升网络传输速率和带宽</li>
+<li>提升编解码效率</li>
+<li>精简传输数据</li>
+</ul>
+<p>主流的数据交换格式有两种（可扩展标记语言）：XML、JSON</p>
+<h3 id="2-1-1-XML优缺点"><a href="#2-1-1-XML优缺点" class="headerlink" title="2.1.1. XML优缺点"></a>2.1.1. XML优缺点</h3><ul>
+<li>优势：<ul>
+<li>格式统一：使用DTD(document type definition)文档类型定义来组织数据，格式统一，跨平台和语言，已成为业界公认的标准</li>
+<li>与其他系统进行远程交互较容易，数据共享较方便。</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>XML 文件庞大，格式复杂，传输占用带宽较高</li>
+<li>XML解析代码冗长且复杂、不易维护</li>
+<li>不同客户端浏览器之间解析XML的方式不一致，需要重复编写很多适配代码；</li>
+<li>解析 XML 耗费较多资源及时间</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-2-JSON-优缺点"><a href="#2-1-2-JSON-优缺点" class="headerlink" title="2.1.2. JSON 优缺点"></a>2.1.2. JSON 优缺点</h3><ul>
+<li>优势：<ul>
+<li>格式简单：数据格式比较简单，易于读写，格式中空格换行能被压缩</li>
+<li>易解析：</li>
+<li>易于维护：</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>描述性不及 XML</li>
+<li>普及程度与通用性不及 XML</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2-gRPC-优势"><a href="#2-2-gRPC-优势" class="headerlink" title="2.2. gRPC 优势"></a>2.2. gRPC 优势</h2><ul>
+<li>基于 <a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers">Protobuf</a> 序列化协议的接口定义：<ul>
+<li>提升安全性。通过Protobuf来提供严格的接口约束（<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b723053a86a6">Google Protobuf简明教程</a>）</li>
+<li>更提升一致性。客户端服务端使用同一份原文件生成接口定义，双方接口完全相同，结构直观精确，便于管理维护</li>
+<li>提高传输性能。可以将数据序列化并压缩为二进制编码，大幅减少传输数据量，易于实现更高的吞吐性能</li>
+</ul>
+</li>
+<li>基于 http2.0 传输协议的网络通信：<ul>
+<li>支持流式通信。可以非常便捷地支持双向流、流控等</li>
+<li>提升通信效率。通过 http2.0可实现异步请求、头部压缩、单 TCP 连接上的多复用请求，从而大幅提升通信效率</li>
+<li>支持在浏览器中实现一个 gRPC 客户端</li>
+</ul>
+</li>
+</ul>
+<!-- 优点：客户端充分利用高级流和链接功能，从而有助于节省带宽、降低的TCP链接次数、节省CPU使用、和电池寿命。 -->
+
+<!-- ## 4. gRPC 发展情况（发展现状，6年，gRPC-web） -->
+
+
+
+<h2 id="2-3-gRPC-如何使用、demo"><a href="#2-3-gRPC-如何使用、demo" class="headerlink" title="2.3. gRPC 如何使用、demo"></a>2.3. gRPC 如何使用、demo</h2><ol>
+<li>Define a service in a .proto file.</li>
+</ol>
+<ul>
+<li>定义服务：在 .proto 后缀的文件中定义要建立的服务以及可以远程调用的基本参数和返回类型。</li>
+</ul>
+<ol start="2">
+<li>Generate the gRPC code from the .proto file.</li>
+</ol>
+<ul>
+<li>从 .proto 文件生成 gRPC 代码：gRPC 的编译器 protoc 按照 .proto 文件中定义的服务及数据结构生成目标语言的接口代码</li>
+</ul>
+<ol start="3">
+<li>Implementation of the server in the chosen language.</li>
+</ol>
+<ul>
+<li>以目标语言编码实现服务器端业务功能。</li>
+</ul>
+<ol start="4">
+<li>Creation of the client stub that calls the service.</li>
+</ol>
+<ul>
+<li>创建（目标语言）进行远程调用的 “代理对象”client stub。</li>
+</ul>
+<h2 id="2-4-安装-grpc-go"><a href="#2-4-安装-grpc-go" class="headerlink" title="2.4. 安装 grpc-go"></a>2.4. 安装 grpc-go</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 设置env proxy</span></span><br><span class="line">go env -w GOPROXY=https://goproxy.cn,direct</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 gRPC-go 方式1（go 一键安装）</span></span><br><span class="line">go install google.golang.org/grpc@latest</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 gRPC-go 方式2 (go get)</span></span><br><span class="line">go get -u google.golang.org/grpc</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 gRPC-go 方式3（GitHub）</span></span><br><span class="line">git clone https://github.com/grpc/grpc-go.git ./google.golang.org/grpc; cd google.golang.org/grpc; go install; cd ../../</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 Protobuf</span></span><br><span class="line">brew install protobuf</span><br><span class="line"><span class="meta">#</span><span class="bash"> 验证命令</span></span><br><span class="line">protoc --version</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 go net 包</span></span><br><span class="line">git clone https://github.com/golang/net.git ./google.golang.org/x/net</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 go genproto 包</span></span><br><span class="line">git clone https://github.com/google/go-genproto.git ./google.golang.org/genproto</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 go text 包</span></span><br><span class="line">git clone https://github.com/golang/text.git ./google.golang.org/x/text</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-安装-Python-gRPC-插件"><a href="#2-5-安装-Python-gRPC-插件" class="headerlink" title="2.5. 安装 Python gRPC 插件"></a>2.5. 安装 Python gRPC 插件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install grpcio</span><br><span class="line">pip3 install grpcio-tools</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-6-利用-grpc-go-中提供的-helloworld-example-实验"><a href="#2-6-利用-grpc-go-中提供的-helloworld-example-实验" class="headerlink" title="2.6. 利用 grpc-go 中提供的 helloworld example 实验"></a>2.6. 利用 grpc-go 中提供的 helloworld example 实验</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 启动 server 端</span></span><br><span class="line">cd google.golang.org/grpc</span><br><span class="line">go get google.golang.org/grpc/examples/helloworld/helloworld</span><br><span class="line">go run examples/helloworld/greeter_server/main.go</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 然后启动 client 端</span></span><br><span class="line">examples/helloworld/greeter_client/main.go</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果（服务端）</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> go run examples/helloworld/greeter_server/main.go</span></span><br><span class="line"></span><br><span class="line">2021/12/24 20:09:20 server listening at 127.0.0.1:50051</span><br><span class="line">2021/12/24 20:10:37 Received: world</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行结果（客户端）</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> go run examples/helloworld/greeter_client/main.go</span></span><br><span class="line">2021/12/24 20:10:37 Greeting: Hello world</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-7-Quick-start-记录"><a href="#2-7-Quick-start-记录" class="headerlink" title="2.7. Quick start 记录"></a>2.7. Quick start 记录</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://grpc.io/docs/languages/go/quickstart/">官网 Quick Start 教程</a></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装 protocol compiler</span></span><br><span class="line">go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26</span><br><span class="line">go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 更新 PATH 以能够发现上述安装插件后的</span></span><br><span class="line">export PATH=&quot;$PATH:$(go env GOPATH)/bin&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载 gRPC 示例代码</span></span><br><span class="line">git clone -b v1.41.0 https://github.com/grpc/grpc-go</span><br><span class="line"><span class="meta">#</span><span class="bash"> 跳转到 helloworld 实例路径</span></span><br><span class="line">cd grpc-go/examples/helloworld</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行示例，启动服务端</span></span><br><span class="line">go run greeter_server/main.go</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在另一窗口启动客户端</span></span><br><span class="line">go run greeter_client/main.go</span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">done</span>. 完成一次 简单的 基于 gRPC 的远程程序调用</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-8-备注"><a href="#2-8-备注" class="headerlink" title="2.8. 备注"></a>2.8. 备注</h2><ul>
+<li>gRPC 服务压测工具：<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/bojand/ghz">ghz</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/huanggang982/article/details/77944174">Protobuf 的 proto2 与 proto3 的区别</a></li>
+<li>gRPC 在 SONIC 中的应用（sonic-sairedis、sonic-mgmt-framework、sonic-telemetry、sonic-frr）</li>
+</ul>
+<h1 id="3-参考文档"><a href="#3-参考文档" class="headerlink" title="3. 参考文档"></a>3. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://grpc.io/">gRPC官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/grpc/grpc/tree/master/doc">grpc官方github文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b723053a86a6">Google Protobuf简明教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.modb.pro/db/78814">了解grpc</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gRPC/" rel="tag"><i class="fa fa-tag"></i> gRPC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/17/sonic_underscore_prefixes_remaining_in_Redis_loglevel_db/" rel="prev" title="Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题">
+                  <i class="fa fa-chevron-left"></i> Redis loglevel_db 中残留2至n个下划线前缀的冗余表项问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/23/Common_acronyms_for_data_center_network_DCN/" rel="next" title="数据中心网络DCN常见缩写词">
+                  数据中心网络DCN常见缩写词 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2022/01/17/gRPCIntroduction/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

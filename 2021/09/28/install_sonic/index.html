@@ -21,17 +21,17 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. 准备工作1.1. 制作 sonic 安装U盘1.1.1. 依赖材料 一台带 USB 接口的白盒交换机（已安装 SONiC 系统） 一个空U盘 （容量高于2G） 两个安装文件：sonic.bin 和 sonic-recovery.bin   sonic.bin，全量安装 sonic 系统的二进制文件（六百多MB） sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系">
+<meta name="description" content="1. 准备工作1.1. 制作 SONiC 安装U盘1.1.1. 依赖材料 一台带 USB 接口的白盒交换机（已安装 SONiC 系统） 一个空U盘 （容量高于2G） 两个安装文件：sonic.bin 和 sonic-recovery.bin   sonic.bin，全量安装 SONiC 系统的二进制文件（六百多MB） sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安装sonic">
+<meta property="og:title" content="安装SONiC">
 <meta property="og:url" content="https://eisenhao.cn/2021/09/28/install_sonic/index.html">
 <meta property="og:site_name" content="EisenHao&#39;s Note">
-<meta property="og:description" content="1. 准备工作1.1. 制作 sonic 安装U盘1.1.1. 依赖材料 一台带 USB 接口的白盒交换机（已安装 SONiC 系统） 一个空U盘 （容量高于2G） 两个安装文件：sonic.bin 和 sonic-recovery.bin   sonic.bin，全量安装 sonic 系统的二进制文件（六百多MB） sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系">
+<meta property="og:description" content="1. 准备工作1.1. 制作 SONiC 安装U盘1.1.1. 依赖材料 一台带 USB 接口的白盒交换机（已安装 SONiC 系统） 一个空U盘 （容量高于2G） 两个安装文件：sonic.bin 和 sonic-recovery.bin   sonic.bin，全量安装 SONiC 系统的二进制文件（六百多MB） sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-28T14:30:45.000Z">
 <meta property="article:modified_time" content="2021-09-28T14:40:45.000Z">
 <meta property="article:author" content="EisenHao">
-<meta property="article:tag" content="sonic">
+<meta property="article:tag" content="SONiC">
 <meta name="twitter:card" content="summary">
 
 
@@ -39,10 +39,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/09/28/install_sonic/","path":"2021/09/28/install_sonic/","title":"安装sonic"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2021/09/28/install_sonic/","path":"2021/09/28/install_sonic/","title":"安装SONiC"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>安装sonic | EisenHao's Note</title>
+<title>安装SONiC | EisenHao's Note</title>
   
 
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">1. 准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%88%B6%E4%BD%9C-sonic-%E5%AE%89%E8%A3%85U%E7%9B%98"><span class="nav-text">1.1. 制作 sonic 安装U盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E4%BE%9D%E8%B5%96%E6%9D%90%E6%96%99"><span class="nav-text">1.1.1. 依赖材料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E5%88%B6%E4%BD%9C%E5%AE%89%E8%A3%85U%E7%9B%98"><span class="nav-text">1.1.2. 制作安装U盘</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%AE%89%E8%A3%85-x2F-%E9%85%8D%E7%BD%AE-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2. 安装&#x2F;配置 minicom 串口工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E5%AE%89%E8%A3%85-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2.1. 安装 minicom 串口工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E9%85%8D%E7%BD%AE-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2.2. 配置 minicom 串口工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E9%80%9A%E8%BF%87-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7%E7%99%BB%E5%BD%95%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="nav-text">1.2.3. 通过 minicom 串口工具登录交换机</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85-sonic"><span class="nav-text">2. 安装 sonic</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E9%80%9A%E8%BF%87-U-%E7%9B%98%E5%AE%89%E8%A3%85-sonic-%E7%B3%BB%E7%BB%9F"><span class="nav-text">2.1. 通过 U 盘安装 sonic 系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E4%BA%A4%E6%8D%A2%E6%9C%BAIP%E5%8F%8A%E7%AE%A1%E7%90%86%E7%BD%91%E8%B7%AF%E7%94%B1"><span class="nav-text">3. 配置交换机IP及管理网路由</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">4. 参考文档</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">1. 准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%88%B6%E4%BD%9C-SONiC-%E5%AE%89%E8%A3%85U%E7%9B%98"><span class="nav-text">1.1. 制作 SONiC 安装U盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E4%BE%9D%E8%B5%96%E6%9D%90%E6%96%99"><span class="nav-text">1.1.1. 依赖材料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E5%88%B6%E4%BD%9C%E5%AE%89%E8%A3%85U%E7%9B%98"><span class="nav-text">1.1.2. 制作安装U盘</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%AE%89%E8%A3%85-x2F-%E9%85%8D%E7%BD%AE-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2. 安装&#x2F;配置 minicom 串口工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E5%AE%89%E8%A3%85-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2.1. 安装 minicom 串口工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E9%85%8D%E7%BD%AE-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-text">1.2.2. 配置 minicom 串口工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E9%80%9A%E8%BF%87-minicom-%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7%E7%99%BB%E5%BD%95%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="nav-text">1.2.3. 通过 minicom 串口工具登录交换机</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85-SONiC"><span class="nav-text">2. 安装 SONiC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E9%80%9A%E8%BF%87-U-%E7%9B%98%E5%AE%89%E8%A3%85-SONiC-%E7%B3%BB%E7%BB%9F"><span class="nav-text">2.1. 通过 U 盘安装 SONiC 系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%80%9A%E8%BF%87-ONIE-%E9%87%8D%E8%A3%85-SONiC"><span class="nav-text">2.2. 通过 ONIE 重装 SONiC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E9%80%9A%E8%BF%87-sonic-installer-%E6%9B%B4%E6%96%B0-SONiC"><span class="nav-text">2.3. 通过 sonic_installer 更新 SONiC</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E4%BA%A4%E6%8D%A2%E6%9C%BAIP%E5%8F%8A%E7%AE%A1%E7%90%86%E7%BD%91%E8%B7%AF%E7%94%B1"><span class="nav-text">3. 配置交换机IP及管理网路由</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">4. 参考文档</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -251,7 +251,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          安装sonic
+          安装SONiC
         </h1>
 
         <div class="post-meta-container">
@@ -266,7 +266,7 @@
     </span>
 
   
-    <span id="/2021/09/28/install_sonic/" class="post-meta-item leancloud_visitors" data-flag-title="安装sonic" title="浏览">
+    <span id="/2021/09/28/install_sonic/" class="post-meta-item leancloud_visitors" data-flag-title="安装SONiC" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -282,13 +282,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h1><h2 id="1-1-制作-sonic-安装U盘"><a href="#1-1-制作-sonic-安装U盘" class="headerlink" title="1.1. 制作 sonic 安装U盘"></a>1.1. 制作 sonic 安装U盘</h2><h3 id="1-1-1-依赖材料"><a href="#1-1-1-依赖材料" class="headerlink" title="1.1.1. 依赖材料"></a>1.1.1. 依赖材料</h3><ol>
+        <h1 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h1><h2 id="1-1-制作-SONiC-安装U盘"><a href="#1-1-制作-SONiC-安装U盘" class="headerlink" title="1.1. 制作 SONiC 安装U盘"></a>1.1. 制作 SONiC 安装U盘</h2><h3 id="1-1-1-依赖材料"><a href="#1-1-1-依赖材料" class="headerlink" title="1.1.1. 依赖材料"></a>1.1.1. 依赖材料</h3><ol>
 <li>一台带 USB 接口的白盒交换机（已安装 SONiC 系统）</li>
 <li>一个空U盘 （容量高于2G）</li>
 <li>两个<font color="red" style="">安装文件</font>：sonic.bin 和 sonic-recovery.bin</li>
 </ol>
 <ul>
-<li>sonic.bin，全量安装 sonic 系统的二进制文件（六百多MB）</li>
+<li>sonic.bin，全量安装 SONiC 系统的二进制文件（六百多MB）</li>
 <li>sonic-recovery.bin，构建&#x2F;恢复 SONiC-OS 系统基础环境的二进制文件（约三百MB）</li>
 </ul>
 <a id="more"></a>
@@ -297,15 +297,15 @@
 <blockquote>
 <p>备注：</p>
 <ul>
-<li>编译 sonic 版本需确保当前登录用户已加入 <b><font color="#7E3D76" style="">docker</font></b> 组</li>
+<li>编译 SONiC 版本需确保当前登录用户已加入 <b><font color="#7E3D76" style="">docker</font></b> 组</li>
 <li>查询当前 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表的命令为： <code>sudo cat /etc/group | grep docker</code> </li>
 <li>若当前登录用户不在 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表中，则需添加到 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表，命令为：  <code>sudo usermod -aG docker $&#123;当前用户名&#125; </code></li>
 </ul>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 进入 sonic 源码目录</span></span><br><span class="line">cd $SONIC_CODE_DIR</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 设置芯片厂商（eg. broadcom）</span></span><br><span class="line">make configure PLATFORM=broadcom</span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. 执行 make 编译 sonic.bin （编译用时约 1小时）</span></span><br><span class="line">make target/sonic.bin</span><br><span class="line"><span class="meta">#</span><span class="bash"> 4. 执行 make 编译 sonic-recovery.bin （编译用时约 10分钟）</span></span><br><span class="line">make target/sonic-recovery.bin</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 进入 SONiC 源码目录</span></span><br><span class="line">cd $SONIC_CODE_DIR</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. 设置芯片厂商（eg. broadcom）</span></span><br><span class="line">make configure PLATFORM=broadcom</span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. 执行 make 编译 sonic.bin （编译用时约 1小时）</span></span><br><span class="line">make target/sonic.bin</span><br><span class="line"><span class="meta">#</span><span class="bash"> 4. 执行 make 编译 sonic-recovery.bin （编译用时约 10分钟）</span></span><br><span class="line">make target/sonic-recovery.bin</span><br></pre></td></tr></table></figure>
 
 <h3 id="1-1-2-制作安装U盘"><a href="#1-1-2-制作安装U盘" class="headerlink" title="1.1.2. 制作安装U盘"></a>1.1.2. 制作安装U盘</h3><ol>
-<li>上传两个<font color="red" style="">安装文件</font>到（用于制作安装U盘的）SONIC白盒交换机的 &#x2F;host&#x2F; 目录</li>
+<li>上传两个<font color="red" style="">安装文件</font>到（用于制作安装U盘的）SONiC白盒交换机的 &#x2F;host&#x2F; 目录</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 拷贝安装文件到交换机（eg. 通过 scp 命令传输）</span></span><br><span class="line">scp sonic.bin admin@A.B.C.D:/home/admin</span><br><span class="line">scp sonic-recovery.bin admin@A.B.C.D:/home/admin</span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝安装文件到交换机的 /host/ 目录</span></span><br><span class="line">cp /home/admin/sonic.bin /host/</span><br><span class="line">cp /home/admin/sonic-recovery.bin /host/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 同步</span></span><br><span class="line">sync</span><br></pre></td></tr></table></figure>
 
@@ -371,14 +371,14 @@
 <li>通过串口工具访问<strong>交换机</strong>（终端执行命令为： <code>minicom -c on</code> ）</li>
 </ol>
 <p>备注： ESC + Z 可调出 minicom 工具的命令菜单</p>
-<h1 id="2-安装-sonic"><a href="#2-安装-sonic" class="headerlink" title="2. 安装 sonic"></a>2. 安装 sonic</h1><h2 id="2-1-通过-U-盘安装-sonic-系统"><a href="#2-1-通过-U-盘安装-sonic-系统" class="headerlink" title="2.1. 通过 U 盘安装 sonic 系统"></a>2.1. 通过 U 盘安装 sonic 系统</h2><p><b><font color="#7E3D76" style="">1. 从U盘启动</font></b><br></p>
+<h1 id="2-安装-SONiC"><a href="#2-安装-SONiC" class="headerlink" title="2. 安装 SONiC"></a>2. 安装 SONiC</h1><h2 id="2-1-通过-U-盘安装-SONiC-系统"><a href="#2-1-通过-U-盘安装-SONiC-系统" class="headerlink" title="2.1. 通过 U 盘安装 SONiC 系统"></a>2.1. 通过 U 盘安装 SONiC 系统</h2><p><b><font color="#7E3D76" style="">1. 从U盘启动</font></b><br></p>
 <ul>
 <li>交换机插入安装U盘</li>
 <li>重启（BIOS 默认优先从U盘启动）</li>
 <li>输入U盘中 SONiC 系统的用户&#x2F;密码: admin&#x2F;admin</li>
 <li>进入 &#x2F;host&#x2F; 目录，确认存在两个<font color="red" style="">安装文件</font> ：sonic.bin 和 sonic-recovery.bin</li>
 </ul>
-<p><b><font color="#7E3D76" style="">2. （交换机）硬盘分区并准备SONIC-OS基础环境</font></b><br></p>
+<p><b><font color="#7E3D76" style="">2. （交换机）硬盘分区并准备SONiC-OS基础环境</font></b><br></p>
 <blockquote>
 <p>通过 sonic-recovery.bin 对（交换机）硬盘进行分区并准备 SONiC-OS 基础环境</p>
 </blockquote>
@@ -392,13 +392,36 @@
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sonic-recovery.bin -n /dev/nvme0n1</span><br></pre></td></tr></table></figure>
 <ul>
-<li>(3). 再次通过 <code>blkid</code> 命令查看硬盘分区信息，确认硬盘分区信息囊括下方所有 <strong>LABEL</strong> <br>（GRUB、SONIC-OS、Recovery、Diag、Reserved、Log）</li>
+<li>(3). 再次通过 <code>blkid</code> 命令查看硬盘分区信息，确认硬盘分区信息囊括下方所有 <strong>LABEL</strong> <br>（GRUB、SONiC-OS、Recovery、Diag、Reserved、Log）</li>
 </ul>
-<p><b><font color="#7E3D76" style="">3. 安装 sonic 系统</font></b></p>
+<p><b><font color="#7E3D76" style="">3. 安装 SONiC 系统</font></b></p>
 <p>执行下方命令安装 SONiC 系统</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sonic.bin</span><br></pre></td></tr></table></figure>
 
 <p><b><font color="#7E3D76" style="">4. 拔掉U盘，重启</font></b></p>
+<h2 id="2-2-通过-ONIE-重装-SONiC"><a href="#2-2-通过-ONIE-重装-SONiC" class="headerlink" title="2.2. 通过 ONIE 重装 SONiC"></a>2.2. 通过 ONIE 重装 SONiC</h2><p><b><font color="#7E3D76" style="">1. 卸载旧 SONiC</font></b><br></p>
+<ul>
+<li>串口访问设备（切COM-E），手动重启；</li>
+<li>在 GRUB 菜单选择 ONIE: Uninstall OS，等待其卸载旧 SONiC 系统后自动重启；</li>
+<li>在重启后的 GRUB 菜单选择 ONIE: Rescue；</li>
+<li>在提示 “please press enter to activate this console” 后，按回车进入 ONIE 系统</li>
+</ul>
+<p><b><font color="#7E3D76" style="">2. 手动配置 ONIE 系统的管理 IP</font></b><br></p>
+<blockquote>
+<p>配置同网段IP</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig eth0 1.2.3.4 netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<p><b><font color="#7E3D76" style="">3. 拷贝 SONiC 安装镜像到 ONIE 系统的 &#x2F;tmp 路径</font></b><br></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp admin@4.5.6.7:/home/admin/sonic.bin /tmp/</span><br></pre></td></tr></table></figure>
+
+
+<p><b><font color="#7E3D76" style="">4. 通过 onie-nos-install 安装 SONiC 镜像</font></b><br></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onie-nos-install /tmp/sonic.bin</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-通过-sonic-installer-更新-SONiC"><a href="#2-3-通过-sonic-installer-更新-SONiC" class="headerlink" title="2.3. 通过 sonic_installer 更新 SONiC"></a>2.3. 通过 sonic_installer 更新 SONiC</h2><p>若设备已安装旧版 SONiC，可直接通过 sonic_installer 指令更新版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sonic_installer install -f /home/admin/new-sonic.bin</span><br></pre></td></tr></table></figure>
+
 <h1 id="3-配置交换机IP及管理网路由"><a href="#3-配置交换机IP及管理网路由" class="headerlink" title="3. 配置交换机IP及管理网路由"></a>3. 配置交换机IP及管理网路由</h1><blockquote>
 <p>备注：</p>
 <ul>
@@ -408,7 +431,7 @@
 <li>若发现设备管理 IP 丢失（ <code>/etc/network/interfaces</code>文件被删 ），执行下方 3(b) 步即可配置静态 IP（此文件为生成文件，不推荐手动配置）。</li>
 </ul>
 </blockquote>
-<p>（现 sonic 已支持通过 cli 配置，可作为接线后临时测试的配置参考）</p>
+<p>（SONiC 支持通过 cli 配置，可作为接线后临时测试的配置参考）</p>
 <ol>
 <li><b><font color="#7E3D76" style="">查看设备状态信息</font></b></li>
 </ol>
@@ -472,7 +495,7 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/sonic/" rel="tag"><i class="fa fa-tag"></i> sonic</a>
+              <a href="/tags/SONiC/" rel="tag"><i class="fa fa-tag"></i> SONiC</a>
           </div>
 
         

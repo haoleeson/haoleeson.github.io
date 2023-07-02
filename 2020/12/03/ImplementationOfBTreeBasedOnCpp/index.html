@@ -24,7 +24,7 @@
 <meta name="description" content="1. B树的原理及性能1.1. 定义1970年，R.Bayer和E.mccreight提出了一种适用于外查找的树，它是一种平衡的多叉树，称为B树。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于C++的B树的数据结构设计与编码实现">
-<meta property="og:url" content="https://eisenhao.cn/2020/12/04/ImplementationOfBTreeBasedOnCpp/index.html">
+<meta property="og:url" content="https://eisenhao.cn/2020/12/03/ImplementationOfBTreeBasedOnCpp/index.html">
 <meta property="og:site_name" content="EisenHao&#39;s Note">
 <meta property="og:description" content="1. B树的原理及性能1.1. 定义1970年，R.Bayer和E.mccreight提出了一种适用于外查找的树，它是一种平衡的多叉树，称为B树。">
 <meta property="og:locale" content="zh_CN">
@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://eisenhao.cn/uploads/BTreeBalanceMergeWithBro.png">
 <meta property="og:image" content="https://eisenhao.cn/uploads/BTreeBalanceReduceLevel.png">
 <meta property="article:published_time" content="2020-12-03T16:54:30.000Z">
-<meta property="article:modified_time" content="2022-11-03T15:17:16.744Z">
+<meta property="article:modified_time" content="2023-07-02T17:41:48.461Z">
 <meta property="article:author" content="EisenHao">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="C++">
@@ -46,11 +46,11 @@
 <meta name="twitter:image" content="https://eisenhao.cn/uploads/BTreeNodeStruct1.png">
 
 
-<link rel="canonical" href="https://eisenhao.cn/2020/12/04/ImplementationOfBTreeBasedOnCpp/">
+<link rel="canonical" href="https://eisenhao.cn/2020/12/03/ImplementationOfBTreeBasedOnCpp/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2020/12/04/ImplementationOfBTreeBasedOnCpp/","path":"2020/12/04/ImplementationOfBTreeBasedOnCpp/","title":"基于C++的B树的数据结构设计与编码实现"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2020/12/03/ImplementationOfBTreeBasedOnCpp/","path":"2020/12/03/ImplementationOfBTreeBasedOnCpp/","title":"基于C++的B树的数据结构设计与编码实现"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>基于C++的B树的数据结构设计与编码实现 | EisenHao's Note</title>
@@ -192,7 +192,7 @@
 </div>
   <div class="links-of-author site-overview-item animated">
       <span class="links-of-author-item">
-        <a href="https://github.com/EisenHao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;EisenHao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/haoleeson" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haoleeson" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="https://blog.csdn.net/u013229297" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013229297" rel="noopener" target="_blank"><i class="fab fa-cuttlefish fa-fw"></i>CSDN</a>
@@ -249,7 +249,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2020/12/04/ImplementationOfBTreeBasedOnCpp/">
+    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2020/12/03/ImplementationOfBTreeBasedOnCpp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -277,7 +277,7 @@
     </span>
 
   
-    <span id="/2020/12/04/ImplementationOfBTreeBasedOnCpp/" class="post-meta-item leancloud_visitors" data-flag-title="基于C++的B树的数据结构设计与编码实现" title="浏览">
+    <span id="/2020/12/03/ImplementationOfBTreeBasedOnCpp/" class="post-meta-item leancloud_visitors" data-flag-title="基于C++的B树的数据结构设计与编码实现" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -419,7 +419,7 @@
 <li>降层处理，将其父节点指向其的childPtrs[i]指针，指向其node-&gt;childPtrs[0]指向的值，后释放node节点</li>
 <li>若该节点为根节点，则将root指针指向node-&gt;childPtrs[0]（更新root节点），清除父节点指向node指针的值后释放node节点</li>
 </ul>
-<h2 id="4-7-更多详细的实现细节，请阅读我上传到Git的源码吧"><a href="#4-7-更多详细的实现细节，请阅读我上传到Git的源码吧" class="headerlink" title="4.7. 更多详细的实现细节，请阅读我上传到Git的源码吧:)"></a>4.7. 更多详细的实现细节，请阅读我上传到Git的源码吧:)</h2><div class="note success"><p> 博主基于C++的B树的数据结构设计与编码实现源码详见：<br><a target="_blank" rel="noopener" href="https://github.com/EisenHao/Cpp_Learning/blob/master/myBTree.h">https://github.com/EisenHao/Cpp_Learning/blob/master/myBTree.h</a></p>
+<h2 id="4-7-更多详细的实现细节，请阅读我上传到Git的源码吧"><a href="#4-7-更多详细的实现细节，请阅读我上传到Git的源码吧" class="headerlink" title="4.7. 更多详细的实现细节，请阅读我上传到Git的源码吧:)"></a>4.7. 更多详细的实现细节，请阅读我上传到Git的源码吧:)</h2><div class="note success"><p> 博主基于C++的B树的数据结构设计与编码实现源码详见：<br><a target="_blank" rel="noopener" href="https://github.com/haoleeson/Cpp_Learning/blob/master/myBTree.h">https://github.com/haoleeson/Cpp_Learning/blob/master/myBTree.h</a></p>
 </div>
 
     </div>
@@ -519,7 +519,7 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2020/12/04/ImplementationOfBTreeBasedOnCpp/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2020/12/03/ImplementationOfBTreeBasedOnCpp/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 
 </body>

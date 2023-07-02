@@ -318,7 +318,7 @@
 
 <ul>
 <li><p>复制公钥<br>打开刚刚新建的公钥，并复制文件所有内容 Ctrl + A</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit &#x2F;home&#x2F;eisenhao&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit &#x2F;home&#x2F;haoleeson&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>上传公钥到GitHub<br>将复制的代码上传到GitHub，打开 <a target="_blank" rel="noopener" href="https://www.github.com/">GitHub.com</a>，登录后点击界面右上角用户图标，选择 Account Settings &#x3D;&#x3D;&gt; SSH Public Keys &#x3D;&#x3D;&gt; 粘贴刚刚复制的代码。</p>
 </li>
@@ -472,7 +472,7 @@
 <figure class="highlight plain"><figcaption><span>修改文件:/usr/share/idea/bin/idea.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit &#x2F;usr&#x2F;share&#x2F;idea&#x2F;bin&#x2F;idea.sh #打开idea.sh文件</span><br><span class="line"># Ctrl + F 搜索 “JAVA_BIN”</span><br><span class="line">JDK&#x3D;$HOME&#x2F;Environment&#x2F;JAVA&#x2F;jdk1.8.0_181 #待添加强制定义JDK路径代码，将此行代码添加到idea.sh中的“JAVA_BIN&#x3D;&quot;$JDK&#x2F;bin&#x2F;java”代码的上方一行，强制定义JDK路径，问题解决 Done:)</span><br></pre></td></tr></table></figure>
 
 <h1 id="11-Linux-每日一练"><a href="#11-Linux-每日一练" class="headerlink" title="11. Linux 每日一练"></a>11. Linux 每日一练</h1><p>压缩文件／文件夹</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">7za a -t7z -r Mytest.7z &#x2F;opt&#x2F;phpMyAdmin-3.3.8.1-all-languages&#x2F;*</span><br><span class="line">7za a -t7z -r eisenhao.github.io_backup20180928.7z &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;*  #压缩本站所有文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">7za a -t7z -r Mytest.7z &#x2F;opt&#x2F;phpMyAdmin-3.3.8.1-all-languages&#x2F;*</span><br><span class="line">7za a -t7z -r haoleeson.github.io_backup20180928.7z &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;*  #压缩本站所有文件</span><br></pre></td></tr></table></figure>
 <p>其中：</p>
 <ul>
 <li>a  代表添加文件／文件夹到压缩包</li>

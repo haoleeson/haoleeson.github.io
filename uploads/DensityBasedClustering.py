@@ -1,5 +1,5 @@
 # coding: utf-8
-# coder: eisenhao
+# coder: haoleeson
 # 基于密度的DBSCAN聚类算法实现，并对6个数据文件数据集进行聚类
 
 import mat4py

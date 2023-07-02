@@ -1,52 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>《人生七年》、《人间世》观后感</title>
-    <url>/2019/04/06/AfterWatch7upAndRenJianShi/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/AfterWatch7upAndRenJianShi.jpg" class="full-image" />
-
-<p>最近疲于找实习，感觉自己能力不足，有些迷茫，遂重温了《人生七年》、《人间世》，竟有些新的感受。</p>
-<h1 id="1-《人生七年》观后感"><a href="#1-《人生七年》观后感" class="headerlink" title="1. 《人生七年》观后感"></a>1. 《人生七年》观后感</h1><ul>
-<li>《人生七年》感受到阶级血淋淋地存在，且每个人深受其影响。从一出生，影响就潜移默化地开始了，从家庭背景、思维方式、教育资源、人生规划等方面。7岁的高富帅三人组John、Andrew和Charles的谈吐和未来规划就能初见端倪</li>
-</ul>
-<a id="more"></a>
-
-<ul>
-<li>岁月无情，每隔七年都能看到孩子们又衰老了许多</li>
-<li>没有那么多的理所应当，人们只会看到意气风发春风得意，而不会深挖其背后的坚毅与努力，John、Nick是真的唯有努力才能让这一切看起来毫不费力的践行者</li>
-<li>阶级壁垒极难打破，但我们却可以选择属于自己的追求与幸福，以及给予孩子的教育</li>
-<li>成功从来没有一个权威的定义，有的只是我们从小遵循的普世模式——上个好学校，找个好工作，赚很多很多钱，然后等中年终于获得经济自由时才能放下一切？<ul>
-<li>可绝大多数人到老年也不能达到自己限定的条件，壮志难酬，抑郁寡欢，这时才开始反思是否什么错了啊？</li>
-<li>这条普世的成功之路真的能导向成功么，且只有获得成功之后才能实现人生价值和自我实现么？</li>
-</ul>
-</li>
-<li>从纪录片中可发现不同阶级的人追逐自我价值的方式多样，但大多都能从帮助他人的博爱与服务社会的奉献中找到自我满足和实现人生价值。<ul>
-<li>精英阶层的律师John也说：“在法庭上依据枯燥的条文拿下一场大官司的胜利，远没有他尽自己的能力帮助别人得到的幸福感多”。</li>
-<li>伦敦的平民Lynn事业上开始是在图书馆，后来是流动图书馆，再后来回到图书馆给孩子们讲故事，她很喜欢教孩子们看书，生活平淡而满足。</li>
-<li>福利院孩子Paul，后来与妻子一起去一家养老社区工作，在那打下手，修补房子呀，送东西之类，服务别人让他们体会到了更大的满足。</li>
-<li>单亲家庭的Symon收养了几千个孩子，付出了许多，也收获了无与伦比的快乐。</li>
-</ul>
-</li>
-<li>思考自己究竟以什么模式活着，找到自己内心真正想要什么？当然，这值得我们用一生来寻找答案。</li>
-</ul>
-<img data-src="../../../../uploads/RenJianShiNewLife.jpg" class="full-image" />
-
-<h1 id="2-《人间世》观后感"><a href="#2-《人间世》观后感" class="headerlink" title="2. 《人间世》观后感"></a>2. 《人间世》观后感</h1><ul>
-<li>感受到人间疾苦和生命的规律。从我们呱呱坠地来到人间，经历短暂的一生，然后无可避免地生病、衰老与死去。这是亘古不变的规律，生命或脆弱，却也坚强，总有能在危难之际爆发出难以置信的生命力。</li>
-<li>身体健康，家人平安本就是一种即为难得的奢望</li>
-<li>亲情、爱情、友情总有缺席的一天，珍惜珍重眼前人</li>
-</ul>
-<div class="note success"><p>人生不如意之事十之八九，安静平和，身心舒畅，便是清欢。</p>
-</div>
-]]></content>
-      <categories>
-        <category>心灵成长</category>
-      </categories>
-      <tags>
-        <tag>人生观触动</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>配置Manjaro</title>
     <url>/2018/09/23/AfterInstallManjaro/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/AfterInstallManjaro.png" class="full-image" />
@@ -83,7 +37,7 @@
 
 <ul>
 <li><p>复制公钥<br>打开刚刚新建的公钥，并复制文件所有内容 Ctrl + A</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gedit &#x2F;home&#x2F;eisenhao&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gedit &#x2F;home&#x2F;haoleeson&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>上传公钥到GitHub<br>将复制的代码上传到GitHub，打开 <a href="https://www.github.com/">GitHub.com</a>，登录后点击界面右上角用户图标，选择 Account Settings &#x3D;&#x3D;&gt; SSH Public Keys &#x3D;&#x3D;&gt; 粘贴刚刚复制的代码。</p>
 </li>
@@ -237,7 +191,7 @@
 <figure class="highlight plain"><figcaption><span>修改文件:/usr/share/idea/bin/idea.sh</span></figcaption><table><tr><td class="code"><pre><span class="line">sudo gedit &#x2F;usr&#x2F;share&#x2F;idea&#x2F;bin&#x2F;idea.sh #打开idea.sh文件</span><br><span class="line"># Ctrl + F 搜索 “JAVA_BIN”</span><br><span class="line">JDK&#x3D;$HOME&#x2F;Environment&#x2F;JAVA&#x2F;jdk1.8.0_181 #待添加强制定义JDK路径代码，将此行代码添加到idea.sh中的“JAVA_BIN&#x3D;&quot;$JDK&#x2F;bin&#x2F;java”代码的上方一行，强制定义JDK路径，问题解决 Done:)</span><br></pre></td></tr></table></figure>
 
 <h1 id="11-Linux-每日一练"><a href="#11-Linux-每日一练" class="headerlink" title="11. Linux 每日一练"></a>11. Linux 每日一练</h1><p>压缩文件／文件夹</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">7za a -t7z -r Mytest.7z &#x2F;opt&#x2F;phpMyAdmin-3.3.8.1-all-languages&#x2F;*</span><br><span class="line">7za a -t7z -r eisenhao.github.io_backup20180928.7z &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;*  #压缩本站所有文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">7za a -t7z -r Mytest.7z &#x2F;opt&#x2F;phpMyAdmin-3.3.8.1-all-languages&#x2F;*</span><br><span class="line">7za a -t7z -r haoleeson.github.io_backup20180928.7z &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;*  #压缩本站所有文件</span><br></pre></td></tr></table></figure>
 <p>其中：</p>
 <ul>
 <li>a  代表添加文件／文件夹到压缩包</li>
@@ -258,6 +212,52 @@
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《人生七年》、《人间世》观后感</title>
+    <url>/2019/04/06/AfterWatch7upAndRenJianShi/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/AfterWatch7upAndRenJianShi.jpg" class="full-image" />
+
+<p>最近疲于找实习，感觉自己能力不足，有些迷茫，遂重温了《人生七年》、《人间世》，竟有些新的感受。</p>
+<h1 id="1-《人生七年》观后感"><a href="#1-《人生七年》观后感" class="headerlink" title="1. 《人生七年》观后感"></a>1. 《人生七年》观后感</h1><ul>
+<li>《人生七年》感受到阶级血淋淋地存在，且每个人深受其影响。从一出生，影响就潜移默化地开始了，从家庭背景、思维方式、教育资源、人生规划等方面。7岁的高富帅三人组John、Andrew和Charles的谈吐和未来规划就能初见端倪</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li>岁月无情，每隔七年都能看到孩子们又衰老了许多</li>
+<li>没有那么多的理所应当，人们只会看到意气风发春风得意，而不会深挖其背后的坚毅与努力，John、Nick是真的唯有努力才能让这一切看起来毫不费力的践行者</li>
+<li>阶级壁垒极难打破，但我们却可以选择属于自己的追求与幸福，以及给予孩子的教育</li>
+<li>成功从来没有一个权威的定义，有的只是我们从小遵循的普世模式——上个好学校，找个好工作，赚很多很多钱，然后等中年终于获得经济自由时才能放下一切？<ul>
+<li>可绝大多数人到老年也不能达到自己限定的条件，壮志难酬，抑郁寡欢，这时才开始反思是否什么错了啊？</li>
+<li>这条普世的成功之路真的能导向成功么，且只有获得成功之后才能实现人生价值和自我实现么？</li>
+</ul>
+</li>
+<li>从纪录片中可发现不同阶级的人追逐自我价值的方式多样，但大多都能从帮助他人的博爱与服务社会的奉献中找到自我满足和实现人生价值。<ul>
+<li>精英阶层的律师John也说：“在法庭上依据枯燥的条文拿下一场大官司的胜利，远没有他尽自己的能力帮助别人得到的幸福感多”。</li>
+<li>伦敦的平民Lynn事业上开始是在图书馆，后来是流动图书馆，再后来回到图书馆给孩子们讲故事，她很喜欢教孩子们看书，生活平淡而满足。</li>
+<li>福利院孩子Paul，后来与妻子一起去一家养老社区工作，在那打下手，修补房子呀，送东西之类，服务别人让他们体会到了更大的满足。</li>
+<li>单亲家庭的Symon收养了几千个孩子，付出了许多，也收获了无与伦比的快乐。</li>
+</ul>
+</li>
+<li>思考自己究竟以什么模式活着，找到自己内心真正想要什么？当然，这值得我们用一生来寻找答案。</li>
+</ul>
+<img data-src="../../../../uploads/RenJianShiNewLife.jpg" class="full-image" />
+
+<h1 id="2-《人间世》观后感"><a href="#2-《人间世》观后感" class="headerlink" title="2. 《人间世》观后感"></a>2. 《人间世》观后感</h1><ul>
+<li>感受到人间疾苦和生命的规律。从我们呱呱坠地来到人间，经历短暂的一生，然后无可避免地生病、衰老与死去。这是亘古不变的规律，生命或脆弱，却也坚强，总有能在危难之际爆发出难以置信的生命力。</li>
+<li>身体健康，家人平安本就是一种即为难得的奢望</li>
+<li>亲情、爱情、友情总有缺席的一天，珍惜珍重眼前人</li>
+</ul>
+<div class="note success"><p>人生不如意之事十之八九，安静平和，身心舒畅，便是清欢。</p>
+</div>
+]]></content>
+      <categories>
+        <category>心灵成长</category>
+      </categories>
+      <tags>
+        <tag>人生观触动</tag>
       </tags>
   </entry>
   <entry>
@@ -370,90 +370,6 @@
       </categories>
       <tags>
         <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>B+树与B*树</title>
-    <url>/2020/12/24/BPlusTreeAndBStartTree/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/BPlusTree1.jpg" class="full-image" />
-
-<h1 id="1-B-树"><a href="#1-B-树" class="headerlink" title="1. B+树"></a>1. B+树</h1><h2 id="1-1-B-树简介"><a href="#1-1-B-树简介" class="headerlink" title="1.1. B+树简介"></a>1.1. B+树简介</h2><p>B+树是一种树数据结构，是一个n叉树，每个节点通常有多个孩子，一棵B+树包含根节点、内部节点和叶子节点。根节点可能是一个叶子节点，也可能是一个包含两个或两个以上孩子节点的节点。</p>
-<a id="more"></a>
-
-<h2 id="1-2-B-树应用场景"><a href="#1-2-B-树应用场景" class="headerlink" title="1.2. B+树应用场景"></a>1.2. B+树应用场景</h2><p>B+树通常用于数据库和操作系统的文件系统中。NTFS, ReiserFS, NSS, XFS, JFS, ReFS 和BFS等文件系统都在使用B+树作为元数据索引。B+树的特点是能够保持数据稳定有序，其插入与修改拥有较稳定的对数时间复杂度。B+树元素自底向上插入。</p>
-<h2 id="1-3-B-树定义"><a href="#1-3-B-树定义" class="headerlink" title="1.3. B+树定义"></a>1.3. B+树定义</h2><ul>
-<li>B+树是应文件系统所需而出的一种B树的变型树。一棵m阶的B+树和m阶的B树的差异在于：<ul>
-<li>有n棵子树的结点中含有n个关键字，每个关键字不保存数据，只用来索引，所有数据都保存在叶子节点。</li>
-<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
-<li>所有的非终端结点可以看成是索引部分，结点中仅含其子树（根结点）中的最大（或最小）关键字。</li>
-</ul>
-</li>
-</ul>
-<p>备注：通常在B+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</p>
-<ul>
-<li>B+树是B树的变体，也是一种多路搜索树，其定义除以下存有差异的定义外基本与B树同：<ul>
-<li>非叶子结点的子树指针与关键字个数相同；</li>
-<li>非叶子结点的子树指针P[i]，指向关键字值属于[K[i], K[i+1])的子树（B树是开区间）；</li>
-<li>为所有叶子结点增加一个链指针；</li>
-<li>所有关键字都在叶子结点出现；</li>
-</ul>
-</li>
-</ul>
-<p><img data-src="/../../../../uploads/BPlusTree2.PNG" alt="B+树"></p>
-<p>备注：B+的搜索与B树也基本相同，区别是B+树只有达到叶子结点才命中（B树可以在非叶子结点命中），其性能也等价于在关键字全集做一次二分查找；</p>
-<h2 id="1-4-B-的特性"><a href="#1-4-B-的特性" class="headerlink" title="1.4. B+的特性"></a>1.4. B+的特性</h2><ul>
-<li>所有关键字都出现在叶子结点的链表中（稠密索引），且链表中的关键字恰好是有序的；</li>
-<li>不可能在非叶子结点命中；</li>
-<li>非叶子结点相当于是叶子结点的索引（稀疏索引），叶子结点相当于是存储（关键字）数据的数据层；</li>
-<li>更适合文件索引系统；</li>
-</ul>
-<h1 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B*树"></a>2. B*树</h1><p><img data-src="/../../../../uploads/BStartTree.PNG" alt="B*树"></p>
-<h2 id="2-1-B-树的定义"><a href="#2-1-B-树的定义" class="headerlink" title="2.1. B*树的定义"></a>2.1. B*树的定义</h2><ul>
-<li>是B+树的变体，在B+树的非根和非叶子结点再增加<strong>指向兄弟的指针</strong>；</li>
-<li>B*树定义了非叶子结点关键字个数至少为(2&#x2F;3)*M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
-</ul>
-<h1 id="3-B树，B-树，B-树小结"><a href="#3-B树，B-树，B-树小结" class="headerlink" title="3. B树，B+树，B*树小结"></a>3. B树，B+树，B*树小结</h1><table>
-<thead>
-<tr>
-<th align="left">数据结构</th>
-<th align="left">小结</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">B树</td>
-<td align="left">多路搜索树，每个结点存储M&#x2F;2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；</td>
-</tr>
-<tr>
-<td align="left">B+树</td>
-<td align="left">在B树基础上，为叶子结点增加链表指针，所有关键字都在叶子结点中出现，非叶子结点作为叶子结点的索引；B+树总是到叶子结点才命中；</td>
-</tr>
-<tr>
-<td align="left">B*树</td>
-<td align="left">在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1&#x2F;2提高到2&#x2F;3；</td>
-</tr>
-</tbody></table>
-<h1 id="4-B树，B-树与B-树的优缺点比较"><a href="#4-B树，B-树与B-树的优缺点比较" class="headerlink" title="4. B树，B+树与B*树的优缺点比较"></a>4. B树，B+树与B*树的优缺点比较</h1><p>备注：B-树就是B树，”-“是个连字符号，不是减号。</p>
-<h2 id="4-1-B树-vs-B-树"><a href="#4-1-B树-vs-B-树" class="headerlink" title="4.1. B树 vs B+树"></a>4.1. B树 vs B+树</h2><ul>
-<li>B树是一种平衡的多路查找(又称排序)树，在文件系统中有所应用。主要用作文件的索引。其中的B就表示平衡(Balance)</li>
-<li>B+树有一个最大的好处，方便扫库，B树必须用中序遍历的方法按序扫库，而B+树直接从叶子结点挨个扫一遍就完了。</li>
-<li>B+树支持range-query(区间查询)非常方便，而B树不支持。这是数据库选用B+树的最主要原因。比如要查 5-10之间的，B+树一把到5这个标记，再一把到10，然后串起来就行了，B树就非常麻烦。B树的好处，就是成功查询特别有利，因为树的高度总体要比B+树矮。不成功的情况下，B树也比B+树稍稍占一点点便宜。</li>
-<li>B树的优势是当你要查找的值恰好处在一个非叶子节点时，查找到该节点就会成功并结束查询，而B+树由于非叶节点只是索引部分，这些节点中只含有其子树中的最大(或最小)关键字，当非终端节点上的关键字等于给点值时，查找并不终止，而是继续向下直到叶子节点。因此在B+树中，无论查找成功与否，都是走了一条从根到叶子节点的路径。有很多基于频率的搜索是选用B树，越频繁query的结点越往根上走，前提是需要对query做统计，而且要对key做一些变化。</li>
-<li>另外B树也好B+树也好，根或者上面几层因为被反复query，所以这几块基本都在内存中，不会出现读磁盘IO，一般已启动的时候，就会主动换入内存。 mysql底层存储是用B+树实现的，因为内存中B+树是没有优势的，但是一到磁盘，B+树的威力就出来了。</li>
-</ul>
-<h2 id="4-2-B-树-vs-B-树"><a href="#4-2-B-树-vs-B-树" class="headerlink" title="4.2. B+树 vs B*树"></a>4.2. B+树 vs B*树</h2><ul>
-<li>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针；B树定义了非叶子结点关键字个数至少为(2&#x2F;3)M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
-<li>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1&#x2F;2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</li>
-<li>B*树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1&#x2F;3的数据到新结点，最后在父结点增加新结点的指针； 所以，B*树分配新结点的概率比B+树要低，空间使用率更高；</li>
-</ul>
-<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
-<li><a href="https://www.jianshu.com/p/7323130d351b">讲点”B树”，一文详解B树，B+树，B*树及其优缺点比较</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -817,7 +733,7 @@
 <li>列式存储</li>
 </ul>
 <h2 id="6-3-PowerDrill数据结构"><a href="#6-3-PowerDrill数据结构" class="headerlink" title="6.3. PowerDrill数据结构"></a>6.3. PowerDrill数据结构</h2><p>PowerDrill采用的是一个双层数据字典结构</p>
-<p><img data-src="/Users/eisenhao/Documents/CloudComputing/CloudComputing-20190710154540235.png" alt="CloudComputing-20190710154540235"></p>
+<p><img data-src="/Users/haoleeson/Documents/CloudComputing/CloudComputing-20190710154540235.png" alt="CloudComputing-20190710154540235"></p>
 <h2 id="6-4-PowerDrill采用的性能优化"><a href="#6-4-PowerDrill采用的性能优化" class="headerlink" title="6.4. PowerDrill采用的性能优化"></a>6.4. PowerDrill采用的性能优化</h2><h3 id="6-4-1-数据分块"><a href="#6-4-1-数据分块" class="headerlink" title="6.4.1. 数据分块"></a>6.4.1. 数据分块</h3><ul>
 <li>背景：传统的索引对于PowerDrill的查询场景作用不是很大，因此一个很自然的考虑就是对数据进行分块，过滤查询中不需要的数据块来减少数据量</li>
 <li>分块方法：常见的分区方法有范围分区、散列分区等。PowerDrill实际采用的是一种组合范围分区方法。</li>
@@ -894,6 +810,90 @@
       </categories>
       <tags>
         <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>B+树与B*树</title>
+    <url>/2020/12/24/BPlusTreeAndBStartTree/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/BPlusTree1.jpg" class="full-image" />
+
+<h1 id="1-B-树"><a href="#1-B-树" class="headerlink" title="1. B+树"></a>1. B+树</h1><h2 id="1-1-B-树简介"><a href="#1-1-B-树简介" class="headerlink" title="1.1. B+树简介"></a>1.1. B+树简介</h2><p>B+树是一种树数据结构，是一个n叉树，每个节点通常有多个孩子，一棵B+树包含根节点、内部节点和叶子节点。根节点可能是一个叶子节点，也可能是一个包含两个或两个以上孩子节点的节点。</p>
+<a id="more"></a>
+
+<h2 id="1-2-B-树应用场景"><a href="#1-2-B-树应用场景" class="headerlink" title="1.2. B+树应用场景"></a>1.2. B+树应用场景</h2><p>B+树通常用于数据库和操作系统的文件系统中。NTFS, ReiserFS, NSS, XFS, JFS, ReFS 和BFS等文件系统都在使用B+树作为元数据索引。B+树的特点是能够保持数据稳定有序，其插入与修改拥有较稳定的对数时间复杂度。B+树元素自底向上插入。</p>
+<h2 id="1-3-B-树定义"><a href="#1-3-B-树定义" class="headerlink" title="1.3. B+树定义"></a>1.3. B+树定义</h2><ul>
+<li>B+树是应文件系统所需而出的一种B树的变型树。一棵m阶的B+树和m阶的B树的差异在于：<ul>
+<li>有n棵子树的结点中含有n个关键字，每个关键字不保存数据，只用来索引，所有数据都保存在叶子节点。</li>
+<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
+<li>所有的非终端结点可以看成是索引部分，结点中仅含其子树（根结点）中的最大（或最小）关键字。</li>
+</ul>
+</li>
+</ul>
+<p>备注：通常在B+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</p>
+<ul>
+<li>B+树是B树的变体，也是一种多路搜索树，其定义除以下存有差异的定义外基本与B树同：<ul>
+<li>非叶子结点的子树指针与关键字个数相同；</li>
+<li>非叶子结点的子树指针P[i]，指向关键字值属于[K[i], K[i+1])的子树（B树是开区间）；</li>
+<li>为所有叶子结点增加一个链指针；</li>
+<li>所有关键字都在叶子结点出现；</li>
+</ul>
+</li>
+</ul>
+<p><img data-src="/../../../../uploads/BPlusTree2.PNG" alt="B+树"></p>
+<p>备注：B+的搜索与B树也基本相同，区别是B+树只有达到叶子结点才命中（B树可以在非叶子结点命中），其性能也等价于在关键字全集做一次二分查找；</p>
+<h2 id="1-4-B-的特性"><a href="#1-4-B-的特性" class="headerlink" title="1.4. B+的特性"></a>1.4. B+的特性</h2><ul>
+<li>所有关键字都出现在叶子结点的链表中（稠密索引），且链表中的关键字恰好是有序的；</li>
+<li>不可能在非叶子结点命中；</li>
+<li>非叶子结点相当于是叶子结点的索引（稀疏索引），叶子结点相当于是存储（关键字）数据的数据层；</li>
+<li>更适合文件索引系统；</li>
+</ul>
+<h1 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B*树"></a>2. B*树</h1><p><img data-src="/../../../../uploads/BStartTree.PNG" alt="B*树"></p>
+<h2 id="2-1-B-树的定义"><a href="#2-1-B-树的定义" class="headerlink" title="2.1. B*树的定义"></a>2.1. B*树的定义</h2><ul>
+<li>是B+树的变体，在B+树的非根和非叶子结点再增加<strong>指向兄弟的指针</strong>；</li>
+<li>B*树定义了非叶子结点关键字个数至少为(2&#x2F;3)*M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
+</ul>
+<h1 id="3-B树，B-树，B-树小结"><a href="#3-B树，B-树，B-树小结" class="headerlink" title="3. B树，B+树，B*树小结"></a>3. B树，B+树，B*树小结</h1><table>
+<thead>
+<tr>
+<th align="left">数据结构</th>
+<th align="left">小结</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">B树</td>
+<td align="left">多路搜索树，每个结点存储M&#x2F;2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；</td>
+</tr>
+<tr>
+<td align="left">B+树</td>
+<td align="left">在B树基础上，为叶子结点增加链表指针，所有关键字都在叶子结点中出现，非叶子结点作为叶子结点的索引；B+树总是到叶子结点才命中；</td>
+</tr>
+<tr>
+<td align="left">B*树</td>
+<td align="left">在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1&#x2F;2提高到2&#x2F;3；</td>
+</tr>
+</tbody></table>
+<h1 id="4-B树，B-树与B-树的优缺点比较"><a href="#4-B树，B-树与B-树的优缺点比较" class="headerlink" title="4. B树，B+树与B*树的优缺点比较"></a>4. B树，B+树与B*树的优缺点比较</h1><p>备注：B-树就是B树，”-“是个连字符号，不是减号。</p>
+<h2 id="4-1-B树-vs-B-树"><a href="#4-1-B树-vs-B-树" class="headerlink" title="4.1. B树 vs B+树"></a>4.1. B树 vs B+树</h2><ul>
+<li>B树是一种平衡的多路查找(又称排序)树，在文件系统中有所应用。主要用作文件的索引。其中的B就表示平衡(Balance)</li>
+<li>B+树有一个最大的好处，方便扫库，B树必须用中序遍历的方法按序扫库，而B+树直接从叶子结点挨个扫一遍就完了。</li>
+<li>B+树支持range-query(区间查询)非常方便，而B树不支持。这是数据库选用B+树的最主要原因。比如要查 5-10之间的，B+树一把到5这个标记，再一把到10，然后串起来就行了，B树就非常麻烦。B树的好处，就是成功查询特别有利，因为树的高度总体要比B+树矮。不成功的情况下，B树也比B+树稍稍占一点点便宜。</li>
+<li>B树的优势是当你要查找的值恰好处在一个非叶子节点时，查找到该节点就会成功并结束查询，而B+树由于非叶节点只是索引部分，这些节点中只含有其子树中的最大(或最小)关键字，当非终端节点上的关键字等于给点值时，查找并不终止，而是继续向下直到叶子节点。因此在B+树中，无论查找成功与否，都是走了一条从根到叶子节点的路径。有很多基于频率的搜索是选用B树，越频繁query的结点越往根上走，前提是需要对query做统计，而且要对key做一些变化。</li>
+<li>另外B树也好B+树也好，根或者上面几层因为被反复query，所以这几块基本都在内存中，不会出现读磁盘IO，一般已启动的时候，就会主动换入内存。 mysql底层存储是用B+树实现的，因为内存中B+树是没有优势的，但是一到磁盘，B+树的威力就出来了。</li>
+</ul>
+<h2 id="4-2-B-树-vs-B-树"><a href="#4-2-B-树-vs-B-树" class="headerlink" title="4.2. B+树 vs B*树"></a>4.2. B+树 vs B*树</h2><ul>
+<li>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针；B树定义了非叶子结点关键字个数至少为(2&#x2F;3)M，即块的最低使用率为2&#x2F;3（代替B+树的1&#x2F;2）；</li>
+<li>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1&#x2F;2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</li>
+<li>B*树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1&#x2F;3的数据到新结点，最后在父结点增加新结点的指针； 所以，B*树分配新结点的概率比B+树要低，空间使用率更高；</li>
+</ul>
+<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
+<li><a href="https://www.jianshu.com/p/7323130d351b">讲点”B树”，一文详解B树，B+树，B*树及其优缺点比较</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -2152,43 +2152,6 @@
       </tags>
   </entry>
   <entry>
-    <title>高效地阅读文献--《文献检索与论文写作》</title>
-    <url>/2017/03/25/Efficient-reading-of-the-literature/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/Efficient-reading-of-the-literature.jpg" class="full-image" />
-
-<p>你是否时常苦于获取不到精确且优质的信息？据统计科研人员花费在文献阅读的时间占比总科研时间超过一半。在信息时代，如何从海量的数据中快速筛选出有用的信息已成为当代人的一项重要技能，博主收集了几项对高效地阅读文献、提升检索信息效率有积极作用的方法，或将提升信息检索的效率。</p>
-<a id="more"></a>
-
-<h1 id="1-勤加练习，养成习惯"><a href="#1-勤加练习，养成习惯" class="headerlink" title="1. 勤加练习，养成习惯"></a>1. <strong>勤加练习，养成习惯</strong></h1><p>据美国科学基金会统计，一个科研人员花费在*查找和消化科技资料上的时间需占全部科研时间的51%*，计划思考占8%，实验研究占32%,书面益结占9%,由这些统计数字可以看出，科研人员花费在科技文献出版物上的时间为全部科研时间的60%。作为科研工作者及相关高校师生，随时了解外界信息十分必要。在当前的信息时代，获取信息的途径和手段正在变得越来越容易，如何从海量的数据中查找、获取到与研究课题相关度高的文献，并高效地阅读文献、消化文献也变得越来越重要。</p>
-<p>科研人员需要通过勤加练习，逐渐把阅读文献培养成一种习惯。阅读文献非常重要，从文献中可以看到前人的研究成果，站得高看得远；从文献中可以学习别人的工作，启迪思维，抛砖引玉。同时，阅读文献也是一个烦琐的工作，应日复一日，年复一年地阅读，不断积累自已研究领域所需要的阅读量以及形成新的研究点子，以促进科学研究的顺利进展。</p>
-<h1 id="2-集中时间，研究经典"><a href="#2-集中时间，研究经典" class="headerlink" title="2. 集中时间，研究经典"></a>2. <strong>集中时间，研究经典</strong></h1><p>由于科学研究都有周期时间，阅读文献要集中时间，主要阅读与论文主题相关的文献。一个有用的<code>小技巧是：首先找出研究领域中那些最经典和研究前沿的文献</code>。例如：可以通过万方数据库，就某个研究领域进行知识脉络分析。根据其检索出来的图示结果，可以看出以论文发表情况为代表的本领域历年来的研究趋势情况，本领域的经典文献和研究前沿文献，以及相关学者的情况(发文数、被引、H指数等）。另外，还可以参考一些有用的书目，例如导师推荐的阅读书目列表、相关专业课程表等，这些可以让科研人员对研究领域有一个初步的印象。如果对自己研究的某个子领域感兴趣，则可以向该领域的前辈或专家请教本领域最重要的几篇论文是什么，如果允许的话，可以向其要求获取相关的文献。回顾最近几年的出版物，将那些非常感兴趣的复制下来。这不仅是由于其中很多都是意义重大的论文，对于研究工作进展也是很重要的。定期到学校的图书馆，翻阅其他院校出版的以及自己相关领域的技术报告，并选出自己感兴趣的仔细加以阅读，并注意归纳、整理资料与数据。</p>
-<h1 id="3-阅读分析，注重技巧"><a href="#3-阅读分析，注重技巧" class="headerlink" title="3. 阅读分析，注重技巧"></a>3. <strong>阅读分析，注重技巧</strong></h1><p>一般来说，<code><strong>核心及重要期刊</strong></code>上的论文会<code>有比较多的创新、创意</code>。因此，虽然阅读起来比较累，但收获较多而深入，值得花心思去阅读分析。在阅读文献的第一阶段，总是习惯于从头到尾地阅读文献，看论文中是否有感兴趣的东西，这样的做法浪费时间而且看多了会迷失了当初的阅读目标。大多数论文完全可以通过查看题目和摘要来判断这篇论文和自己的研究有没有直接的关联，由此决定是否要把论文全部读完整。如果研究人员有能力只根据<strong>摘要和题目</strong>就能締选出其中最密切相关的几篇论文，其学术研究及做事的效率就会比其他人高出好几倍。再者，论文主要内容也不需要完全看懂。除了其中两三个关键公式以外，其他公式都可以看不懂。公式之间的推导工程也可以完全忽略。如果要看公式，重点是要看明白公式推导过程中引人的假设条件，而不是恒等式的转换。甚至有些论文通篇都可以粗略地跳跃式阅读，阅读时只要把觉得有需要的部分看明白，其他不需要的部分只要了解它的主要点子就可以了。</p>
-<p>在看了大约30〜40篇文献后，将进入到下一个阶段—-<code>找出论文真正有价值的部分</code>。也就是把文献读薄的过程，不少二十多更的论文可以重新整理后形成一页左右的篇幅。从文献中找出那些真正对研究有作用的地方。论文作者从其工作中所发现的感兴趣的地方，未必是你感兴趣的，反之亦然。当然，如果觉得该论文确实有价值，则需要通篇甚至反复精读，务必理解论文。理解论文得到了什么结论并不等同于理解了该论文。理解论文，就要了解论义的目的，作者所做的选择，假设和形式化是否可行，论文指出了怎样的方向，论文所涉及领域都有哪些问题，作者的研究中持续出现的难点模式是什么，论文所丧达的策略观点是什么，诸如此类。当阅读文献达到了对本研究领域的主要内容、主要方法、文献之间的关系等相肖熟练之后，就表示已经基本掌握了本领域主要的论文。</p>
-<h1 id="4-科研利器，助力科研"><a href="#4-科研利器，助力科研" class="headerlink" title="4. 科研利器，助力科研"></a>4. <strong>科研利器，助力科研</strong></h1><p>主要指在科研选题、思路整理、文献管理、论文撰写过程中比较好用的相关软件。</p>
-<h2 id="4-1-思路整理或知识管理的工具软件"><a href="#4-1-思路整理或知识管理的工具软件" class="headerlink" title="4.1. 思路整理或知识管理的工具软件"></a>4.1. 思路整理或知识管理的工具软件</h2><p>代表性工具软件包括：<code>EverNote</code>、<code>有道云笔记</code>、<code>one Note</code>、<code>为知笔记</code>等。这几款软件各有千秋，用户可以按个人使用巧惯来选择使用。</p>
-<ul>
-<li><code><strong>EverNote</strong></code>就是Logo是一个大象标志的印象笔记，是目前较为火热的笔记软件之一，除了可以处理常规的文字信息外，还可以记录语音、阁片等，好处就在于一处编辑，多平台之间可以同步，还有网页剪辑功能，让科研人员可以随时随地记录并收藏好的idea</li>
-<li><code><strong>有道云笔记</strong></code>功能与其类似，是网易旗下的有道推出的产品，使用时所占内存会比EverNote小一些，而且重要的是上手快，操作起来更贴近中国人习惯，可随手记录下Idea。也支持多平台同步，可以实现实时增量式同步。缺点在于需要定期整理，否则存储内容会过于杂乱</li>
-<li><code>one Note</code>作为一款收集笔记和信息的软件，功能强大。它提供了一种灵活的方式，将文本、图片、数字手写墨迹、录音和录像等信息全部收集并组织到计算机上的一个数字笔记本中。但是one Note不少扩展功能是要收费的，同时由于对系统内存的占用比较大，还可能会出现运行速度慢等现象</li>
-</ul>
-<h2 id="4-2-文献生产和管理工具软件"><a href="#4-2-文献生产和管理工具软件" class="headerlink" title="4.2. 文献生产和管理工具软件"></a>4.2. <strong>文献</strong>生产和管理工具软件</h2><p>代表性工具软件包括：<code>NoteExpress</code>、<code>NoteFirst</code>、<code>EndNote</code>等。这几款软件各有千秋，用户可以按个人使用习惯来选择使用。</p>
-<ul>
-<li><code><strong>NoteExpress</strong></code>是国内主流的文献管理软件，其核心功能包括知识采集、管理、应用、挖掘等知识管理的几乎所有的环节，可以有效推进学术研究，知识管理</li>
-<li><code><strong>NoteFirst</strong></code>于2009年年底正式发布，是国内唯一的网络版文献管理软件。针对个人用户，它集成了文献收集与管理，论文参考文献的自动生成，参考文献自动校对等功能，支持多种其他软件的文件格式；针对学术性困队，它推出了团队科研协作的功能，帮助科研团队收集和管理知识，实现科研文献管理和开放存取、科研资源交流共享相结合，由此更好地管理团队以及促进团队成长</li>
-<li><code><strong>EndNote</strong></code>支持国际期刊的参考文献格式有3776 种，写作模板几百种，涵盖各个领域的杂志，可以方便地使用这些格式和模板。还具有管理文献、在线搜索文献、建立文献库和图片库、定制文稿、引文编排等主要功能</li>
-</ul>
-<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
-<li>《文献检索与论文写作》</li>
-</ul>
-]]></content>
-      <categories>
-        <category>效率</category>
-      </categories>
-      <tags>
-        <tag>效率</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>以太帧与MAC</title>
     <url>/2021/07/23/EthernetAndMac/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-以太网数据帧结构"><a href="#1-以太网数据帧结构" class="headerlink" title="1. 以太网数据帧结构"></a>1. 以太网数据帧结构</h1><h2 id="1-1-802-3-Type-以太帧数据结构（又称-Ethernet-II-封装，目前使用最广泛）："><a href="#1-1-802-3-Type-以太帧数据结构（又称-Ethernet-II-封装，目前使用最广泛）：" class="headerlink" title="1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）："></a>1.1. 802.3 Type 以太帧数据结构（又称 Ethernet II 封装，目前使用最广泛）：</h2><a id="more"></a>
@@ -2356,6 +2319,43 @@
       </categories>
       <tags>
         <tag>Network</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高效地阅读文献--《文献检索与论文写作》</title>
+    <url>/2017/03/25/Efficient-reading-of-the-literature/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/Efficient-reading-of-the-literature.jpg" class="full-image" />
+
+<p>你是否时常苦于获取不到精确且优质的信息？据统计科研人员花费在文献阅读的时间占比总科研时间超过一半。在信息时代，如何从海量的数据中快速筛选出有用的信息已成为当代人的一项重要技能，博主收集了几项对高效地阅读文献、提升检索信息效率有积极作用的方法，或将提升信息检索的效率。</p>
+<a id="more"></a>
+
+<h1 id="1-勤加练习，养成习惯"><a href="#1-勤加练习，养成习惯" class="headerlink" title="1. 勤加练习，养成习惯"></a>1. <strong>勤加练习，养成习惯</strong></h1><p>据美国科学基金会统计，一个科研人员花费在*查找和消化科技资料上的时间需占全部科研时间的51%*，计划思考占8%，实验研究占32%,书面益结占9%,由这些统计数字可以看出，科研人员花费在科技文献出版物上的时间为全部科研时间的60%。作为科研工作者及相关高校师生，随时了解外界信息十分必要。在当前的信息时代，获取信息的途径和手段正在变得越来越容易，如何从海量的数据中查找、获取到与研究课题相关度高的文献，并高效地阅读文献、消化文献也变得越来越重要。</p>
+<p>科研人员需要通过勤加练习，逐渐把阅读文献培养成一种习惯。阅读文献非常重要，从文献中可以看到前人的研究成果，站得高看得远；从文献中可以学习别人的工作，启迪思维，抛砖引玉。同时，阅读文献也是一个烦琐的工作，应日复一日，年复一年地阅读，不断积累自已研究领域所需要的阅读量以及形成新的研究点子，以促进科学研究的顺利进展。</p>
+<h1 id="2-集中时间，研究经典"><a href="#2-集中时间，研究经典" class="headerlink" title="2. 集中时间，研究经典"></a>2. <strong>集中时间，研究经典</strong></h1><p>由于科学研究都有周期时间，阅读文献要集中时间，主要阅读与论文主题相关的文献。一个有用的<code>小技巧是：首先找出研究领域中那些最经典和研究前沿的文献</code>。例如：可以通过万方数据库，就某个研究领域进行知识脉络分析。根据其检索出来的图示结果，可以看出以论文发表情况为代表的本领域历年来的研究趋势情况，本领域的经典文献和研究前沿文献，以及相关学者的情况(发文数、被引、H指数等）。另外，还可以参考一些有用的书目，例如导师推荐的阅读书目列表、相关专业课程表等，这些可以让科研人员对研究领域有一个初步的印象。如果对自己研究的某个子领域感兴趣，则可以向该领域的前辈或专家请教本领域最重要的几篇论文是什么，如果允许的话，可以向其要求获取相关的文献。回顾最近几年的出版物，将那些非常感兴趣的复制下来。这不仅是由于其中很多都是意义重大的论文，对于研究工作进展也是很重要的。定期到学校的图书馆，翻阅其他院校出版的以及自己相关领域的技术报告，并选出自己感兴趣的仔细加以阅读，并注意归纳、整理资料与数据。</p>
+<h1 id="3-阅读分析，注重技巧"><a href="#3-阅读分析，注重技巧" class="headerlink" title="3. 阅读分析，注重技巧"></a>3. <strong>阅读分析，注重技巧</strong></h1><p>一般来说，<code><strong>核心及重要期刊</strong></code>上的论文会<code>有比较多的创新、创意</code>。因此，虽然阅读起来比较累，但收获较多而深入，值得花心思去阅读分析。在阅读文献的第一阶段，总是习惯于从头到尾地阅读文献，看论文中是否有感兴趣的东西，这样的做法浪费时间而且看多了会迷失了当初的阅读目标。大多数论文完全可以通过查看题目和摘要来判断这篇论文和自己的研究有没有直接的关联，由此决定是否要把论文全部读完整。如果研究人员有能力只根据<strong>摘要和题目</strong>就能締选出其中最密切相关的几篇论文，其学术研究及做事的效率就会比其他人高出好几倍。再者，论文主要内容也不需要完全看懂。除了其中两三个关键公式以外，其他公式都可以看不懂。公式之间的推导工程也可以完全忽略。如果要看公式，重点是要看明白公式推导过程中引人的假设条件，而不是恒等式的转换。甚至有些论文通篇都可以粗略地跳跃式阅读，阅读时只要把觉得有需要的部分看明白，其他不需要的部分只要了解它的主要点子就可以了。</p>
+<p>在看了大约30〜40篇文献后，将进入到下一个阶段—-<code>找出论文真正有价值的部分</code>。也就是把文献读薄的过程，不少二十多更的论文可以重新整理后形成一页左右的篇幅。从文献中找出那些真正对研究有作用的地方。论文作者从其工作中所发现的感兴趣的地方，未必是你感兴趣的，反之亦然。当然，如果觉得该论文确实有价值，则需要通篇甚至反复精读，务必理解论文。理解论文得到了什么结论并不等同于理解了该论文。理解论文，就要了解论义的目的，作者所做的选择，假设和形式化是否可行，论文指出了怎样的方向，论文所涉及领域都有哪些问题，作者的研究中持续出现的难点模式是什么，论文所丧达的策略观点是什么，诸如此类。当阅读文献达到了对本研究领域的主要内容、主要方法、文献之间的关系等相肖熟练之后，就表示已经基本掌握了本领域主要的论文。</p>
+<h1 id="4-科研利器，助力科研"><a href="#4-科研利器，助力科研" class="headerlink" title="4. 科研利器，助力科研"></a>4. <strong>科研利器，助力科研</strong></h1><p>主要指在科研选题、思路整理、文献管理、论文撰写过程中比较好用的相关软件。</p>
+<h2 id="4-1-思路整理或知识管理的工具软件"><a href="#4-1-思路整理或知识管理的工具软件" class="headerlink" title="4.1. 思路整理或知识管理的工具软件"></a>4.1. 思路整理或知识管理的工具软件</h2><p>代表性工具软件包括：<code>EverNote</code>、<code>有道云笔记</code>、<code>one Note</code>、<code>为知笔记</code>等。这几款软件各有千秋，用户可以按个人使用巧惯来选择使用。</p>
+<ul>
+<li><code><strong>EverNote</strong></code>就是Logo是一个大象标志的印象笔记，是目前较为火热的笔记软件之一，除了可以处理常规的文字信息外，还可以记录语音、阁片等，好处就在于一处编辑，多平台之间可以同步，还有网页剪辑功能，让科研人员可以随时随地记录并收藏好的idea</li>
+<li><code><strong>有道云笔记</strong></code>功能与其类似，是网易旗下的有道推出的产品，使用时所占内存会比EverNote小一些，而且重要的是上手快，操作起来更贴近中国人习惯，可随手记录下Idea。也支持多平台同步，可以实现实时增量式同步。缺点在于需要定期整理，否则存储内容会过于杂乱</li>
+<li><code>one Note</code>作为一款收集笔记和信息的软件，功能强大。它提供了一种灵活的方式，将文本、图片、数字手写墨迹、录音和录像等信息全部收集并组织到计算机上的一个数字笔记本中。但是one Note不少扩展功能是要收费的，同时由于对系统内存的占用比较大，还可能会出现运行速度慢等现象</li>
+</ul>
+<h2 id="4-2-文献生产和管理工具软件"><a href="#4-2-文献生产和管理工具软件" class="headerlink" title="4.2. 文献生产和管理工具软件"></a>4.2. <strong>文献</strong>生产和管理工具软件</h2><p>代表性工具软件包括：<code>NoteExpress</code>、<code>NoteFirst</code>、<code>EndNote</code>等。这几款软件各有千秋，用户可以按个人使用习惯来选择使用。</p>
+<ul>
+<li><code><strong>NoteExpress</strong></code>是国内主流的文献管理软件，其核心功能包括知识采集、管理、应用、挖掘等知识管理的几乎所有的环节，可以有效推进学术研究，知识管理</li>
+<li><code><strong>NoteFirst</strong></code>于2009年年底正式发布，是国内唯一的网络版文献管理软件。针对个人用户，它集成了文献收集与管理，论文参考文献的自动生成，参考文献自动校对等功能，支持多种其他软件的文件格式；针对学术性困队，它推出了团队科研协作的功能，帮助科研团队收集和管理知识，实现科研文献管理和开放存取、科研资源交流共享相结合，由此更好地管理团队以及促进团队成长</li>
+<li><code><strong>EndNote</strong></code>支持国际期刊的参考文献格式有3776 种，写作模板几百种，涵盖各个领域的杂志，可以方便地使用这些格式和模板。还具有管理文献、在线搜索文献、建立文献库和图片库、定制文稿、引文编排等主要功能</li>
+</ul>
+<h1 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h1><ul>
+<li>《文献检索与论文写作》</li>
+</ul>
+]]></content>
+      <categories>
+        <category>效率</category>
+      </categories>
+      <tags>
+        <tag>效率</tag>
       </tags>
   </entry>
   <entry>
@@ -2759,8 +2759,8 @@
         <category>技术</category>
       </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>C++</tag>
+        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -2837,8 +2837,8 @@
         <category>技术</category>
       </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>C++</tag>
+        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -2962,36 +2962,36 @@
 <h3 id="2-6-4-Map集合"><a href="#2-6-4-Map集合" class="headerlink" title="2.6.4. Map集合"></a>2.6.4. Map集合</h3><p>Map接口的常用实现类有<strong>HashMap</strong>(无序，允许null值)和<strong>TreeMap</strong>(升序，不允许null值)。<br> Map提供key到value的映射，Map中不能包含相同的key，每个key只能映射一个value。Key还决定了存储对象在映射中的存储位置，但不是由key本身决定的，而是由key根据”散列技术”产生的散列码整数值（作为偏移量）。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;Integer, String&gt; map = <span class="keyword">new</span> HashMap&lt;Integer, String&gt;();</span><br><span class="line">map.put(<span class="number">1</span>, <span class="string">&quot;ZhangSan&quot;</span>);</span><br><span class="line">map.put(<span class="number">2</span>, <span class="string">&quot;LiSi&quot;</span>);</span><br><span class="line">map.put(<span class="number">3</span>, <span class="string">&quot;WangWu&quot;</span>);</span><br><span class="line"><span class="comment">//遍历Map的Key值集合</span></span><br><span class="line">Set&lt;Integer&gt; s = map.keySet();</span><br><span class="line">Iterator&lt;Integer&gt; it = s.iterator();</span><br><span class="line"><span class="keyword">while</span> (it.hasNext())&#123;</span><br><span class="line">    System.out.println(it.next());</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//遍历Map的Value值集合</span></span><br><span class="line">Collection&lt;String&gt; c = map.values();</span><br><span class="line">Iterator&lt;String&gt; it2 = c.iterator();</span><br><span class="line"><span class="keyword">while</span> (it2.hasNext())&#123;</span><br><span class="line">    System.out.println(it2.next());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">1</span></span><br><span class="line"><span class="comment">2</span></span><br><span class="line"><span class="comment">3</span></span><br><span class="line"><span class="comment">ZhangSan</span></span><br><span class="line"><span class="comment">LiSi</span></span><br><span class="line"><span class="comment">WangWu</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="2-7-文件File"><a href="#2-7-文件File" class="headerlink" title="2.7. 文件File"></a>2.7. 文件File</h2><h3 id="2-7-1-文件的创建与删除"><a href="#2-7-1-文件的创建与删除" class="headerlink" title="2.7.1. 文件的创建与删除"></a>2.7.1. 文件的创建与删除</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/eisenhao/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line">File file1 = <span class="keyword">new</span> File(<span class="string">&quot;/Users/eisenhao/Test/&quot;</span>, <span class="string">&quot;test2.txt&quot;</span>);<span class="comment">//在目录下 创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"><span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">    file.delete();<span class="comment">//删除文件</span></span><br><span class="line">    System.out.println(file.getName() + <span class="string">&quot;文件已存在, 故删除&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        file.createNewFile();<span class="comment">//创建该文件（于磁盘中）</span></span><br><span class="line">        System.out.println(file.getName() + <span class="string">&quot;文件不存在，故创建&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-7-文件File"><a href="#2-7-文件File" class="headerlink" title="2.7. 文件File"></a>2.7. 文件File</h2><h3 id="2-7-1-文件的创建与删除"><a href="#2-7-1-文件的创建与删除" class="headerlink" title="2.7.1. 文件的创建与删除"></a>2.7.1. 文件的创建与删除</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/haoleeson/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line">File file1 = <span class="keyword">new</span> File(<span class="string">&quot;/Users/haoleeson/Test/&quot;</span>, <span class="string">&quot;test2.txt&quot;</span>);<span class="comment">//在目录下 创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"><span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">    file.delete();<span class="comment">//删除文件</span></span><br><span class="line">    System.out.println(file.getName() + <span class="string">&quot;文件已存在, 故删除&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        file.createNewFile();<span class="comment">//创建该文件（于磁盘中）</span></span><br><span class="line">        System.out.println(file.getName() + <span class="string">&quot;文件不存在，故创建&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-7-2-File文件的常用方法"><a href="#2-7-2-File文件的常用方法" class="headerlink" title="2.7.2. File文件的常用方法"></a>2.7.2. File文件的常用方法</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String FileName = file.getName();<span class="comment">//获取文件名</span></span><br><span class="line"><span class="keyword">boolean</span> isReadable = file.canRead();<span class="comment">//返回文件是否可读</span></span><br><span class="line"><span class="keyword">boolean</span> isWriteable = file.canWrite();<span class="comment">//返回文件是否可写</span></span><br><span class="line"><span class="keyword">boolean</span> isFileExisted = file.exists();<span class="comment">//返回文件是否在该目录（File类型记录路径）存在</span></span><br><span class="line"><span class="keyword">long</span> FileLength = file.length();<span class="comment">//文件的大小（单位：字节）</span></span><br><span class="line">String FileAbsolutePath = file.getAbsolutePath();<span class="comment">//文件的绝对路径</span></span><br><span class="line">String FileParentPath = file.getParent();<span class="comment">//获取文件所在目录</span></span><br><span class="line"><span class="keyword">boolean</span> isAFile = file.isFile();<span class="comment">//是否为普通文件（而非目录文件，或链接文件）</span></span><br><span class="line"><span class="keyword">boolean</span> isADirectory = file.isDirectory();<span class="comment">//是否为一个目录文件</span></span><br><span class="line"><span class="keyword">boolean</span> isHiddened = file.isHidden();<span class="comment">//判断文件是否为隐藏文件</span></span><br><span class="line"><span class="keyword">long</span> lastChangeTime = file.lastModified();<span class="comment">//文件最后修改时间</span></span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">&quot;lastChangeTime = &quot;</span> + lastChangeTime);</span><br><span class="line">SimpleDateFormat dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line">System.out.println(file.getName() + <span class="string">&quot;文件的最近修改时间为：&quot;</span> + dateFormat.format(<span class="keyword">new</span> Date(lastChangeTime)));</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">lastChangeTime = 1555158024000</span></span><br><span class="line"><span class="comment">test.txt文件的最近修改时间为：2019-04-13 20:20:24</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-7-3-文件输入输出流"><a href="#2-7-3-文件输入输出流" class="headerlink" title="2.7.3. 文件输入输出流"></a>2.7.3. 文件输入输出流</h3><h4 id="2-7-3-1-FileInputStream与FileOutputStream类"><a href="#2-7-3-1-FileInputStream与FileOutputStream类" class="headerlink" title="2.7.3.1. FileInputStream与FileOutputStream类"></a>2.7.3.1. FileInputStream与FileOutputStream类</h4><p>操作磁盘文件，可满足简单的文件读写需求。但由于读写操作以字节或字节数组为单位，由于汉字占两个字节，若读取readBuff[]容量设置为单字节，或正好错开一字节会导致汉字乱码。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/eisenhao/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//写文件测试</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileOutputStream简单文件输出流对象</span></span><br><span class="line">    FileOutputStream out = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">    <span class="comment">//创建byte数组</span></span><br><span class="line">    <span class="keyword">byte</span> writeBuff[] = <span class="string">&quot;写入如下字符串以测试简单文件输出流功能。&quot;</span>.getBytes();</span><br><span class="line">    out.write(writeBuff);<span class="comment">//将数组中内容写入磁盘</span></span><br><span class="line">    out.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//读文件测试</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileOutputStream简单文件读取流对象</span></span><br><span class="line">    FileInputStream in = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    <span class="keyword">byte</span> readBuff[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>]; <span class="comment">//创建大小为1KB的读取缓存</span></span><br><span class="line">    <span class="keyword">int</span> len = in.read(readBuff);<span class="comment">//从文件中读取内容到readBuff数组，并返回读取的内容大小（单位：字节）</span></span><br><span class="line">    System.out.println(<span class="string">&quot;读取到的内容如下：\n&quot;</span> + <span class="keyword">new</span> String(readBuff, <span class="number">0</span>, len) + <span class="string">&quot;&lt;END&gt;&quot;</span>);<span class="comment">//将读到的readBuff数组内Byte类型数据转换为String输出</span></span><br><span class="line">    in.close();<span class="comment">//关闭读取流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">读取到的内容如下：</span></span><br><span class="line"><span class="comment">写入如下字符串以测试简单文件输出流功能。</span></span><br><span class="line"><span class="comment">&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/haoleeson/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//写文件测试</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileOutputStream简单文件输出流对象</span></span><br><span class="line">    FileOutputStream out = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">    <span class="comment">//创建byte数组</span></span><br><span class="line">    <span class="keyword">byte</span> writeBuff[] = <span class="string">&quot;写入如下字符串以测试简单文件输出流功能。&quot;</span>.getBytes();</span><br><span class="line">    out.write(writeBuff);<span class="comment">//将数组中内容写入磁盘</span></span><br><span class="line">    out.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//读文件测试</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileOutputStream简单文件读取流对象</span></span><br><span class="line">    FileInputStream in = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    <span class="keyword">byte</span> readBuff[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>]; <span class="comment">//创建大小为1KB的读取缓存</span></span><br><span class="line">    <span class="keyword">int</span> len = in.read(readBuff);<span class="comment">//从文件中读取内容到readBuff数组，并返回读取的内容大小（单位：字节）</span></span><br><span class="line">    System.out.println(<span class="string">&quot;读取到的内容如下：\n&quot;</span> + <span class="keyword">new</span> String(readBuff, <span class="number">0</span>, len) + <span class="string">&quot;&lt;END&gt;&quot;</span>);<span class="comment">//将读到的readBuff数组内Byte类型数据转换为String输出</span></span><br><span class="line">    in.close();<span class="comment">//关闭读取流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">读取到的内容如下：</span></span><br><span class="line"><span class="comment">写入如下字符串以测试简单文件输出流功能。</span></span><br><span class="line"><span class="comment">&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="2-7-3-2-FileReader与FileWriter类"><a href="#2-7-3-2-FileReader与FileWriter类" class="headerlink" title="2.7.3.2. FileReader与FileWriter类"></a>2.7.3.2. FileReader与FileWriter类</h4><p>能够避免FileInputStream与FileOutputStream类可能出现的汉字读写乱码现象。FileReader流顺序地读取文件，只要不关闭流，每次调用read()方法就顺序地读取源中的内容，直到源的末尾或流被关闭。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/eisenhao/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//写文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileWriter文件输出流对象</span></span><br><span class="line">    FileWriter out = <span class="keyword">new</span> FileWriter(file);</span><br><span class="line">    String writerStr = <span class="string">&quot;尝试写入如下字符串以测试FileWriter文件输入流功能。\n&quot;</span>;</span><br><span class="line">    out.write(writerStr);<span class="comment">//将writerStr内容写入磁盘文件中(会清空原文件所有内容)</span></span><br><span class="line">    out.close();<span class="comment">//关闭写文件流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//读文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileReader文件读取流对象</span></span><br><span class="line">    FileReader in = <span class="keyword">new</span> FileReader(file);</span><br><span class="line">    <span class="keyword">char</span> readBuff[] = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1024</span>]; <span class="comment">//创建char类型读取内容数组</span></span><br><span class="line">    <span class="keyword">int</span> len = in.read(readBuff);<span class="comment">//从文件中读取内容到readBuff数组，并返回读取的内容char数组长度</span></span><br><span class="line">    in.close();<span class="comment">//关闭读文件流</span></span><br><span class="line">    System.out.println(<span class="string">&quot;读取到的内容如下：\n&quot;</span> + <span class="keyword">new</span> String(readBuff, <span class="number">0</span>, len) + <span class="string">&quot;&lt;END&gt;&quot;</span>);<span class="comment">//将读到的readBuff数组内数据转换为String输出</span></span><br><span class="line">    in.close();<span class="comment">//关闭读取流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">读取到的内容如下：</span></span><br><span class="line"><span class="comment">尝试写入如下字符串以测试FileWriter文件输入流功能。</span></span><br><span class="line"><span class="comment">&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/haoleeson/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//写文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileWriter文件输出流对象</span></span><br><span class="line">    FileWriter out = <span class="keyword">new</span> FileWriter(file);</span><br><span class="line">    String writerStr = <span class="string">&quot;尝试写入如下字符串以测试FileWriter文件输入流功能。\n&quot;</span>;</span><br><span class="line">    out.write(writerStr);<span class="comment">//将writerStr内容写入磁盘文件中(会清空原文件所有内容)</span></span><br><span class="line">    out.close();<span class="comment">//关闭写文件流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//读文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileReader文件读取流对象</span></span><br><span class="line">    FileReader in = <span class="keyword">new</span> FileReader(file);</span><br><span class="line">    <span class="keyword">char</span> readBuff[] = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1024</span>]; <span class="comment">//创建char类型读取内容数组</span></span><br><span class="line">    <span class="keyword">int</span> len = in.read(readBuff);<span class="comment">//从文件中读取内容到readBuff数组，并返回读取的内容char数组长度</span></span><br><span class="line">    in.close();<span class="comment">//关闭读文件流</span></span><br><span class="line">    System.out.println(<span class="string">&quot;读取到的内容如下：\n&quot;</span> + <span class="keyword">new</span> String(readBuff, <span class="number">0</span>, len) + <span class="string">&quot;&lt;END&gt;&quot;</span>);<span class="comment">//将读到的readBuff数组内数据转换为String输出</span></span><br><span class="line">    in.close();<span class="comment">//关闭读取流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">读取到的内容如下：</span></span><br><span class="line"><span class="comment">尝试写入如下字符串以测试FileWriter文件输入流功能。</span></span><br><span class="line"><span class="comment">&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="2-7-3-3-带缓存的输入-x2F-输出流"><a href="#2-7-3-3-带缓存的输入-x2F-输出流" class="headerlink" title="2.7.3.3. 带缓存的输入&#x2F;输出流"></a>2.7.3.3. 带缓存的输入&#x2F;输出流</h4><p><strong>BufferedInputStream</strong>与<strong>BufferedOutputStream</strong>类。BufferedInputStream类可以对所有的InputStream类进行带缓存区的包装以达到性能的优化。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BufferedInputStream(InputStream in);<span class="comment">//创建一个带有32个字节的缓存流</span></span><br><span class="line">BufferedInputStream(InputStream in, <span class="keyword">int</span> size);<span class="comment">//创建一个自定义大小的读取流缓存区</span></span><br></pre></td></tr></table></figure>
 <p>BufferedOutputStream类有一个flush()方法可以将缓存区内的数据强制输出到磁盘（无论缓存区满否）</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BufferedOutputStream(OutputStream out);<span class="comment">//创建一个带有32字节的缓存区</span></span><br><span class="line">BufferedOutputStream(OutputStream out, <span class="keyword">int</span> size);<span class="comment">//创建一个自定义大小的写出流缓存区</span></span><br></pre></td></tr></table></figure>
 <p><strong>BufferedReader</strong>与<strong>BufferedWriter</strong>类<br>BufferedReader与BufferedWriter类分别继承Reader类与Writer类。这两个类同样具有内部缓存机制，并可以以行为为单位进行输入输出。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/eisenhao/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带缓存写文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileWriter文件输出流对象</span></span><br><span class="line">    FileWriter fileWriter = <span class="keyword">new</span> FileWriter(file);</span><br><span class="line">    <span class="comment">//创建带缓存区的输出流</span></span><br><span class="line">    BufferedWriter bufferedWriter = <span class="keyword">new</span> BufferedWriter(fileWriter);</span><br><span class="line">    String writerStr = <span class="string">&quot;尝试写入如下字符串以测试带缓存区的输出流功能。&quot;</span>;</span><br><span class="line">    bufferedWriter.write(writerStr);<span class="comment">//将writerStr内容写入缓存区（自动控制，缓存区满自动写入磁盘，避免频繁读写磁盘）</span></span><br><span class="line">    bufferedWriter.newLine();<span class="comment">//将换行符写入文件</span></span><br><span class="line">    bufferedWriter.close();<span class="comment">//关闭写缓存区流</span></span><br><span class="line">    fileWriter.close();<span class="comment">//关闭输出流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//带缓存区读文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileReader文件读取流对象</span></span><br><span class="line">    FileReader fileReader = <span class="keyword">new</span> FileReader(file);</span><br><span class="line">    <span class="comment">//创建带缓存区的读取流</span></span><br><span class="line">    BufferedReader bufferedReader = <span class="keyword">new</span> BufferedReader(fileReader);</span><br><span class="line">    String readStr = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> row = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//如果文件的文本行不为null，则进入循环</span></span><br><span class="line">    <span class="keyword">while</span>((readStr = bufferedReader.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        row++;</span><br><span class="line">        System.out.println(<span class="string">&quot;读取到第&quot;</span>+ row + <span class="string">&quot;行的内容为：&quot;</span> + readStr);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">&quot;&lt;END&gt;&quot;</span>);</span><br><span class="line">    bufferedReader.close();<span class="comment">//关闭读缓存区流</span></span><br><span class="line">    fileReader.close();<span class="comment">//关闭读取流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">读取到第1行的内容为：尝试写入如下字符串以测试带缓存区的输出流功能。</span></span><br><span class="line"><span class="comment">&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/haoleeson/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中）,绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带缓存写文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileWriter文件输出流对象</span></span><br><span class="line">    FileWriter fileWriter = <span class="keyword">new</span> FileWriter(file);</span><br><span class="line">    <span class="comment">//创建带缓存区的输出流</span></span><br><span class="line">    BufferedWriter bufferedWriter = <span class="keyword">new</span> BufferedWriter(fileWriter);</span><br><span class="line">    String writerStr = <span class="string">&quot;尝试写入如下字符串以测试带缓存区的输出流功能。&quot;</span>;</span><br><span class="line">    bufferedWriter.write(writerStr);<span class="comment">//将writerStr内容写入缓存区（自动控制，缓存区满自动写入磁盘，避免频繁读写磁盘）</span></span><br><span class="line">    bufferedWriter.newLine();<span class="comment">//将换行符写入文件</span></span><br><span class="line">    bufferedWriter.close();<span class="comment">//关闭写缓存区流</span></span><br><span class="line">    fileWriter.close();<span class="comment">//关闭输出流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//带缓存区读文件操作</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//创建FileReader文件读取流对象</span></span><br><span class="line">    FileReader fileReader = <span class="keyword">new</span> FileReader(file);</span><br><span class="line">    <span class="comment">//创建带缓存区的读取流</span></span><br><span class="line">    BufferedReader bufferedReader = <span class="keyword">new</span> BufferedReader(fileReader);</span><br><span class="line">    String readStr = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> row = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//如果文件的文本行不为null，则进入循环</span></span><br><span class="line">    <span class="keyword">while</span>((readStr = bufferedReader.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        row++;</span><br><span class="line">        System.out.println(<span class="string">&quot;读取到第&quot;</span>+ row + <span class="string">&quot;行的内容为：&quot;</span> + readStr);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">&quot;&lt;END&gt;&quot;</span>);</span><br><span class="line">    bufferedReader.close();<span class="comment">//关闭读缓存区流</span></span><br><span class="line">    fileReader.close();<span class="comment">//关闭读取流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">读取到第1行的内容为：尝试写入如下字符串以测试带缓存区的输出流功能。</span></span><br><span class="line"><span class="comment">&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 <p><strong>BufferedReader</strong>类的常用方法如下：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> ch = bufferedReader.read();<span class="comment">//读取单个字符(unicode两字节)</span></span><br><span class="line">System.out.println(<span class="string">&quot;ch = &quot;</span> + (<span class="keyword">char</span>)ch);<span class="comment">//输出结果为：尝</span></span><br><span class="line">String readStr = bufferedReader.readLine();<span class="comment">//读取一行</span></span><br></pre></td></tr></table></figure>
 <p><strong>BufferedWriter</strong>类的常用方法如下：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">bufferedWriter.write(writerStr, <span class="number">0</span>, writerStr.length());<span class="comment">//写入字符串的某一索引区间内容（此处为全部写入）</span></span><br><span class="line">bufferedWriter.flush();<span class="comment">//强制将缓存区的内容写入到磁盘（不管缓存区满否）</span></span><br><span class="line">bufferedWriter.newLine();<span class="comment">//将换行符写入文件</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="2-7-3-4-数据输入输出流"><a href="#2-7-3-4-数据输入输出流" class="headerlink" title="2.7.3.4. 数据输入输出流"></a>2.7.3.4. 数据输入输出流</h4><p><strong>DataInputStream</strong>与<strong>DataOutputStream</strong>类</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/eisenhao/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中），绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//尝试数据输出流</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileOutputStream fileOutputStream = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">    DataOutputStream dataOutputStream = <span class="keyword">new</span> DataOutputStream(fileOutputStream);</span><br><span class="line">    <span class="comment">//dataOutputStream.writeBytes(&quot;尝试以Byte格式写入内容。&quot;);</span></span><br><span class="line">    <span class="comment">//dataOutputStream.writeChars(&quot;尝试以Char格式写入内容。&quot;);</span></span><br><span class="line">    dataOutputStream.writeUTF(<span class="string">&quot;尝试以UTF格式写入内容。&quot;</span>);</span><br><span class="line">    dataOutputStream.close();</span><br><span class="line">    fileOutputStream.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//尝试数据输入流</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream fileInputStream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    DataInputStream dataInputStream = <span class="keyword">new</span> DataInputStream(fileInputStream);</span><br><span class="line">    String readStr = dataInputStream.readUTF();<span class="comment">//尝试以UTF格式读取文件内容</span></span><br><span class="line">    System.out.println(<span class="string">&quot;以UTF格式读取的内容为: &quot;</span> + readStr + <span class="string">&quot;&lt;END&gt;&quot;</span>);</span><br><span class="line">    dataInputStream.close();<span class="comment">//关闭数据输入流</span></span><br><span class="line">    fileInputStream.close();<span class="comment">//关闭文件写入流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">以UTF格式读取的内容为: 尝试以UTF格式写入内容。&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">&quot;/Users/haoleeson/Test/test.txt&quot;</span>);<span class="comment">//创建文件对象（于内存中），绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//尝试数据输出流</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileOutputStream fileOutputStream = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">    DataOutputStream dataOutputStream = <span class="keyword">new</span> DataOutputStream(fileOutputStream);</span><br><span class="line">    <span class="comment">//dataOutputStream.writeBytes(&quot;尝试以Byte格式写入内容。&quot;);</span></span><br><span class="line">    <span class="comment">//dataOutputStream.writeChars(&quot;尝试以Char格式写入内容。&quot;);</span></span><br><span class="line">    dataOutputStream.writeUTF(<span class="string">&quot;尝试以UTF格式写入内容。&quot;</span>);</span><br><span class="line">    dataOutputStream.close();</span><br><span class="line">    fileOutputStream.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//尝试数据输入流</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream fileInputStream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    DataInputStream dataInputStream = <span class="keyword">new</span> DataInputStream(fileInputStream);</span><br><span class="line">    String readStr = dataInputStream.readUTF();<span class="comment">//尝试以UTF格式读取文件内容</span></span><br><span class="line">    System.out.println(<span class="string">&quot;以UTF格式读取的内容为: &quot;</span> + readStr + <span class="string">&quot;&lt;END&gt;&quot;</span>);</span><br><span class="line">    dataInputStream.close();<span class="comment">//关闭数据输入流</span></span><br><span class="line">    fileInputStream.close();<span class="comment">//关闭文件写入流</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">以UTF格式读取的内容为: 尝试以UTF格式写入内容。&lt;END&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="2-7-3-5-ZIP压缩输入-x2F-输出流（压缩-x2F-解压文件）"><a href="#2-7-3-5-ZIP压缩输入-x2F-输出流（压缩-x2F-解压文件）" class="headerlink" title="2.7.3.5. ZIP压缩输入&#x2F;输出流（压缩&#x2F;解压文件）"></a>2.7.3.5. ZIP压缩输入&#x2F;输出流（压缩&#x2F;解压文件）</h4><p>ZIP压缩管理文件（Zip archive）是一种十分典型的文件压缩形式。常用<strong>ZipOutputStream</strong>与<strong>ZipInputStream</strong>类来实现文件的<strong>压缩</strong>&#x2F;<strong>解压缩</strong>。</p>
 <h5 id="2-7-3-5-1-压缩文件（ZipOutputStream类）"><a href="#2-7-3-5-1-压缩文件（ZipOutputStream类）" class="headerlink" title="2.7.3.5.1. 压缩文件（ZipOutputStream类）"></a>2.7.3.5.1. <strong>压缩文件（ZipOutputStream类）</strong></h5><p>若要将某个文件添加到ZIP压缩管理文件内，必须先写入待添加文件的目录进入点（待添加文件在ZIP文件内的位置），并且把待添加文件内容的位置移到此进入点说指的位置，然后再写入文件内容。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipEntry;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 压缩文件类</span></span><br><span class="line"><span class="comment"> * coder:eisenhao</span></span><br><span class="line"><span class="comment"> * Java</span></span><br><span class="line"><span class="comment"> * 20190414*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZipTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 加壳压缩文件函数</span></span><br><span class="line"><span class="comment">     * 输入参数：zipFileName -- 压缩后的文件名，inputFile -- 待压缩文件</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">zipFile</span><span class="params">(String zipFileName, File inputFile)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File unzipFile = <span class="keyword">new</span> File(zipFileName);<span class="comment">//获取待压缩文件 对象</span></span><br><span class="line">        String Base = inputFile.getName();<span class="comment">//得到待压缩文件名</span></span><br><span class="line">        ZipOutputStream out = <span class="keyword">new</span> ZipOutputStream(<span class="keyword">new</span> FileOutputStream(zipFileName));<span class="comment">//新建ZipOutputStream对象</span></span><br><span class="line">        zip(out, inputFile, Base); <span class="comment">//相对目录进入点为空</span></span><br><span class="line">        out.close();<span class="comment">//关闭压缩流</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 压缩文件核心函数</span></span><br><span class="line"><span class="comment">     * 输入参数：zipout - 压缩流、file - 待压缩文件、base - 目录进入点</span></span><br><span class="line"><span class="comment">     * 若为单个文件 - 直接拷贝压缩，若为目录文件 - 递归调用自身</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">zip</span><span class="params">(ZipOutputStream zipout, File file, String base)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//判断文件是否为目录文件</span></span><br><span class="line">        <span class="keyword">if</span> (file.isDirectory()) &#123;</span><br><span class="line">            <span class="comment">//若问文件夹，列出待压缩文件夹内所有文件</span></span><br><span class="line">            File[] fl = file.listFiles();<span class="comment">//获取路径数组</span></span><br><span class="line">            <span class="comment">//循环遍历待压缩文件夹内的所有文件(可能存在多级文件夹)</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fl.length; i++) &#123;</span><br><span class="line">                String tmpBase = base + <span class="string">&quot;/&quot;</span> + fl[i].getName();<span class="comment">//路径写入点为</span></span><br><span class="line">                zip(zipout, fl[i], tmpBase);<span class="comment">//递归调</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//若为单个文件，直接拷贝压缩</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            zipout.putNextEntry(<span class="keyword">new</span> ZipEntry(base));<span class="comment">//创建新的进入点</span></span><br><span class="line">            <span class="comment">//创建FileInputStream写出流对象</span></span><br><span class="line">            FileInputStream in = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">            <span class="keyword">int</span> ch;</span><br><span class="line">            System.out.println(<span class="string">&quot;压缩 &quot;</span> + base + <span class="string">&quot; 位置的 &quot;</span> + file.getName() + <span class="string">&quot; 文件 ...&quot;</span>);<span class="comment">//打印当前目录进入点</span></span><br><span class="line">            <span class="comment">//逐一字节拷贝压缩</span></span><br><span class="line">            <span class="keyword">while</span> ((ch = in.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">                zipout.write(ch);<span class="comment">//将字节写入当前ZIP条目</span></span><br><span class="line">            &#125;</span><br><span class="line">            in.close();<span class="comment">//关闭读取流</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ZipTest zipTest = <span class="keyword">new</span> ZipTest();</span><br><span class="line">        <span class="comment">//尝试压缩</span></span><br><span class="line">        String zipFileName = <span class="string">&quot;/Users/eisenhao/Downloads/Test.zip&quot;</span>;<span class="comment">//压缩后得到的文件名</span></span><br><span class="line">        String inputFile = <span class="string">&quot;/Users/eisenhao/Test/&quot;</span>;<span class="comment">//待压缩文件（可谓普通文件 或 目录文件）</span></span><br><span class="line">        System.out.println(<span class="string">&quot;尝试压缩 &quot;</span> + inputFile + <span class="string">&quot; 到 &quot;</span> + zipFileName + <span class="string">&quot; ...&quot;</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            zipTest.zipFile(zipFileName, <span class="keyword">new</span> File(inputFile));<span class="comment">//调用加壳压缩文件函数</span></span><br><span class="line">            System.out.println(<span class="string">&quot;压缩完成:)&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">尝试压缩 /Users/eisenhao/Test/ 到 /Users/eisenhao/Downloads/Test.zip ...</span></span><br><span class="line"><span class="comment">压缩 Test/test2.txt 位置的 test2.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/Second/test3.txt 位置的 test3.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/Second/Third/test4.txt 位置的 test4.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/Second/test3的副本.txt 位置的 test3的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/test2的副本.txt 位置的 test2的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/test.txt 位置的 test.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩完成:)</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipEntry;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 压缩文件类</span></span><br><span class="line"><span class="comment"> * coder：haoleeson</span></span><br><span class="line"><span class="comment"> * Java</span></span><br><span class="line"><span class="comment"> * 20190414*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZipTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 加壳压缩文件函数</span></span><br><span class="line"><span class="comment">     * 输入参数：zipFileName -- 压缩后的文件名，inputFile -- 待压缩文件</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">zipFile</span><span class="params">(String zipFileName, File inputFile)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File unzipFile = <span class="keyword">new</span> File(zipFileName);<span class="comment">//获取待压缩文件 对象</span></span><br><span class="line">        String Base = inputFile.getName();<span class="comment">//得到待压缩文件名</span></span><br><span class="line">        ZipOutputStream out = <span class="keyword">new</span> ZipOutputStream(<span class="keyword">new</span> FileOutputStream(zipFileName));<span class="comment">//新建ZipOutputStream对象</span></span><br><span class="line">        zip(out, inputFile, Base); <span class="comment">//相对目录进入点为空</span></span><br><span class="line">        out.close();<span class="comment">//关闭压缩流</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 压缩文件核心函数</span></span><br><span class="line"><span class="comment">     * 输入参数：zipout - 压缩流、file - 待压缩文件、base - 目录进入点</span></span><br><span class="line"><span class="comment">     * 若为单个文件 - 直接拷贝压缩，若为目录文件 - 递归调用自身</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">zip</span><span class="params">(ZipOutputStream zipout, File file, String base)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//判断文件是否为目录文件</span></span><br><span class="line">        <span class="keyword">if</span> (file.isDirectory()) &#123;</span><br><span class="line">            <span class="comment">//若问文件夹，列出待压缩文件夹内所有文件</span></span><br><span class="line">            File[] fl = file.listFiles();<span class="comment">//获取路径数组</span></span><br><span class="line">            <span class="comment">//循环遍历待压缩文件夹内的所有文件(可能存在多级文件夹)</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fl.length; i++) &#123;</span><br><span class="line">                String tmpBase = base + <span class="string">&quot;/&quot;</span> + fl[i].getName();<span class="comment">//路径写入点为</span></span><br><span class="line">                zip(zipout, fl[i], tmpBase);<span class="comment">//递归调</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//若为单个文件，直接拷贝压缩</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            zipout.putNextEntry(<span class="keyword">new</span> ZipEntry(base));<span class="comment">//创建新的进入点</span></span><br><span class="line">            <span class="comment">//创建FileInputStream写出流对象</span></span><br><span class="line">            FileInputStream in = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">            <span class="keyword">int</span> ch;</span><br><span class="line">            System.out.println(<span class="string">&quot;压缩 &quot;</span> + base + <span class="string">&quot; 位置的 &quot;</span> + file.getName() + <span class="string">&quot; 文件 ...&quot;</span>);<span class="comment">//打印当前目录进入点</span></span><br><span class="line">            <span class="comment">//逐一字节拷贝压缩</span></span><br><span class="line">            <span class="keyword">while</span> ((ch = in.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">                zipout.write(ch);<span class="comment">//将字节写入当前ZIP条目</span></span><br><span class="line">            &#125;</span><br><span class="line">            in.close();<span class="comment">//关闭读取流</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ZipTest zipTest = <span class="keyword">new</span> ZipTest();</span><br><span class="line">        <span class="comment">//尝试压缩</span></span><br><span class="line">        String zipFileName = <span class="string">&quot;/Users/haoleeson/Downloads/Test.zip&quot;</span>;<span class="comment">//压缩后得到的文件名</span></span><br><span class="line">        String inputFile = <span class="string">&quot;/Users/haoleeson/Test/&quot;</span>;<span class="comment">//待压缩文件（可谓普通文件 或 目录文件）</span></span><br><span class="line">        System.out.println(<span class="string">&quot;尝试压缩 &quot;</span> + inputFile + <span class="string">&quot; 到 &quot;</span> + zipFileName + <span class="string">&quot; ...&quot;</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            zipTest.zipFile(zipFileName, <span class="keyword">new</span> File(inputFile));<span class="comment">//调用加壳压缩文件函数</span></span><br><span class="line">            System.out.println(<span class="string">&quot;压缩完成:)&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">尝试压缩 /Users/haoleeson/Test/ 到 /Users/haoleeson/Downloads/Test.zip ...</span></span><br><span class="line"><span class="comment">压缩 Test/test2.txt 位置的 test2.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/Second/test3.txt 位置的 test3.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/Second/Third/test4.txt 位置的 test4.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/Second/test3的副本.txt 位置的 test3的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/test2的副本.txt 位置的 test2的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩 Test/test.txt 位置的 test.txt 文件 ...</span></span><br><span class="line"><span class="comment">压缩完成:)</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="2-7-3-5-2-解压缩文件（ZipInputStream类）"><a href="#2-7-3-5-2-解压缩文件（ZipInputStream类）" class="headerlink" title="2.7.3.5.2. 解压缩文件（ZipInputStream类）"></a>2.7.3.5.2. <strong>解压缩文件（ZipInputStream类）</strong></h5><p>若要从ZIP压缩管理文件内提取某个文件，要先找到待提取文件的目录进入点（该文件在ZIP文件内的位置），才能读取这个文件的内容。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipEntry;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipFile;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipInputStream;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 解压缩类</span></span><br><span class="line"><span class="comment"> * coder:eisenhao</span></span><br><span class="line"><span class="comment"> * Java</span></span><br><span class="line"><span class="comment"> * 20190414*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnzipTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解压缩文件方法，解压到当前目录</span></span><br><span class="line"><span class="comment">     * 参数：unZipFileName -- 待解压缩文件名（含路径）</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Unzip</span><span class="params">(String unZipFileName)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File unzipFile = <span class="keyword">new</span> File(unZipFileName);<span class="comment">//获取待压缩文件 对象</span></span><br><span class="line">        String finalPath = unzipFile.getParentFile() + <span class="string">&quot;/&quot;</span>;<span class="comment">//得到待解压缩文件的绝对路径</span></span><br><span class="line">        ZipFile zipFile = <span class="keyword">new</span> ZipFile(unzipFile);<span class="comment">//创建Zip压缩文件 对象</span></span><br><span class="line">        ZipInputStream zipInputStream = <span class="keyword">new</span> ZipInputStream(<span class="keyword">new</span> FileInputStream(unzipFile));<span class="comment">//实例化解压缩ZipInputStream对象</span></span><br><span class="line">        ZipEntry entry;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//迭代解压缩所有目录树上的文件（包括目录文件）</span></span><br><span class="line">        <span class="keyword">while</span> ((entry=zipInputStream.getNextEntry())!=<span class="keyword">null</span> &amp;&amp; !entry.isDirectory()) &#123;</span><br><span class="line">            File tmp = <span class="keyword">new</span> File(finalPath + entry.getName());<span class="comment">//解压出的文件路径</span></span><br><span class="line">            <span class="comment">//如果文件不存在</span></span><br><span class="line">            <span class="keyword">if</span> (!tmp.exists()) &#123;</span><br><span class="line">                tmp.getParentFile().mkdirs();<span class="comment">//创建父类文件夹路径</span></span><br><span class="line">                OutputStream writeStream = <span class="keyword">new</span> FileOutputStream(tmp);<span class="comment">//将文件目录中的文件放入输出流</span></span><br><span class="line">                System.out.println(<span class="string">&quot;解压缩 &quot;</span> + tmp.getAbsolutePath() + <span class="string">&quot; 文件 ...&quot;</span>);</span><br><span class="line">                <span class="comment">//用输入流读取压缩文件中制定目录中的文件</span></span><br><span class="line">                InputStream readStream = zipFile.getInputStream(entry);</span><br><span class="line">                <span class="keyword">int</span> ch = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span> ((ch = readStream.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">                    writeStream.write(ch);</span><br><span class="line">                &#125;</span><br><span class="line">                writeStream.close();<span class="comment">//关闭写文件流</span></span><br><span class="line">                readStream.close();<span class="comment">//关闭读文件流</span></span><br><span class="line">            &#125;</span><br><span class="line">            zipInputStream.closeEntry();<span class="comment">//关闭当前Entry</span></span><br><span class="line">        &#125;</span><br><span class="line">        zipInputStream.close();<span class="comment">//关闭解压缩流</span></span><br><span class="line">        System.out.println(<span class="string">&quot;解压缩已完成:)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        UnzipTest unzipTest = <span class="keyword">new</span> UnzipTest();</span><br><span class="line">        String unzipFileName = <span class="string">&quot;/Users/eisenhao/Downloads/Test.zip&quot;</span>;<span class="comment">//待解压缩文件名（含路径）</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            unzipTest.Unzip(unzipFileName);<span class="comment">//尝试解压缩</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">解压缩 /Users/eisenhao/Downloads/Test/test2.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/eisenhao/Downloads/Test/Second/test3.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/eisenhao/Downloads/Test/Second/Third/test4.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/eisenhao/Downloads/Test/Second/test3的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/eisenhao/Downloads/Test/test2的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/eisenhao/Downloads/Test/test.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩已完成:)</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipEntry;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipFile;</span><br><span class="line"><span class="keyword">import</span> java.util.zip.ZipInputStream;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 解压缩类</span></span><br><span class="line"><span class="comment"> * coder：haoleeson</span></span><br><span class="line"><span class="comment"> * Java</span></span><br><span class="line"><span class="comment"> * 20190414*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnzipTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解压缩文件方法，解压到当前目录</span></span><br><span class="line"><span class="comment">     * 参数：unZipFileName -- 待解压缩文件名（含路径）</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Unzip</span><span class="params">(String unZipFileName)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File unzipFile = <span class="keyword">new</span> File(unZipFileName);<span class="comment">//获取待压缩文件 对象</span></span><br><span class="line">        String finalPath = unzipFile.getParentFile() + <span class="string">&quot;/&quot;</span>;<span class="comment">//得到待解压缩文件的绝对路径</span></span><br><span class="line">        ZipFile zipFile = <span class="keyword">new</span> ZipFile(unzipFile);<span class="comment">//创建Zip压缩文件 对象</span></span><br><span class="line">        ZipInputStream zipInputStream = <span class="keyword">new</span> ZipInputStream(<span class="keyword">new</span> FileInputStream(unzipFile));<span class="comment">//实例化解压缩ZipInputStream对象</span></span><br><span class="line">        ZipEntry entry;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//迭代解压缩所有目录树上的文件（包括目录文件）</span></span><br><span class="line">        <span class="keyword">while</span> ((entry=zipInputStream.getNextEntry())!=<span class="keyword">null</span> &amp;&amp; !entry.isDirectory()) &#123;</span><br><span class="line">            File tmp = <span class="keyword">new</span> File(finalPath + entry.getName());<span class="comment">//解压出的文件路径</span></span><br><span class="line">            <span class="comment">//如果文件不存在</span></span><br><span class="line">            <span class="keyword">if</span> (!tmp.exists()) &#123;</span><br><span class="line">                tmp.getParentFile().mkdirs();<span class="comment">//创建父类文件夹路径</span></span><br><span class="line">                OutputStream writeStream = <span class="keyword">new</span> FileOutputStream(tmp);<span class="comment">//将文件目录中的文件放入输出流</span></span><br><span class="line">                System.out.println(<span class="string">&quot;解压缩 &quot;</span> + tmp.getAbsolutePath() + <span class="string">&quot; 文件 ...&quot;</span>);</span><br><span class="line">                <span class="comment">//用输入流读取压缩文件中制定目录中的文件</span></span><br><span class="line">                InputStream readStream = zipFile.getInputStream(entry);</span><br><span class="line">                <span class="keyword">int</span> ch = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span> ((ch = readStream.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">                    writeStream.write(ch);</span><br><span class="line">                &#125;</span><br><span class="line">                writeStream.close();<span class="comment">//关闭写文件流</span></span><br><span class="line">                readStream.close();<span class="comment">//关闭读文件流</span></span><br><span class="line">            &#125;</span><br><span class="line">            zipInputStream.closeEntry();<span class="comment">//关闭当前Entry</span></span><br><span class="line">        &#125;</span><br><span class="line">        zipInputStream.close();<span class="comment">//关闭解压缩流</span></span><br><span class="line">        System.out.println(<span class="string">&quot;解压缩已完成:)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        UnzipTest unzipTest = <span class="keyword">new</span> UnzipTest();</span><br><span class="line">        String unzipFileName = <span class="string">&quot;/Users/haoleeson/Downloads/Test.zip&quot;</span>;<span class="comment">//待解压缩文件名（含路径）</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            unzipTest.Unzip(unzipFileName);<span class="comment">//尝试解压缩</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">解压缩 /Users/haoleeson/Downloads/Test/test2.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/haoleeson/Downloads/Test/Second/test3.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/haoleeson/Downloads/Test/Second/Third/test4.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/haoleeson/Downloads/Test/Second/test3的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/haoleeson/Downloads/Test/test2的副本.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩 /Users/haoleeson/Downloads/Test/test.txt 文件 ...</span></span><br><span class="line"><span class="comment">解压缩已完成:)</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="2-8-多线程"><a href="#2-8-多线程" class="headerlink" title="2.8. 多线程"></a>2.8. 多线程</h2><p>在Java中可通过继承java.lang.Thread类与实现java.lang.Runnable接口两种方式。</p>
 <h3 id="2-8-1-Theard类与Runnable类实现线程区别"><a href="#2-8-1-Theard类与Runnable类实现线程区别" class="headerlink" title="2.8.1. Theard类与Runnable类实现线程区别"></a>2.8.1. Theard类与Runnable类实现线程区别</h3><p>Thread实现必须继承Thread类，而继承Runnable接口则更方便</p>
@@ -3704,6 +3704,73 @@
       </tags>
   </entry>
   <entry>
+    <title>停车场仿真系统</title>
+    <url>/2019/01/23/ParkingSimulationSystem/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/showFunction.gif" class="full-image" />
+
+<a id="more"></a>
+
+<h1 id="1-停车场仿真系统"><a href="#1-停车场仿真系统" class="headerlink" title="1. 停车场仿真系统"></a>1. 停车场仿真系统</h1><p>Project：用面向对象方法和面向对象程序设计语言，设计并实现停车场仿真程序。</p>
+<p>Platform：基于QT5.9.1开发，程序语言C++</p>
+<p>desc: 西电课程大作业</p>
+<p>coder: haoleeson</p>
+<p>Time: 2019-01-23</p>
+<div class="note success"><p>完整源码详见:<a href="https://github.com/haoleeson/ParkingSimulationSystem">我的Git仓库</a></p>
+</div>
+<h2 id="1-1-设计说明"><a href="#1-1-设计说明" class="headerlink" title="1.1. 设计说明"></a>1.1. 设计说明</h2><p>某企业欲为其内部停车场建设一套信息系统，已经调查到的需求如下：</p>
+<ul>
+<li>企业为每位员工均发放一张感应式IC卡，卡上记录员工号。该卡由专门的卡管理系统 M 制作和维护，本系统需通过 M 来验证卡的有效性。</li>
+<li>在停车场的入口和出口处分别安装一个自动栏杆、一台感应式IC卡读卡器和一个车辆通过传感器。</li>
+<li>入口处安装一个显示屏，显示当前空闲车位数量。若停车场当前没有空闲车位，则不允许汽车入场，只许场内的汽车出场。</li>
+<li>当一辆入场汽车到达入口时，用读卡器读出驾驶员的卡上信息，系统根据读出内容检查该卡的合法性：若该卡有效（需问M）&amp;&amp; 未被记录于当前场内卡号集合(即其车在场内的员工集合)中，即为合法卡。若为合法卡，系统命令栏杆抬起；汽车通过入口后，入口传感器通知系统发出命令，栏杆放下，系统遂将该卡卡号记录于当前场内卡号集合中；若为非法卡，则系统不发出栏杆抬起的命令，并发出告警信号。</li>
+<li>当一辆出场汽车到达出口时，用读入器读出驾驶员的卡上信息，系统根据读出内容检查该卡是否已经被记录在当前场内卡号集合中。若已被记录，系统命令栏杆抬起；汽车通过出口后，出口传感器通知系统发出命令，栏杆放下，系统遂将该卡从当前场内卡号集合中删除；若未被记录，系统不发出栏杆抬起的命令而发出告警信号，交由出口值班人员处理。</li>
+</ul>
+<h2 id="1-2-设计要求"><a href="#1-2-设计要求" class="headerlink" title="1.2. 设计要求"></a>1.2. 设计要求</h2><ul>
+<li>程序开始时，停车场车位全空。此后随机产生要进场的汽车，并按上述描述进行入场仿真。</li>
+<li>汽车在停车场中的停留时间随机产生（为仿真的方便，可限定在5分钟之内，并在入场后立即设置）。到达停车时间后汽车即按上述描述进行出场仿真。</li>
+<li><strong>定时报告</strong>（为方便，每分钟报告一次），应至少包括：当前时刻（包括时、分、秒）、当前场内车数、到目前为止的本次仿真“累计入场车数”、本次仿真“累计出场车数”、“本次仿真汽车的平均停车时间”。</li>
+<li>应将上条报告的每条信息均写入指定的运行<strong>记录文件</strong>。文件名格式为“仿真日期-仿真起始时间.TXT”。 其中&lt;仿真日期&gt;为yyyyMMdd格式，&lt;仿真起始时间&gt;为hhmmss格式。</li>
+<li>先按E&#x3D;2<em>N进行上述仿真。达到预期目标后，再分别按E &lt; 2*N和E &gt; 2</em>N进行仿真。因此，要求E和N从命令行、或配置文件、或从界面上读入，不能写死在程序中。</li>
+<li>为检验系统的<strong>控制功能</strong>，应<strong>随机</strong>产生以下三类<strong>事件</strong>，并将这些事件的细节记录到上述的运行记录文件。a)前文的两类争道冲突；b)非本单位员工汽车要求入场的情况；c)需按限定条件（8）处理的情况。</li>
+</ul>
+<h2 id="1-3-限定条件"><a href="#1-3-限定条件" class="headerlink" title="1.3. 限定条件"></a>1.3. 限定条件</h2><ul>
+<li><p>该企业的员工总人数为E人，员工号为1~E。</p>
+</li>
+<li><p>该停车场可容纳2*N辆汽车；入口到出口的距离&#x3D;N+2个车位的宽度。</p>
+</li>
+<li><p>汽车入场、出场时的读卡均需1秒钟，栏杆抬起、放下均需2秒钟，汽车的长度为2个车位宽度，汽车的行驶速度为每秒1个车位宽度。</p>
+</li>
+<li><p>入场的汽车尾端通过入口传感器后，该传感器通知系统放下入口栏杆。出场的汽车尾端通过出口传感器后，该传感器通知系统放下出口栏杆。</p>
+</li>
+<li><p>汽车进入停车场后，总是选择离入口最近的一个<strong>空</strong>车位停车。</p>
+</li>
+<li><p>汽车入场到达停车位后，需再用2秒从行车道停到车位上。汽车出场时先用2秒从车位到达行车道，然后向出口行进。</p>
+</li>
+<li><p>行车道上不允许汽车并行。a)若有进场车与出场车争道冲突，让出场车先行；b)若有出场车争道冲突，让离出口较远者先行；若与出口距离相同，随机决定让其中一辆车先行。</p>
+</li>
+<li><p>出口值班人员处理不允许出场的汽车时，令该车返回原车位。若原车位已被占用，返回离出口最近的一个空车位。</p>
+</li>
+</ul>
+<p>在整个仿真过程中不考虑驾驶员走入或走出停车场。</p>
+<h2 id="1-4-设计模型说明"><a href="#1-4-设计模型说明" class="headerlink" title="1.4. 设计模型说明"></a>1.4. 设计模型说明</h2><h3 id="1-4-1-类图"><a href="#1-4-1-类图" class="headerlink" title="1.4.1. 类图"></a>1.4.1. 类图</h3><p><img data-src="/../../../../uploads/parkingSimulationSystemUMLClassDiagram.png" alt="parkingSimulationSystemUMLClassDiagram"></p>
+<p>主要有：停车场类、汽车类、后台管理M系统类、IC读卡器类、栏杆类、传感器类。与栏杆类、传感器类是整体与部分关系。</p>
+<h3 id="1-4-2-用例图"><a href="#1-4-2-用例图" class="headerlink" title="1.4.2. 用例图"></a>1.4.2. 用例图</h3><p><img data-src="/../../../../uploads/parkingSimulationSystemUMLUseCaseDiagram.png" alt="parkingSimulationSystemUMLUseCaseDiagram"></p>
+<p>主要描述了汽车与系统与后台管理系统M、读卡器、传感器、栏杆等参与者的关系。</p>
+<h2 id="1-5-仿真流程（运行流程）简介"><a href="#1-5-仿真流程（运行流程）简介" class="headerlink" title="1.5. 仿真流程（运行流程）简介"></a>1.5. 仿真流程（运行流程）简介</h2><p>操作简单。涉及用户的人机交互操作仅有：设定员工人数、设定总车位数(&#x2F;2)、“开始仿真”、“结束仿真”、“生成汽车”按钮。</p>
+<h3 id="1-5-1-设定员工人数、设定总车位数-x2F-2-参数"><a href="#1-5-1-设定员工人数、设定总车位数-x2F-2-参数" class="headerlink" title="1.5.1. 设定员工人数、设定总车位数(&#x2F;2)参数"></a>1.5.1. 设定员工人数、设定总车位数(&#x2F;2)参数</h3><p>设定员工人数、设定总车位数(&#x2F;2) 或维持默认（10, 5）。</p>
+<h3 id="1-5-2-点击“开始仿真”"><a href="#1-5-2-点击“开始仿真”" class="headerlink" title="1.5.2. 点击“开始仿真”"></a>1.5.2. 点击“开始仿真”</h3><p>点击“开始仿真”按钮。</p>
+<h3 id="1-5-3-点击“生成汽车”"><a href="#1-5-3-点击“生成汽车”" class="headerlink" title="1.5.3. 点击“生成汽车”"></a>1.5.3. 点击“生成汽车”</h3><p>点击“生成汽车”按钮，此时在相对坐标(0,0)处生成汽车，添加该实例到MainWindow类的生成汽车容器中（QVector&lt;carClass*&gt; creatCarList），并进行各种行为控制。</p>
+<h3 id="1-5-4-系统内部每1s中断响应函数"><a href="#1-5-4-系统内部每1s中断响应函数" class="headerlink" title="1.5.4. 系统内部每1s中断响应函数"></a>1.5.4. 系统内部每1s中断响应函数</h3><p>执行：获取时间并更新界面左侧显示窗口信息，仿真控制所有生成车的运动的函数，检测下1秒有无争道并处理(让弱势方延时1秒)，自动关前门，自动关后门</p>
+<h3 id="1-5-5-点击“结束仿真”"><a href="#1-5-5-点击“结束仿真”" class="headerlink" title="1.5.5. 点击“结束仿真”"></a>1.5.5. 点击“结束仿真”</h3><p>点击“结束仿真”按钮，关闭右侧动画框，保存系统日志文件。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OpenConfig北向接口简介</title>
     <url>/2022/01/27/OpenConfigNorthboundInterface/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-北向接口简介"><a href="#1-北向接口简介" class="headerlink" title="1. 北向接口简介"></a>1. 北向接口简介</h1><h2 id="1-1-背景"><a href="#1-1-背景" class="headerlink" title="1.1. 背景"></a>1.1. 背景</h2><p>SDN（Software-Defined Networking，软件定义网络）能够很好地实现网络服务的可定制化，包括网络的可编程性、控制与转发相分离和集中化控制。用户可通过 SDN 的北向接口对网络资源进行编排以定制出满足自身需求的服务</p>
@@ -3792,126 +3859,6 @@
       </tags>
   </entry>
   <entry>
-    <title>停车场仿真系统</title>
-    <url>/2019/01/23/ParkingSimulationSystem/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/showFunction.gif" class="full-image" />
-
-<a id="more"></a>
-
-<h1 id="1-停车场仿真系统"><a href="#1-停车场仿真系统" class="headerlink" title="1. 停车场仿真系统"></a>1. 停车场仿真系统</h1><p>Project：用面向对象方法和面向对象程序设计语言，设计并实现停车场仿真程序。</p>
-<p>Platform：基于QT5.9.1开发，程序语言C++</p>
-<p>desc: 西电课程大作业</p>
-<p>coder：eisenhao</p>
-<p>Time: 2019-01-23</p>
-<div class="note success"><p>完整源码详见:<a href="https://github.com/haoleeson/ParkingSimulationSystem">我的Git仓库</a></p>
-</div>
-<h2 id="1-1-设计说明"><a href="#1-1-设计说明" class="headerlink" title="1.1. 设计说明"></a>1.1. 设计说明</h2><p>某企业欲为其内部停车场建设一套信息系统，已经调查到的需求如下：</p>
-<ul>
-<li>企业为每位员工均发放一张感应式IC卡，卡上记录员工号。该卡由专门的卡管理系统 M 制作和维护，本系统需通过 M 来验证卡的有效性。</li>
-<li>在停车场的入口和出口处分别安装一个自动栏杆、一台感应式IC卡读卡器和一个车辆通过传感器。</li>
-<li>入口处安装一个显示屏，显示当前空闲车位数量。若停车场当前没有空闲车位，则不允许汽车入场，只许场内的汽车出场。</li>
-<li>当一辆入场汽车到达入口时，用读卡器读出驾驶员的卡上信息，系统根据读出内容检查该卡的合法性：若该卡有效（需问M）&amp;&amp; 未被记录于当前场内卡号集合(即其车在场内的员工集合)中，即为合法卡。若为合法卡，系统命令栏杆抬起；汽车通过入口后，入口传感器通知系统发出命令，栏杆放下，系统遂将该卡卡号记录于当前场内卡号集合中；若为非法卡，则系统不发出栏杆抬起的命令，并发出告警信号。</li>
-<li>当一辆出场汽车到达出口时，用读入器读出驾驶员的卡上信息，系统根据读出内容检查该卡是否已经被记录在当前场内卡号集合中。若已被记录，系统命令栏杆抬起；汽车通过出口后，出口传感器通知系统发出命令，栏杆放下，系统遂将该卡从当前场内卡号集合中删除；若未被记录，系统不发出栏杆抬起的命令而发出告警信号，交由出口值班人员处理。</li>
-</ul>
-<h2 id="1-2-设计要求"><a href="#1-2-设计要求" class="headerlink" title="1.2. 设计要求"></a>1.2. 设计要求</h2><ul>
-<li>程序开始时，停车场车位全空。此后随机产生要进场的汽车，并按上述描述进行入场仿真。</li>
-<li>汽车在停车场中的停留时间随机产生（为仿真的方便，可限定在5分钟之内，并在入场后立即设置）。到达停车时间后汽车即按上述描述进行出场仿真。</li>
-<li><strong>定时报告</strong>（为方便，每分钟报告一次），应至少包括：当前时刻（包括时、分、秒）、当前场内车数、到目前为止的本次仿真“累计入场车数”、本次仿真“累计出场车数”、“本次仿真汽车的平均停车时间”。</li>
-<li>应将上条报告的每条信息均写入指定的运行<strong>记录文件</strong>。文件名格式为“仿真日期-仿真起始时间.TXT”。 其中&lt;仿真日期&gt;为yyyyMMdd格式，&lt;仿真起始时间&gt;为hhmmss格式。</li>
-<li>先按E&#x3D;2<em>N进行上述仿真。达到预期目标后，再分别按E &lt; 2*N和E &gt; 2</em>N进行仿真。因此，要求E和N从命令行、或配置文件、或从界面上读入，不能写死在程序中。</li>
-<li>为检验系统的<strong>控制功能</strong>，应<strong>随机</strong>产生以下三类<strong>事件</strong>，并将这些事件的细节记录到上述的运行记录文件。a)前文的两类争道冲突；b)非本单位员工汽车要求入场的情况；c)需按限定条件（8）处理的情况。</li>
-</ul>
-<h2 id="1-3-限定条件"><a href="#1-3-限定条件" class="headerlink" title="1.3. 限定条件"></a>1.3. 限定条件</h2><ul>
-<li><p>该企业的员工总人数为E人，员工号为1~E。</p>
-</li>
-<li><p>该停车场可容纳2*N辆汽车；入口到出口的距离&#x3D;N+2个车位的宽度。</p>
-</li>
-<li><p>汽车入场、出场时的读卡均需1秒钟，栏杆抬起、放下均需2秒钟，汽车的长度为2个车位宽度，汽车的行驶速度为每秒1个车位宽度。</p>
-</li>
-<li><p>入场的汽车尾端通过入口传感器后，该传感器通知系统放下入口栏杆。出场的汽车尾端通过出口传感器后，该传感器通知系统放下出口栏杆。</p>
-</li>
-<li><p>汽车进入停车场后，总是选择离入口最近的一个<strong>空</strong>车位停车。</p>
-</li>
-<li><p>汽车入场到达停车位后，需再用2秒从行车道停到车位上。汽车出场时先用2秒从车位到达行车道，然后向出口行进。</p>
-</li>
-<li><p>行车道上不允许汽车并行。a)若有进场车与出场车争道冲突，让出场车先行；b)若有出场车争道冲突，让离出口较远者先行；若与出口距离相同，随机决定让其中一辆车先行。</p>
-</li>
-<li><p>出口值班人员处理不允许出场的汽车时，令该车返回原车位。若原车位已被占用，返回离出口最近的一个空车位。</p>
-</li>
-</ul>
-<p>在整个仿真过程中不考虑驾驶员走入或走出停车场。</p>
-<h2 id="1-4-设计模型说明"><a href="#1-4-设计模型说明" class="headerlink" title="1.4. 设计模型说明"></a>1.4. 设计模型说明</h2><h3 id="1-4-1-类图"><a href="#1-4-1-类图" class="headerlink" title="1.4.1. 类图"></a>1.4.1. 类图</h3><p><img data-src="/../../../../uploads/parkingSimulationSystemUMLClassDiagram.png" alt="parkingSimulationSystemUMLClassDiagram"></p>
-<p>主要有：停车场类、汽车类、后台管理M系统类、IC读卡器类、栏杆类、传感器类。与栏杆类、传感器类是整体与部分关系。</p>
-<h3 id="1-4-2-用例图"><a href="#1-4-2-用例图" class="headerlink" title="1.4.2. 用例图"></a>1.4.2. 用例图</h3><p><img data-src="/../../../../uploads/parkingSimulationSystemUMLUseCaseDiagram.png" alt="parkingSimulationSystemUMLUseCaseDiagram"></p>
-<p>主要描述了汽车与系统与后台管理系统M、读卡器、传感器、栏杆等参与者的关系。</p>
-<h2 id="1-5-仿真流程（运行流程）简介"><a href="#1-5-仿真流程（运行流程）简介" class="headerlink" title="1.5. 仿真流程（运行流程）简介"></a>1.5. 仿真流程（运行流程）简介</h2><p>操作简单。涉及用户的人机交互操作仅有：设定员工人数、设定总车位数(&#x2F;2)、“开始仿真”、“结束仿真”、“生成汽车”按钮。</p>
-<h3 id="1-5-1-设定员工人数、设定总车位数-x2F-2-参数"><a href="#1-5-1-设定员工人数、设定总车位数-x2F-2-参数" class="headerlink" title="1.5.1. 设定员工人数、设定总车位数(&#x2F;2)参数"></a>1.5.1. 设定员工人数、设定总车位数(&#x2F;2)参数</h3><p>设定员工人数、设定总车位数(&#x2F;2) 或维持默认（10, 5）。</p>
-<h3 id="1-5-2-点击“开始仿真”"><a href="#1-5-2-点击“开始仿真”" class="headerlink" title="1.5.2. 点击“开始仿真”"></a>1.5.2. 点击“开始仿真”</h3><p>点击“开始仿真”按钮。</p>
-<h3 id="1-5-3-点击“生成汽车”"><a href="#1-5-3-点击“生成汽车”" class="headerlink" title="1.5.3. 点击“生成汽车”"></a>1.5.3. 点击“生成汽车”</h3><p>点击“生成汽车”按钮，此时在相对坐标(0,0)处生成汽车，添加该实例到MainWindow类的生成汽车容器中（QVector&lt;carClass*&gt; creatCarList），并进行各种行为控制。</p>
-<h3 id="1-5-4-系统内部每1s中断响应函数"><a href="#1-5-4-系统内部每1s中断响应函数" class="headerlink" title="1.5.4. 系统内部每1s中断响应函数"></a>1.5.4. 系统内部每1s中断响应函数</h3><p>执行：获取时间并更新界面左侧显示窗口信息，仿真控制所有生成车的运动的函数，检测下1秒有无争道并处理(让弱势方延时1秒)，自动关前门，自动关后门</p>
-<h3 id="1-5-5-点击“结束仿真”"><a href="#1-5-5-点击“结束仿真”" class="headerlink" title="1.5.5. 点击“结束仿真”"></a>1.5.5. 点击“结束仿真”</h3><p>点击“结束仿真”按钮，关闭右侧动画框，保存系统日志文件。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python查看本周口碑电影</title>
-    <url>/2019/04/30/PythonSimpleWebC/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/PythonSimpleWebCTest.jpg" class="full-image" />
-
-<h1 id="1-查看豆瓣周口碑榜的电影列表"><a href="#1-查看豆瓣周口碑榜的电影列表" class="headerlink" title="1. 查看豆瓣周口碑榜的电影列表"></a>1. 查看豆瓣周口碑榜的电影列表</h1><p>执行结果展示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">查看豆瓣一周口碑榜:</span><br><span class="line">复仇者联盟<span class="number">4</span>：终局之战</span><br><span class="line">触不可及(美版)</span><br><span class="line">盗梦特攻队</span><br><span class="line">深红累之渊</span><br><span class="line">遇见女孩的感觉</span><br><span class="line">撞死了一只羊</span><br><span class="line">归家：碧昂斯电影作品</span><br><span class="line">西班牙之旅</span><br><span class="line">娑婆诃</span><br><span class="line">番石榴岛</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h1 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2. 准备工作"></a>2. 准备工作</h1><ul>
-<li>安装Python环境。详见<a href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/#%E5%AE%89%E8%A3%85Python3-7">安装Python3.7</a></li>
-<li>使用pip3安装requests、lxml模块。参考<a href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/#%E4%BD%BF%E7%94%A8pip3%E5%AE%89%E8%A3%85Numpy%E6%A8%A1%E5%9D%97">使用pip3安装Numpy模块</a></li>
-<li>运行平台：终端或Python IDE软件(eg.<a href="http://www.jetbrains.com/pycharm/">PyCharm</a>)</li>
-</ul>
-<h1 id="3-练习1：查看豆瓣一周口碑榜"><a href="#3-练习1：查看豆瓣一周口碑榜" class="headerlink" title="3. 练习1：查看豆瓣一周口碑榜"></a>3. 练习1：查看豆瓣一周口碑榜</h1><p>代码比较简单，如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看豆瓣一周口碑榜 https://movie.douban.com/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/&#x27;</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//td[@class=&quot;title&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="comment"># //td ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;title&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式输出</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;查看豆瓣一周口碑榜:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(i, end=<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>关键点总结：</p>
-<ul>
-<li>网址，eg.上述事例代码中的<code><a href="https://movie.douban.com/">https://movie.douban.com/</a></code></li>
-<li>数据格式，eg.上述事例代码中的<code>'//td[@class="title"]//a/text()'</code><ul>
-<li>具有一定规律，可通过查看 HTML 源码（浏览器 F12）得出<img data-src="../../../../uploads/PythonSimpleWebCTest2.jpg" class="full-image" /></li>
-<li>其中：<ul>
-<li><code>//td</code> ：相当于大目录；</li>
-<li><code>[@class="title"]</code>：相当于小目录；</li>
-<li><code>//a</code> ：这个相当于最小的目录；</li>
-<li><code>/text()</code>：这个是提取其中的数据。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="4-练习2：查看豆瓣-西安-影讯-上映内容"><a href="#4-练习2：查看豆瓣-西安-影讯-上映内容" class="headerlink" title="4. 练习2：查看豆瓣-西安-影讯-上映内容"></a>4. 练习2：查看豆瓣-西安-影讯-上映内容</h1><p>代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/cinema/later/xian/&#x27;</span> <span class="comment"># 数据的网址：豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line"><span class="comment"># //div ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;intro&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//div[@class=&quot;intro&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 格式输出</span></span><br><span class="line"><span class="comment"># print(&quot;查看豆瓣-西安-影讯-即将上映内容&quot;)</span></span><br><span class="line"><span class="comment"># for i in result:</span></span><br><span class="line"><span class="comment">#     print(i, end=&#x27;\n&#x27;)</span></span><br></pre></td></tr></table></figure>
-
-<p>运行结果：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[<span class="string">&#x27;港珠澳大桥&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;下一任：前任&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;悟空奇遇记&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;猫公主苏菲&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;国礼&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大破天门阵&#x27;</span>, <span class="string">&#x27;柔情史&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;罗马&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大侦探皮卡丘&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;进京城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一个母亲的复仇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;欢迎来北方II&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;半边天&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一路疯癫&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;周恩来回延安&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;海蒂和爷爷&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;企鹅公路&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;妈阁是座城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;致命梦魇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;音乐家&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;你好现任&#x27;</span>]</span><br></pre></td></tr></table></figure>
-
-<h1 id="5-备注"><a href="#5-备注" class="headerlink" title="5. 备注"></a>5. 备注</h1><p>虽然实例代码比较简单，但实际中运行时仍会面临很多问题，比如： </p>
-<ul>
-<li>网页数据内容的规则难以归纳 </li>
-<li>查看的数据不规范（需进一步处理） </li>
-<li>大部分网站拥有反Pa机制等</li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++中的四种多态</title>
     <url>/2018/10/14/PolymorphismTest/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/PolymorphismTest.jpg" class="full-image" />
@@ -3976,6 +3923,59 @@
       </categories>
       <tags>
         <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python查看本周口碑电影</title>
+    <url>/2019/04/30/PythonSimpleWebC/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/PythonSimpleWebCTest.jpg" class="full-image" />
+
+<h1 id="1-查看豆瓣周口碑榜的电影列表"><a href="#1-查看豆瓣周口碑榜的电影列表" class="headerlink" title="1. 查看豆瓣周口碑榜的电影列表"></a>1. 查看豆瓣周口碑榜的电影列表</h1><p>执行结果展示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">查看豆瓣一周口碑榜:</span><br><span class="line">复仇者联盟<span class="number">4</span>：终局之战</span><br><span class="line">触不可及(美版)</span><br><span class="line">盗梦特攻队</span><br><span class="line">深红累之渊</span><br><span class="line">遇见女孩的感觉</span><br><span class="line">撞死了一只羊</span><br><span class="line">归家：碧昂斯电影作品</span><br><span class="line">西班牙之旅</span><br><span class="line">娑婆诃</span><br><span class="line">番石榴岛</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h1 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2. 准备工作"></a>2. 准备工作</h1><ul>
+<li>安装Python环境。详见<a href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/#%E5%AE%89%E8%A3%85Python3-7">安装Python3.7</a></li>
+<li>使用pip3安装requests、lxml模块。参考<a href="https://eisenhao.cn/2018/09/23/AfterInstallManjaro/#%E4%BD%BF%E7%94%A8pip3%E5%AE%89%E8%A3%85Numpy%E6%A8%A1%E5%9D%97">使用pip3安装Numpy模块</a></li>
+<li>运行平台：终端或Python IDE软件(eg.<a href="http://www.jetbrains.com/pycharm/">PyCharm</a>)</li>
+</ul>
+<h1 id="3-练习1：查看豆瓣一周口碑榜"><a href="#3-练习1：查看豆瓣一周口碑榜" class="headerlink" title="3. 练习1：查看豆瓣一周口碑榜"></a>3. 练习1：查看豆瓣一周口碑榜</h1><p>代码比较简单，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看豆瓣一周口碑榜 https://movie.douban.com/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/&#x27;</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//td[@class=&quot;title&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="comment"># //td ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;title&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式输出</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;查看豆瓣一周口碑榜:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(i, end=<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>关键点总结：</p>
+<ul>
+<li>网址，eg.上述事例代码中的<code><a href="https://movie.douban.com/">https://movie.douban.com/</a></code></li>
+<li>数据格式，eg.上述事例代码中的<code>'//td[@class="title"]//a/text()'</code><ul>
+<li>具有一定规律，可通过查看 HTML 源码（浏览器 F12）得出<img data-src="../../../../uploads/PythonSimpleWebCTest2.jpg" class="full-image" /></li>
+<li>其中：<ul>
+<li><code>//td</code> ：相当于大目录；</li>
+<li><code>[@class="title"]</code>：相当于小目录；</li>
+<li><code>//a</code> ：这个相当于最小的目录；</li>
+<li><code>/text()</code>：这个是提取其中的数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-练习2：查看豆瓣-西安-影讯-上映内容"><a href="#4-练习2：查看豆瓣-西安-影讯-上映内容" class="headerlink" title="4. 练习2：查看豆瓣-西安-影讯-上映内容"></a>4. 练习2：查看豆瓣-西安-影讯-上映内容</h1><p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://movie.douban.com/cinema/later/xian/&#x27;</span> <span class="comment"># 数据的网址：豆瓣-西安-影讯-即将上映内容</span></span><br><span class="line">page = requests.Session().get(url)</span><br><span class="line">tree = html.fromstring(page.text)</span><br><span class="line"><span class="comment"># //div ：这个相当于指定是大目录；</span></span><br><span class="line"><span class="comment"># [@class=&quot;intro&quot;]：这个相当于指定的小目录；</span></span><br><span class="line"><span class="comment"># //a ：这个相当于最小的目录；</span></span><br><span class="line"><span class="comment"># /text()：这个是提取其中的数据。</span></span><br><span class="line">result = tree.xpath(<span class="string">&#x27;//div[@class=&quot;intro&quot;]//a/text()&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 格式输出</span></span><br><span class="line"><span class="comment"># print(&quot;查看豆瓣-西安-影讯-即将上映内容&quot;)</span></span><br><span class="line"><span class="comment"># for i in result:</span></span><br><span class="line"><span class="comment">#     print(i, end=&#x27;\n&#x27;)</span></span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[<span class="string">&#x27;港珠澳大桥&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;下一任：前任&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;悟空奇遇记&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;猫公主苏菲&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;国礼&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大破天门阵&#x27;</span>, <span class="string">&#x27;柔情史&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;罗马&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;大侦探皮卡丘&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;进京城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一个母亲的复仇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;欢迎来北方II&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;半边天&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;一路疯癫&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;周恩来回延安&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;海蒂和爷爷&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;企鹅公路&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;妈阁是座城&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;致命梦魇&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;音乐家&#x27;</span>, <span class="string">&#x27;预告片&#x27;</span>, <span class="string">&#x27;你好现任&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-备注"><a href="#5-备注" class="headerlink" title="5. 备注"></a>5. 备注</h1><p>虽然实例代码比较简单，但实际中运行时仍会面临很多问题，比如： </p>
+<ul>
+<li>网页数据内容的规则难以归纳 </li>
+<li>查看的数据不规范（需进一步处理） </li>
+<li>大部分网站拥有反Pa机制等</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -4082,7 +4082,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
 <p>一般此时查询的结果只有一个Fork仓库远端（共两行fetch + push）eg.</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">origin      ssh:&#x2F;&#x2F;git@xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.git (fetch)</span><br><span class="line">origin      ssh:&#x2F;&#x2F;git@xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
-<p>其中 “origin” （默认值）为本地设置的Fork远端仓库的远端别名， 而“ssh:&#x2F;&#x2F;<a href="mailto:&#x67;&#x69;&#x74;&#x40;&#120;&#x78;&#x78;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#120;&#120;&#120;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#120;&#x78;&#x78;&#x78;&#x78;&#x78;&#120;&#46;&#103;&#105;&#x74;">&#x67;&#x69;&#x74;&#x40;&#120;&#x78;&#x78;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#120;&#120;&#120;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#120;&#x78;&#x78;&#x78;&#x78;&#x78;&#120;&#46;&#103;&#105;&#x74;</a>“ 对应为你的Fork仓库地址</p>
+<p>其中 “origin” （默认值）为本地设置的Fork远端仓库的远端别名， 而“ssh:&#x2F;&#x2F;<a href="mailto:&#103;&#105;&#116;&#64;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#120;&#x78;&#x78;&#120;&#120;&#120;&#x78;&#120;&#x2e;&#103;&#x69;&#x74;">&#103;&#105;&#116;&#64;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#120;&#x78;&#x78;&#120;&#120;&#120;&#x78;&#120;&#x2e;&#103;&#x69;&#x74;</a>“ 对应为你的Fork仓库地址</p>
 <h2 id="1-2-添加官方源仓库远端"><a href="#1-2-添加官方源仓库远端" class="headerlink" title="1.2. 添加官方源仓库远端"></a>1.2. 添加官方源仓库远端</h2><p>添加官方源仓库远端到本地Fork仓库，使具有两个远端</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin_official https:&#x2F;&#x2F;oooooooooooooooooooooooooooooo.git</span><br></pre></td></tr></table></figure>
 <p>其中 “origin_official” 为自定义官方源仓库在本地的远端别名， “<a href="https://oooooooooooooooooooooooooooooo.git&quot;/">https://oooooooooooooooooooooooooooooo.git&quot;</a> 为官方源仓库地址</p>
@@ -5076,214 +5076,6 @@
       </categories>
       <tags>
         <tag>syslog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VLAN</title>
-    <url>/2021/08/03/VLAN/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><ul>
-<li>虚拟局域网（Virtual Local Area Network，VLAN），是将局域网从逻辑上划分为一个个网段，从而实现虚拟工作组的一种交换技术。</li>
-<li>每个网段内所有主机间的通讯和广播仅限于该VLAN内，广播帧不会被转发到其他网段，VLAN间不能进行直接通信，从而实现了对广播域的分割和隔离。</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="1-1-VLAN产生背景"><a href="#1-1-VLAN产生背景" class="headerlink" title="1.1. VLAN产生背景"></a>1.1. VLAN产生背景</h2><ul>
-<li>网桥、集线器或交换机构成的整个物理局域网同属于一个广播域，任何一个广播帧或多播帧都将被光波导整个局域网的每一台主机</li>
-<li>在网络通讯中，广播信息是普遍存在的，这些广播帧将占用大量网络带宽，导致网络速度和通讯效率下降，增加网络主机处理广播信息的负荷</li>
-<li>蠕虫病毒泛滥，为防止网络阻塞和瘫痪，需要进行有效的广播域隔离</li>
-</ul>
-<h2 id="1-2-VLAN作用"><a href="#1-2-VLAN作用" class="headerlink" title="1.2. VLAN作用"></a>1.2. VLAN作用</h2><ul>
-<li><strong>限制广播域</strong>：广播域被限制在一个VLAN内，节省了带宽，提高了网络处理能力。</li>
-<li><strong>增强局域网的安全性</strong>：不同VLAN内的报文在传输时是相互隔离的，即一个VLAN内的用户不能和其它VLAN内的用户直接通信。</li>
-<li><strong>提高网络的健壮性</strong>：故障被限制在一个VLAN内，本VLAN内的故障不会影响其他VLAN的正常工作。</li>
-<li><strong>灵活构建虚拟工作组</strong>：用VLAN可以划分不同的用户到不同的工作组，同一工作组的用户也不必局限于某一固定的物理范围，网络构建和维护更方便灵活。</li>
-</ul>
-<h1 id="2-静态VLAN与动态VLAN"><a href="#2-静态VLAN与动态VLAN" class="headerlink" title="2. 静态VLAN与动态VLAN"></a>2. 静态VLAN与动态VLAN</h1><h2 id="2-1-静态VLAN"><a href="#2-1-静态VLAN" class="headerlink" title="2.1. 静态VLAN"></a>2.1. 静态VLAN</h2><p>明确指定个端口所属VLAN的设定方法，也称为基于端口的VLAN。</p>
-<p>特点：是将交换机按端口进行分组，每组定义一个VLAN，属于同一个VLAN的端口，可来自一台或多台交换机（即可跨多台交换机设置VLAN）。</p>
-<h2 id="2-2-动态VLAN"><a href="#2-2-动态VLAN" class="headerlink" title="2.2. 动态VLAN"></a>2.2. 动态VLAN</h2><p>根据每个端口所连的计算机，动态设置端口所属VLAN的设定方法。</p>
-<table>
-<thead>
-<tr>
-<th align="left">划分依据</th>
-<th align="left">说明</th>
-<th align="left">优点</th>
-<th align="left">缺点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">基于端口</td>
-<td align="left">根据以太网交换机的端口来划分</td>
-<td align="left">定义VLAN成员时非常简单(只要将所有的端口都指定一下就可以了)</td>
-<td align="left">如果VLAN A的用户离开了原来的端口，到了一个新的交换机的某个端口，那么就必须重新定义。</td>
-</tr>
-<tr>
-<td align="left">基于MAC地址</td>
-<td align="left">根据端口所连计算机的网卡MAC地址，决定该端口所属的VLAN。<br>eg.MAC地址为”00-0C-6E-E1-1B-36”的计算机被设置为属于VLAN2，则该计算机连接的交换机端口会被自动划归为VLAN2。</td>
-<td align="left">当用户物理位置移动时，即从一个交换机换到其他的交换机时，VLAN不用重新配置，可以认为这种根据MAC地址的划分方法是基于用户的VLAN</td>
-<td align="left">初始化时，所有的用户都必须进行配置，若用户数量较大则配置量非常大。<br>此外这种划分的方法也导致了交换机执行效率的降低，因为在每一个交换机的端口都可能存在很多个VLAN组的成员，这样就无法限制广播包了。</td>
-</tr>
-<tr>
-<td align="left">基于子网</td>
-<td align="left">根据每个主机的网络层地址划分的。虽然这种划分方法是根据网络地址，比如IP地址，但它不是路由，与网络层的路由毫无关系</td>
-<td align="left">用户的物理位置改变了，不需要重新配置所属的VLAN。<br>此外无需附加的帧标签来识别VLAN，可减少网络的通信量</td>
-<td align="left">效率低，因为检查每一个数据包的网络层地址是需要消耗处理时间的，一般的交换机芯片都可以自动检查网络上数据包的以太网帧头，但要让芯片能检查IP帧头，需要更高的技术，同时更费时</td>
-</tr>
-<tr>
-<td align="left">基于协议</td>
-<td align="left">根据报文的协议类型和封装格式进行VLAN的划分。<br>如：IP、IPX、AppleTalk协议族；Ethernet II，802.3，802.3&#x2F;802.2 LLC， 802.3&#x2F;802.2 SNAP等封装格式</td>
-<td align="left">一个交换机换到其他的交换机时，VLAN不用重新配置</td>
-<td align="left">初始化时，所有的用户都必须进行配置，配置量大、执行效率低、无法限制广播包</td>
-</tr>
-</tbody></table>
-<h2 id="2-3-动静态VLAN对比"><a href="#2-3-动静态VLAN对比" class="headerlink" title="2.3. 动静态VLAN对比"></a>2.3. 动静态VLAN对比</h2><table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="center">静态VLAN</th>
-<th align="center">动态VLAN</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">划分方式</td>
-<td align="center">基于端口</td>
-<td align="center">基于MAC地址、子网、用户</td>
-</tr>
-<tr>
-<td align="center">特点</td>
-<td align="center">需人为设定，需设定的端口数目较多，工作量大</td>
-<td align="center">自动设定，灵活，省事</td>
-</tr>
-</tbody></table>
-<h1 id="3-802-1Q-VLAN帧格式"><a href="#3-802-1Q-VLAN帧格式" class="headerlink" title="3. 802.1Q VLAN帧格式"></a>3. 802.1Q VLAN帧格式</h1><h2 id="3-1-传统以太网帧格式"><a href="#3-1-传统以太网帧格式" class="headerlink" title="3.1. 传统以太网帧格式"></a>3.1. 传统以太网帧格式</h2><table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="center">目的MAC地址</th>
-<th align="center">源MAC地址</th>
-<th align="center">长度或类型</th>
-<th align="center">数据</th>
-<th align="center">FCS</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">区段大小（bytes））</td>
-<td align="center">6</td>
-<td align="center">6</td>
-<td align="center">2</td>
-<td align="center">46~1500</td>
-<td align="center">4</td>
-</tr>
-</tbody></table>
-<h2 id="3-2-802-1Q帧格式"><a href="#3-2-802-1Q帧格式" class="headerlink" title="3.2. 802.1Q帧格式"></a>3.2. 802.1Q帧格式</h2><table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="center">目的MAC地址</th>
-<th align="center">源MAC地址</th>
-<th align="center">802.1Q Tag</th>
-<th align="center">长度或类型</th>
-<th align="center">数据</th>
-<th align="center">FCS</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">区段大小（bytes））</td>
-<td align="center">6</td>
-<td align="center">6</td>
-<td align="center">4</td>
-<td align="center">2</td>
-<td align="center">46~1500</td>
-<td align="center">4</td>
-</tr>
-</tbody></table>
-<p>其中802.1Q Tag中又细分了TPID、PRI、CFI和VID4个字段，四个字段说明如下：</p>
-<table>
-<thead>
-<tr>
-<th align="center">字段</th>
-<th align="center">长度（bits）</th>
-<th align="left">名称</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">TPID</td>
-<td align="center">16</td>
-<td align="left">Tag Protocol ID，表示这个帧是否带标签</td>
-<td align="left">如果该值取<strong>0x8100</strong>，则表示这个帧是带Tag的帧，相反表示其是传统不带Tag标签的帧；<br>该帧与传统的以太网帧中该位置的Type&#x2F;Length字段兼容</td>
-</tr>
-<tr>
-<td align="center">PRI</td>
-<td align="center">3</td>
-<td align="left">Priority，表示帧的优先级</td>
-<td align="left">取值范围为0~7，值越大优先级越高，在交换机阻塞时，优先发送优先级较高的帧</td>
-</tr>
-<tr>
-<td align="center">CFI</td>
-<td align="center">1</td>
-<td align="left">标准格式指示位</td>
-<td align="left">-</td>
-</tr>
-<tr>
-<td align="center">VID</td>
-<td align="center">12</td>
-<td align="left">VLAN Identifier，表示该帧所属的VLAN</td>
-<td align="left">VLAN的有效取值范围为1~4094（0和4095为保留取值）</td>
-</tr>
-</tbody></table>
-<h1 id="4-VLAN间的通信"><a href="#4-VLAN间的通信" class="headerlink" title="4. VLAN间的通信"></a>4. VLAN间的通信</h1><p>可使用路由器或三层交换机为VLAN设置路由，在三层交换机中划分VLAN，以支持VLAN间的相互通讯。</p>
-<h2 id="4-1-同VLAN内主机的跨域通讯"><a href="#4-1-同VLAN内主机的跨域通讯" class="headerlink" title="4.1. 同VLAN内主机的跨域通讯"></a>4.1. 同VLAN内主机的跨域通讯</h2><ol>
-<li>在交换机端口各拿num(VLAN)个端口级联，专门用于对应VLAN的主机跨交换机通讯</li>
-<li>让交换机间的互联链路汇集到一条链路上（<strong>汇聚链路</strong>、<strong>主干链路</strong>），该链路的端口被称为汇聚连接端口，该链路允许各VLAN的通讯流过</li>
-</ol>
-<h2 id="4-2-不同接口类型下的VLAN间通信流程"><a href="#4-2-不同接口类型下的VLAN间通信流程" class="headerlink" title="4.2. 不同接口类型下的VLAN间通信流程"></a>4.2. 不同接口类型下的VLAN间通信流程</h2><p>交换机上的端口分为三种一种是接入层端口<strong>直连</strong>设备的，叫做Access；一种是交换机和交换机之间的端口负责<strong>汇聚</strong>的叫做Trunk，还有一种是Access与Trunk混合的模式，叫做Hybrid。</p>
-<table>
-<thead>
-<tr>
-<th align="left">接口类型</th>
-<th align="left">不带Tag报文处理</th>
-<th align="left">带Tag报文处理</th>
-<th align="left">发送帧处理流程</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Access接口</td>
-<td align="left">接收该报文，并打上缺省的VLAN ID</td>
-<td align="left">当VLAN ID与缺省VLAN ID相同（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
-<td align="left">先剥离帧的PVID Tag，然后再发送</td>
-</tr>
-<tr>
-<td align="left">Trunk接口</td>
-<td align="left">打上缺省的VLAN ID，当缺省VLAN ID在允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
-<td align="left">当VLAN ID在接口允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
-<td align="left">若不是接口允许通过的VLAN ID时，则丢弃该报文。<br>当VLAN ID与缺省VLAN ID相同（合法）时，去掉Tag，发送该报文。<br>不合法时保持原有Tag，发送该报文</td>
-</tr>
-<tr>
-<td align="left">Hybrid接口</td>
-<td align="left">打上缺省的VLAN ID，当缺省VLAN ID在允许通过的VLAN ID列表里（合法）时，接收该报文。<br>不合法时丢弃该报文</td>
-<td align="left">当VLAN ID在接口允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
-<td align="left">当VLAN ID是该接口允许通过的VLAN ID时，发送该报文。<br>可以通过命令设置发送时是否携带Tag</td>
-</tr>
-</tbody></table>
-<h2 id="4-3-Tag-x2F-Untag报文的处理原则"><a href="#4-3-Tag-x2F-Untag报文的处理原则" class="headerlink" title="4.3. Tag&#x2F;Untag报文的处理原则"></a>4.3. Tag&#x2F;Untag报文的处理原则</h2><p>背景：在交换机内部，为快速高效的处理，<strong>报文都是带tag转发的</strong>。（交换机上很多会配置多个VLAN，不同VLAN的流量仅能靠tag标签区分）</p>
-<h3 id="4-3-1-报文进入switch时"><a href="#4-3-1-报文进入switch时" class="headerlink" title="4.3.1. 报文进入switch时"></a>4.3.1. 报文进入switch时</h3><p>在接收报文时，交换机的主要职责是——根据tag&#x2F;untag属性和端口属性决定<strong>是否允许</strong>该报文进入该端口：</p>
-<ul>
-<li>报文属性为untag：允许报文进入该端口，并打上PVID的VLAN tag（与端口属性无关）</li>
-<li>报文属性为tag，且此交换机端口为Access端口：若端口允许该报文tag标明的VLAN通过，接收并处理报文；若不允许则丢弃报文</li>
-<li>报文属性为tag，且此交换机端口为Trunk&#x2F;Hybrid端口：若端口允许该报文tag标明的VLAN通过，接收并处理报文；若不允许则丢弃报文</li>
-</ul>
-<h3 id="4-3-2-报文出switch时"><a href="#4-3-2-报文出switch时" class="headerlink" title="4.3.2. 报文出switch时"></a>4.3.2. 报文出switch时</h3><p>在转发报文时，主要职责是——根据出端口属性决定是否携带tag转发报文：</p>
-<ul>
-<li>出端口为Access端口：不带tag转发（将标签剥离）</li>
-<li>出端口为Trunk端口：若报文所在的VLAN和PVID相同，则报文不带tag转发；否则带tag转发</li>
-<li>出端口为Hybrid端口：根据报文所在的VLAN配置是&#x2F;否为tag，决定是&#x2F;否带tag转发</li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>Network</tag>
       </tags>
   </entry>
   <entry>
@@ -6384,6 +6176,214 @@
       </tags>
   </entry>
   <entry>
+    <title>VLAN</title>
+    <url>/2021/08/03/VLAN/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><ul>
+<li>虚拟局域网（Virtual Local Area Network，VLAN），是将局域网从逻辑上划分为一个个网段，从而实现虚拟工作组的一种交换技术。</li>
+<li>每个网段内所有主机间的通讯和广播仅限于该VLAN内，广播帧不会被转发到其他网段，VLAN间不能进行直接通信，从而实现了对广播域的分割和隔离。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="1-1-VLAN产生背景"><a href="#1-1-VLAN产生背景" class="headerlink" title="1.1. VLAN产生背景"></a>1.1. VLAN产生背景</h2><ul>
+<li>网桥、集线器或交换机构成的整个物理局域网同属于一个广播域，任何一个广播帧或多播帧都将被光波导整个局域网的每一台主机</li>
+<li>在网络通讯中，广播信息是普遍存在的，这些广播帧将占用大量网络带宽，导致网络速度和通讯效率下降，增加网络主机处理广播信息的负荷</li>
+<li>蠕虫病毒泛滥，为防止网络阻塞和瘫痪，需要进行有效的广播域隔离</li>
+</ul>
+<h2 id="1-2-VLAN作用"><a href="#1-2-VLAN作用" class="headerlink" title="1.2. VLAN作用"></a>1.2. VLAN作用</h2><ul>
+<li><strong>限制广播域</strong>：广播域被限制在一个VLAN内，节省了带宽，提高了网络处理能力。</li>
+<li><strong>增强局域网的安全性</strong>：不同VLAN内的报文在传输时是相互隔离的，即一个VLAN内的用户不能和其它VLAN内的用户直接通信。</li>
+<li><strong>提高网络的健壮性</strong>：故障被限制在一个VLAN内，本VLAN内的故障不会影响其他VLAN的正常工作。</li>
+<li><strong>灵活构建虚拟工作组</strong>：用VLAN可以划分不同的用户到不同的工作组，同一工作组的用户也不必局限于某一固定的物理范围，网络构建和维护更方便灵活。</li>
+</ul>
+<h1 id="2-静态VLAN与动态VLAN"><a href="#2-静态VLAN与动态VLAN" class="headerlink" title="2. 静态VLAN与动态VLAN"></a>2. 静态VLAN与动态VLAN</h1><h2 id="2-1-静态VLAN"><a href="#2-1-静态VLAN" class="headerlink" title="2.1. 静态VLAN"></a>2.1. 静态VLAN</h2><p>明确指定个端口所属VLAN的设定方法，也称为基于端口的VLAN。</p>
+<p>特点：是将交换机按端口进行分组，每组定义一个VLAN，属于同一个VLAN的端口，可来自一台或多台交换机（即可跨多台交换机设置VLAN）。</p>
+<h2 id="2-2-动态VLAN"><a href="#2-2-动态VLAN" class="headerlink" title="2.2. 动态VLAN"></a>2.2. 动态VLAN</h2><p>根据每个端口所连的计算机，动态设置端口所属VLAN的设定方法。</p>
+<table>
+<thead>
+<tr>
+<th align="left">划分依据</th>
+<th align="left">说明</th>
+<th align="left">优点</th>
+<th align="left">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">基于端口</td>
+<td align="left">根据以太网交换机的端口来划分</td>
+<td align="left">定义VLAN成员时非常简单(只要将所有的端口都指定一下就可以了)</td>
+<td align="left">如果VLAN A的用户离开了原来的端口，到了一个新的交换机的某个端口，那么就必须重新定义。</td>
+</tr>
+<tr>
+<td align="left">基于MAC地址</td>
+<td align="left">根据端口所连计算机的网卡MAC地址，决定该端口所属的VLAN。<br>eg.MAC地址为”00-0C-6E-E1-1B-36”的计算机被设置为属于VLAN2，则该计算机连接的交换机端口会被自动划归为VLAN2。</td>
+<td align="left">当用户物理位置移动时，即从一个交换机换到其他的交换机时，VLAN不用重新配置，可以认为这种根据MAC地址的划分方法是基于用户的VLAN</td>
+<td align="left">初始化时，所有的用户都必须进行配置，若用户数量较大则配置量非常大。<br>此外这种划分的方法也导致了交换机执行效率的降低，因为在每一个交换机的端口都可能存在很多个VLAN组的成员，这样就无法限制广播包了。</td>
+</tr>
+<tr>
+<td align="left">基于子网</td>
+<td align="left">根据每个主机的网络层地址划分的。虽然这种划分方法是根据网络地址，比如IP地址，但它不是路由，与网络层的路由毫无关系</td>
+<td align="left">用户的物理位置改变了，不需要重新配置所属的VLAN。<br>此外无需附加的帧标签来识别VLAN，可减少网络的通信量</td>
+<td align="left">效率低，因为检查每一个数据包的网络层地址是需要消耗处理时间的，一般的交换机芯片都可以自动检查网络上数据包的以太网帧头，但要让芯片能检查IP帧头，需要更高的技术，同时更费时</td>
+</tr>
+<tr>
+<td align="left">基于协议</td>
+<td align="left">根据报文的协议类型和封装格式进行VLAN的划分。<br>如：IP、IPX、AppleTalk协议族；Ethernet II，802.3，802.3&#x2F;802.2 LLC， 802.3&#x2F;802.2 SNAP等封装格式</td>
+<td align="left">一个交换机换到其他的交换机时，VLAN不用重新配置</td>
+<td align="left">初始化时，所有的用户都必须进行配置，配置量大、执行效率低、无法限制广播包</td>
+</tr>
+</tbody></table>
+<h2 id="2-3-动静态VLAN对比"><a href="#2-3-动静态VLAN对比" class="headerlink" title="2.3. 动静态VLAN对比"></a>2.3. 动静态VLAN对比</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">静态VLAN</th>
+<th align="center">动态VLAN</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">划分方式</td>
+<td align="center">基于端口</td>
+<td align="center">基于MAC地址、子网、用户</td>
+</tr>
+<tr>
+<td align="center">特点</td>
+<td align="center">需人为设定，需设定的端口数目较多，工作量大</td>
+<td align="center">自动设定，灵活，省事</td>
+</tr>
+</tbody></table>
+<h1 id="3-802-1Q-VLAN帧格式"><a href="#3-802-1Q-VLAN帧格式" class="headerlink" title="3. 802.1Q VLAN帧格式"></a>3. 802.1Q VLAN帧格式</h1><h2 id="3-1-传统以太网帧格式"><a href="#3-1-传统以太网帧格式" class="headerlink" title="3.1. 传统以太网帧格式"></a>3.1. 传统以太网帧格式</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">目的MAC地址</th>
+<th align="center">源MAC地址</th>
+<th align="center">长度或类型</th>
+<th align="center">数据</th>
+<th align="center">FCS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">区段大小（bytes））</td>
+<td align="center">6</td>
+<td align="center">6</td>
+<td align="center">2</td>
+<td align="center">46~1500</td>
+<td align="center">4</td>
+</tr>
+</tbody></table>
+<h2 id="3-2-802-1Q帧格式"><a href="#3-2-802-1Q帧格式" class="headerlink" title="3.2. 802.1Q帧格式"></a>3.2. 802.1Q帧格式</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">目的MAC地址</th>
+<th align="center">源MAC地址</th>
+<th align="center">802.1Q Tag</th>
+<th align="center">长度或类型</th>
+<th align="center">数据</th>
+<th align="center">FCS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">区段大小（bytes））</td>
+<td align="center">6</td>
+<td align="center">6</td>
+<td align="center">4</td>
+<td align="center">2</td>
+<td align="center">46~1500</td>
+<td align="center">4</td>
+</tr>
+</tbody></table>
+<p>其中802.1Q Tag中又细分了TPID、PRI、CFI和VID4个字段，四个字段说明如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">字段</th>
+<th align="center">长度（bits）</th>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TPID</td>
+<td align="center">16</td>
+<td align="left">Tag Protocol ID，表示这个帧是否带标签</td>
+<td align="left">如果该值取<strong>0x8100</strong>，则表示这个帧是带Tag的帧，相反表示其是传统不带Tag标签的帧；<br>该帧与传统的以太网帧中该位置的Type&#x2F;Length字段兼容</td>
+</tr>
+<tr>
+<td align="center">PRI</td>
+<td align="center">3</td>
+<td align="left">Priority，表示帧的优先级</td>
+<td align="left">取值范围为0~7，值越大优先级越高，在交换机阻塞时，优先发送优先级较高的帧</td>
+</tr>
+<tr>
+<td align="center">CFI</td>
+<td align="center">1</td>
+<td align="left">标准格式指示位</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="center">VID</td>
+<td align="center">12</td>
+<td align="left">VLAN Identifier，表示该帧所属的VLAN</td>
+<td align="left">VLAN的有效取值范围为1~4094（0和4095为保留取值）</td>
+</tr>
+</tbody></table>
+<h1 id="4-VLAN间的通信"><a href="#4-VLAN间的通信" class="headerlink" title="4. VLAN间的通信"></a>4. VLAN间的通信</h1><p>可使用路由器或三层交换机为VLAN设置路由，在三层交换机中划分VLAN，以支持VLAN间的相互通讯。</p>
+<h2 id="4-1-同VLAN内主机的跨域通讯"><a href="#4-1-同VLAN内主机的跨域通讯" class="headerlink" title="4.1. 同VLAN内主机的跨域通讯"></a>4.1. 同VLAN内主机的跨域通讯</h2><ol>
+<li>在交换机端口各拿num(VLAN)个端口级联，专门用于对应VLAN的主机跨交换机通讯</li>
+<li>让交换机间的互联链路汇集到一条链路上（<strong>汇聚链路</strong>、<strong>主干链路</strong>），该链路的端口被称为汇聚连接端口，该链路允许各VLAN的通讯流过</li>
+</ol>
+<h2 id="4-2-不同接口类型下的VLAN间通信流程"><a href="#4-2-不同接口类型下的VLAN间通信流程" class="headerlink" title="4.2. 不同接口类型下的VLAN间通信流程"></a>4.2. 不同接口类型下的VLAN间通信流程</h2><p>交换机上的端口分为三种一种是接入层端口<strong>直连</strong>设备的，叫做Access；一种是交换机和交换机之间的端口负责<strong>汇聚</strong>的叫做Trunk，还有一种是Access与Trunk混合的模式，叫做Hybrid。</p>
+<table>
+<thead>
+<tr>
+<th align="left">接口类型</th>
+<th align="left">不带Tag报文处理</th>
+<th align="left">带Tag报文处理</th>
+<th align="left">发送帧处理流程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Access接口</td>
+<td align="left">接收该报文，并打上缺省的VLAN ID</td>
+<td align="left">当VLAN ID与缺省VLAN ID相同（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">先剥离帧的PVID Tag，然后再发送</td>
+</tr>
+<tr>
+<td align="left">Trunk接口</td>
+<td align="left">打上缺省的VLAN ID，当缺省VLAN ID在允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">当VLAN ID在接口允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">若不是接口允许通过的VLAN ID时，则丢弃该报文。<br>当VLAN ID与缺省VLAN ID相同（合法）时，去掉Tag，发送该报文。<br>不合法时保持原有Tag，发送该报文</td>
+</tr>
+<tr>
+<td align="left">Hybrid接口</td>
+<td align="left">打上缺省的VLAN ID，当缺省VLAN ID在允许通过的VLAN ID列表里（合法）时，接收该报文。<br>不合法时丢弃该报文</td>
+<td align="left">当VLAN ID在接口允许通过的VLAN ID列表里（合法）时，接收该报文；<br>不合法时丢弃该报文</td>
+<td align="left">当VLAN ID是该接口允许通过的VLAN ID时，发送该报文。<br>可以通过命令设置发送时是否携带Tag</td>
+</tr>
+</tbody></table>
+<h2 id="4-3-Tag-x2F-Untag报文的处理原则"><a href="#4-3-Tag-x2F-Untag报文的处理原则" class="headerlink" title="4.3. Tag&#x2F;Untag报文的处理原则"></a>4.3. Tag&#x2F;Untag报文的处理原则</h2><p>背景：在交换机内部，为快速高效的处理，<strong>报文都是带tag转发的</strong>。（交换机上很多会配置多个VLAN，不同VLAN的流量仅能靠tag标签区分）</p>
+<h3 id="4-3-1-报文进入switch时"><a href="#4-3-1-报文进入switch时" class="headerlink" title="4.3.1. 报文进入switch时"></a>4.3.1. 报文进入switch时</h3><p>在接收报文时，交换机的主要职责是——根据tag&#x2F;untag属性和端口属性决定<strong>是否允许</strong>该报文进入该端口：</p>
+<ul>
+<li>报文属性为untag：允许报文进入该端口，并打上PVID的VLAN tag（与端口属性无关）</li>
+<li>报文属性为tag，且此交换机端口为Access端口：若端口允许该报文tag标明的VLAN通过，接收并处理报文；若不允许则丢弃报文</li>
+<li>报文属性为tag，且此交换机端口为Trunk&#x2F;Hybrid端口：若端口允许该报文tag标明的VLAN通过，接收并处理报文；若不允许则丢弃报文</li>
+</ul>
+<h3 id="4-3-2-报文出switch时"><a href="#4-3-2-报文出switch时" class="headerlink" title="4.3.2. 报文出switch时"></a>4.3.2. 报文出switch时</h3><p>在转发报文时，主要职责是——根据出端口属性决定是否携带tag转发报文：</p>
+<ul>
+<li>出端口为Access端口：不带tag转发（将标签剥离）</li>
+<li>出端口为Trunk端口：若报文所在的VLAN和PVID相同，则报文不带tag转发；否则带tag转发</li>
+<li>出端口为Hybrid端口：根据报文所在的VLAN配置是&#x2F;否为tag，决定是&#x2F;否带tag转发</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Network</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sonic 全量编译及指定容器编译简介</title>
     <url>/2021/09/26/building_sonic/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
@@ -7142,6 +7142,44 @@
       </tags>
   </entry>
   <entry>
+    <title>基于Hexo的博文编写调试发布流程简介</title>
+    <url>/2018/08/29/post-debugging-steps/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/post-debugging-steps.png" class="full-image" />
+
+<h1 id="1-博客文章编写＆调试＆发布"><a href="#1-博客文章编写＆调试＆发布" class="headerlink" title="1. 博客文章编写＆调试＆发布"></a>1. 博客文章编写＆调试＆发布</h1><h2 id="1-1-进入Hexo根目录"><a href="#1-1-进入Hexo根目录" class="headerlink" title="1.1. 进入Hexo根目录"></a>1.1. 进入Hexo根目录</h2><ol>
+<li>输入密码,进入root用户模式<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo su</span><br></pre></td></tr></table></figure></li>
+<li>进入Hexo站点根目录<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io</span><br></pre></td></tr></table></figure>
+<a id="more"></a></li>
+</ol>
+<h2 id="1-2-写文章"><a href="#1-2-写文章" class="headerlink" title="1.2. 写文章"></a>1.2. 写文章</h2><ol>
+<li>进入发布文件夹<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;source&#x2F;_posts</span><br></pre></td></tr></table></figure></li>
+<li>新建md文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ touch example.md</span><br></pre></td></tr></table></figure></li>
+<li>编辑example.md文件，编写文章(用Markdown大肆发挥吧，可参考<a href="https://eisenhao.cn/2018/08/31/write-a-md-file/">Markdown文章语法</a>)<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim example.md</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="1-3-本地调试"><a href="#1-3-本地调试" class="headerlink" title="1.3. 本地调试"></a>1.3. 本地调试</h2><ol>
+<li>开启测试<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ sudo hexo s</span><br></pre></td></tr></table></figure></li>
+<li>在浏览器中输入: <a href="http://localhost:4000/">http://localhost:4000/</a>以查看效果.</li>
+</ol>
+<h2 id="1-4-发布"><a href="#1-4-发布" class="headerlink" title="1.4. 发布"></a>1.4. 发布</h2><ol>
+<li>测试没问题后，我们就生成静态网页文件发布至我们的Github pages 中。<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ cd /home/haoleeson/haoleeson.github.io</span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
+<li>可能会要求输入github账号密码</li>
+<li>如果上传失败显示如下信息,可能是由于我们没有配置root环境中的GitHub账号global，按照提示配置一下GitHub的global账号即可.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="2-主题配置"><a href="#2-主题配置" class="headerlink" title="2. 主题配置"></a>2. 主题配置</h1><ol>
+<li>主题配置文件在主题文件夹中,我们可以更改config.yml文件进行配置.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
+<li>用文本编辑器打开编辑主题配置文件,点击查看<a href="http://theme-next.iissnan.com/getting-started.html#theme-settings">设置详细介绍.</a><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="3-Linux-技巧每日一练"><a href="#3-Linux-技巧每日一练" class="headerlink" title="3. Linux 技巧每日一练"></a>3. Linux 技巧每日一练</h1><p>用管理员运行文档管理器. sudo nautilus 会打开root版的文档管理器，可在终端键入ctrl+c就会关闭这个文档管理器。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo nautilus</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>日志规范</title>
     <url>/2021/08/26/logSpecification/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-日志分类"><a href="#1-日志分类" class="headerlink" title="1. 日志分类"></a>1. 日志分类</h1><blockquote>
@@ -7370,44 +7408,6 @@
       </categories>
       <tags>
         <tag>syslog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>基于Hexo的博文编写调试发布流程简介</title>
-    <url>/2018/08/29/post-debugging-steps/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/post-debugging-steps.png" class="full-image" />
-
-<h1 id="1-博客文章编写＆调试＆发布"><a href="#1-博客文章编写＆调试＆发布" class="headerlink" title="1. 博客文章编写＆调试＆发布"></a>1. 博客文章编写＆调试＆发布</h1><h2 id="1-1-进入Hexo根目录"><a href="#1-1-进入Hexo根目录" class="headerlink" title="1.1. 进入Hexo根目录"></a>1.1. 进入Hexo根目录</h2><ol>
-<li>输入密码,进入root用户模式<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo su</span><br></pre></td></tr></table></figure></li>
-<li>进入Hexo站点根目录<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io</span><br></pre></td></tr></table></figure>
-<a id="more"></a></li>
-</ol>
-<h2 id="1-2-写文章"><a href="#1-2-写文章" class="headerlink" title="1.2. 写文章"></a>1.2. 写文章</h2><ol>
-<li>进入发布文件夹<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;source&#x2F;_posts</span><br></pre></td></tr></table></figure></li>
-<li>新建md文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ touch example.md</span><br></pre></td></tr></table></figure></li>
-<li>编辑example.md文件，编写文章(用Markdown大肆发挥吧，可参考<a href="https://eisenhao.cn/2018/08/31/write-a-md-file/">Markdown文章语法</a>)<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim example.md</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="1-3-本地调试"><a href="#1-3-本地调试" class="headerlink" title="1.3. 本地调试"></a>1.3. 本地调试</h2><ol>
-<li>开启测试<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ sudo hexo s</span><br></pre></td></tr></table></figure></li>
-<li>在浏览器中输入: <a href="http://localhost:4000/">http://localhost:4000/</a>以查看效果.</li>
-</ol>
-<h2 id="1-4-发布"><a href="#1-4-发布" class="headerlink" title="1.4. 发布"></a>1.4. 发布</h2><ol>
-<li>测试没问题后，我们就生成静态网页文件发布至我们的Github pages 中。<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ cd /home/eisenhao/eisenhao.github.io</span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
-<li>可能会要求输入github账号密码</li>
-<li>如果上传失败显示如下信息,可能是由于我们没有配置root环境中的GitHub账号global，按照提示配置一下GitHub的global账号即可.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="2-主题配置"><a href="#2-主题配置" class="headerlink" title="2. 主题配置"></a>2. 主题配置</h1><ol>
-<li>主题配置文件在主题文件夹中,我们可以更改config.yml文件进行配置.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
-<li>用文本编辑器打开编辑主题配置文件,点击查看<a href="http://theme-next.iissnan.com/getting-started.html#theme-settings">设置详细介绍.</a><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim &#x2F;home&#x2F;eisenhao&#x2F;eisenhao.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="3-Linux-技巧每日一练"><a href="#3-Linux-技巧每日一练" class="headerlink" title="3. Linux 技巧每日一练"></a>3. Linux 技巧每日一练</h1><p>用管理员运行文档管理器. sudo nautilus 会打开root版的文档管理器，可在终端键入ctrl+c就会关闭这个文档管理器。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo nautilus</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -10644,7 +10644,7 @@
 <li><strong>图片：</strong> 在需要添加图片的位置<code>![图片](图片地址)</code>便可，图片地址可以是本地路径，或网络地址</li>
 <li><strong>表格：</strong> - 和 | 分割行和列 ，<code>:</code>与<code>-</code>的相对位置控制当前列的左对齐、居中对齐、右对齐方式(<code>:----|:----:|----:</code>)，表格代码段可能需要与上部分代码空一行</li>
 <li><strong>代码块：</strong> 每行代码前加四个空格(不显示行号)，或 使用<code>```代码内容```</code>(显示行号，<code>`</code>为键盘Esc下方按键)</li>
-<li><strong>文本链接：</strong> [文字链接名称](链接地址)，eg: <a href="https://eisenhao.github.io/">我的博客</a> (<code>[我的博客](<a href="https://eisenhao.github.io/">https://eisenhao.github.io/</a></code>)</li>
+<li><strong>文本链接：</strong> [文字链接名称](链接地址)，eg: <a href="https://haoleeson.github.io/">我的博客</a> (<code>[我的博客](<a href="https://haoleeson.github.io/">https://haoleeson.github.io/</a></code>)</li>
 <li><strong>小型文本：</strong> <small>小型文本</small><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;small&gt;小型文本&lt;&#x2F;small&gt;</span><br></pre></td></tr></table></figure></li>
 <li><strong>高亮：</strong> 比如<code>突出背景色</code>来显示强调效果<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;code&gt;突出背景色&lt;&#x2F;code&gt;</span><br></pre></td></tr></table></figure></li>
 <li><strong>代码注释：</strong> 注释内容有助于理解代码，而不会被编译<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!-- 注释内容 --&gt;</span><br></pre></td></tr></table></figure></li>
@@ -10810,18 +10810,18 @@
 <p>网易云flash插件：</p>
 <p><embed src="//music.163.com/style/swf/widget.swf?sid=414611053&type=2&auto=1&width=320&height=66" width="340" height="86"  allowNetworking="all"></embed></p>
 <h3 id="8-3-2-方式2：用hexo-tag-aplayer插件音乐"><a href="#8-3-2-方式2：用hexo-tag-aplayer插件音乐" class="headerlink" title="8.3.2. 方式2：用hexo-tag-aplayer插件音乐"></a>8.3.2. 方式2：用hexo-tag-aplayer插件音乐</h3><p>巧取网易云音乐mp3外链方法，不知到现在有没有被禁<br>例如：在网易云网页版点击”陈芳语-爱你”，从浏览器地址栏发现”陈芳语-爱你”的id为：22852057，则将下方代码’id&#x3D;’后的数字更改为‘22852057’之后就是”陈芳语-爱你”mp3格式的外链，新建标签页粘贴该地址可直接播放，应用在博客里插入外链还是很方便的（ps:在网易云还没禁用此bug之前）。</p>
-<p>将歌词文件放在“hexo站点文件夹&#x2F;source&#x2F;uploads&#x2F;”文件夹内，封面图、歌词文件引用地址为：<br>“<a href="https://eisenhao.github.io/uploads/%E5%B0%81%E9%9D%A2%E5%9B%BE.jpg&quot;%E3%80%81&quot;https://eisenhao.github.io/uploads/%E6%AD%8C%E8%AF%8D.lrc&quot;">https://eisenhao.github.io/uploads/封面图.jpg&quot;、&quot;https://eisenhao.github.io/uploads/歌词.lrc&quot;</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 网易云网页版关于&quot;陈芳语-爱你&quot;的歌曲id&#x3D;22852057</span><br><span class="line">http:&#x2F;&#x2F;music.163.com&#x2F;song&#x2F;media&#x2F;outer&#x2F;url?id&#x3D;22852057.mp3 #可直接播放外链（已失效）</span><br><span class="line">https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;loveYou.jpg #封面图</span><br><span class="line">https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc #歌词 &#x2F;&#x2F;暂时无法添加lrc歌词，只能内嵌歌词</span><br></pre></td></tr></table></figure>
+<p>将歌词文件放在“hexo站点文件夹&#x2F;source&#x2F;uploads&#x2F;”文件夹内，封面图、歌词文件引用地址为：<br>“<a href="https://haoleeson.github.io/uploads/%E5%B0%81%E9%9D%A2%E5%9B%BE.jpg&quot;%E3%80%81&quot;https://haoleeson.github.io/uploads/%E6%AD%8C%E8%AF%8D.lrc&quot;">https://haoleeson.github.io/uploads/封面图.jpg&quot;、&quot;https://haoleeson.github.io/uploads/歌词.lrc&quot;</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 网易云网页版关于&quot;陈芳语-爱你&quot;的歌曲id&#x3D;22852057</span><br><span class="line">http:&#x2F;&#x2F;music.163.com&#x2F;song&#x2F;media&#x2F;outer&#x2F;url?id&#x3D;22852057.mp3 #可直接播放外链（已失效）</span><br><span class="line">https:&#x2F;&#x2F;haoleeson.github.io&#x2F;uploads&#x2F;loveYou.jpg #封面图</span><br><span class="line">https:&#x2F;&#x2F;haoleeson.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc #歌词 &#x2F;&#x2F;暂时无法添加lrc歌词，只能内嵌歌词</span><br></pre></td></tr></table></figure>
 
-<h2 id="8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）："><a href="#8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）：" class="headerlink" title="8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）："></a>8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% aplayer &quot;爱你&quot; &quot;陈芳语&quot; &quot;..&#x2F;..&#x2F;..&#x2F;..&#x2F;uploads&#x2F;22852057.mp3&quot; &quot;https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;loveYou.jpg&quot; &quot;lrc:https:&#x2F;&#x2F;eisenhao.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc&quot; %&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）："><a href="#8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）：" class="headerlink" title="8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）："></a>8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% aplayer &quot;爱你&quot; &quot;陈芳语&quot; &quot;..&#x2F;..&#x2F;..&#x2F;..&#x2F;uploads&#x2F;22852057.mp3&quot; &quot;https:&#x2F;&#x2F;haoleeson.github.io&#x2F;uploads&#x2F;loveYou.jpg&quot; &quot;lrc:https:&#x2F;&#x2F;haoleeson.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc&quot; %&#125;</span><br></pre></td></tr></table></figure>
 
 
-        <div id="aplayer-UcmHpJQH" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-PWWhgcFs" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-UcmHpJQH"),
+            element: document.getElementById("aplayer-PWWhgcFs"),
             narrow: false,
             autoplay: false,
             showlrc: 3,
@@ -10829,8 +10829,8 @@
               title: "爱你",
               author: "陈芳语",
               url: "../../../../uploads/22852057.mp3",
-              pic: "https://eisenhao.github.io/uploads/loveYou.jpg",
-              lrc: "https://eisenhao.github.io/uploads/fangyuchen_loveyou.lrc"
+              pic: "https://haoleeson.github.io/uploads/loveYou.jpg",
+              lrc: "https://haoleeson.github.io/uploads/fangyuchen_loveyou.lrc"
             }
           });
           window.aplayers || (window.aplayers = []);

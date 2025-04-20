@@ -20,31 +20,31 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"eisenhao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haoleeson.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="1. struct 和 union 的区别 结构体struct：把不同类型的数据组合成一个整体，自定义类型。 共同体union：使几个不同类型的变量共同占用一段内存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++易混淆知识点总结">
-<meta property="og:url" content="https://eisenhao.cn/2020/08/11/CppConfusedNotes/index.html">
-<meta property="og:site_name" content="EisenHao&#39;s Note">
+<meta property="og:url" content="https://haoleeson.cn/2020/08/11/CppConfusedNotes/index.html">
+<meta property="og:site_name" content="Haoleeson&#39;s Notes">
 <meta property="og:description" content="1. struct 和 union 的区别 结构体struct：把不同类型的数据组合成一个整体，自定义类型。 共同体union：使几个不同类型的变量共同占用一段内存">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://eisenhao.cn/uploads/CppConfusedNotes.png">
+<meta property="og:image" content="https://haoleeson.cn/uploads/CppConfusedNotes.png">
 <meta property="article:published_time" content="2020-08-11T10:32:30.000Z">
-<meta property="article:modified_time" content="2023-07-02T19:18:59.362Z">
-<meta property="article:author" content="EisenHao">
+<meta property="article:modified_time" content="2025-04-20T03:33:40.837Z">
+<meta property="article:author" content="haoleeson">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://eisenhao.cn/uploads/CppConfusedNotes.png">
+<meta name="twitter:image" content="https://haoleeson.cn/uploads/CppConfusedNotes.png">
 
 
-<link rel="canonical" href="https://eisenhao.cn/2020/08/11/CppConfusedNotes/">
+<link rel="canonical" href="https://haoleeson.cn/2020/08/11/CppConfusedNotes/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://eisenhao.cn/2020/08/11/CppConfusedNotes/","path":"2020/08/11/CppConfusedNotes/","title":"C++易混淆知识点总结"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haoleeson.cn/2020/08/11/CppConfusedNotes/","path":"2020/08/11/CppConfusedNotes/","title":"C++易混淆知识点总结"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>C++易混淆知识点总结 | EisenHao's Note</title>
+<title>C++易混淆知识点总结 | Haoleeson's Notes</title>
   
 
 
@@ -73,7 +73,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">EisenHao's Note</h1>
+      <h1 class="site-title">Haoleeson's Notes</h1>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
@@ -156,9 +156,9 @@
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-overview">
             <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="EisenHao"
+    <img class="site-author-image" itemprop="image" alt="haoleeson"
       src="/images/my-avatar.png">
-  <p class="site-author-name" itemprop="name">EisenHao</p>
+  <p class="site-author-name" itemprop="name">haoleeson</p>
   <div class="site-description" itemprop="description">记录成长，享受生活！</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
@@ -240,16 +240,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://eisenhao.cn/2020/08/11/CppConfusedNotes/">
+    <link itemprop="mainEntityOfPage" href="https://haoleeson.cn/2020/08/11/CppConfusedNotes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
-      <meta itemprop="name" content="EisenHao">
+      <meta itemprop="name" content="haoleeson">
       <meta itemprop="description" content="记录成长，享受生活！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="EisenHao's Note">
+      <meta itemprop="name" content="Haoleeson's Notes">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -337,7 +337,7 @@
 <li>实现：C++多态性主要是通过虚函数实现的，虚函数允许子类重写override(注意和overload的区别，overload是重载，是允许同名函数的表现，这些函数参数列表&#x2F;类型不同）。</li>
 <li>目的：接口重用。封装可以使得代码模块化，继承可以扩展已存在的代码，他们的目的都是为了代码重用。而多态的目的则是为了接口重用。</li>
 <li>用法：声明基类的指针，利用该指针指向任意一个子类对象，调用相应的虚函数，可以根据指向的子类的不同而实现不同的方法。</li>
-<li>详见：<a href="https://eisenhao.cn/2018/10/14/PolymorphismTest/">C++ 中的四种多态</a></li>
+<li>详见：<a href="https://haoleeson.cn/2018/10/14/PolymorphismTest/">C++ 中的四种多态</a></li>
 </ul>
 <h1 id="10-重载、覆盖与重写的区别"><a href="#10-重载、覆盖与重写的区别" class="headerlink" title="10. 重载、覆盖与重写的区别"></a>10. 重载、覆盖与重写的区别</h1><h2 id="10-1-Overload-重载"><a href="#10-1-Overload-重载" class="headerlink" title="10.1. Overload(重载)"></a>10.1. Overload(重载)</h2><p>在C++程序中，可以将语义、功能相似的几个函数用同一个名字表示，但参数或返回值不同（包括类型、顺序不同），即函数重载。</p>
 <ul>
@@ -421,7 +421,7 @@
       <div class="popular-posts-title"><a href="\2019\12\19\CppCompile\" rel="bookmark">C++编译过程总结</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\12\03\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
+      <div class="popular-posts-title"><a href="\2020\12\04\ImplementationOfBTreeBasedOnCpp\" rel="bookmark">基于C++的B树的数据结构设计与编码实现</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2022\06\12\ImplementationOfSkipListByCpp\" rel="bookmark">基于 C++ 的 SkipList 数据结构设计与编码实现</a></div>
@@ -446,7 +446,7 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/12/03/ImplementationOfBTreeBasedOnCpp/" rel="next" title="基于C++的B树的数据结构设计与编码实现">
+                <a href="/2020/12/04/ImplementationOfBTreeBasedOnCpp/" rel="next" title="基于C++的B树的数据结构设计与编码实现">
                   基于C++的B树的数据结构设计与编码实现 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
@@ -469,11 +469,11 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">EisenHao</span>
+  <span class="author" itemprop="copyrightHolder">haoleeson</span>
 </div>
 
     </div>
@@ -502,7 +502,7 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://eisenhao.cn/2020/08/11/CppConfusedNotes/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://haoleeson.cn/2020/08/11/CppConfusedNotes/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 
 </body>

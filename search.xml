@@ -261,6 +261,49 @@
       </tags>
   </entry>
   <entry>
+    <title>Bfshell常用命令</title>
+    <url>/2023/02/28/BfshellUsefullCmds/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>BFShell 作为 Barefoot 开发工具链中的重要一部分，可用于与 Tofino 交换机进行交互，例如加载 P4 程序、调试数据平面或配置交换机行为，此文记录日常调试中常用命令。</p>
+<a id="more"></a>
+
+<h1 id="1-查看端口"><a href="#1-查看端口" class="headerlink" title="1. 查看端口"></a>1. 查看端口</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it syncd /opt/bfn/install/bin/bfshell</span><br><span class="line">ucli</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看端口信息</span></span><br><span class="line">pm show</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-进-sde-查看-光模块信息"><a href="#2-进-sde-查看-光模块信息" class="headerlink" title="2. 进 sde 查看 光模块信息"></a>2. 进 sde 查看 光模块信息</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it syncd /opt/bfn/install/bin/bfshell</span><br><span class="line">ucli</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 读取端口1 光模块信息</span></span><br><span class="line">bf_pltfm qsfp dump-info 1/0</span><br><span class="line">bf_pltfm qsfp dump-info 20/0</span><br><span class="line">bf_pltfm qsfp dump-info 35/0</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-查看设备眼图信息"><a href="#3-查看设备眼图信息" class="headerlink" title="3. 查看设备眼图信息"></a>3. 查看设备眼图信息</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bf-sde.bf_pltfm.rtmr&gt; rtmr_eye_margin_show_all_chan 33 1</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-端口的port-sd-show"><a href="#4-端口的port-sd-show" class="headerlink" title="4. 端口的port-sd-show"></a>4. 端口的port-sd-show</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pm show</span><br><span class="line">info</span><br><span class="line">bf_pltfm qsfp oper</span><br><span class="line">bf_pltfm qsfp dump-info 33/0</span><br><span class="line">pm port-sd-show 33/0</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-P4-查看-VLAN-subinterface-表项"><a href="#5-P4-查看-VLAN-subinterface-表项" class="headerlink" title="5. P4 查看 VLAN subinterface 表项"></a>5. P4 查看 VLAN subinterface 表项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it syncd /opt/bfn/install/bin/bfshell</span><br><span class="line">bf_switch</span><br><span class="line">show hostif handle 2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>34&#x2F;0 |41&#x2F;0|280|2&#x2F;24|100G   | RS |Ds|Au|YES|ENB|UP |  NONE  |           63753|           63735|</p>
+<p>35&#x2F;0 |42&#x2F;0|276|2&#x2F;20|100G   | RS |Ds|Au|YES|ENB|DWN|  NONE  |               0|               0|</p>
+<blockquote>
+<p>华工 100G CWDM4:    port 1、2<br>旭创 100G CWDM4:    port 17<br>旭创 100G CWDM4TR:  port 19<br>海信 100G SR4:      port 39<br>FINISAR 100G-SM-2KM+: port 40</p>
+</blockquote>
+<p>bf-sde.pm show</p>
+<h1 id="6-禁用-x2F-启用端口相关指令"><a href="#6-禁用-x2F-启用端口相关指令" class="headerlink" title="6. 禁用&#x2F;启用端口相关指令"></a>6. 禁用&#x2F;启用端口相关指令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 对比 配置值与实际值</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> Compare sw/hw port cfg &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">warm 0 0 8</span><br><span class="line">warm 0 0 12</span><br><span class="line">warm 0 1 52</span><br><span class="line">warm 0 1 60</span><br><span class="line">warm 0 2 24</span><br><span class="line">warm 0 2 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> enabled 端口</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bf_port_enable  Enable a port &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_enable 0 0 8</span><br><span class="line">bf_port_enable 0 0 12</span><br><span class="line">bf_port_enable 0 1 52</span><br><span class="line">bf_port_enable 0 1 60</span><br><span class="line">bf_port_enable 0 2 0</span><br><span class="line">bf_port_enable 0 2 4</span><br><span class="line">bf_port_enable 0 2 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> disabled 端口</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bf_port_disable Disable a port &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_disable 0 0 8</span><br><span class="line">bf_port_disable 0 0 12</span><br><span class="line">bf_port_disable 0 1 52</span><br><span class="line">bf_port_disable 0 1 60</span><br><span class="line">bf_port_disable 0 2 0</span><br><span class="line">bf_port_disable 0 2 4</span><br><span class="line">bf_port_disable 0 2 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> bf_port_mtu_set Set MTU on a port &lt;dev&gt; &lt;tx_mtu&gt; &lt;rx_mtu&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_mtu_set 0 9000 9000 0 8</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> oper 查看端口状态值</span></span><br><span class="line">oper</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 清除端口状态</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Clear stats on &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_stats_clear 0 0 8</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-手动-UP-x2F-DOWN-端口"><a href="#7-手动-UP-x2F-DOWN-端口" class="headerlink" title="7. 手动 UP&#x2F;DOWN 端口"></a>7. 手动 UP&#x2F;DOWN 端口</h1><p>bf-sde.pm&gt; 中手动 up down 端口</p>
+<blockquote>
+<p>ucli<br>pm</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">port-enb 1/0</span><br><span class="line">port-enb 2/0</span><br><span class="line">port-enb 17/0</span><br><span class="line">port-enb 19/0</span><br><span class="line">port-enb 39/0</span><br><span class="line">port-enb 35/0</span><br><span class="line">port-enb 40/0</span><br><span class="line"></span><br><span class="line">port-dis 1/0</span><br><span class="line">port-dis 2/0</span><br><span class="line">port-dis 17/0</span><br><span class="line">port-dis 19/0</span><br><span class="line">port-dis 39/0</span><br><span class="line">port-dis 40/0</span><br></pre></td></tr></table></figure>
+
+<h1 id="8-查看光模块厂商信息"><a href="#8-查看光模块厂商信息" class="headerlink" title="8. 查看光模块厂商信息"></a>8. 查看光模块厂商信息</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看硬件 QSFP 信息</span></span><br><span class="line">bf-sde.bf_pltfm.qsfp&gt; info</span><br><span class="line"></span><br><span class="line">Port  Vendor           PN               rev Serial#          code     Bit Rate     OUI        Class            Media</span><br><span class="line">---------------------------------------------------------------------------------------------------------------------</span><br><span class="line">  1:  HG GENUINE(华工 100G CWDM4)       MTRQ-4CF51       00  CS20410010041    201123   25500 MBps   00:00:00   4 (3.5 W max.)   (SMF): 2 km</span><br><span class="line">  2:  HG GENUINE       MTRQ-4CF51       01  3000027560048    220723   25500 MBps   00:00:00   4 (3.5 W max.)   (SMF): 2 km</span><br><span class="line"> 17:  INNOLIGHT(旭创 100G CWDM4)        TR-FC85S-N01     4A  ICMBPR260043     221028   25500 MBps   00:00:00   3 (2.5 W max.)   (Optical): 50 m   (OM3): 70 m</span><br><span class="line"> 19:  INNOLIGHT(旭创 100G CWDM4TR)        TR-FC13T-N00     4A  INKAO4981261     20041101 25500 MBps   00:00:00   4 (3.5 W max.)   (SMF): 2 km</span><br><span class="line"> 39:  Hisense(海信 100G SR4)          LTA8531-PC+      01  UPAA8000022      200801   25500 MBps   00:00:00   2 (2.0 W max.)   (Optical): 50 m   (OM3): 70 m</span><br><span class="line"> 40:  FINISAR CORP.(FINISAR 100G-SM-2KM+)    FTLC4352RJPL     A   X6FARV3          211110   25500 MBps   00:00:00   6 (4.5 W max.)   (SMF): 2 km</span><br></pre></td></tr></table></figure>
+
+<h1 id="9-bfshell-抓包"><a href="#9-bfshell-抓包" class="headerlink" title="9. bfshell 抓包"></a>9. bfshell 抓包</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建 snapshot（获取返回句柄 0x2581）</span></span><br><span class="line">snap-create -d 0 -p 2 -s 0 -e 11 -i 0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> </span></span><br><span class="line"><span class="meta">#</span><span class="bash"> snap-trig-add -h 0x141 -n hdr_ipv4_dst_addr  -v 0xc0a80000 -m 0x1fff0000</span></span><br><span class="line"></span><br><span class="line">snap-trig-add -h 0x2581 -n local_md_ingress_port -v 0x140 -m 0x1ff</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 开启抓包</span></span><br><span class="line">snap-state-set -h 0x2581 -e 1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭抓包</span></span><br><span class="line">snap-state-set -h 0x2581 -e 0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看抓包结果</span></span><br><span class="line">snap-capture-get -h 0x2581</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>SDE</tag>
+        <tag>Network</tag>
+        <tag>Barefoot</tag>
+        <tag>P4</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>算法分析与设计练习</title>
     <url>/2019/01/03/AnalysisOfAlgorithmsLesson/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/AnalysisOfAlgorithmsLesson.jpg" class="full-image" />
@@ -454,48 +497,6 @@
       </categories>
       <tags>
         <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Bfshell常用命令</title>
-    <url>/2023/02/28/BfshellUsefullCmds/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>BFShell 作为 Barefoot 开发工具链中的重要一部分，可用于与 Tofino 交换机进行交互，例如加载 P4 程序、调试数据平面或配置交换机行为，此文记录日常调试中常用命令。</p>
-<a id="more"></a>
-
-<h1 id="1-查看端口"><a href="#1-查看端口" class="headerlink" title="1. 查看端口"></a>1. 查看端口</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it syncd /opt/bfn/install/bin/bfshell</span><br><span class="line">ucli</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看端口信息</span></span><br><span class="line">pm show</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-进-sde-查看-光模块信息"><a href="#2-进-sde-查看-光模块信息" class="headerlink" title="2. 进 sde 查看 光模块信息"></a>2. 进 sde 查看 光模块信息</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it syncd /opt/bfn/install/bin/bfshell</span><br><span class="line">ucli</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 读取端口1 光模块信息</span></span><br><span class="line">bf_pltfm qsfp dump-info 1/0</span><br><span class="line">bf_pltfm qsfp dump-info 20/0</span><br><span class="line">bf_pltfm qsfp dump-info 35/0</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-查看设备眼图信息"><a href="#3-查看设备眼图信息" class="headerlink" title="3. 查看设备眼图信息"></a>3. 查看设备眼图信息</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bf-sde.bf_pltfm.rtmr&gt; rtmr_eye_margin_show_all_chan 33 1</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-端口的port-sd-show"><a href="#4-端口的port-sd-show" class="headerlink" title="4. 端口的port-sd-show"></a>4. 端口的port-sd-show</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pm show</span><br><span class="line">info</span><br><span class="line">bf_pltfm qsfp oper</span><br><span class="line">bf_pltfm qsfp dump-info 33/0</span><br><span class="line">pm port-sd-show 33/0</span><br></pre></td></tr></table></figure>
-
-<h1 id="5-P4-查看-VLAN-subinterface-表项"><a href="#5-P4-查看-VLAN-subinterface-表项" class="headerlink" title="5. P4 查看 VLAN subinterface 表项"></a>5. P4 查看 VLAN subinterface 表项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it syncd /opt/bfn/install/bin/bfshell</span><br><span class="line">bf_switch</span><br><span class="line">show hostif handle 2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>34&#x2F;0 |41&#x2F;0|280|2&#x2F;24|100G   | RS |Ds|Au|YES|ENB|UP |  NONE  |           63753|           63735|</p>
-<p>35&#x2F;0 |42&#x2F;0|276|2&#x2F;20|100G   | RS |Ds|Au|YES|ENB|DWN|  NONE  |               0|               0|</p>
-<blockquote>
-<p>华工 100G CWDM4:    port 1、2<br>旭创 100G CWDM4:    port 17<br>旭创 100G CWDM4TR:  port 19<br>海信 100G SR4:      port 39<br>FINISAR 100G-SM-2KM+: port 40</p>
-</blockquote>
-<p>bf-sde.pm show</p>
-<h1 id="6-禁用-x2F-启用端口相关指令"><a href="#6-禁用-x2F-启用端口相关指令" class="headerlink" title="6. 禁用&#x2F;启用端口相关指令"></a>6. 禁用&#x2F;启用端口相关指令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 对比 配置值与实际值</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> Compare sw/hw port cfg &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">warm 0 0 8</span><br><span class="line">warm 0 0 12</span><br><span class="line">warm 0 1 52</span><br><span class="line">warm 0 1 60</span><br><span class="line">warm 0 2 24</span><br><span class="line">warm 0 2 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> enabled 端口</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bf_port_enable  Enable a port &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_enable 0 0 8</span><br><span class="line">bf_port_enable 0 0 12</span><br><span class="line">bf_port_enable 0 1 52</span><br><span class="line">bf_port_enable 0 1 60</span><br><span class="line">bf_port_enable 0 2 0</span><br><span class="line">bf_port_enable 0 2 4</span><br><span class="line">bf_port_enable 0 2 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> disabled 端口</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bf_port_disable Disable a port &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_disable 0 0 8</span><br><span class="line">bf_port_disable 0 0 12</span><br><span class="line">bf_port_disable 0 1 52</span><br><span class="line">bf_port_disable 0 1 60</span><br><span class="line">bf_port_disable 0 2 0</span><br><span class="line">bf_port_disable 0 2 4</span><br><span class="line">bf_port_disable 0 2 20</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> bf_port_mtu_set Set MTU on a port &lt;dev&gt; &lt;tx_mtu&gt; &lt;rx_mtu&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_mtu_set 0 9000 9000 0 8</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> oper 查看端口状态值</span></span><br><span class="line">oper</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 清除端口状态</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Clear stats on &lt;dev&gt; &lt;pipe&gt; &lt;port&gt;</span></span><br><span class="line">bf_port_stats_clear 0 0 8</span><br></pre></td></tr></table></figure>
-
-<h1 id="7-手动-UP-x2F-DOWN-端口"><a href="#7-手动-UP-x2F-DOWN-端口" class="headerlink" title="7. 手动 UP&#x2F;DOWN 端口"></a>7. 手动 UP&#x2F;DOWN 端口</h1><p>bf-sde.pm&gt; 中手动 up down 端口</p>
-<blockquote>
-<p>ucli<br>pm</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">port-enb 1/0</span><br><span class="line">port-enb 2/0</span><br><span class="line">port-enb 17/0</span><br><span class="line">port-enb 19/0</span><br><span class="line">port-enb 39/0</span><br><span class="line">port-enb 35/0</span><br><span class="line">port-enb 40/0</span><br><span class="line"></span><br><span class="line">port-dis 1/0</span><br><span class="line">port-dis 2/0</span><br><span class="line">port-dis 17/0</span><br><span class="line">port-dis 19/0</span><br><span class="line">port-dis 39/0</span><br><span class="line">port-dis 40/0</span><br></pre></td></tr></table></figure>
-
-<h1 id="8-查看光模块厂商信息"><a href="#8-查看光模块厂商信息" class="headerlink" title="8. 查看光模块厂商信息"></a>8. 查看光模块厂商信息</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看硬件 QSFP 信息</span></span><br><span class="line">bf-sde.bf_pltfm.qsfp&gt; info</span><br><span class="line"></span><br><span class="line">Port  Vendor           PN               rev Serial#          code     Bit Rate     OUI        Class            Media</span><br><span class="line">---------------------------------------------------------------------------------------------------------------------</span><br><span class="line">  1:  HG GENUINE(华工 100G CWDM4)       MTRQ-4CF51       00  CS20410010041    201123   25500 MBps   00:00:00   4 (3.5 W max.)   (SMF): 2 km</span><br><span class="line">  2:  HG GENUINE       MTRQ-4CF51       01  3000027560048    220723   25500 MBps   00:00:00   4 (3.5 W max.)   (SMF): 2 km</span><br><span class="line"> 17:  INNOLIGHT(旭创 100G CWDM4)        TR-FC85S-N01     4A  ICMBPR260043     221028   25500 MBps   00:00:00   3 (2.5 W max.)   (Optical): 50 m   (OM3): 70 m</span><br><span class="line"> 19:  INNOLIGHT(旭创 100G CWDM4TR)        TR-FC13T-N00     4A  INKAO4981261     20041101 25500 MBps   00:00:00   4 (3.5 W max.)   (SMF): 2 km</span><br><span class="line"> 39:  Hisense(海信 100G SR4)          LTA8531-PC+      01  UPAA8000022      200801   25500 MBps   00:00:00   2 (2.0 W max.)   (Optical): 50 m   (OM3): 70 m</span><br><span class="line"> 40:  FINISAR CORP.(FINISAR 100G-SM-2KM+)    FTLC4352RJPL     A   X6FARV3          211110   25500 MBps   00:00:00   6 (4.5 W max.)   (SMF): 2 km</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>SDE</tag>
-        <tag>Network</tag>
-        <tag>Barefoot</tag>
-        <tag>P4</tag>
       </tags>
   </entry>
   <entry>
@@ -4013,38 +4014,6 @@
       </tags>
   </entry>
   <entry>
-    <title>QuickSort</title>
-    <url>/2018/10/23/QuickSort/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/QuickSort.jpg" class="full-image" />
-
-<h1 id="1-快速排序概念"><a href="#1-快速排序概念" class="headerlink" title="1. 快速排序概念"></a>1. 快速排序概念</h1><p>快速排序（Quick Sort）由C. A. R. Hoare在1962年提出。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。<br>快速排序是不稳定的算法，时间复杂度在最坏情况下是O(N^2)，平均的时间复杂度是O(N*lgN)。</p>
-<a id="more"></a>
-<h2 id="1-1-Quick-Sort-实现思想"><a href="#1-1-Quick-Sort-实现思想" class="headerlink" title="1.1. Quick Sort 实现思想"></a>1.1. Quick Sort 实现思想</h2><p>快速排序算法是一种基于交换的高效的排序算法，它采用了分治法的思想：</p>
-<ul>
-<li>1、从数列中取出一个数作为基准数（枢轴，pivot）。 </li>
-<li>2、将数组进行划分(partition)，将比基准数大的元素都移至枢轴右边，将小于等于基准数的元素都移至枢轴左边。</li>
-<li>3、再对左右的子区间重复第2步的划分操作，直至每个子区间的元素个数不超过Cutoff（阈值）。</li>
-<li>4、每个子区间内的元素执行插入排序（实践经验小于一定数量后插入排序快于快速排序），然后返回上一调用堆栈。</li>
-</ul>
-<h2 id="1-2-快速排序-h完整代码"><a href="#1-2-快速排序-h完整代码" class="headerlink" title="1.2. 快速排序.h完整代码"></a>1.2. 快速排序.h完整代码</h2><figure class="highlight c++"><figcaption><span>文件名：QuickSort.h</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> QUICKSORT_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> QUICKSORT_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ElementType int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//插入排序（从小到大）</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insertion_Sort</span><span class="params">(ElementType* PtrA, <span class="keyword">long</span> <span class="keyword">int</span> Number)</span></span>&#123;</span><br><span class="line">    ElementType temp;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> i;</span><br><span class="line">    <span class="comment">//认为A[0]已经插入了</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">int</span> P = <span class="number">1</span>; P &lt; Number; P++)&#123;</span><br><span class="line">        temp = *(PtrA + P);<span class="comment">//取待插入排序元素到temp</span></span><br><span class="line">        <span class="keyword">for</span>(i = P; i &gt; <span class="number">0</span> &amp;&amp; *(PtrA + i - <span class="number">1</span>) &gt; temp; i--)&#123;</span><br><span class="line">            <span class="comment">//从后往前循环，大的元素往后挪，直到不小于temp处退出循环</span></span><br><span class="line">            <span class="comment">//A[i] = A[i-1];</span></span><br><span class="line">            *(PtrA + i) = *(PtrA + i - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        *(PtrA + i) = temp;<span class="comment">//此是i为不大于temp的下标，插入temp</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Swap two elements of the Array</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(ElementType *A, ElementType *B)</span></span>&#123;</span><br><span class="line">    ElementType temp;</span><br><span class="line">    <span class="comment">//三部曲</span></span><br><span class="line">    temp = *A; <span class="comment">// 存A</span></span><br><span class="line">    *A = *B; <span class="comment">//换A</span></span><br><span class="line">    *B = temp; <span class="comment">//换B</span></span><br><span class="line">    <span class="comment">//或利用异或性质原地交换</span></span><br><span class="line">    <span class="comment">//*B ^= *A;</span></span><br><span class="line">    <span class="comment">//*A ^= *B;</span></span><br><span class="line">    <span class="comment">//*B ^= *A;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//快速排序中生成pivot</span></span><br><span class="line"><span class="function">ElementType <span class="title">Median3</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Left, <span class="keyword">long</span> <span class="keyword">int</span> Right)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> Center = (Left + Right)/ <span class="number">2</span> ;</span><br><span class="line">    <span class="keyword">if</span>(A[Left] &gt; A[Center])&#123;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[Left], &amp;A[Center]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(A[Left] &gt; A[Right])&#123;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[Left], &amp;A[Right]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(A[Center] &gt; A[Right])&#123;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[Center], &amp;A[Right]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//现在，左、中、右三个已经有序</span></span><br><span class="line">    <span class="built_in">Swap</span>(&amp;A[Center], &amp;A[Right<span class="number">-1</span>]);</span><br><span class="line">    <span class="comment">//现在只需考虑　Left+1 ~ Right-2</span></span><br><span class="line">    <span class="keyword">return</span> A[Right<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//快速排序算法实现</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Cutoff 5 <span class="comment">//定义快速排序（递归）阈值，数组元素小于Cutoff直接插入排序</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Quicksort</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Left, <span class="keyword">long</span> <span class="keyword">int</span> Right)</span></span>&#123;</span><br><span class="line">    ElementType pivot;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> i, j;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//是否进行快速排序，阈值判断</span></span><br><span class="line">    <span class="keyword">if</span>((Right - Left)&gt;= Cutoff)&#123;</span><br><span class="line">        <span class="comment">//选主元pivot，藏于A[Right-1]</span></span><br><span class="line">        pivot = <span class="built_in">Median3</span>(A, Left, Right);</span><br><span class="line">        i = Left ;</span><br><span class="line">        j = Right - <span class="number">1</span> ;</span><br><span class="line">        <span class="comment">//子集划分(pivot左边全小于pivot；pivot右边全大于pivot)</span></span><br><span class="line">        <span class="keyword">for</span>(; ;)&#123;</span><br><span class="line">            <span class="keyword">while</span>(A[++i] &lt; pivot)&#123;&#125; <span class="comment">//找到A[i] &gt; pivot, 跳出</span></span><br><span class="line">            <span class="keyword">while</span>(A[--j] &gt; pivot)&#123;&#125; <span class="comment">//找到A[j] &lt; pivot, 跳出</span></span><br><span class="line">            <span class="keyword">if</span>(i &lt; j)&#123;</span><br><span class="line">                <span class="comment">//说明A[i]与A[j]之间还有其他元素，可交换</span></span><br><span class="line">                <span class="built_in">Swap</span>(&amp;A[i], &amp;A[j]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[i], &amp;A[Right<span class="number">-1</span>]); <span class="comment">//将pivot 放到中间，即i下标处</span></span><br><span class="line">        <span class="built_in">Quicksort</span>(A, Left, i<span class="number">-1</span>);<span class="comment">//递归处理左边</span></span><br><span class="line">        <span class="built_in">Quicksort</span>(A, i+<span class="number">1</span>, Right);<span class="comment">//递归处理右边</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//低于阈值，直接调用插入排序</span></span><br><span class="line">        <span class="comment">//递归到最小一层用插入排序(每段的插入排序地址为：&amp;A + Left(即：绝对地址A 加相对地址Left)</span></span><br><span class="line">        <span class="comment">//最小一层插入排序元素个数Number = Right-Left+1</span></span><br><span class="line">        <span class="built_in">Insertion_Sort</span>( &amp;A[Left], Right-Left+<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//快速排序（统一接口，加壳）</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Quick_Sort</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Number)</span></span>&#123;</span><br><span class="line">    <span class="built_in">Quicksort</span>(A, <span class="number">0</span>, Number<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//Prlong int the Array</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print_Array</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> NumberOfPreRows = <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Number; i++)&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A[i];</span><br><span class="line">        <span class="keyword">if</span>(i%NumberOfPreRows == (NumberOfPreRows<span class="number">-1</span>))&#123;</span><br><span class="line">        	cout &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="1-3-快速排序-cpp范例代码"><a href="#1-3-快速排序-cpp范例代码" class="headerlink" title="1.3. 快速排序.cpp范例代码"></a>1.3. 快速排序.cpp范例代码</h2><figure class="highlight c++"><figcaption><span>文件名：QuickSort.cpp</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;QuickSort.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> random(x)(rand()%x)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">srand</span>((<span class="keyword">int</span>)<span class="built_in">time</span>(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> Number = <span class="number">100</span>;</span><br><span class="line">    <span class="comment">//构造Number + 1大小的容器</span></span><br><span class="line">    <span class="function">vector&lt;ElementType&gt; <span class="title">A</span><span class="params">(Number + <span class="number">1</span>)</span></span>; <span class="comment">//build a vector to</span></span><br><span class="line">    <span class="comment">//产生Number个随机数并赋值</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Number; i++)</span><br><span class="line">        A[i] = <span class="built_in">random</span>(<span class="number">100</span>);</span><br><span class="line">    <span class="comment">//Print A</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Creat 100 random Num:&quot;</span> &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">Print_Array</span>(A, Number);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Execute Quick Sort&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Quick_Sort</span>(A, Number);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Result:&quot;</span> &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line">    <span class="comment">//Print A</span></span><br><span class="line">    <span class="built_in">Print_Array</span>(A, Number);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-4-延伸思考："><a href="#1-4-延伸思考：" class="headerlink" title="1.4. 延伸思考："></a>1.4. 延伸思考：</h2><p>假设待排序的数列中有N个数。遍历一次的时间复杂度是O(N)，需要遍历多少次呢？</p>
-<p>最多需要遍历N次，至少需要遍历lg(N+1)次。</p>
-<ul>
-<li>(1).为什么最少是lg(N+1)次？<br>快速排序是采用的分治法进行遍历的，我们将它看作一棵二叉树，它需要遍历的次数就是二叉树的深度，而根据完全二叉树的定义，它的深度至少是lg(N+1)。因此，快速排序的遍历次数最少是lg(N+1)次。</li>
-<li>(2).为什么最多是N次？<br>将快速排序看作一棵二叉树，它的深度最大是N。因此，快读排序的遍历次数最多是N次。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python查看本周口碑电影</title>
     <url>/2019/04/30/PythonSimpleWebC/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/PythonSimpleWebCTest.jpg" class="full-image" />
@@ -4095,6 +4064,38 @@
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>QuickSort</title>
+    <url>/2018/10/23/QuickSort/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/QuickSort.jpg" class="full-image" />
+
+<h1 id="1-快速排序概念"><a href="#1-快速排序概念" class="headerlink" title="1. 快速排序概念"></a>1. 快速排序概念</h1><p>快速排序（Quick Sort）由C. A. R. Hoare在1962年提出。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。<br>快速排序是不稳定的算法，时间复杂度在最坏情况下是O(N^2)，平均的时间复杂度是O(N*lgN)。</p>
+<a id="more"></a>
+<h2 id="1-1-Quick-Sort-实现思想"><a href="#1-1-Quick-Sort-实现思想" class="headerlink" title="1.1. Quick Sort 实现思想"></a>1.1. Quick Sort 实现思想</h2><p>快速排序算法是一种基于交换的高效的排序算法，它采用了分治法的思想：</p>
+<ul>
+<li>1、从数列中取出一个数作为基准数（枢轴，pivot）。 </li>
+<li>2、将数组进行划分(partition)，将比基准数大的元素都移至枢轴右边，将小于等于基准数的元素都移至枢轴左边。</li>
+<li>3、再对左右的子区间重复第2步的划分操作，直至每个子区间的元素个数不超过Cutoff（阈值）。</li>
+<li>4、每个子区间内的元素执行插入排序（实践经验小于一定数量后插入排序快于快速排序），然后返回上一调用堆栈。</li>
+</ul>
+<h2 id="1-2-快速排序-h完整代码"><a href="#1-2-快速排序-h完整代码" class="headerlink" title="1.2. 快速排序.h完整代码"></a>1.2. 快速排序.h完整代码</h2><figure class="highlight c++"><figcaption><span>文件名：QuickSort.h</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> QUICKSORT_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> QUICKSORT_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ElementType int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//插入排序（从小到大）</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insertion_Sort</span><span class="params">(ElementType* PtrA, <span class="keyword">long</span> <span class="keyword">int</span> Number)</span></span>&#123;</span><br><span class="line">    ElementType temp;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> i;</span><br><span class="line">    <span class="comment">//认为A[0]已经插入了</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">int</span> P = <span class="number">1</span>; P &lt; Number; P++)&#123;</span><br><span class="line">        temp = *(PtrA + P);<span class="comment">//取待插入排序元素到temp</span></span><br><span class="line">        <span class="keyword">for</span>(i = P; i &gt; <span class="number">0</span> &amp;&amp; *(PtrA + i - <span class="number">1</span>) &gt; temp; i--)&#123;</span><br><span class="line">            <span class="comment">//从后往前循环，大的元素往后挪，直到不小于temp处退出循环</span></span><br><span class="line">            <span class="comment">//A[i] = A[i-1];</span></span><br><span class="line">            *(PtrA + i) = *(PtrA + i - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        *(PtrA + i) = temp;<span class="comment">//此是i为不大于temp的下标，插入temp</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Swap two elements of the Array</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(ElementType *A, ElementType *B)</span></span>&#123;</span><br><span class="line">    ElementType temp;</span><br><span class="line">    <span class="comment">//三部曲</span></span><br><span class="line">    temp = *A; <span class="comment">// 存A</span></span><br><span class="line">    *A = *B; <span class="comment">//换A</span></span><br><span class="line">    *B = temp; <span class="comment">//换B</span></span><br><span class="line">    <span class="comment">//或利用异或性质原地交换</span></span><br><span class="line">    <span class="comment">//*B ^= *A;</span></span><br><span class="line">    <span class="comment">//*A ^= *B;</span></span><br><span class="line">    <span class="comment">//*B ^= *A;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//快速排序中生成pivot</span></span><br><span class="line"><span class="function">ElementType <span class="title">Median3</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Left, <span class="keyword">long</span> <span class="keyword">int</span> Right)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> Center = (Left + Right)/ <span class="number">2</span> ;</span><br><span class="line">    <span class="keyword">if</span>(A[Left] &gt; A[Center])&#123;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[Left], &amp;A[Center]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(A[Left] &gt; A[Right])&#123;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[Left], &amp;A[Right]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(A[Center] &gt; A[Right])&#123;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[Center], &amp;A[Right]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//现在，左、中、右三个已经有序</span></span><br><span class="line">    <span class="built_in">Swap</span>(&amp;A[Center], &amp;A[Right<span class="number">-1</span>]);</span><br><span class="line">    <span class="comment">//现在只需考虑　Left+1 ~ Right-2</span></span><br><span class="line">    <span class="keyword">return</span> A[Right<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//快速排序算法实现</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Cutoff 5 <span class="comment">//定义快速排序（递归）阈值，数组元素小于Cutoff直接插入排序</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Quicksort</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Left, <span class="keyword">long</span> <span class="keyword">int</span> Right)</span></span>&#123;</span><br><span class="line">    ElementType pivot;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> i, j;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//是否进行快速排序，阈值判断</span></span><br><span class="line">    <span class="keyword">if</span>((Right - Left)&gt;= Cutoff)&#123;</span><br><span class="line">        <span class="comment">//选主元pivot，藏于A[Right-1]</span></span><br><span class="line">        pivot = <span class="built_in">Median3</span>(A, Left, Right);</span><br><span class="line">        i = Left ;</span><br><span class="line">        j = Right - <span class="number">1</span> ;</span><br><span class="line">        <span class="comment">//子集划分(pivot左边全小于pivot；pivot右边全大于pivot)</span></span><br><span class="line">        <span class="keyword">for</span>(; ;)&#123;</span><br><span class="line">            <span class="keyword">while</span>(A[++i] &lt; pivot)&#123;&#125; <span class="comment">//找到A[i] &gt; pivot, 跳出</span></span><br><span class="line">            <span class="keyword">while</span>(A[--j] &gt; pivot)&#123;&#125; <span class="comment">//找到A[j] &lt; pivot, 跳出</span></span><br><span class="line">            <span class="keyword">if</span>(i &lt; j)&#123;</span><br><span class="line">                <span class="comment">//说明A[i]与A[j]之间还有其他元素，可交换</span></span><br><span class="line">                <span class="built_in">Swap</span>(&amp;A[i], &amp;A[j]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">Swap</span>(&amp;A[i], &amp;A[Right<span class="number">-1</span>]); <span class="comment">//将pivot 放到中间，即i下标处</span></span><br><span class="line">        <span class="built_in">Quicksort</span>(A, Left, i<span class="number">-1</span>);<span class="comment">//递归处理左边</span></span><br><span class="line">        <span class="built_in">Quicksort</span>(A, i+<span class="number">1</span>, Right);<span class="comment">//递归处理右边</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//低于阈值，直接调用插入排序</span></span><br><span class="line">        <span class="comment">//递归到最小一层用插入排序(每段的插入排序地址为：&amp;A + Left(即：绝对地址A 加相对地址Left)</span></span><br><span class="line">        <span class="comment">//最小一层插入排序元素个数Number = Right-Left+1</span></span><br><span class="line">        <span class="built_in">Insertion_Sort</span>( &amp;A[Left], Right-Left+<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//快速排序（统一接口，加壳）</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Quick_Sort</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Number)</span></span>&#123;</span><br><span class="line">    <span class="built_in">Quicksort</span>(A, <span class="number">0</span>, Number<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//Prlong int the Array</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print_Array</span><span class="params">(vector&lt;ElementType&gt; &amp;A, <span class="keyword">long</span> <span class="keyword">int</span> Number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> NumberOfPreRows = <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Number; i++)&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A[i];</span><br><span class="line">        <span class="keyword">if</span>(i%NumberOfPreRows == (NumberOfPreRows<span class="number">-1</span>))&#123;</span><br><span class="line">        	cout &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-快速排序-cpp范例代码"><a href="#1-3-快速排序-cpp范例代码" class="headerlink" title="1.3. 快速排序.cpp范例代码"></a>1.3. 快速排序.cpp范例代码</h2><figure class="highlight c++"><figcaption><span>文件名：QuickSort.cpp</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;QuickSort.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> random(x)(rand()%x)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">srand</span>((<span class="keyword">int</span>)<span class="built_in">time</span>(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> Number = <span class="number">100</span>;</span><br><span class="line">    <span class="comment">//构造Number + 1大小的容器</span></span><br><span class="line">    <span class="function">vector&lt;ElementType&gt; <span class="title">A</span><span class="params">(Number + <span class="number">1</span>)</span></span>; <span class="comment">//build a vector to</span></span><br><span class="line">    <span class="comment">//产生Number个随机数并赋值</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Number; i++)</span><br><span class="line">        A[i] = <span class="built_in">random</span>(<span class="number">100</span>);</span><br><span class="line">    <span class="comment">//Print A</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Creat 100 random Num:&quot;</span> &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">Print_Array</span>(A, Number);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Execute Quick Sort&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Quick_Sort</span>(A, Number);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Result:&quot;</span> &lt;&lt; endl &lt;&lt; endl;</span><br><span class="line">    <span class="comment">//Print A</span></span><br><span class="line">    <span class="built_in">Print_Array</span>(A, Number);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-延伸思考："><a href="#1-4-延伸思考：" class="headerlink" title="1.4. 延伸思考："></a>1.4. 延伸思考：</h2><p>假设待排序的数列中有N个数。遍历一次的时间复杂度是O(N)，需要遍历多少次呢？</p>
+<p>最多需要遍历N次，至少需要遍历lg(N+1)次。</p>
+<ul>
+<li>(1).为什么最少是lg(N+1)次？<br>快速排序是采用的分治法进行遍历的，我们将它看作一棵二叉树，它需要遍历的次数就是二叉树的深度，而根据完全二叉树的定义，它的深度至少是lg(N+1)。因此，快速排序的遍历次数最少是lg(N+1)次。</li>
+<li>(2).为什么最多是N次？<br>将快速排序看作一棵二叉树，它的深度最大是N。因此，快读排序的遍历次数最多是N次。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -4169,7 +4170,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
 <p>一般此时查询的结果只有一个Fork仓库远端（共两行fetch + push）eg.</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">origin      ssh:&#x2F;&#x2F;git@xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.git (fetch)</span><br><span class="line">origin      ssh:&#x2F;&#x2F;git@xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
-<p>其中 “origin” （默认值）为本地设置的Fork远端仓库的远端别名， 而“ssh:&#x2F;&#x2F;<a href="mailto:&#x67;&#x69;&#116;&#x40;&#x78;&#x78;&#x78;&#x78;&#120;&#120;&#x78;&#120;&#120;&#120;&#x78;&#120;&#120;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#x78;&#x78;&#120;&#46;&#103;&#105;&#x74;">&#x67;&#x69;&#116;&#x40;&#x78;&#x78;&#x78;&#x78;&#120;&#120;&#x78;&#120;&#120;&#120;&#x78;&#120;&#120;&#120;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#x78;&#120;&#x78;&#120;&#x78;&#x78;&#120;&#46;&#103;&#105;&#x74;</a>“ 对应为你的Fork仓库地址</p>
+<p>其中 “origin” （默认值）为本地设置的Fork远端仓库的远端别名， 而“ssh:&#x2F;&#x2F;<a href="mailto:&#x67;&#x69;&#116;&#64;&#x78;&#x78;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#120;&#x78;&#120;&#120;&#120;&#120;&#120;&#120;&#120;&#x78;&#120;&#120;&#x78;&#46;&#x67;&#105;&#116;">&#x67;&#x69;&#116;&#64;&#x78;&#x78;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#120;&#120;&#x78;&#120;&#x78;&#x78;&#x78;&#120;&#x78;&#120;&#x78;&#120;&#120;&#120;&#120;&#120;&#120;&#120;&#x78;&#120;&#120;&#x78;&#46;&#x67;&#105;&#116;</a>“ 对应为你的Fork仓库地址</p>
 <h2 id="1-2-添加官方源仓库远端"><a href="#1-2-添加官方源仓库远端" class="headerlink" title="1.2. 添加官方源仓库远端"></a>1.2. 添加官方源仓库远端</h2><p>添加官方源仓库远端到本地Fork仓库，使具有两个远端</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git remote add origin_official https:&#x2F;&#x2F;oooooooooooooooooooooooooooooo.git</span><br></pre></td></tr></table></figure>
 <p>其中 “origin_official” 为自定义官方源仓库在本地的远端别名， “<a href="https://oooooooooooooooooooooooooooooo.git&quot;/">https://oooooooooooooooooooooooooooooo.git&quot;</a> 为官方源仓库地址</p>
@@ -4926,29 +4927,6 @@
       </tags>
   </entry>
   <entry>
-    <title>《千里千寻》中蕴含人生观触动的一段话</title>
-    <url>/2017/02/24/Spirited-Away/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/Spirited-Away.jpg" class="full-image" />
-<!-- 标签方式引用，要求版本在0.4.5或以上 -->
-
-<blockquote class="blockquote-center">
-<p>人生就是一列开往坟墓的列车，<br>路途上会有很多站口，<br>没有一个人可以至始至终陪着你走完，<br>你会看到来来往往、上上下下的人。</p>
-<a id="more"></a>
-
-<p>如果幸运，会有人陪你走过一段，<br>当这个人要下车的时候，即使不舍，<br>也该心存感激，然后挥手道别。<br>因为，说不定下一站，<br>会有另外一个人会陪你走得更远。</p>
-
-</blockquote>
-
-<div align = right>----千与千寻</div>
-]]></content>
-      <categories>
-        <category>心灵成长</category>
-      </categories>
-      <tags>
-        <tag>人生观触动</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Syslog 模块的故障自检方法及常见已知问题</title>
     <url>/2021/08/24/SyslogSelfDiagnosisAndCommonProblems/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Rsyslog 版本：8.24.0</p>
@@ -5164,6 +5142,29 @@
       </categories>
       <tags>
         <tag>syslog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《千里千寻》中蕴含人生观触动的一段话</title>
+    <url>/2017/02/24/Spirited-Away/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/Spirited-Away.jpg" class="full-image" />
+<!-- 标签方式引用，要求版本在0.4.5或以上 -->
+
+<blockquote class="blockquote-center">
+<p>人生就是一列开往坟墓的列车，<br>路途上会有很多站口，<br>没有一个人可以至始至终陪着你走完，<br>你会看到来来往往、上上下下的人。</p>
+<a id="more"></a>
+
+<p>如果幸运，会有人陪你走过一段，<br>当这个人要下车的时候，即使不舍，<br>也该心存感激，然后挥手道别。<br>因为，说不定下一站，<br>会有另外一个人会陪你走得更远。</p>
+
+</blockquote>
+
+<div align = right>----千与千寻</div>
+]]></content>
+      <categories>
+        <category>心灵成长</category>
+      </categories>
+      <tags>
+        <tag>人生观触动</tag>
       </tags>
   </entry>
   <entry>
@@ -6575,82 +6576,6 @@
       </tags>
   </entry>
   <entry>
-    <title>函数指针 &amp; 指针函数</title>
-    <url>/2018/10/09/functionPointerAndPointerfunction/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/pointerFunction.jpg" class="full-image" />
-
-<h1 id="1-指针函数"><a href="#1-指针函数" class="headerlink" title="1. 指针函数"></a>1. 指针函数</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">fun</span><span class="params">(<span class="keyword">char</span> ch)</span></span>;<span class="comment">//指针函数</span></span><br></pre></td></tr></table></figure>
-<p>指针函数，即返回值为指针地址的函数。实质仍为函数，与普通函数的差异仅在于返回值比较特殊，为一个指针地址（当然需要告知编译器一个特定的类型处理数据类型）。</p>
-<a id="more"></a>
-<h2 id="1-1-指针函数实例1：-返回值为基本类型"><a href="#1-1-指针函数实例1：-返回值为基本类型" class="headerlink" title="1.1. 指针函数实例1： 返回值为基本类型"></a>1.1. 指针函数实例1： 返回值为基本类型</h2><p>函数实现：大小写互转。将传入字符串内所有小写字母转换为大写字母，所有大写字母转换为小写字母</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">Cover</span> <span class="params">(<span class="keyword">char</span>* <span class="keyword">const</span> Ptr )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span>* p = Ptr;</span><br><span class="line">    <span class="keyword">char</span> ch = *p ;</span><br><span class="line">    <span class="keyword">while</span>( ch != <span class="string">&#x27;\0&#x27;</span> ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( ch &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;z&#x27;</span> ) &#123;</span><br><span class="line">            *p -= <span class="number">32</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( ch &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;Z&#x27;</span> ) &#123;</span><br><span class="line">            *p += <span class="number">32</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">        ch = *(++p);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Ptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">15</span>] = &#123;<span class="string">&quot;Hello World!&quot;</span>&#125;;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Previous: &quot;</span> &lt;&lt; str &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Aftet: &quot;</span> &lt;&lt; <span class="built_in">Cover</span>(str) &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-2-指针函数实例2：返回值为结构体"><a href="#1-2-指针函数实例2：返回值为结构体" class="headerlink" title="1.2. 指针函数实例2：返回值为结构体"></a>1.2. 指针函数实例2：返回值为结构体</h2><p>函数实现：获取并返回注册信息结构体。获取用户信息并返回包含用户名、用户密码的结构体。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span> &#123;</span></span><br><span class="line">    string userName;</span><br><span class="line">    string userPassword;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showUser</span> <span class="params">( struct UserMessage* user )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( user == <span class="literal">NULL</span> ) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Error: register failed!&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Success: register success:)&quot;</span> &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;User: &quot;</span> &lt;&lt; user-&gt;userName &lt;&lt; endl &lt;&lt; <span class="string">&quot;Psw: &quot;</span> &lt;&lt; user-&gt;userPassword &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct UserMessage* <span class="title">Register</span> <span class="params">( <span class="keyword">void</span> )</span> </span>&#123;</span><br><span class="line">    string str0, str1, str2;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input UserName:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str0;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input Password:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str1;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input Password again:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str2;</span><br><span class="line">    <span class="keyword">if</span> ( str1.<span class="built_in">compare</span>(str2) == <span class="number">0</span> ) &#123;</span><br><span class="line">        <span class="comment">//(string)(user-&gt;userName) = str0; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="comment">//(string)(user-&gt;userPassword) = str1; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">user</span> =</span> <span class="keyword">new</span> UserMessage;</span><br><span class="line">        *user = &#123; str0, str1 &#125;;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">Test</span> =</span> <span class="built_in">Register</span>();</span><br><span class="line">    <span class="built_in">showUser</span>(Test);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<img data-src="../../../../uploads/functionPointer.jpg" class="full-image" />
-# 2. 函数指针
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">int</span></span> (*fun)(<span class="keyword">char</span> ch);<span class="comment">//函数指针</span></span><br></pre></td></tr></table></figure>
-函数指针，即指针地址指向一个函数入口地址的指针。实质任为指针。我们可以通过改变这个指针的不同地址调用同型的不同函数。
-
-<h2 id="2-1-函数指针实例1：-通过一个指针调用同型的不同函数"><a href="#2-1-函数指针实例1：-通过一个指针调用同型的不同函数" class="headerlink" title="2.1. 函数指针实例1： 通过一个指针调用同型的不同函数"></a>2.1. 函数指针实例1： 通过一个指针调用同型的不同函数</h2><p>代码实现：通过改变一个指针地址的赋值，以调用同型的不同函数</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowOnce</span> <span class="params">(string str)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;No.1 &quot;</span> &lt;&lt; str &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowTwice</span> <span class="params">(string str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">2</span>; i++) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;No.&quot;</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; str &lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowThrice</span> <span class="params">(string str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">3</span>; i++) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;No.&quot;</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; str &lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="built_in"><span class="keyword">int</span></span> (*fun)(string);<span class="comment">//函数指针定义</span></span><br><span class="line">    fun = ShowOnce;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowOnce&quot;</span>);<span class="comment">//通过函数指针调用 函数1</span></span><br><span class="line"></span><br><span class="line">    fun = ShowTwice;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowTwice&quot;</span>);<span class="comment">//通过函数指针调用 函数2</span></span><br><span class="line"></span><br><span class="line">    fun = ShowThrice;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowThrice&quot;</span>);<span class="comment">//通过函数指针调用 函数3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-2-函数指针实例2：-通过一个指针调用同型的不同函数2"><a href="#2-2-函数指针实例2：-通过一个指针调用同型的不同函数2" class="headerlink" title="2.2. 函数指针实例2： 通过一个指针调用同型的不同函数2"></a>2.2. 函数指针实例2： 通过一个指针调用同型的不同函数2</h2><p>代码实现：通过改变一个指针地址的赋值，以调用同型的不同函数，与实例1区别在多个形参，需特别注意函数指针形参类型必须与调用的函数形参类型一致</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Add</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//加</span></span><br><span class="line">    <span class="keyword">return</span> (num1 + num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Subtract</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//减</span></span><br><span class="line">    <span class="keyword">return</span> (num1 - num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Multiply</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//乘</span></span><br><span class="line">    <span class="keyword">return</span> (num1 * num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Divide</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//除</span></span><br><span class="line">    <span class="keyword">return</span> (num1 / num2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="built_in"><span class="keyword">double</span></span> (*fun)(<span class="keyword">double</span>, <span class="keyword">double</span>);<span class="comment">//函数指针定义</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Test (*fun)(5,3) :&quot;</span> &lt;&lt; endl &lt;&lt;endl;</span><br><span class="line">    fun = Add;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Add: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    fun = Subtract;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Subtract: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    fun = Multiply;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Multiply: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    fun = Divide;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Divide: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）"><a href="#2-3-函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）" class="headerlink" title="2.3. 函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）"></a>2.3. 函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）</h2><p>代码实现：通过形参传入一个函数指针，可在函数体内调用该函数指针形参指向的函数，以测试不同函数的运行时间</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXN 10   <span class="comment">//多项式最大项数(9阶)</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Fun_x 1.1 <span class="comment">//多项式x的值</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXK 1e3  <span class="comment">//被测函数最大重复调用次数</span></span></span><br><span class="line"><span class="keyword">double</span> a[MAXN];   <span class="comment">//多项式系数</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function1</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function2</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showFunctionUsingTime</span> <span class="params">(<span class="keyword">double</span> (*fun)(<span class="keyword">void</span>))</span></span>; <span class="comment">// *******函数指针作为形参 *******</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;MAXN; i++) &#123; <span class="comment">//赋值项系数</span></span><br><span class="line">        a[i] = (<span class="keyword">double</span>)i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//计算Function1用时</span></span><br><span class="line">    <span class="built_in">showFunctionUsingTime</span>(Function1);</span><br><span class="line">    <span class="comment">//计算Function2用时</span></span><br><span class="line">    <span class="built_in">showFunctionUsingTime</span>(Function2);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function1</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> p = a[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=(MAXN<span class="number">-1</span>); i++) &#123;</span><br><span class="line">        p += (a[i] * <span class="built_in">pow</span>(Fun_x, i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function2</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> p = a[MAXN<span class="number">-1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=(MAXN<span class="number">-1</span>); i&gt;<span class="number">0</span>; i--) &#123;</span><br><span class="line">        p = a[i<span class="number">-1</span>] + Fun_x * p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showFunctionUsingTime</span> <span class="params">(<span class="keyword">double</span> (*fun)(<span class="keyword">void</span>))</span> </span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> start, stop;</span><br><span class="line">    <span class="keyword">double</span> duration; <span class="comment">//运行时间　变量</span></span><br><span class="line">    <span class="comment">//计算Function1用时</span></span><br><span class="line">    start = <span class="built_in">clock</span>();<span class="comment">//记录时钟此刻打点数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;MAXK ;i++) &#123; <span class="comment">//重复调用多次函数</span></span><br><span class="line">        (*fun)();</span><br><span class="line">    &#125;</span><br><span class="line">    stop = <span class="built_in">clock</span>();<span class="comment">//记录始终此时打点数</span></span><br><span class="line">    duration = ((<span class="keyword">double</span>)(stop - start))/CLOCKS_PER_SEC/MAXK;<span class="comment">//计算实际用时</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Ticks = &quot;</span> &lt;&lt; (<span class="keyword">double</span>)(stop - start) &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Using time = &quot;</span> &lt;&lt; duration &lt;&lt; <span class="string">&quot; s&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git撤销已push到远端仓库的提交</title>
-    <url>/2019/10/26/gitRevert/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/gitRevert.jpg" class="full-image" />
-
-<p>随着互联网时代的来临，代码项目多采用git仓库管理多人协同编码的方式。人非圣贤孰能无过，难免有时自己刚push到远端仓库的代码存在瑕疵需要修改，此时不必惊慌，我们可以利用git的强制覆盖远端仓库来实现撤销提交的目的。适用前提：待撤销的提交记录后暂无他人提交记录。</p>
-<p>关键词: git、回退commit</p>
-<a id="more"></a>
-<blockquote class="blockquote-center">
-<p>人谁无过？过而能改，善莫大焉<br>– 左丘明《晋灵公不君》</p>
-
-</blockquote>
-<p>记录以便查询，回退commit步骤如下。</p>
-<h2 id="Step1-在本地其他路径重新克隆一份代码"><a href="#Step1-在本地其他路径重新克隆一份代码" class="headerlink" title="Step1. 在本地其他路径重新克隆一份代码"></a>Step1. 在本地其他路径重新克隆一份代码</h2><p>接下来的操作均在新克隆的路径执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> 远端代码仓库路径</span><br></pre></td></tr></table></figure>
-
-<h2 id="Step2-切换到要撤销提交的分支"><a href="#Step2-切换到要撤销提交的分支" class="headerlink" title="Step2. 切换到要撤销提交的分支"></a>Step2. 切换到要撤销提交的分支</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout -b 自定义本地分支名 origin/对应远端分支名</span><br></pre></td></tr></table></figure>
-<p>查看当前分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
-
-<h2 id="Step3-获取前一次的提交commit-id"><a href="#Step3-获取前一次的提交commit-id" class="headerlink" title="Step3. 获取前一次的提交commit id"></a>Step3. 获取前一次的提交commit id</h2><p>默认连续显示最近几次提交记录和对应的commit id，输入q退出。这步操作是为了获取待撤销提交的上一次正常提交的commit id。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Step4-强制回退到上一次提交节点"><a href="#Step4-强制回退到上一次提交节点" class="headerlink" title="Step4. 强制回退到上一次提交节点"></a>Step4. 强制回退到上一次提交节点</h2><p>强制回退本地仓库代码到远端仓库上一次正常提交到的记录节点【注意：此时所有代码修改均会被删除，这也是为什么第一步选择在其他路径重新克隆代码和执行回退操作】</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git reset --hard 【待撤销提交的前一次提交的commit id】</span><br></pre></td></tr></table></figure>
-
-<h2 id="Step5-再次查询分支的提交记录"><a href="#Step5-再次查询分支的提交记录" class="headerlink" title="Step5. 再次查询分支的提交记录"></a>Step5. 再次查询分支的提交记录</h2><p>检验本地此路径仓库的提交记录是否不含待撤销的提交，输入q退出。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Step6-强制覆盖远端仓库"><a href="#Step6-强制覆盖远端仓库" class="headerlink" title="Step6. 强制覆盖远端仓库"></a>Step6. 强制覆盖远端仓库</h2><p>强制用不含待撤销记录的本地仓库完全覆盖远端仓库。【注意：此操作后远端仓库会与本地仓库完全一致，请确保在待撤销记录之后暂无他人提交代码】</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git push origin HEAD --force</span><br></pre></td></tr></table></figure>
-<p>至此，git撤销已push到远端仓库的提交已完成，接下来跳转到工作仓库pull最新代码完善瑕疵吧！enjoy it :)</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>gRPC简介</title>
     <url>/2022/01/17/gRPCIntroduction/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-RPC-回顾"><a href="#1-RPC-回顾" class="headerlink" title="1. RPC 回顾"></a>1. RPC 回顾</h1><blockquote>
@@ -6829,6 +6754,82 @@
       </categories>
       <tags>
         <tag>gRPC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>函数指针 &amp; 指针函数</title>
+    <url>/2018/10/09/functionPointerAndPointerfunction/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/pointerFunction.jpg" class="full-image" />
+
+<h1 id="1-指针函数"><a href="#1-指针函数" class="headerlink" title="1. 指针函数"></a>1. 指针函数</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">fun</span><span class="params">(<span class="keyword">char</span> ch)</span></span>;<span class="comment">//指针函数</span></span><br></pre></td></tr></table></figure>
+<p>指针函数，即返回值为指针地址的函数。实质仍为函数，与普通函数的差异仅在于返回值比较特殊，为一个指针地址（当然需要告知编译器一个特定的类型处理数据类型）。</p>
+<a id="more"></a>
+<h2 id="1-1-指针函数实例1：-返回值为基本类型"><a href="#1-1-指针函数实例1：-返回值为基本类型" class="headerlink" title="1.1. 指针函数实例1： 返回值为基本类型"></a>1.1. 指针函数实例1： 返回值为基本类型</h2><p>函数实现：大小写互转。将传入字符串内所有小写字母转换为大写字母，所有大写字母转换为小写字母</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">Cover</span> <span class="params">(<span class="keyword">char</span>* <span class="keyword">const</span> Ptr )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span>* p = Ptr;</span><br><span class="line">    <span class="keyword">char</span> ch = *p ;</span><br><span class="line">    <span class="keyword">while</span>( ch != <span class="string">&#x27;\0&#x27;</span> ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( ch &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;z&#x27;</span> ) &#123;</span><br><span class="line">            *p -= <span class="number">32</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( ch &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;Z&#x27;</span> ) &#123;</span><br><span class="line">            *p += <span class="number">32</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">        ch = *(++p);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Ptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">15</span>] = &#123;<span class="string">&quot;Hello World!&quot;</span>&#125;;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Previous: &quot;</span> &lt;&lt; str &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Aftet: &quot;</span> &lt;&lt; <span class="built_in">Cover</span>(str) &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-指针函数实例2：返回值为结构体"><a href="#1-2-指针函数实例2：返回值为结构体" class="headerlink" title="1.2. 指针函数实例2：返回值为结构体"></a>1.2. 指针函数实例2：返回值为结构体</h2><p>函数实现：获取并返回注册信息结构体。获取用户信息并返回包含用户名、用户密码的结构体。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span> &#123;</span></span><br><span class="line">    string userName;</span><br><span class="line">    string userPassword;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showUser</span> <span class="params">( struct UserMessage* user )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( user == <span class="literal">NULL</span> ) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Error: register failed!&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Success: register success:)&quot;</span> &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;User: &quot;</span> &lt;&lt; user-&gt;userName &lt;&lt; endl &lt;&lt; <span class="string">&quot;Psw: &quot;</span> &lt;&lt; user-&gt;userPassword &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct UserMessage* <span class="title">Register</span> <span class="params">( <span class="keyword">void</span> )</span> </span>&#123;</span><br><span class="line">    string str0, str1, str2;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input UserName:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str0;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input Password:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str1;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Please input Password again:&quot;</span>;</span><br><span class="line">    cin &gt;&gt; str2;</span><br><span class="line">    <span class="keyword">if</span> ( str1.<span class="built_in">compare</span>(str2) == <span class="number">0</span> ) &#123;</span><br><span class="line">        <span class="comment">//(string)(user-&gt;userName) = str0; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="comment">//(string)(user-&gt;userPassword) = str1; //Doesn&#x27;t work</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">user</span> =</span> <span class="keyword">new</span> UserMessage;</span><br><span class="line">        *user = &#123; str0, str1 &#125;;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">UserMessage</span>* <span class="title">Test</span> =</span> <span class="built_in">Register</span>();</span><br><span class="line">    <span class="built_in">showUser</span>(Test);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<img data-src="../../../../uploads/functionPointer.jpg" class="full-image" />
+# 2. 函数指针
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">int</span></span> (*fun)(<span class="keyword">char</span> ch);<span class="comment">//函数指针</span></span><br></pre></td></tr></table></figure>
+函数指针，即指针地址指向一个函数入口地址的指针。实质任为指针。我们可以通过改变这个指针的不同地址调用同型的不同函数。
+
+<h2 id="2-1-函数指针实例1：-通过一个指针调用同型的不同函数"><a href="#2-1-函数指针实例1：-通过一个指针调用同型的不同函数" class="headerlink" title="2.1. 函数指针实例1： 通过一个指针调用同型的不同函数"></a>2.1. 函数指针实例1： 通过一个指针调用同型的不同函数</h2><p>代码实现：通过改变一个指针地址的赋值，以调用同型的不同函数</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowOnce</span> <span class="params">(string str)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;No.1 &quot;</span> &lt;&lt; str &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowTwice</span> <span class="params">(string str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">2</span>; i++) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;No.&quot;</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; str &lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ShowThrice</span> <span class="params">(string str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">3</span>; i++) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;No.&quot;</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; str &lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="built_in"><span class="keyword">int</span></span> (*fun)(string);<span class="comment">//函数指针定义</span></span><br><span class="line">    fun = ShowOnce;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowOnce&quot;</span>);<span class="comment">//通过函数指针调用 函数1</span></span><br><span class="line"></span><br><span class="line">    fun = ShowTwice;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowTwice&quot;</span>);<span class="comment">//通过函数指针调用 函数2</span></span><br><span class="line"></span><br><span class="line">    fun = ShowThrice;</span><br><span class="line">    (*fun)(<span class="string">&quot;ShowThrice&quot;</span>);<span class="comment">//通过函数指针调用 函数3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-函数指针实例2：-通过一个指针调用同型的不同函数2"><a href="#2-2-函数指针实例2：-通过一个指针调用同型的不同函数2" class="headerlink" title="2.2. 函数指针实例2： 通过一个指针调用同型的不同函数2"></a>2.2. 函数指针实例2： 通过一个指针调用同型的不同函数2</h2><p>代码实现：通过改变一个指针地址的赋值，以调用同型的不同函数，与实例1区别在多个形参，需特别注意函数指针形参类型必须与调用的函数形参类型一致</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Add</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//加</span></span><br><span class="line">    <span class="keyword">return</span> (num1 + num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Subtract</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//减</span></span><br><span class="line">    <span class="keyword">return</span> (num1 - num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Multiply</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//乘</span></span><br><span class="line">    <span class="keyword">return</span> (num1 * num2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Divide</span> <span class="params">(<span class="keyword">double</span> num1, <span class="keyword">double</span> num2)</span> </span>&#123;<span class="comment">//除</span></span><br><span class="line">    <span class="keyword">return</span> (num1 / num2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="built_in"><span class="keyword">double</span></span> (*fun)(<span class="keyword">double</span>, <span class="keyword">double</span>);<span class="comment">//函数指针定义</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Test (*fun)(5,3) :&quot;</span> &lt;&lt; endl &lt;&lt;endl;</span><br><span class="line">    fun = Add;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Add: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    fun = Subtract;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Subtract: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    fun = Multiply;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Multiply: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    fun = Divide;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="string">&quot;Divide: &quot;</span> &lt;&lt; (*fun)(<span class="number">5</span>,<span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）"><a href="#2-3-函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）" class="headerlink" title="2.3. 函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）"></a>2.3. 函数指针高级应用：通过函数指针测试不同函数的运行时间（函数指针作为形参）</h2><p>代码实现：通过形参传入一个函数指针，可在函数体内调用该函数指针形参指向的函数，以测试不同函数的运行时间</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXN 10   <span class="comment">//多项式最大项数(9阶)</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Fun_x 1.1 <span class="comment">//多项式x的值</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXK 1e3  <span class="comment">//被测函数最大重复调用次数</span></span></span><br><span class="line"><span class="keyword">double</span> a[MAXN];   <span class="comment">//多项式系数</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function1</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function2</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showFunctionUsingTime</span> <span class="params">(<span class="keyword">double</span> (*fun)(<span class="keyword">void</span>))</span></span>; <span class="comment">// *******函数指针作为形参 *******</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;MAXN; i++) &#123; <span class="comment">//赋值项系数</span></span><br><span class="line">        a[i] = (<span class="keyword">double</span>)i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//计算Function1用时</span></span><br><span class="line">    <span class="built_in">showFunctionUsingTime</span>(Function1);</span><br><span class="line">    <span class="comment">//计算Function2用时</span></span><br><span class="line">    <span class="built_in">showFunctionUsingTime</span>(Function2);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function1</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> p = a[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=(MAXN<span class="number">-1</span>); i++) &#123;</span><br><span class="line">        p += (a[i] * <span class="built_in">pow</span>(Fun_x, i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function2</span> <span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> p = a[MAXN<span class="number">-1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=(MAXN<span class="number">-1</span>); i&gt;<span class="number">0</span>; i--) &#123;</span><br><span class="line">        p = a[i<span class="number">-1</span>] + Fun_x * p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showFunctionUsingTime</span> <span class="params">(<span class="keyword">double</span> (*fun)(<span class="keyword">void</span>))</span> </span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> start, stop;</span><br><span class="line">    <span class="keyword">double</span> duration; <span class="comment">//运行时间　变量</span></span><br><span class="line">    <span class="comment">//计算Function1用时</span></span><br><span class="line">    start = <span class="built_in">clock</span>();<span class="comment">//记录时钟此刻打点数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;MAXK ;i++) &#123; <span class="comment">//重复调用多次函数</span></span><br><span class="line">        (*fun)();</span><br><span class="line">    &#125;</span><br><span class="line">    stop = <span class="built_in">clock</span>();<span class="comment">//记录始终此时打点数</span></span><br><span class="line">    duration = ((<span class="keyword">double</span>)(stop - start))/CLOCKS_PER_SEC/MAXK;<span class="comment">//计算实际用时</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Ticks = &quot;</span> &lt;&lt; (<span class="keyword">double</span>)(stop - start) &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Using time = &quot;</span> &lt;&lt; duration &lt;&lt; <span class="string">&quot; s&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git撤销已push到远端仓库的提交</title>
+    <url>/2019/10/26/gitRevert/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/gitRevert.jpg" class="full-image" />
+
+<p>随着互联网时代的来临，代码项目多采用git仓库管理多人协同编码的方式。人非圣贤孰能无过，难免有时自己刚push到远端仓库的代码存在瑕疵需要修改，此时不必惊慌，我们可以利用git的强制覆盖远端仓库来实现撤销提交的目的。适用前提：待撤销的提交记录后暂无他人提交记录。</p>
+<p>关键词: git、回退commit</p>
+<a id="more"></a>
+<blockquote class="blockquote-center">
+<p>人谁无过？过而能改，善莫大焉<br>– 左丘明《晋灵公不君》</p>
+
+</blockquote>
+<p>记录以便查询，回退commit步骤如下。</p>
+<h2 id="Step1-在本地其他路径重新克隆一份代码"><a href="#Step1-在本地其他路径重新克隆一份代码" class="headerlink" title="Step1. 在本地其他路径重新克隆一份代码"></a>Step1. 在本地其他路径重新克隆一份代码</h2><p>接下来的操作均在新克隆的路径执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> 远端代码仓库路径</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step2-切换到要撤销提交的分支"><a href="#Step2-切换到要撤销提交的分支" class="headerlink" title="Step2. 切换到要撤销提交的分支"></a>Step2. 切换到要撤销提交的分支</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout -b 自定义本地分支名 origin/对应远端分支名</span><br></pre></td></tr></table></figure>
+<p>查看当前分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step3-获取前一次的提交commit-id"><a href="#Step3-获取前一次的提交commit-id" class="headerlink" title="Step3. 获取前一次的提交commit id"></a>Step3. 获取前一次的提交commit id</h2><p>默认连续显示最近几次提交记录和对应的commit id，输入q退出。这步操作是为了获取待撤销提交的上一次正常提交的commit id。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Step4-强制回退到上一次提交节点"><a href="#Step4-强制回退到上一次提交节点" class="headerlink" title="Step4. 强制回退到上一次提交节点"></a>Step4. 强制回退到上一次提交节点</h2><p>强制回退本地仓库代码到远端仓库上一次正常提交到的记录节点【注意：此时所有代码修改均会被删除，这也是为什么第一步选择在其他路径重新克隆代码和执行回退操作】</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git reset --hard 【待撤销提交的前一次提交的commit id】</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step5-再次查询分支的提交记录"><a href="#Step5-再次查询分支的提交记录" class="headerlink" title="Step5. 再次查询分支的提交记录"></a>Step5. 再次查询分支的提交记录</h2><p>检验本地此路径仓库的提交记录是否不含待撤销的提交，输入q退出。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Step6-强制覆盖远端仓库"><a href="#Step6-强制覆盖远端仓库" class="headerlink" title="Step6. 强制覆盖远端仓库"></a>Step6. 强制覆盖远端仓库</h2><p>强制用不含待撤销记录的本地仓库完全覆盖远端仓库。【注意：此操作后远端仓库会与本地仓库完全一致，请确保在待撤销记录之后暂无他人提交代码】</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git push origin HEAD --force</span><br></pre></td></tr></table></figure>
+<p>至此，git撤销已push到远端仓库的提交已完成，接下来跳转到工作仓库pull最新代码完善瑕疵吧！enjoy it :)</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -7232,44 +7233,6 @@
       </tags>
   </entry>
   <entry>
-    <title>基于Hexo的博文编写调试发布流程简介</title>
-    <url>/2018/08/29/post-debugging-steps/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/post-debugging-steps.png" class="full-image" />
-
-<h1 id="1-博客文章编写＆调试＆发布"><a href="#1-博客文章编写＆调试＆发布" class="headerlink" title="1. 博客文章编写＆调试＆发布"></a>1. 博客文章编写＆调试＆发布</h1><h2 id="1-1-进入Hexo根目录"><a href="#1-1-进入Hexo根目录" class="headerlink" title="1.1. 进入Hexo根目录"></a>1.1. 进入Hexo根目录</h2><ol>
-<li>输入密码,进入root用户模式<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo su</span><br></pre></td></tr></table></figure></li>
-<li>进入Hexo站点根目录<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io</span><br></pre></td></tr></table></figure>
-<a id="more"></a></li>
-</ol>
-<h2 id="1-2-写文章"><a href="#1-2-写文章" class="headerlink" title="1.2. 写文章"></a>1.2. 写文章</h2><ol>
-<li>进入发布文件夹<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;source&#x2F;_posts</span><br></pre></td></tr></table></figure></li>
-<li>新建md文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ touch example.md</span><br></pre></td></tr></table></figure></li>
-<li>编辑example.md文件，编写文章(用Markdown大肆发挥吧，可参考<a href="https://haoleeson.cn/2018/08/31/write-a-md-file/">Markdown文章语法</a>)<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim example.md</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="1-3-本地调试"><a href="#1-3-本地调试" class="headerlink" title="1.3. 本地调试"></a>1.3. 本地调试</h2><ol>
-<li>开启测试<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ sudo hexo s</span><br></pre></td></tr></table></figure></li>
-<li>在浏览器中输入: <a href="http://localhost:4000/">http://localhost:4000/</a>以查看效果.</li>
-</ol>
-<h2 id="1-4-发布"><a href="#1-4-发布" class="headerlink" title="1.4. 发布"></a>1.4. 发布</h2><ol>
-<li>测试没问题后，我们就生成静态网页文件发布至我们的Github pages 中。<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ cd /home/haoleeson/haoleeson.github.io</span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
-<li>可能会要求输入github账号密码</li>
-<li>如果上传失败显示如下信息,可能是由于我们没有配置root环境中的GitHub账号global，按照提示配置一下GitHub的global账号即可.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="2-主题配置"><a href="#2-主题配置" class="headerlink" title="2. 主题配置"></a>2. 主题配置</h1><ol>
-<li>主题配置文件在主题文件夹中,我们可以更改config.yml文件进行配置.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
-<li>用文本编辑器打开编辑主题配置文件,点击查看<a href="http://theme-next.iissnan.com/getting-started.html#theme-settings">设置详细介绍.</a><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="3-Linux-技巧每日一练"><a href="#3-Linux-技巧每日一练" class="headerlink" title="3. Linux 技巧每日一练"></a>3. Linux 技巧每日一练</h1><p>用管理员运行文档管理器. sudo nautilus 会打开root版的文档管理器，可在终端键入ctrl+c就会关闭这个文档管理器。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo nautilus</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>日志规范</title>
     <url>/2021/08/26/logSpecification/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-日志分类"><a href="#1-日志分类" class="headerlink" title="1. 日志分类"></a>1. 日志分类</h1><blockquote>
@@ -7553,49 +7516,41 @@
       </tags>
   </entry>
   <entry>
-    <title>sonic201911 丢失 swss.rec 历史日志问题及修复</title>
-    <url>/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h1><p>sonic版本：201911</p>
-<p>发现问题： swss.rec 无轮转文件</p>
-<a id="more"></a>
+    <title>基于Hexo的博文编写调试发布流程简介</title>
+    <url>/2018/08/29/post-debugging-steps/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/post-debugging-steps.png" class="full-image" />
 
-<h1 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h1><h2 id="2-1-问题定位"><a href="#2-1-问题定位" class="headerlink" title="2.1. 问题定位"></a>2.1. 问题定位</h2><p><code>/var/log/swss/swss.rec</code> 文件存在被其他未知程序误删或覆盖的操作</p>
-<h2 id="2-2-问题可能性分析"><a href="#2-2-问题可能性分析" class="headerlink" title="2.2. 问题可能性分析"></a>2.2. 问题可能性分析</h2><ul>
-<li>怀疑被其他未知程序或脚本误删或覆盖。<br>通过 <code>lsof /var/log/swss/swss.rec</code> 命令观测读写 <code>swss.rec</code> 文件的进程，仅发现 orchagent 及 轮转时 logrotated 进程，而同路径 <code>sairedis.rec</code> 正常，且测试<code>swss.rec</code>轮转正常，排除。</li>
-<li>怀疑为 Docker 同步问题。<br>&#x2F;var&#x2F;log&#x2F;swss&#x2F; 路径为 swss 容器（rw形式）挂载宿主机同路径文件夹，怀疑可能同步问题导致，但同路径 <code>sairedis.rec</code> 正常，排除。</li>
-<li>怀疑 orchagent 进程未正常关闭、重启可能导致正在打开的 <code>swss.rec</code> 内容丢失。<br>但相似模式的 <code>sairedis.rec</code> 无此问题，排除。</li>
-<li>怀疑 orchagent 进程对 <code>swss.rec</code> 读写业务流程中与 <code>sairedis.rec</code> 存在差异的地方导致的此问题。<br>分析源码 swss.rec 读写流涉及函数，发现 main.cpp 中必打的日志丢失。<img data-src="../../../../uploads/Analyze_the_source_code_swss_rec.png" class="full-image" /></li>
-<li>怀疑 “pgrep -x orchagent | xargs &#x2F;bin&#x2F;kill -HUP 2&gt;&#x2F;dev&#x2F;null || true” 触发 Orch::logfileReopen() 后，文件打开方式为默认，可能会覆盖之前内容。<br>swss.rec 与 sairedis.rec 重载参数对比：<img data-src="../../../../uploads/Comparison_of_swss_rec_and_sairedis_rec.png" class="full-image" /></li>
-</ul>
-<h3 id="2-2-1-测试-logfileReopen-函数调用前后-swss-rec-文件变化"><a href="#2-2-1-测试-logfileReopen-函数调用前后-swss-rec-文件变化" class="headerlink" title="2.2.1. 测试 logfileReopen() 函数调用前后 swss.rec 文件变化"></a>2.2.1. 测试 logfileReopen() 函数调用前后 swss.rec 文件变化</h3><img data-src="../../../../uploads/Test_logfileReopen_the_swss.rec.png" class="full-image" />
-
-<p>分析：给 orchagent 发送 HUP 信号，触发重载 <code>swss.rec</code> 文件后，后续写入的新内容将覆盖历史日志，造成日志丢失。</p>
-<h3 id="2-2-2-测试重载流程中的关键函数-open-是否携带参数造成的差异"><a href="#2-2-2-测试重载流程中的关键函数-open-是否携带参数造成的差异" class="headerlink" title="2.2.2. 测试重载流程中的关键函数 open() 是否携带参数造成的差异"></a>2.2.2. 测试重载流程中的关键函数 open() 是否携带参数造成的差异</h3><p>这也是 <code>swss.rec</code> 与 <code>sairedis.rec</code> 两个文件重载中的主要差异点。<br><img data-src="../../../../uploads/Test_the_open_file_func_with_no_parameters_and_with_parameters.png" class="full-image" /></p>
-<p>由测试结果可知：</p>
-<ul>
-<li>默认无参 open() 打开文件将覆盖旧内容，造成历史日志丢失。</li>
-<li>而带 out 及 app 参数的 open() 打开文件将采用追加形式写入新内容，历史内容会被保留。<ul>
-<li>ofstream::out，Open for output.  Default for @c ofstream and fstream.</li>
-<li>ofstream::app，eek to end before each write.</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-2-3-根因总结"><a href="#2-2-3-根因总结" class="headerlink" title="2.2.3. 根因总结"></a>2.2.3. 根因总结</h3><p>上述分析可知根因为： <code>swss.rec</code> 的重载函数中 open() 未携带 out 及 app 参数，导致后续内容覆盖了历史日志，造成日志丢失。</p>
-<h2 id="2-3-问题影响"><a href="#2-3-问题影响" class="headerlink" title="2.3. 问题影响"></a>2.3. 问题影响</h2><ul>
-<li><strong>问题后果</strong>：造成 <code>swss.rec</code> 日志记录丢失，影响排障定位。</li>
-<li><strong>触发条件</strong>：orchagent 在未达到轮转阈值前，就被误发送 HUP 信号问题“概率”引发），进而导致 orchagent 采用“覆盖”open()的形式打开 <code>swss.rec</code>，进而导致该文件的历史日志丢失。</li>
-</ul>
-<h1 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3. 解决方案"></a>3. 解决方案</h1><p>在 <code>swss.rec</code> 的重载函数中调 open()处增加 out 及 app 参数，使其以追加形式写入后续日志，以保留历史日志。改动如下：<br>src&#x2F;sonic-swss&#x2F;orchagent&#x2F;orch.cpp 的重载函数Orch::logfileReopen()，在调用 open()函数处增加 out 及 app 参数：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gRecordOfs.open(gRecordFile, std::ofstream::out | std::ofstream::app);</span><br></pre></td></tr></table></figure>
-
-<p>修复后换包自问题已修复， <code>swss.rec</code> 历史日志不再丢失。</p>
+<h1 id="1-博客文章编写＆调试＆发布"><a href="#1-博客文章编写＆调试＆发布" class="headerlink" title="1. 博客文章编写＆调试＆发布"></a>1. 博客文章编写＆调试＆发布</h1><h2 id="1-1-进入Hexo根目录"><a href="#1-1-进入Hexo根目录" class="headerlink" title="1.1. 进入Hexo根目录"></a>1.1. 进入Hexo根目录</h2><ol>
+<li>输入密码,进入root用户模式<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo su</span><br></pre></td></tr></table></figure></li>
+<li>进入Hexo站点根目录<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io</span><br></pre></td></tr></table></figure>
+<a id="more"></a></li>
+</ol>
+<h2 id="1-2-写文章"><a href="#1-2-写文章" class="headerlink" title="1.2. 写文章"></a>1.2. 写文章</h2><ol>
+<li>进入发布文件夹<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;source&#x2F;_posts</span><br></pre></td></tr></table></figure></li>
+<li>新建md文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ touch example.md</span><br></pre></td></tr></table></figure></li>
+<li>编辑example.md文件，编写文章(用Markdown大肆发挥吧，可参考<a href="https://haoleeson.cn/2018/08/31/write-a-md-file/">Markdown文章语法</a>)<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim example.md</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="1-3-本地调试"><a href="#1-3-本地调试" class="headerlink" title="1.3. 本地调试"></a>1.3. 本地调试</h2><ol>
+<li>开启测试<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ sudo hexo s</span><br></pre></td></tr></table></figure></li>
+<li>在浏览器中输入: <a href="http://localhost:4000/">http://localhost:4000/</a>以查看效果.</li>
+</ol>
+<h2 id="1-4-发布"><a href="#1-4-发布" class="headerlink" title="1.4. 发布"></a>1.4. 发布</h2><ol>
+<li>测试没问题后，我们就生成静态网页文件发布至我们的Github pages 中。<figure class="highlight c"><figcaption><span>命令执行目录：~/你的博客站点根目录</span></figcaption><table><tr><td class="code"><pre><span class="line">$ cd /home/haoleeson/haoleeson.github.io</span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
+<li>可能会要求输入github账号密码</li>
+<li>如果上传失败显示如下信息,可能是由于我们没有配置root环境中的GitHub账号global，按照提示配置一下GitHub的global账号即可.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="2-主题配置"><a href="#2-主题配置" class="headerlink" title="2. 主题配置"></a>2. 主题配置</h1><ol>
+<li>主题配置文件在主题文件夹中,我们可以更改config.yml文件进行配置.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
+<li>用文本编辑器打开编辑主题配置文件,点击查看<a href="http://theme-next.iissnan.com/getting-started.html#theme-settings">设置详细介绍.</a><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vim &#x2F;home&#x2F;haoleeson&#x2F;haoleeson.github.io&#x2F;themes&#x2F;next&#x2F;_config.yml</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="3-Linux-技巧每日一练"><a href="#3-Linux-技巧每日一练" class="headerlink" title="3. Linux 技巧每日一练"></a>3. Linux 技巧每日一练</h1><p>用管理员运行文档管理器. sudo nautilus 会打开root版的文档管理器，可在终端键入ctrl+c就会关闭这个文档管理器。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo nautilus</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
-        <tag>Network</tag>
-        <tag>SONiC</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -7659,6 +7614,52 @@
 <li>自测运行三天无下划线前缀的冗余表项生成</li>
 <li>手动构造带下划线前缀的冗余表项后，调 swssloglevel -p 不再出 core</li>
 </ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Network</tag>
+        <tag>SONiC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sonic201911 丢失 swss.rec 历史日志问题及修复</title>
+    <url>/2021/11/22/sonic201911_lost_swss_rec_history_log_problem_and_fix/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h1><p>sonic版本：201911</p>
+<p>发现问题： swss.rec 无轮转文件</p>
+<a id="more"></a>
+
+<h1 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h1><h2 id="2-1-问题定位"><a href="#2-1-问题定位" class="headerlink" title="2.1. 问题定位"></a>2.1. 问题定位</h2><p><code>/var/log/swss/swss.rec</code> 文件存在被其他未知程序误删或覆盖的操作</p>
+<h2 id="2-2-问题可能性分析"><a href="#2-2-问题可能性分析" class="headerlink" title="2.2. 问题可能性分析"></a>2.2. 问题可能性分析</h2><ul>
+<li>怀疑被其他未知程序或脚本误删或覆盖。<br>通过 <code>lsof /var/log/swss/swss.rec</code> 命令观测读写 <code>swss.rec</code> 文件的进程，仅发现 orchagent 及 轮转时 logrotated 进程，而同路径 <code>sairedis.rec</code> 正常，且测试<code>swss.rec</code>轮转正常，排除。</li>
+<li>怀疑为 Docker 同步问题。<br>&#x2F;var&#x2F;log&#x2F;swss&#x2F; 路径为 swss 容器（rw形式）挂载宿主机同路径文件夹，怀疑可能同步问题导致，但同路径 <code>sairedis.rec</code> 正常，排除。</li>
+<li>怀疑 orchagent 进程未正常关闭、重启可能导致正在打开的 <code>swss.rec</code> 内容丢失。<br>但相似模式的 <code>sairedis.rec</code> 无此问题，排除。</li>
+<li>怀疑 orchagent 进程对 <code>swss.rec</code> 读写业务流程中与 <code>sairedis.rec</code> 存在差异的地方导致的此问题。<br>分析源码 swss.rec 读写流涉及函数，发现 main.cpp 中必打的日志丢失。<img data-src="../../../../uploads/Analyze_the_source_code_swss_rec.png" class="full-image" /></li>
+<li>怀疑 “pgrep -x orchagent | xargs &#x2F;bin&#x2F;kill -HUP 2&gt;&#x2F;dev&#x2F;null || true” 触发 Orch::logfileReopen() 后，文件打开方式为默认，可能会覆盖之前内容。<br>swss.rec 与 sairedis.rec 重载参数对比：<img data-src="../../../../uploads/Comparison_of_swss_rec_and_sairedis_rec.png" class="full-image" /></li>
+</ul>
+<h3 id="2-2-1-测试-logfileReopen-函数调用前后-swss-rec-文件变化"><a href="#2-2-1-测试-logfileReopen-函数调用前后-swss-rec-文件变化" class="headerlink" title="2.2.1. 测试 logfileReopen() 函数调用前后 swss.rec 文件变化"></a>2.2.1. 测试 logfileReopen() 函数调用前后 swss.rec 文件变化</h3><img data-src="../../../../uploads/Test_logfileReopen_the_swss.rec.png" class="full-image" />
+
+<p>分析：给 orchagent 发送 HUP 信号，触发重载 <code>swss.rec</code> 文件后，后续写入的新内容将覆盖历史日志，造成日志丢失。</p>
+<h3 id="2-2-2-测试重载流程中的关键函数-open-是否携带参数造成的差异"><a href="#2-2-2-测试重载流程中的关键函数-open-是否携带参数造成的差异" class="headerlink" title="2.2.2. 测试重载流程中的关键函数 open() 是否携带参数造成的差异"></a>2.2.2. 测试重载流程中的关键函数 open() 是否携带参数造成的差异</h3><p>这也是 <code>swss.rec</code> 与 <code>sairedis.rec</code> 两个文件重载中的主要差异点。<br><img data-src="../../../../uploads/Test_the_open_file_func_with_no_parameters_and_with_parameters.png" class="full-image" /></p>
+<p>由测试结果可知：</p>
+<ul>
+<li>默认无参 open() 打开文件将覆盖旧内容，造成历史日志丢失。</li>
+<li>而带 out 及 app 参数的 open() 打开文件将采用追加形式写入新内容，历史内容会被保留。<ul>
+<li>ofstream::out，Open for output.  Default for @c ofstream and fstream.</li>
+<li>ofstream::app，eek to end before each write.</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-3-根因总结"><a href="#2-2-3-根因总结" class="headerlink" title="2.2.3. 根因总结"></a>2.2.3. 根因总结</h3><p>上述分析可知根因为： <code>swss.rec</code> 的重载函数中 open() 未携带 out 及 app 参数，导致后续内容覆盖了历史日志，造成日志丢失。</p>
+<h2 id="2-3-问题影响"><a href="#2-3-问题影响" class="headerlink" title="2.3. 问题影响"></a>2.3. 问题影响</h2><ul>
+<li><strong>问题后果</strong>：造成 <code>swss.rec</code> 日志记录丢失，影响排障定位。</li>
+<li><strong>触发条件</strong>：orchagent 在未达到轮转阈值前，就被误发送 HUP 信号问题“概率”引发），进而导致 orchagent 采用“覆盖”open()的形式打开 <code>swss.rec</code>，进而导致该文件的历史日志丢失。</li>
+</ul>
+<h1 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3. 解决方案"></a>3. 解决方案</h1><p>在 <code>swss.rec</code> 的重载函数中调 open()处增加 out 及 app 参数，使其以追加形式写入后续日志，以保留历史日志。改动如下：<br>src&#x2F;sonic-swss&#x2F;orchagent&#x2F;orch.cpp 的重载函数Orch::logfileReopen()，在调用 open()函数处增加 out 及 app 参数：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gRecordOfs.open(gRecordFile, std::ofstream::out | std::ofstream::app);</span><br></pre></td></tr></table></figure>
+
+<p>修复后换包自问题已修复， <code>swss.rec</code> 历史日志不再丢失。</p>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -8977,107 +8978,6 @@
       </tags>
   </entry>
   <entry>
-    <title>恋爱观</title>
-    <url>/2018/04/24/talkAboutLoveCiteByAnonymousSenior/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/talkAboutLoveCiteByAnonymousSenior.jpg" class="full-image" />
-
-
-<div class="note success"><p><a href="http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=935336">全文转自西电睿思学姐(内网)</a>分享了如何树立正确的爱情观（约束而又不失个性，理性与感性并存），观点很正，值得学习，遂与大家分享。</p>
-</div>
-
-<a id="more"></a>
-
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Specified asset file not found (../../../../uploads/loveYou.jpg)");
-			</script>
-
-<h1 id="1-恋爱观"><a href="#1-恋爱观" class="headerlink" title="1. 恋爱观"></a>1. 恋爱观</h1><p>我们要树立正确的恋爱观，在有热情的同时也要保持清醒理智。之前听陈果的一个分享很有意思，记录了笔记，拿出来和大家分享。<br>总共分为两个部分：</p>
-<p><strong>第一部分是关于爱情的三个问题：</strong></p>
-<ul>
-<li>爱与被爱</li>
-<li>爱的对象与能力</li>
-<li>激情与爱情、性与爱；</li>
-</ul>
-<p><strong>第二部分是很喜欢的四句话：</strong></p>
-<ul>
-<li>每一个不曾起舞的日子都是对生命的辜负；</li>
-<li>我自风情万种与世无争；</li>
-<li>把有意思的事变得有意义，有意义的事变得有意思；</li>
-<li>告诉他们我度过了幸福的一生。</li>
-</ul>
-<h2 id="1-1-关于爱情的三个问题"><a href="#1-1-关于爱情的三个问题" class="headerlink" title="1.1. 关于爱情的三个问题"></a>1.1. 关于爱情的三个问题</h2><blockquote class="blockquote-center">
-<p><strong>爱与被爱</strong></p>
-
-</blockquote>
-<p>很多时候我们想要的是享受被爱的感觉，考虑的更多的是如何让自己爱的对象更爱自己或者让大家爱自己。但其实对于这个问题来说，我们首先要学会怎样去爱别人。比如爱自己的对象要考虑到怎样去爱他，他需要怎样的感情。如何为他提供更好的服务（爱和鼓励），在他失意的时候以自己对他的了解，给他给予支持和关怀。</p>
-<p>但事实是，我们很少为别人提供服务，但需要别人为我们提供爱这种服务。对于男性来说，他们更多的是在意社会的评判，取得成就、更强、更有钱；对于女性来说，可能想要美丽、漂亮的仪容仪表。而对于男性和女性共同来说，就是需要优雅的谈吐、谦虚、诚实这些良好的品质。我们都在用优秀的要素来武装自己，来证明自己是一个优秀的人。</p>
-<p>很多时候我们需要用别人的“我爱你”，来打消自己内心的疑惑，因为我们内心没有安全感。但很多东西如果需要被证实，那就说明自己本来就没有。在两个人相处的过程中应该相互信任，让信任播种出信任的种子。但很多人就是守护不住自己的感情，不知道两个人很好的爱情是需要细水长流的，是需要慢慢熬的。</p>
-<p>很多时候给予比得到更让我们感到快乐。我们能够给予说明自己内心很富有，把自己身上的活力给别人。之前看到一个说穷人没有给予的乐趣。（这里所说的穷人是不愿意给予的人，而不是经济意义上的穷人。）</p>
-<blockquote class="blockquote-center">
-<p><strong>爱的对象和爱的能力的问题</strong></p>
-
-</blockquote>
-<p>首先我们要承认：爱是一种能力。如果说爱是一个对象的话，当这个对象出现的时候就会发现空间的转移，我们就会爱上这个对象。但是事实上，爱跟画画是一样的。我们画画首先需要打磨自己画画的技巧，而不是去寻找一个自己想画的对象。我们认为爱情是对象的问题，对爱情有热度。事实上，我们必须要有能力、有信心让爱情有持久度。所以需要去培养自己爱的能力，经营、去维护甚至去修复一段感情。在爱中，免有人会犯错，们需要做一个很好的聆听者，不是那个喋喋不休的人。</p>
-<p>之前看过一段话说：时间能带走一切东西。所有人们可以留下来的东西，时间通通都可以带走。比如美丽的容颜。</p>
-<p>有一种人，他们会频繁的更换爱的对象。他们是爱无能的人，他们没有爱的能力，他们没有办法沉淀下来来维护爱、欣赏爱。爱对它们来说只是一种好奇心。他们无法欣赏那些看似平常看似平淡无奇却长长久久的美，不能感受到两个人相互依赖相互依偎的美。这个也像一个体能不太好的人想去尝试各种体育项目，换了这个换那个，总觉得是体育项目的问题，但真实的原因是她自己的体质不够好，要先培养自己足够的体能。</p>
-<p>也有可能是因为这些人外部展现出来的出色和自己内心世界的空洞两者相互矛盾，他们无法正视自己是一个无趣的人，也担心别人走入他们的心里的时候会发现他们自己是一个无趣的人。在他们的内心不是繁华的宫殿，而是荒草不生的荒凉的空地。</p>
-<blockquote class="blockquote-center">
-<p><strong>激情与爱情（性与爱）</strong></p>
-
-</blockquote>
-<p>激情点燃了爱的火炬，爱情要让火炬一直燃烧，要保持爱的持久度。两个人的相处是由最开始的拘束，到最终的自然确立关系。这个是激情的部分，也是两个人 fall in love。但这个过程不是爱情的终点，而是爱情的起点。我们要把激情维护成温情，两个人相互陪伴，being in Love。要去学着经营和维护自己爱的对象，保护自己爱的人。帮助他成长的同时也让自己成长，让彼此成为更好的人。</p>
-<h2 id="1-2-四句喜欢的话："><a href="#1-2-四句喜欢的话：" class="headerlink" title="1.2. 四句喜欢的话："></a>1.2. 四句喜欢的话：</h2><blockquote class="blockquote-center">
-<p><strong>每一个不曾起舞的日子都是对生命的辜负。（用心对待此时此刻，不负此生。）</strong></p>
-
-</blockquote>
-
-<p>过去是完成了的现在，未来是当下的延伸。人生的过去和未来都是由现在决定的。那些永远不来的才是未来，而真真切切的就是现在。那些没有来的未来就是由当下决定的，未来是由当下延伸出去的。我们用心的对待此时此刻，就用心的对待了由此时此刻完成的过去和由此时此刻所延伸的未来。</p>
-<p>关于幸福这个话题，很多人都觉得等到明天或者等到未来的某一天我们要追寻幸福。我们总把幸福不断的延伸，觉得达到什么目标之后我们才有资格去幸福、实现梦想。但总有一个明天会让我们推卸梦想。所以我们要从现在开始好好的去生活，好好对待自己的梦想，好好的对待自己想做的事情。</p>
-<p>著名的诗人海子写过《面朝大海春暖花开》这首诗，但其实他还有另外一首诗《从明天开始做一个幸福的人》。但从明天开始这句话的潜台词就是：今天不幸福。不要从明天开始才去做一个幸福的人，而要从此时此刻开始。在自己能力的范围内创造属于自己的幸福。如果你有50万，你就创造50万的幸福；如果你只有50块，就创造50块的幸福。按自己的生活节奏过自己认为幸福的生活。</p>
-<p>我们人生有很多阶段，在学生的时候我们要演好学生的生活；以后在公司要演好公司职员的生活。在人生的每个港口我们都要安家落户落户，做最真实的自己。很多时候我们并没有那么富裕，但我们可以用贫穷的物质过好丰富的精神生活。很多时候我们会很忙，但是忙也就是一件事接着一件事，去把他们做好就好了。我们很忙的时候，也不会有时间来抱怨。如果自己时间很闲的话，我们可以做一些没有效率的事情，比如抄书什么的。你要记住你不是一个人，你是有小伙伴的，你就是自己最好的小伙伴。一个人很自由，我们要享受独处。</p>
-<p>要看重每一个当下，把握好此时此刻，不要等到明天才想着开始做一个幸福的或者真诚的人。要全身全心地投入每一个过程，尽人事，做最真实的自己。有时候目标导向性太强、效率优先，反而让我们很不舒服。尽力而为、顺其自然，有志者事未必竟成，但我们要全心全意的去做。</p>
-<blockquote class="blockquote-center">
-<p><strong>我自风情万种与世无争</strong></p>
-
-</blockquote>
-
-<p>在不干扰别人、不给别人带来麻烦、不影响别人的情况下，我们真的不必太去在意别人的想法。（但这也是有条件的，我们不能做不道德的事情。）</p>
-<p>有这样一个问题:让别人喜欢自己和自己喜欢自己哪个更重要。说实话这两个都很重要，但如果非要选一个最重要的，那只能选让自己喜欢自己这个更重要。因为不管你活成什么样，活的多优秀、多完美、甚至是多糟糕，总有人喜欢你，总有人不喜欢你。当你做真实的自己的时候，还是有人喜欢你，有人不喜欢你。但你会更喜欢你。喜欢你的人多了一个最重要的人，你喜欢你自己。当一个人真的喜欢自己的时候，他会由内而外的散发出自信。</p>
-<p>这里区分一下自信和他信。很多时候很多人将自己的自信建立于别人对自己的信任之上，很在意别人的眼光，但其实这是不必要的。因为你们信，所以我才信我。这是典型的他信。而真正的自信是自己知道自己的重量，不会因为别人夸自己而觉得自己很厉害，也不会因为别人贬低自己而看轻自己。不管别人怎么说自己，我自己知道我自己是怎样的人。很多时候别人喜欢你，并不是因为你这个人优不优秀，也许是因为他们可以从你身上得到好处吧。</p>
-<p>当一个人由内而外散发出自由和自信的气息的时候有很多别称，有一个称呼叫魅力、从容、风情。这是一种来自真正喜欢自己的人的自信。一个人喜欢自己的时候是自信自由而优雅的。</p>
-<p>很多时候我们会很喜欢优雅这个词，但香奈儿的slogan告诉我们言行自如便是一种优雅。举手投足之间表露的自信，由内而外散发的自由和优雅。</p>
-<p>一个人发自内心有自由、自信，会散发出一种感染力。正能量不是告诉别人“加油你是最棒的”。正能量是将自己活成了一个光源、一个小太阳。不需要跟别人说什么，当他们接近我们的时候，不管我自己愿不愿意，他们都被我温暖，我们都照亮了他们的内心。一个负能量满满的人，不管他说什么都会大打折扣，他们也给不了别人有用的建议。让自己活出自信、自由，真正喜欢自己，会散发出一种正能量，这才叫感染力。你的存在本身就是一种光明与优雅。</p>
-<p>如何找到好友？大家都知道“物以类聚，人以群分”。只有同等能量的人才能相互识别、相互结识、相互珍惜、相互欣赏，彼此成为知己。我们想要怎么样的朋友，首先我们要将自己变成那样的人。只有成为那样的人之后，才会引来那样的人。自信而自由的喜欢自己，才会吸引到那样的人。做一个闪闪发光的真诚的人。</p>
-<p>一个很爱自己的人一定也是一个热爱生活的人，一个人对自己很满意的时候也会对世界很满意，因为这是这个世界将他变成让他满意的自己。所有的厌世都是自厌，因为他们不喜欢这样的自己。</p>
-<blockquote class="blockquote-center">
-<p><strong>把有意义的事变得有意思，让有意思的事儿变得有意义。</strong></p>
-
-</blockquote>
-
-<p>我们要将无趣而有意义的事情变得好玩，将有意思的事把它变得更有意义。</p>
-<blockquote class="blockquote-center">
-<p><strong>告诉他们我度过了幸福的一生。</strong></p>
-
-</blockquote>
-
-<p>我自己要幸福，要帮助他人，让他们变得更加幸福。自己好好活着，要帮别人好好活着。</p>
-<h2 id="1-3-很喜欢的一句话："><a href="#1-3-很喜欢的一句话：" class="headerlink" title="1.3. 很喜欢的一句话："></a>1.3. 很喜欢的一句话：</h2><blockquote class="blockquote-center">
-<p><strong>希望我遇到的每一个人，经历的每一件事，都因为我而变得更加美好。</strong></p>
-
-</blockquote>
-
-<div class="note success"><p><a href="http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=935336">全文转自西电睿思学姐(内网)</a></p>
-</div>
-]]></content>
-      <categories>
-        <category>心灵成长</category>
-      </categories>
-      <tags>
-        <tag>爱情观</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>win10优化精选</title>
     <url>/2017/03/02/win10Optimization/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/win10Optimization.jpg" class="full-image" />
@@ -9440,154 +9340,180 @@
       </tags>
   </entry>
   <entry>
-    <title>职场笔记：高效会议三部曲</title>
-    <url>/2021/08/17/workplace_note_3_efficient_meeting_trilogy/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-高效会议三部曲——for-组织者"><a href="#1-高效会议三部曲——for-组织者" class="headerlink" title="1. 高效会议三部曲——for 组织者"></a>1. 高效会议三部曲——for 组织者</h1><h2 id="1-1-会前筹备"><a href="#1-1-会前筹备" class="headerlink" title="1.1. 会前筹备"></a>1.1. 会前筹备</h2><h3 id="1-1-1-明确会议目标及议题"><a href="#1-1-1-明确会议目标及议题" class="headerlink" title="1.1.1. 明确会议目标及议题"></a>1.1.1. 明确会议目标及议题</h3><ul>
-<li>期望通过会议获得什么样的结论，用于改变当前的什么问题</li>
-<li>能够传达会议目标的议题设定</li>
+    <title>恋爱观</title>
+    <url>/2018/04/24/talkAboutLoveCiteByAnonymousSenior/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><img data-src="../../../../uploads/talkAboutLoveCiteByAnonymousSenior.jpg" class="full-image" />
+
+
+<div class="note success"><p><a href="http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=935336">全文转自西电睿思学姐(内网)</a>分享了如何树立正确的爱情观（约束而又不失个性，理性与感性并存），观点很正，值得学习，遂与大家分享。</p>
+</div>
+
+<a id="more"></a>
+
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Specified asset file not found (../../../../uploads/loveYou.jpg)");
+			</script>
+
+<h1 id="1-恋爱观"><a href="#1-恋爱观" class="headerlink" title="1. 恋爱观"></a>1. 恋爱观</h1><p>我们要树立正确的恋爱观，在有热情的同时也要保持清醒理智。之前听陈果的一个分享很有意思，记录了笔记，拿出来和大家分享。<br>总共分为两个部分：</p>
+<p><strong>第一部分是关于爱情的三个问题：</strong></p>
+<ul>
+<li>爱与被爱</li>
+<li>爱的对象与能力</li>
+<li>激情与爱情、性与爱；</li>
+</ul>
+<p><strong>第二部分是很喜欢的四句话：</strong></p>
+<ul>
+<li>每一个不曾起舞的日子都是对生命的辜负；</li>
+<li>我自风情万种与世无争；</li>
+<li>把有意思的事变得有意义，有意义的事变得有意思；</li>
+<li>告诉他们我度过了幸福的一生。</li>
+</ul>
+<h2 id="1-1-关于爱情的三个问题"><a href="#1-1-关于爱情的三个问题" class="headerlink" title="1.1. 关于爱情的三个问题"></a>1.1. 关于爱情的三个问题</h2><blockquote class="blockquote-center">
+<p><strong>爱与被爱</strong></p>
+
+</blockquote>
+<p>很多时候我们想要的是享受被爱的感觉，考虑的更多的是如何让自己爱的对象更爱自己或者让大家爱自己。但其实对于这个问题来说，我们首先要学会怎样去爱别人。比如爱自己的对象要考虑到怎样去爱他，他需要怎样的感情。如何为他提供更好的服务（爱和鼓励），在他失意的时候以自己对他的了解，给他给予支持和关怀。</p>
+<p>但事实是，我们很少为别人提供服务，但需要别人为我们提供爱这种服务。对于男性来说，他们更多的是在意社会的评判，取得成就、更强、更有钱；对于女性来说，可能想要美丽、漂亮的仪容仪表。而对于男性和女性共同来说，就是需要优雅的谈吐、谦虚、诚实这些良好的品质。我们都在用优秀的要素来武装自己，来证明自己是一个优秀的人。</p>
+<p>很多时候我们需要用别人的“我爱你”，来打消自己内心的疑惑，因为我们内心没有安全感。但很多东西如果需要被证实，那就说明自己本来就没有。在两个人相处的过程中应该相互信任，让信任播种出信任的种子。但很多人就是守护不住自己的感情，不知道两个人很好的爱情是需要细水长流的，是需要慢慢熬的。</p>
+<p>很多时候给予比得到更让我们感到快乐。我们能够给予说明自己内心很富有，把自己身上的活力给别人。之前看到一个说穷人没有给予的乐趣。（这里所说的穷人是不愿意给予的人，而不是经济意义上的穷人。）</p>
+<blockquote class="blockquote-center">
+<p><strong>爱的对象和爱的能力的问题</strong></p>
+
+</blockquote>
+<p>首先我们要承认：爱是一种能力。如果说爱是一个对象的话，当这个对象出现的时候就会发现空间的转移，我们就会爱上这个对象。但是事实上，爱跟画画是一样的。我们画画首先需要打磨自己画画的技巧，而不是去寻找一个自己想画的对象。我们认为爱情是对象的问题，对爱情有热度。事实上，我们必须要有能力、有信心让爱情有持久度。所以需要去培养自己爱的能力，经营、去维护甚至去修复一段感情。在爱中，免有人会犯错，们需要做一个很好的聆听者，不是那个喋喋不休的人。</p>
+<p>之前看过一段话说：时间能带走一切东西。所有人们可以留下来的东西，时间通通都可以带走。比如美丽的容颜。</p>
+<p>有一种人，他们会频繁的更换爱的对象。他们是爱无能的人，他们没有爱的能力，他们没有办法沉淀下来来维护爱、欣赏爱。爱对它们来说只是一种好奇心。他们无法欣赏那些看似平常看似平淡无奇却长长久久的美，不能感受到两个人相互依赖相互依偎的美。这个也像一个体能不太好的人想去尝试各种体育项目，换了这个换那个，总觉得是体育项目的问题，但真实的原因是她自己的体质不够好，要先培养自己足够的体能。</p>
+<p>也有可能是因为这些人外部展现出来的出色和自己内心世界的空洞两者相互矛盾，他们无法正视自己是一个无趣的人，也担心别人走入他们的心里的时候会发现他们自己是一个无趣的人。在他们的内心不是繁华的宫殿，而是荒草不生的荒凉的空地。</p>
+<blockquote class="blockquote-center">
+<p><strong>激情与爱情（性与爱）</strong></p>
+
+</blockquote>
+<p>激情点燃了爱的火炬，爱情要让火炬一直燃烧，要保持爱的持久度。两个人的相处是由最开始的拘束，到最终的自然确立关系。这个是激情的部分，也是两个人 fall in love。但这个过程不是爱情的终点，而是爱情的起点。我们要把激情维护成温情，两个人相互陪伴，being in Love。要去学着经营和维护自己爱的对象，保护自己爱的人。帮助他成长的同时也让自己成长，让彼此成为更好的人。</p>
+<h2 id="1-2-四句喜欢的话："><a href="#1-2-四句喜欢的话：" class="headerlink" title="1.2. 四句喜欢的话："></a>1.2. 四句喜欢的话：</h2><blockquote class="blockquote-center">
+<p><strong>每一个不曾起舞的日子都是对生命的辜负。（用心对待此时此刻，不负此生。）</strong></p>
+
+</blockquote>
+
+<p>过去是完成了的现在，未来是当下的延伸。人生的过去和未来都是由现在决定的。那些永远不来的才是未来，而真真切切的就是现在。那些没有来的未来就是由当下决定的，未来是由当下延伸出去的。我们用心的对待此时此刻，就用心的对待了由此时此刻完成的过去和由此时此刻所延伸的未来。</p>
+<p>关于幸福这个话题，很多人都觉得等到明天或者等到未来的某一天我们要追寻幸福。我们总把幸福不断的延伸，觉得达到什么目标之后我们才有资格去幸福、实现梦想。但总有一个明天会让我们推卸梦想。所以我们要从现在开始好好的去生活，好好对待自己的梦想，好好的对待自己想做的事情。</p>
+<p>著名的诗人海子写过《面朝大海春暖花开》这首诗，但其实他还有另外一首诗《从明天开始做一个幸福的人》。但从明天开始这句话的潜台词就是：今天不幸福。不要从明天开始才去做一个幸福的人，而要从此时此刻开始。在自己能力的范围内创造属于自己的幸福。如果你有50万，你就创造50万的幸福；如果你只有50块，就创造50块的幸福。按自己的生活节奏过自己认为幸福的生活。</p>
+<p>我们人生有很多阶段，在学生的时候我们要演好学生的生活；以后在公司要演好公司职员的生活。在人生的每个港口我们都要安家落户落户，做最真实的自己。很多时候我们并没有那么富裕，但我们可以用贫穷的物质过好丰富的精神生活。很多时候我们会很忙，但是忙也就是一件事接着一件事，去把他们做好就好了。我们很忙的时候，也不会有时间来抱怨。如果自己时间很闲的话，我们可以做一些没有效率的事情，比如抄书什么的。你要记住你不是一个人，你是有小伙伴的，你就是自己最好的小伙伴。一个人很自由，我们要享受独处。</p>
+<p>要看重每一个当下，把握好此时此刻，不要等到明天才想着开始做一个幸福的或者真诚的人。要全身全心地投入每一个过程，尽人事，做最真实的自己。有时候目标导向性太强、效率优先，反而让我们很不舒服。尽力而为、顺其自然，有志者事未必竟成，但我们要全心全意的去做。</p>
+<blockquote class="blockquote-center">
+<p><strong>我自风情万种与世无争</strong></p>
+
+</blockquote>
+
+<p>在不干扰别人、不给别人带来麻烦、不影响别人的情况下，我们真的不必太去在意别人的想法。（但这也是有条件的，我们不能做不道德的事情。）</p>
+<p>有这样一个问题:让别人喜欢自己和自己喜欢自己哪个更重要。说实话这两个都很重要，但如果非要选一个最重要的，那只能选让自己喜欢自己这个更重要。因为不管你活成什么样，活的多优秀、多完美、甚至是多糟糕，总有人喜欢你，总有人不喜欢你。当你做真实的自己的时候，还是有人喜欢你，有人不喜欢你。但你会更喜欢你。喜欢你的人多了一个最重要的人，你喜欢你自己。当一个人真的喜欢自己的时候，他会由内而外的散发出自信。</p>
+<p>这里区分一下自信和他信。很多时候很多人将自己的自信建立于别人对自己的信任之上，很在意别人的眼光，但其实这是不必要的。因为你们信，所以我才信我。这是典型的他信。而真正的自信是自己知道自己的重量，不会因为别人夸自己而觉得自己很厉害，也不会因为别人贬低自己而看轻自己。不管别人怎么说自己，我自己知道我自己是怎样的人。很多时候别人喜欢你，并不是因为你这个人优不优秀，也许是因为他们可以从你身上得到好处吧。</p>
+<p>当一个人由内而外散发出自由和自信的气息的时候有很多别称，有一个称呼叫魅力、从容、风情。这是一种来自真正喜欢自己的人的自信。一个人喜欢自己的时候是自信自由而优雅的。</p>
+<p>很多时候我们会很喜欢优雅这个词，但香奈儿的slogan告诉我们言行自如便是一种优雅。举手投足之间表露的自信，由内而外散发的自由和优雅。</p>
+<p>一个人发自内心有自由、自信，会散发出一种感染力。正能量不是告诉别人“加油你是最棒的”。正能量是将自己活成了一个光源、一个小太阳。不需要跟别人说什么，当他们接近我们的时候，不管我自己愿不愿意，他们都被我温暖，我们都照亮了他们的内心。一个负能量满满的人，不管他说什么都会大打折扣，他们也给不了别人有用的建议。让自己活出自信、自由，真正喜欢自己，会散发出一种正能量，这才叫感染力。你的存在本身就是一种光明与优雅。</p>
+<p>如何找到好友？大家都知道“物以类聚，人以群分”。只有同等能量的人才能相互识别、相互结识、相互珍惜、相互欣赏，彼此成为知己。我们想要怎么样的朋友，首先我们要将自己变成那样的人。只有成为那样的人之后，才会引来那样的人。自信而自由的喜欢自己，才会吸引到那样的人。做一个闪闪发光的真诚的人。</p>
+<p>一个很爱自己的人一定也是一个热爱生活的人，一个人对自己很满意的时候也会对世界很满意，因为这是这个世界将他变成让他满意的自己。所有的厌世都是自厌，因为他们不喜欢这样的自己。</p>
+<blockquote class="blockquote-center">
+<p><strong>把有意义的事变得有意思，让有意思的事儿变得有意义。</strong></p>
+
+</blockquote>
+
+<p>我们要将无趣而有意义的事情变得好玩，将有意思的事把它变得更有意义。</p>
+<blockquote class="blockquote-center">
+<p><strong>告诉他们我度过了幸福的一生。</strong></p>
+
+</blockquote>
+
+<p>我自己要幸福，要帮助他人，让他们变得更加幸福。自己好好活着，要帮别人好好活着。</p>
+<h2 id="1-3-很喜欢的一句话："><a href="#1-3-很喜欢的一句话：" class="headerlink" title="1.3. 很喜欢的一句话："></a>1.3. 很喜欢的一句话：</h2><blockquote class="blockquote-center">
+<p><strong>希望我遇到的每一个人，经历的每一件事，都因为我而变得更加美好。</strong></p>
+
+</blockquote>
+
+<div class="note success"><p><a href="http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=935336">全文转自西电睿思学姐(内网)</a></p>
+</div>
+]]></content>
+      <categories>
+        <category>心灵成长</category>
+      </categories>
+      <tags>
+        <tag>爱情观</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>职场笔记：想清楚说明白</title>
+    <url>/2021/08/03/workplace_note_1_think_perfectly_and_state_clearly/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-想清楚"><a href="#1-想清楚" class="headerlink" title="1. 想清楚"></a>1. 想清楚</h1><p><strong>核心策略：</strong></p>
+<ul>
+<li>对人：确定目标（eg.营收）</li>
+<li>对事：有分类、有排序、有对应、有结论</li>
 </ul>
 <a id="more"></a>
 
-<h3 id="1-1-2-明确参会人"><a href="#1-1-2-明确参会人" class="headerlink" title="1.1.2. 明确参会人"></a>1.1.2. 明确参会人</h3><ul>
-<li>期望的会议结论，是需要那些人决策并达成共识的</li>
-<li>哪些人必须，哪些人可选（可以请关键负责人指定参会人）</li>
+<p><strong>梳理顺序：</strong></p>
+<p>有结论、有对应（结构）、有分类、有排序（主次）</p>
+<p>eg. 某件事故影响，对外…、对内…、复盘…，给出解决方案，前后因果关联等。</p>
+<p><strong>分清事情轻重、主次（有排序）。</strong> 讲述多个点时，考虑主次。如：</p>
+<ul>
+<li>结构顺序</li>
+<li>重要性顺序</li>
+<li>时间顺序</li>
 </ul>
-<h3 id="1-1-3-明确会议时间"><a href="#1-1-3-明确会议时间" class="headerlink" title="1.1.3. 明确会议时间"></a>1.1.3. 明确会议时间</h3><ul>
-<li>优先考虑高阶与会者的时间来安排会议，因为TA们的会议更多、时间更难协调</li>
-<li>确定会议整体时长，可以请关键负责人明确对应环节所需时长，总原则宜短不宜长</li>
-</ul>
-<h3 id="1-1-4-明确会议地点"><a href="#1-1-4-明确会议地点" class="headerlink" title="1.1.4. 明确会议地点"></a>1.1.4. 明确会议地点</h3><ul>
-<li>抢会议室是门技术活儿，宜早不宜迟</li>
-<li>会议室地址写得详细些，方便人找</li>
-</ul>
-<h3 id="1-1-5-明确会议议程"><a href="#1-1-5-明确会议议程" class="headerlink" title="1.1.5. 明确会议议程"></a>1.1.5. 明确会议议程</h3><ul>
-<li>主议题拆解的分议题</li>
-<li>每个分议题的负责人</li>
-<li>每个分议题的时长</li>
-<li>预留讨论&#x2F;提问时间</li>
-</ul>
-<h3 id="1-1-6-提前发会议材料"><a href="#1-1-6-提前发会议材料" class="headerlink" title="1.1.6. 提前发会议材料"></a>1.1.6. 提前发会议材料</h3><ul>
-<li>内容是关键</li>
-<li>形式不限</li>
-<li>注意分享范围</li>
-</ul>
-<h3 id="1-1-7-会前对齐"><a href="#1-1-7-会前对齐" class="headerlink" title="1.1.7. 会前对齐"></a>1.1.7. 会前对齐</h3><ul>
-<li>跨团队沟通会必选项</li>
-<li>对齐的可以是问题</li>
-</ul>
-<h3 id="1-1-8-发出会邀"><a href="#1-1-8-发出会邀" class="headerlink" title="1.1.8. 发出会邀"></a>1.1.8. 发出会邀</h3><p>关于会邀：</p>
+<p><strong>备注：</strong></p>
 <ol>
-<li>会议主题、参会人、时间、地点（非必须，后续可更新）<br>确认后即可发起会邀book大家时间</li>
-<li>如有会议&#x2F;项目如流群，发出会邀后，在群里再周知大家关注</li>
-<li>关键参会人，单独再通知确认，通知时可以附上会邀截图</li>
-<li>若会邀发出后还需再添加新参会人，更新会邀时，选择只发送给更新人选（避免干扰其他人）</li>
+<li>做&#x2F;讲什么取决于对方想听什么</li>
+<li>结论要与目标一致</li>
 </ol>
-<h2 id="1-2-会中管理"><a href="#1-2-会中管理" class="headerlink" title="1.2. 会中管理"></a>1.2. 会中管理</h2><p>常见低质量会议特征：</p>
+<h1 id="2-说明白"><a href="#2-说明白" class="headerlink" title="2. 说明白"></a>2. 说明白</h1><p><strong>核心策略：</strong></p>
 <ul>
-<li>跑题</li>
-<li>超时</li>
-<li>无结论</li>
+<li>对人：引兴趣（<strong>SCQA原则</strong>）</li>
+<li>对事：三步骤（<strong>总分总</strong>）</li>
 </ul>
-<p><b><font color="#7E3D76" style="">需要一个会议主持人</font>来：</b></p>
+<h2 id="2-1-引起听众兴趣的四要素——SCQA"><a href="#2-1-引起听众兴趣的四要素——SCQA" class="headerlink" title="2.1. 引起听众兴趣的四要素——SCQA"></a>2.1. 引起听众兴趣的四要素——SCQA</h2><ul>
+<li>S（现状）</li>
+<li>C（冲突）</li>
+<li>Q（疑问）</li>
+<li>A（回答）</li>
+</ul>
+<p>eg. 经典广告案例</p>
 <ul>
-<li>控主题</li>
-<li>把时间</li>
-<li>促结论</li>
+<li>（S：现状）得了灰指甲 </li>
+<li>（C：冲突）一个传染俩</li>
+<li>（Q：疑问）问我怎么办 </li>
+<li>（A：回答）赶快用亮甲</li>
 </ul>
-<h3 id="1-2-1-控主题"><a href="#1-2-1-控主题" class="headerlink" title="1.2.1. 控主题"></a>1.2.1. 控主题</h3><ul>
-<li><b><font color="#7E3D76" style="">申明会议主题</font></b>。开场时跟与会人明确本次会议的主题<br>eg.咱们本次会议的主题是…</li>
-<li><b><font color="#7E3D76" style="">拉回会议主题（若需要）</font></b>。有人跑题时，礼貌但严格地拉回到会议主题。<br>eg.我理解你现在说的问题与咱们本次会议主题无关，如果需要，可以另外组织讨论，先回到今天的主题…</li>
-<li><b><font color="#7E3D76" style="">过程总结引导</font></b>：<ul>
-<li>分议题结束后小结，引导进入下个分议题；<br>eg. 针对XX问题，刚刚的结论是YY，大家理解一致的话，咱们进人下个议题…</li>
-<li>理解不一致时，澄清与引导；<br>eg. 针对XX问题，大家理解是一致的么…</li>
+<h2 id="2-2-讲述大纲"><a href="#2-2-讲述大纲" class="headerlink" title="2.2. 讲述大纲"></a>2.2. 讲述大纲</h2><ol>
+<li>总——宣告结论，阐述支持分论点</li>
+<li>分——分论点1…m，支撑的素材1…n</li>
+<li>总——总结分论点，重申结论</li>
+</ol>
+<h1 id="3-经典案例Demo"><a href="#3-经典案例Demo" class="headerlink" title="3. 经典案例Demo"></a>3. 经典案例Demo</h1><h2 id="3-1-述职PPT大纲demo"><a href="#3-1-述职PPT大纲demo" class="headerlink" title="3.1. 述职PPT大纲demo"></a>3.1. 述职PPT大纲demo</h2><ul>
+<li>个人简介</li>
+<li>重点工作大纲（注意要有逻辑顺序，为什么是这个顺序展开</li>
+<li>重点工作1、2、3<ul>
+<li>工作背景介绍（让评审理解工作价值）</li>
+<li>工作亮点展开大纲（让评审理解后续讲述逻辑）</li>
+<li>工作两点1、2、3<ul>
+<li>背景&#x2F;问题&#x2F;难点与挑战等</li>
+<li>方案&#x2F;实现亮点&#x2F;个人贡献等</li>
+<li>量化指标&#x2F;落地效果&#x2F;变化等</li>
 </ul>
 </li>
 </ul>
-<h3 id="1-2-2-把时间"><a href="#1-2-2-把时间" class="headerlink" title="1.2.2. 把时间"></a>1.2.2. 把时间</h3><ul>
-<li>申明会议时间安排</li>
-<li>控制各环节时间，礼貌提醒</li>
-<li>时间提醒工具推荐（zClock Lite）</li>
+</li>
 </ul>
-<h3 id="1-2-3-促结论"><a href="#1-2-3-促结论" class="headerlink" title="1.2.3. 促结论"></a>1.2.3. 促结论</h3><ul>
-<li>记录发言人表达要点，及时总结询问</li>
-<li>保持中立态度，强调共同利益</li>
-<li>回忆结论决策工具</li>
-</ul>
-<p><b><font color="red" style="">会议结论类别：</font></b></p>
-<ul>
-<li><b><font color="#7E3D76" style="">权威决策</font></b>。决策人具有决策权和否决权，可单方面作出决定。</li>
-<li><b><font color="#7E3D76" style="">共识决策</font></b>。会议主持人引导参会各方对讨论的议题达成共识，原则是最大化共同收益。</li>
-<li><b><font color="#7E3D76" style="">另行再议</font></b>。经过深入思考筹备的会议，依然有可能没想到关键问题，导致会议无法达成结论。没关系，再另行组会讨论便是。</li>
-</ul>
-<h2 id="1-3-会后跟进"><a href="#1-3-会后跟进" class="headerlink" title="1.3. 会后跟进"></a>1.3. 会后跟进</h2><p>要点：</p>
-<ul>
-<li>准确、言简意赅的会议纪要</li>
-<li>明确TODO及跟进&#x2F;反馈时间，责任到人</li>
-<li>下次例会前跟进TODO完成情况</li>
-</ul>
-<p><b><font color="#7E3D76" style="">会议记录人需具备能力：</font></b></p>
-<ul>
-<li>有足够的业务基础</li>
-<li>优秀的理解能力</li>
-<li>敏捷的思维能力</li>
-<li>良好的总结能力</li>
-<li>优秀的沟通能力</li>
-</ul>
-<p><b><font color="#7E3D76" style="">会议记录人怎么找：</font></b></p>
-<ul>
-<li>找关键负责人指定</li>
-<li>会议主持人兼职</li>
-</ul>
-<h3 id="1-3-1-会议纪要"><a href="#1-3-1-会议纪要" class="headerlink" title="1.3.1. 会议纪要"></a>1.3.1. 会议纪要</h3><p>会议纪要结构：</p>
-<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
-    <tr>
-        <td align="center">会议主题</td>
-        <td align="center"></td>
-    </tr>
-    <tr>
-        <td align="center">会议时间、地点</td>
-        <td align="center"></td>
-    </tr>
-    <tr>
-        <td align="center">参会人</td>
-        <td align="center"></td>
-    </tr>
-    <tr>
-        <td align="center">讨论议题</td>
-        <td align="center"></td>
-    </tr>
-    <tr>
-        <td align="center">关键结论</td>
-        <td align="center"></td>
-    </tr>
-    <tr>
-        <td align="center">TODO</td>
-        <td align="center"></td>
-    </tr>
-</table>
-
-<h3 id="1-3-2-责任到人"><a href="#1-3-2-责任到人" class="headerlink" title="1.3.2. 责任到人"></a>1.3.2. 责任到人</h3><h3 id="1-3-3-追踪待办"><a href="#1-3-3-追踪待办" class="headerlink" title="1.3.3. 追踪待办"></a>1.3.3. 追踪待办</h3><h1 id="2-高效会议三部曲——for-参与者"><a href="#2-高效会议三部曲——for-参与者" class="headerlink" title="2. 高效会议三部曲——for 参与者"></a>2. 高效会议三部曲——for 参与者</h1><h2 id="2-1-会前筹备"><a href="#2-1-会前筹备" class="headerlink" title="2.1. 会前筹备"></a>2.1. 会前筹备</h2><ul>
-<li>询问会议目标及议题</li>
-<li>询问参会人</li>
-<li>询问会议时间</li>
-<li>询问会议地点</li>
-<li>询问会议议程</li>
-<li>询问&#x2F;准备会议材料</li>
-<li>会议前对齐</li>
-</ul>
-<h2 id="2-2-会中管理"><a href="#2-2-会中管理" class="headerlink" title="2.2. 会中管理"></a>2.2. 会中管理</h2><ul>
-<li>认真聆听</li>
-<li>积极参与</li>
-<li>建设提议</li>
-</ul>
-<h2 id="2-3-会后跟进"><a href="#2-3-会后跟进" class="headerlink" title="2.3. 会后跟进"></a>2.3. 会后跟进</h2><ul>
-<li>自己的TODO</li>
-</ul>
-<h1 id="3-成功会议的要素"><a href="#3-成功会议的要素" class="headerlink" title="3. 成功会议的要素"></a>3. 成功会议的要素</h1><ul>
-<li>明确<b><font color="#7E3D76" style="">结论及TODO</font></b></li>
-<li>明确<b><font color="#7E3D76" style="">时间节奏</font></b></li>
-<li>明确<b><font color="#7E3D76" style="">事项跟进人</font></b></li>
-</ul>
+<p>备注：</p>
+<ol>
+<li>整体述职内容逻辑线：<strong>先总后分，重点有亮点工作先讲</strong>；</li>
+<li>语言精炼，实事求是，多用<strong>数字3原则</strong>（重点工作尽量浓缩3个以内；如果亮点太多，尽量提炼聚合）；</li>
+<li>每项工作亮点必须具备<strong>背景-技术方案-效果</strong>三要素；</li>
+</ol>
+<h2 id="3-2-邮件组织大纲demo"><a href="#3-2-邮件组织大纲demo" class="headerlink" title="3.2. 邮件组织大纲demo"></a>3.2. 邮件组织大纲demo</h2><ol>
+<li>有结论，结论先行。eg. 将需要传递的中心思想写在邮件标题</li>
+<li>有对应，以上统下。eg. 正文与标题一致</li>
+<li>有分类，归类分组。eg. 内容较多时进行分类</li>
+<li>有排序，排序逻辑。eg. 内容较多时先说什么后说什么；抄送的list超过3人，考虑顺序</li>
+</ol>
 ]]></content>
       <categories>
         <category>成长</category>
@@ -9724,88 +9650,6 @@
 <li>你最敬重或喜欢的人是谁？你最钦佩和喜欢他身上的三种特质是什么？</li>
 <li>你能做到的最好的自己会具备哪些品质？</li>
 </ul>
-]]></content>
-      <categories>
-        <category>成长</category>
-      </categories>
-      <tags>
-        <tag>职场笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>职场笔记：想清楚说明白</title>
-    <url>/2021/08/03/workplace_note_1_think_perfectly_and_state_clearly/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-想清楚"><a href="#1-想清楚" class="headerlink" title="1. 想清楚"></a>1. 想清楚</h1><p><strong>核心策略：</strong></p>
-<ul>
-<li>对人：确定目标（eg.营收）</li>
-<li>对事：有分类、有排序、有对应、有结论</li>
-</ul>
-<a id="more"></a>
-
-<p><strong>梳理顺序：</strong></p>
-<p>有结论、有对应（结构）、有分类、有排序（主次）</p>
-<p>eg. 某件事故影响，对外…、对内…、复盘…，给出解决方案，前后因果关联等。</p>
-<p><strong>分清事情轻重、主次（有排序）。</strong> 讲述多个点时，考虑主次。如：</p>
-<ul>
-<li>结构顺序</li>
-<li>重要性顺序</li>
-<li>时间顺序</li>
-</ul>
-<p><strong>备注：</strong></p>
-<ol>
-<li>做&#x2F;讲什么取决于对方想听什么</li>
-<li>结论要与目标一致</li>
-</ol>
-<h1 id="2-说明白"><a href="#2-说明白" class="headerlink" title="2. 说明白"></a>2. 说明白</h1><p><strong>核心策略：</strong></p>
-<ul>
-<li>对人：引兴趣（<strong>SCQA原则</strong>）</li>
-<li>对事：三步骤（<strong>总分总</strong>）</li>
-</ul>
-<h2 id="2-1-引起听众兴趣的四要素——SCQA"><a href="#2-1-引起听众兴趣的四要素——SCQA" class="headerlink" title="2.1. 引起听众兴趣的四要素——SCQA"></a>2.1. 引起听众兴趣的四要素——SCQA</h2><ul>
-<li>S（现状）</li>
-<li>C（冲突）</li>
-<li>Q（疑问）</li>
-<li>A（回答）</li>
-</ul>
-<p>eg. 经典广告案例</p>
-<ul>
-<li>（S：现状）得了灰指甲 </li>
-<li>（C：冲突）一个传染俩</li>
-<li>（Q：疑问）问我怎么办 </li>
-<li>（A：回答）赶快用亮甲</li>
-</ul>
-<h2 id="2-2-讲述大纲"><a href="#2-2-讲述大纲" class="headerlink" title="2.2. 讲述大纲"></a>2.2. 讲述大纲</h2><ol>
-<li>总——宣告结论，阐述支持分论点</li>
-<li>分——分论点1…m，支撑的素材1…n</li>
-<li>总——总结分论点，重申结论</li>
-</ol>
-<h1 id="3-经典案例Demo"><a href="#3-经典案例Demo" class="headerlink" title="3. 经典案例Demo"></a>3. 经典案例Demo</h1><h2 id="3-1-述职PPT大纲demo"><a href="#3-1-述职PPT大纲demo" class="headerlink" title="3.1. 述职PPT大纲demo"></a>3.1. 述职PPT大纲demo</h2><ul>
-<li>个人简介</li>
-<li>重点工作大纲（注意要有逻辑顺序，为什么是这个顺序展开</li>
-<li>重点工作1、2、3<ul>
-<li>工作背景介绍（让评审理解工作价值）</li>
-<li>工作亮点展开大纲（让评审理解后续讲述逻辑）</li>
-<li>工作两点1、2、3<ul>
-<li>背景&#x2F;问题&#x2F;难点与挑战等</li>
-<li>方案&#x2F;实现亮点&#x2F;个人贡献等</li>
-<li>量化指标&#x2F;落地效果&#x2F;变化等</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>备注：</p>
-<ol>
-<li>整体述职内容逻辑线：<strong>先总后分，重点有亮点工作先讲</strong>；</li>
-<li>语言精炼，实事求是，多用<strong>数字3原则</strong>（重点工作尽量浓缩3个以内；如果亮点太多，尽量提炼聚合）；</li>
-<li>每项工作亮点必须具备<strong>背景-技术方案-效果</strong>三要素；</li>
-</ol>
-<h2 id="3-2-邮件组织大纲demo"><a href="#3-2-邮件组织大纲demo" class="headerlink" title="3.2. 邮件组织大纲demo"></a>3.2. 邮件组织大纲demo</h2><ol>
-<li>有结论，结论先行。eg. 将需要传递的中心思想写在邮件标题</li>
-<li>有对应，以上统下。eg. 正文与标题一致</li>
-<li>有分类，归类分组。eg. 内容较多时进行分类</li>
-<li>有排序，排序逻辑。eg. 内容较多时先说什么后说什么；抄送的list超过3人，考虑顺序</li>
-</ol>
 ]]></content>
       <categories>
         <category>成长</category>
@@ -10009,6 +9853,163 @@
 <li>汇报是建立信任、提升能力的好机会，不要轻视或错过！</li>
 <li>汇报不难，用对方法，事半功倍！</li>
 <li>实践练习，你一定可以成为汇报沟通的高手！</li>
+</ul>
+]]></content>
+      <categories>
+        <category>成长</category>
+      </categories>
+      <tags>
+        <tag>职场笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>职场笔记：高效会议三部曲</title>
+    <url>/2021/08/17/workplace_note_3_efficient_meeting_trilogy/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-高效会议三部曲——for-组织者"><a href="#1-高效会议三部曲——for-组织者" class="headerlink" title="1. 高效会议三部曲——for 组织者"></a>1. 高效会议三部曲——for 组织者</h1><h2 id="1-1-会前筹备"><a href="#1-1-会前筹备" class="headerlink" title="1.1. 会前筹备"></a>1.1. 会前筹备</h2><h3 id="1-1-1-明确会议目标及议题"><a href="#1-1-1-明确会议目标及议题" class="headerlink" title="1.1.1. 明确会议目标及议题"></a>1.1.1. 明确会议目标及议题</h3><ul>
+<li>期望通过会议获得什么样的结论，用于改变当前的什么问题</li>
+<li>能够传达会议目标的议题设定</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="1-1-2-明确参会人"><a href="#1-1-2-明确参会人" class="headerlink" title="1.1.2. 明确参会人"></a>1.1.2. 明确参会人</h3><ul>
+<li>期望的会议结论，是需要那些人决策并达成共识的</li>
+<li>哪些人必须，哪些人可选（可以请关键负责人指定参会人）</li>
+</ul>
+<h3 id="1-1-3-明确会议时间"><a href="#1-1-3-明确会议时间" class="headerlink" title="1.1.3. 明确会议时间"></a>1.1.3. 明确会议时间</h3><ul>
+<li>优先考虑高阶与会者的时间来安排会议，因为TA们的会议更多、时间更难协调</li>
+<li>确定会议整体时长，可以请关键负责人明确对应环节所需时长，总原则宜短不宜长</li>
+</ul>
+<h3 id="1-1-4-明确会议地点"><a href="#1-1-4-明确会议地点" class="headerlink" title="1.1.4. 明确会议地点"></a>1.1.4. 明确会议地点</h3><ul>
+<li>抢会议室是门技术活儿，宜早不宜迟</li>
+<li>会议室地址写得详细些，方便人找</li>
+</ul>
+<h3 id="1-1-5-明确会议议程"><a href="#1-1-5-明确会议议程" class="headerlink" title="1.1.5. 明确会议议程"></a>1.1.5. 明确会议议程</h3><ul>
+<li>主议题拆解的分议题</li>
+<li>每个分议题的负责人</li>
+<li>每个分议题的时长</li>
+<li>预留讨论&#x2F;提问时间</li>
+</ul>
+<h3 id="1-1-6-提前发会议材料"><a href="#1-1-6-提前发会议材料" class="headerlink" title="1.1.6. 提前发会议材料"></a>1.1.6. 提前发会议材料</h3><ul>
+<li>内容是关键</li>
+<li>形式不限</li>
+<li>注意分享范围</li>
+</ul>
+<h3 id="1-1-7-会前对齐"><a href="#1-1-7-会前对齐" class="headerlink" title="1.1.7. 会前对齐"></a>1.1.7. 会前对齐</h3><ul>
+<li>跨团队沟通会必选项</li>
+<li>对齐的可以是问题</li>
+</ul>
+<h3 id="1-1-8-发出会邀"><a href="#1-1-8-发出会邀" class="headerlink" title="1.1.8. 发出会邀"></a>1.1.8. 发出会邀</h3><p>关于会邀：</p>
+<ol>
+<li>会议主题、参会人、时间、地点（非必须，后续可更新）<br>确认后即可发起会邀book大家时间</li>
+<li>如有会议&#x2F;项目如流群，发出会邀后，在群里再周知大家关注</li>
+<li>关键参会人，单独再通知确认，通知时可以附上会邀截图</li>
+<li>若会邀发出后还需再添加新参会人，更新会邀时，选择只发送给更新人选（避免干扰其他人）</li>
+</ol>
+<h2 id="1-2-会中管理"><a href="#1-2-会中管理" class="headerlink" title="1.2. 会中管理"></a>1.2. 会中管理</h2><p>常见低质量会议特征：</p>
+<ul>
+<li>跑题</li>
+<li>超时</li>
+<li>无结论</li>
+</ul>
+<p><b><font color="#7E3D76" style="">需要一个会议主持人</font>来：</b></p>
+<ul>
+<li>控主题</li>
+<li>把时间</li>
+<li>促结论</li>
+</ul>
+<h3 id="1-2-1-控主题"><a href="#1-2-1-控主题" class="headerlink" title="1.2.1. 控主题"></a>1.2.1. 控主题</h3><ul>
+<li><b><font color="#7E3D76" style="">申明会议主题</font></b>。开场时跟与会人明确本次会议的主题<br>eg.咱们本次会议的主题是…</li>
+<li><b><font color="#7E3D76" style="">拉回会议主题（若需要）</font></b>。有人跑题时，礼貌但严格地拉回到会议主题。<br>eg.我理解你现在说的问题与咱们本次会议主题无关，如果需要，可以另外组织讨论，先回到今天的主题…</li>
+<li><b><font color="#7E3D76" style="">过程总结引导</font></b>：<ul>
+<li>分议题结束后小结，引导进入下个分议题；<br>eg. 针对XX问题，刚刚的结论是YY，大家理解一致的话，咱们进人下个议题…</li>
+<li>理解不一致时，澄清与引导；<br>eg. 针对XX问题，大家理解是一致的么…</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-2-把时间"><a href="#1-2-2-把时间" class="headerlink" title="1.2.2. 把时间"></a>1.2.2. 把时间</h3><ul>
+<li>申明会议时间安排</li>
+<li>控制各环节时间，礼貌提醒</li>
+<li>时间提醒工具推荐（zClock Lite）</li>
+</ul>
+<h3 id="1-2-3-促结论"><a href="#1-2-3-促结论" class="headerlink" title="1.2.3. 促结论"></a>1.2.3. 促结论</h3><ul>
+<li>记录发言人表达要点，及时总结询问</li>
+<li>保持中立态度，强调共同利益</li>
+<li>回忆结论决策工具</li>
+</ul>
+<p><b><font color="red" style="">会议结论类别：</font></b></p>
+<ul>
+<li><b><font color="#7E3D76" style="">权威决策</font></b>。决策人具有决策权和否决权，可单方面作出决定。</li>
+<li><b><font color="#7E3D76" style="">共识决策</font></b>。会议主持人引导参会各方对讨论的议题达成共识，原则是最大化共同收益。</li>
+<li><b><font color="#7E3D76" style="">另行再议</font></b>。经过深入思考筹备的会议，依然有可能没想到关键问题，导致会议无法达成结论。没关系，再另行组会讨论便是。</li>
+</ul>
+<h2 id="1-3-会后跟进"><a href="#1-3-会后跟进" class="headerlink" title="1.3. 会后跟进"></a>1.3. 会后跟进</h2><p>要点：</p>
+<ul>
+<li>准确、言简意赅的会议纪要</li>
+<li>明确TODO及跟进&#x2F;反馈时间，责任到人</li>
+<li>下次例会前跟进TODO完成情况</li>
+</ul>
+<p><b><font color="#7E3D76" style="">会议记录人需具备能力：</font></b></p>
+<ul>
+<li>有足够的业务基础</li>
+<li>优秀的理解能力</li>
+<li>敏捷的思维能力</li>
+<li>良好的总结能力</li>
+<li>优秀的沟通能力</li>
+</ul>
+<p><b><font color="#7E3D76" style="">会议记录人怎么找：</font></b></p>
+<ul>
+<li>找关键负责人指定</li>
+<li>会议主持人兼职</li>
+</ul>
+<h3 id="1-3-1-会议纪要"><a href="#1-3-1-会议纪要" class="headerlink" title="1.3.1. 会议纪要"></a>1.3.1. 会议纪要</h3><p>会议纪要结构：</p>
+<table border="1" cellspacing="1" style="border: 1ps dotted #666" >
+    <tr>
+        <td align="center">会议主题</td>
+        <td align="center"></td>
+    </tr>
+    <tr>
+        <td align="center">会议时间、地点</td>
+        <td align="center"></td>
+    </tr>
+    <tr>
+        <td align="center">参会人</td>
+        <td align="center"></td>
+    </tr>
+    <tr>
+        <td align="center">讨论议题</td>
+        <td align="center"></td>
+    </tr>
+    <tr>
+        <td align="center">关键结论</td>
+        <td align="center"></td>
+    </tr>
+    <tr>
+        <td align="center">TODO</td>
+        <td align="center"></td>
+    </tr>
+</table>
+
+<h3 id="1-3-2-责任到人"><a href="#1-3-2-责任到人" class="headerlink" title="1.3.2. 责任到人"></a>1.3.2. 责任到人</h3><h3 id="1-3-3-追踪待办"><a href="#1-3-3-追踪待办" class="headerlink" title="1.3.3. 追踪待办"></a>1.3.3. 追踪待办</h3><h1 id="2-高效会议三部曲——for-参与者"><a href="#2-高效会议三部曲——for-参与者" class="headerlink" title="2. 高效会议三部曲——for 参与者"></a>2. 高效会议三部曲——for 参与者</h1><h2 id="2-1-会前筹备"><a href="#2-1-会前筹备" class="headerlink" title="2.1. 会前筹备"></a>2.1. 会前筹备</h2><ul>
+<li>询问会议目标及议题</li>
+<li>询问参会人</li>
+<li>询问会议时间</li>
+<li>询问会议地点</li>
+<li>询问会议议程</li>
+<li>询问&#x2F;准备会议材料</li>
+<li>会议前对齐</li>
+</ul>
+<h2 id="2-2-会中管理"><a href="#2-2-会中管理" class="headerlink" title="2.2. 会中管理"></a>2.2. 会中管理</h2><ul>
+<li>认真聆听</li>
+<li>积极参与</li>
+<li>建设提议</li>
+</ul>
+<h2 id="2-3-会后跟进"><a href="#2-3-会后跟进" class="headerlink" title="2.3. 会后跟进"></a>2.3. 会后跟进</h2><ul>
+<li>自己的TODO</li>
+</ul>
+<h1 id="3-成功会议的要素"><a href="#3-成功会议的要素" class="headerlink" title="3. 成功会议的要素"></a>3. 成功会议的要素</h1><ul>
+<li>明确<b><font color="#7E3D76" style="">结论及TODO</font></b></li>
+<li>明确<b><font color="#7E3D76" style="">时间节奏</font></b></li>
+<li>明确<b><font color="#7E3D76" style="">事项跟进人</font></b></li>
 </ul>
 ]]></content>
       <categories>
@@ -10419,6 +10420,88 @@
       </tags>
   </entry>
   <entry>
+    <title>职场笔记：成长力</title>
+    <url>/2021/09/22/workplace_note_7_growing/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-高效能的成长"><a href="#1-高效能的成长" class="headerlink" title="1. 高效能的成长"></a>1. 高效能的成长</h1><blockquote>
+<p>由内而外的成长</p>
+</blockquote>
+<h2 id="1-1-效能、效率、效果"><a href="#1-1-效能、效率、效果" class="headerlink" title="1.1. 效能、效率、效果"></a>1.1. 效能、效率、效果</h2><p>“效能”：</p>
+<ul>
+<li>产能与产出平衡</li>
+<li>可持续发展</li>
+<li>短期收益与长期结果的平衡</li>
+<li>由内而外的改变</li>
+</ul>
+<a id="more"></a>
+
+<p>培养高效能人士的七个习惯要“由内而外”：</p>
+<ul>
+<li>修身、齐家、治国、平天下</li>
+<li>从自身做起，从塑造品格和思维模式入手</li>
+<li>先做到独挡一面才能做到相互依赖</li>
+<li>持续更新的过程，以原则为核心，螺旋向上成长</li>
+</ul>
+<h2 id="1-2-如何获得成长"><a href="#1-2-如何获得成长" class="headerlink" title="1.2. 如何获得成长"></a>1.2. 如何获得成长</h2><p>“实践、结果、思维” 循环</p>
+<h2 id="1-3-成长的原则"><a href="#1-3-成长的原则" class="headerlink" title="1.3. 成长的原则"></a>1.3. 成长的原则</h2><blockquote>
+<p>依靠品格安身立命的人有着强大而深厚的根基。他们能够经受得住生活中的种种压力，不断成长，不断进步。 – by Stepetch.R.covey</p>
+</blockquote>
+<ul>
+<li>我的成长我做主 - 责任、选择、担当、主动、智慧</li>
+<li>使命让行动更有方向感 - 愿景、承诺、目的</li>
+<li>把时间花在重要的事情上 - 专注、诚信、纪律、优先级</li>
+<li>“共赢”思维 - 互惠、公平、富足</li>
+<li>懂你懂我 - 尊重、互相理解同理心、勇气</li>
+<li>让我们 1+1 &gt; 2 - 创新、合作、多元化、谦逊</li>
+<li>成长 - 更新、持续改进</li>
+</ul>
+<blockquote>
+<p>“成功并不是因为掌握了玄妙、高深的理论，相反，成功是以不寻常的坚韧和决心来贯彻常识。” —— 帕特里克·兰西奥尼</p>
+</blockquote>
+<h1 id="2-成长力-——-我的成长我做主"><a href="#2-成长力-——-我的成长我做主" class="headerlink" title="2. 成长力 —— 我的成长我做主"></a>2. 成长力 —— 我的成长我做主</h1><h2 id="2-1-暂停三秒钟，根据原则和所期望的结果做出反应"><a href="#2-1-暂停三秒钟，根据原则和所期望的结果做出反应" class="headerlink" title="2.1. 暂停三秒钟，根据原则和所期望的结果做出反应"></a>2.1. 暂停三秒钟，根据原则和所期望的结果做出反应</h2><p>成长力思维 &gt;&gt; 成长实践</p>
+<ul>
+<li>成长力思维：我有选择的自由，我对我的选择负责。</li>
+<li>成长实践：<ul>
+<li>暂停三秒钟，根据<strong>原则和所期望的结果</strong>做出反应</li>
+<li>绿色的语言</li>
+<li>聚焦你能做的</li>
+<li>传递成长</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2-主动积极的语言"><a href="#2-2-主动积极的语言" class="headerlink" title="2.2. 主动积极的语言"></a>2.2. 主动积极的语言</h2><p>绿色的语言</p>
+<p>人类的四大天赋：</p>
+<ul>
+<li><strong>自我察觉</strong>：我们脱离自身，审视自己的想法、情绪和行为的能力。</li>
+<li><strong>想象力</strong>：我们超越自身经历和当前现实的想象力。</li>
+<li><strong>良知</strong>：我们感知是非善恶的能力。</li>
+<li><strong>独立意识</strong>：我们不受外来的影响&#x2F;控制，来进行自行选择的能力。</li>
+</ul>
+<h2 id="2-3-聚焦你能做的"><a href="#2-3-聚焦你能做的" class="headerlink" title="2.3. 聚焦你能做的"></a>2.3. 聚焦你能做的</h2><p>（（行动圈）关心圈）</p>
+<p>扩大行动圈：</p>
+<blockquote>
+<p>当人们吧注意力集中到能够影响的事情上，可以拓宽其知识和经验，让自己成长。</p>
+</blockquote>
+<blockquote>
+<p>走出舒适区，迎接挑战，不断扩大行动圈。</p>
+</blockquote>
+<ul>
+<li>直接控制 - 积极改变</li>
+<li>简介控制 - 施加影响</li>
+<li>无法控制 - 泰然面对</li>
+</ul>
+<h2 id="2-4-传递成长"><a href="#2-4-传递成长" class="headerlink" title="2.4. 传递成长"></a>2.4. 传递成长</h2><ul>
+<li>成为主动积极、不断成长、持续成长的人。</li>
+<li>具有成长思维，并把自己的成长经验传播出去。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>成长</category>
+      </categories>
+      <tags>
+        <tag>职场笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>职场笔记：关键对话</title>
     <url>/2021/09/23/workplace_note_8_key_conversation/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-聚焦关键对话"><a href="#1-聚焦关键对话" class="headerlink" title="1. 聚焦关键对话"></a>1. 聚焦关键对话</h1><p>帮你掌握一套行之有效的对话方法，提升沟通技巧，高效化解高风险对话，提升个人非职权影响力，成为关键时刻稳定发挥的高手！</p>
@@ -10553,79 +10636,78 @@
       </tags>
   </entry>
   <entry>
-    <title>职场笔记：成长力</title>
-    <url>/2021/09/22/workplace_note_7_growing/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="1-高效能的成长"><a href="#1-高效能的成长" class="headerlink" title="1. 高效能的成长"></a>1. 高效能的成长</h1><blockquote>
-<p>由内而外的成长</p>
+    <title>职场笔记：洞察用户需求的创新思维</title>
+    <url>/2021/09/24/workplace_note_9_innovative_thinking_with_insights_into_user_needs/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>创新是为了解决某个问题，达成某个目标<br>创意 !&#x3D; 创新</p>
 </blockquote>
-<h2 id="1-1-效能、效率、效果"><a href="#1-1-效能、效率、效果" class="headerlink" title="1.1. 效能、效率、效果"></a>1.1. 效能、效率、效果</h2><p>“效能”：</p>
 <ul>
-<li>产能与产出平衡</li>
-<li>可持续发展</li>
-<li>短期收益与长期结果的平衡</li>
-<li>由内而外的改变</li>
+<li>Idea：一个想法</li>
+<li>创意：一个新奇的想法</li>
+<li>创新：一个新奇的、有价值的、可行的想法</li>
+</ul>
+<p>创新：</p>
+<ul>
+<li>技术可行</li>
+<li>商业可行</li>
+<li>用户需求</li>
 </ul>
 <a id="more"></a>
 
-<p>培养高效能人士的七个习惯要“由内而外”：</p>
+<p>课程目的：</p>
 <ul>
-<li>修身、齐家、治国、平天下</li>
-<li>从自身做起，从塑造品格和思维模式入手</li>
-<li>先做到独挡一面才能做到相互依赖</li>
-<li>持续更新的过程，以原则为核心，螺旋向上成长</li>
+<li>洞察问题&#x2F;用户需求本质</li>
+<li>提供创新思维工具</li>
+<li>介绍快速验证原则</li>
 </ul>
-<h2 id="1-2-如何获得成长"><a href="#1-2-如何获得成长" class="headerlink" title="1.2. 如何获得成长"></a>1.2. 如何获得成长</h2><p>“实践、结果、思维” 循环</p>
-<h2 id="1-3-成长的原则"><a href="#1-3-成长的原则" class="headerlink" title="1.3. 成长的原则"></a>1.3. 成长的原则</h2><blockquote>
-<p>依靠品格安身立命的人有着强大而深厚的根基。他们能够经受得住生活中的种种压力，不断成长，不断进步。 – by Stepetch.R.covey</p>
-</blockquote>
+<h1 id="1-搞清楚要解决的问题究竟是什么？"><a href="#1-搞清楚要解决的问题究竟是什么？" class="headerlink" title="1. 搞清楚要解决的问题究竟是什么？"></a>1. 搞清楚要解决的问题究竟是什么？</h1><h2 id="1-1-同理心洞察"><a href="#1-1-同理心洞察" class="headerlink" title="1.1. 同理心洞察"></a>1.1. 同理心洞察</h2><p>洞察问题&#x2F;需求本质</p>
 <ul>
-<li>我的成长我做主 - 责任、选择、担当、主动、智慧</li>
-<li>使命让行动更有方向感 - 愿景、承诺、目的</li>
-<li>把时间花在重要的事情上 - 专注、诚信、纪律、优先级</li>
-<li>“共赢”思维 - 互惠、公平、富足</li>
-<li>懂你懂我 - 尊重、互相理解同理心、勇气</li>
-<li>让我们 1+1 &gt; 2 - 创新、合作、多元化、谦逊</li>
-<li>成长 - 更新、持续改进</li>
+<li><strong>一问</strong>：<ul>
+<li>通过访谈，了解到用户的真实想法&#x2F;需求，</li>
+<li>发现问题的本质</li>
+<li>Need：用户真正需要的是什么？</li>
 </ul>
-<blockquote>
-<p>“成功并不是因为掌握了玄妙、高深的理论，相反，成功是以不寻常的坚韧和决心来贯彻常识。” —— 帕特里克·兰西奥尼</p>
-</blockquote>
-<h1 id="2-成长力-——-我的成长我做主"><a href="#2-成长力-——-我的成长我做主" class="headerlink" title="2. 成长力 —— 我的成长我做主"></a>2. 成长力 —— 我的成长我做主</h1><h2 id="2-1-暂停三秒钟，根据原则和所期望的结果做出反应"><a href="#2-1-暂停三秒钟，根据原则和所期望的结果做出反应" class="headerlink" title="2.1. 暂停三秒钟，根据原则和所期望的结果做出反应"></a>2.1. 暂停三秒钟，根据原则和所期望的结果做出反应</h2><p>成长力思维 &gt;&gt; 成长实践</p>
-<ul>
-<li>成长力思维：我有选择的自由，我对我的选择负责。</li>
-<li>成长实践：<ul>
-<li>暂停三秒钟，根据<strong>原则和所期望的结果</strong>做出反应</li>
-<li>绿色的语言</li>
-<li>聚焦你能做的</li>
-<li>传递成长</li>
+</li>
+<li><strong>二看</strong>：<ul>
+<li>把用户的行为作为他生活的一部分，在真是的场景下进行观察</li>
+<li>User：目标用户有哪些行为和表现？（目标用户是谁？）</li>
+</ul>
+</li>
+<li><strong>三体</strong>：<ul>
+<li>体验到用户所体验到的所有，挖掘客户潜在的真正感受、想法、思考</li>
+<li>Insight：用户有这样的需求的内心情感是？</li>
 </ul>
 </li>
 </ul>
-<h2 id="2-2-主动积极的语言"><a href="#2-2-主动积极的语言" class="headerlink" title="2.2. 主动积极的语言"></a>2.2. 主动积极的语言</h2><p>绿色的语言</p>
-<p>人类的四大天赋：</p>
+<p><strong>目标</strong>：如何明确 Need 让 User 满足 Insight。</p>
+<h1 id="2-创新思维工具"><a href="#2-创新思维工具" class="headerlink" title="2. 创新思维工具"></a>2. 创新思维工具</h1><p>创新思维工具箱</p>
+<h2 id="2-1-拆解要素"><a href="#2-1-拆解要素" class="headerlink" title="2.1. 拆解要素"></a>2.1. 拆解要素</h2><h2 id="2-2-强制关联"><a href="#2-2-强制关联" class="headerlink" title="2.2. 强制关联"></a>2.2. 强制关联</h2><ul>
+<li>楼梯 + 钢琴 &#x3D; 创意楼梯</li>
+<li>字典 + 语音合成 + 液晶屏幕 &#x3D; 电子英语词典</li>
+</ul>
+<h2 id="2-3-反转思维"><a href="#2-3-反转思维" class="headerlink" title="2.3. 反转思维"></a>2.3. 反转思维</h2><p>“刻意”打破现有规定！</p>
+<h1 id="3-创新着陆"><a href="#3-创新着陆" class="headerlink" title="3. 创新着陆"></a>3. 创新着陆</h1><p><b><font color="#7E3D76" style="">四种解决方案原型</font></b></p>
 <ul>
-<li><strong>自我察觉</strong>：我们脱离自身，审视自己的想法、情绪和行为的能力。</li>
-<li><strong>想象力</strong>：我们超越自身经历和当前现实的想象力。</li>
-<li><strong>良知</strong>：我们感知是非善恶的能力。</li>
-<li><strong>独立意识</strong>：我们不受外来的影响&#x2F;控制，来进行自行选择的能力。</li>
+<li>理论原型</li>
+<li>虚拟原型（伪造解决方案）</li>
+<li>最小化可行原型（MVP）</li>
+<li>最小化卓越产品</li>
 </ul>
-<h2 id="2-3-聚焦你能做的"><a href="#2-3-聚焦你能做的" class="headerlink" title="2.3. 聚焦你能做的"></a>2.3. 聚焦你能做的</h2><p>（（行动圈）关心圈）</p>
-<p>扩大行动圈：</p>
-<blockquote>
-<p>当人们吧注意力集中到能够影响的事情上，可以拓宽其知识和经验，让自己成长。</p>
-</blockquote>
-<blockquote>
-<p>走出舒适区，迎接挑战，不断扩大行动圈。</p>
-</blockquote>
+<p><b><font color="#7E3D76" style="">三种测试</font></b></p>
 <ul>
-<li>直接控制 - 积极改变</li>
-<li>简介控制 - 施加影响</li>
-<li>无法控制 - 泰然面对</li>
+<li>惊喜测试</li>
+<li>NPS 测试</li>
+<li>付款测试</li>
 </ul>
-<h2 id="2-4-传递成长"><a href="#2-4-传递成长" class="headerlink" title="2.4. 传递成长"></a>2.4. 传递成长</h2><ul>
-<li>成为主动积极、不断成长、持续成长的人。</li>
-<li>具有成长思维，并把自己的成长经验传播出去。</li>
+<p><b><font color="#7E3D76" style="">创新着陆步骤</font></b></p>
+<ul>
+<li>解决方案（头脑风暴） &#x3D;&#x3D; 功能和解决方案变化 &#x3D;&#x3D;&gt;&gt;</li>
+<li>理论原型 &#x3D;&#x3D; 惊喜测试 &#x3D;&#x3D;&gt;&gt;</li>
+<li>虚拟原型 &#x3D;&#x3D; 惊喜、净推荐值和付款测试 &#x3D;&#x3D;&gt;&gt;</li>
+<li>最小化可行原型 &#x3D;&#x3D; 付款或净推荐值测试 &#x3D;&#x3D;&gt;&gt;</li>
+<li>最小化卓越产品</li>
 </ul>
+<p>推荐书目：《创新者的方法》</p>
 ]]></content>
       <categories>
         <category>成长</category>
@@ -10827,12 +10909,12 @@
 <h2 id="8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）："><a href="#8-4-下方测试插件插入音乐（无歌词，lrc方式歌词失效）：" class="headerlink" title="8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）："></a>8.4. 下方测试插件插入音乐（无歌词，lrc方式歌词失效）：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% aplayer &quot;爱你&quot; &quot;陈芳语&quot; &quot;..&#x2F;..&#x2F;..&#x2F;..&#x2F;uploads&#x2F;22852057.mp3&quot; &quot;https:&#x2F;&#x2F;haoleeson.github.io&#x2F;uploads&#x2F;loveYou.jpg&quot; &quot;lrc:https:&#x2F;&#x2F;haoleeson.github.io&#x2F;uploads&#x2F;fangyuchen_loveyou.lrc&quot; %&#125;</span><br></pre></td></tr></table></figure>
 
 
-        <div id="aplayer-AzkIwNhx" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-IlHYCgRY" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-AzkIwNhx"),
+            element: document.getElementById("aplayer-IlHYCgRY"),
             narrow: false,
             autoplay: false,
             showlrc: 3,
@@ -10904,87 +10986,6 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>职场笔记：洞察用户需求的创新思维</title>
-    <url>/2021/09/24/workplace_note_9_innovative_thinking_with_insights_into_user_needs/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
-<p>创新是为了解决某个问题，达成某个目标<br>创意 !&#x3D; 创新</p>
-</blockquote>
-<ul>
-<li>Idea：一个想法</li>
-<li>创意：一个新奇的想法</li>
-<li>创新：一个新奇的、有价值的、可行的想法</li>
-</ul>
-<p>创新：</p>
-<ul>
-<li>技术可行</li>
-<li>商业可行</li>
-<li>用户需求</li>
-</ul>
-<a id="more"></a>
-
-<p>课程目的：</p>
-<ul>
-<li>洞察问题&#x2F;用户需求本质</li>
-<li>提供创新思维工具</li>
-<li>介绍快速验证原则</li>
-</ul>
-<h1 id="1-搞清楚要解决的问题究竟是什么？"><a href="#1-搞清楚要解决的问题究竟是什么？" class="headerlink" title="1. 搞清楚要解决的问题究竟是什么？"></a>1. 搞清楚要解决的问题究竟是什么？</h1><h2 id="1-1-同理心洞察"><a href="#1-1-同理心洞察" class="headerlink" title="1.1. 同理心洞察"></a>1.1. 同理心洞察</h2><p>洞察问题&#x2F;需求本质</p>
-<ul>
-<li><strong>一问</strong>：<ul>
-<li>通过访谈，了解到用户的真实想法&#x2F;需求，</li>
-<li>发现问题的本质</li>
-<li>Need：用户真正需要的是什么？</li>
-</ul>
-</li>
-<li><strong>二看</strong>：<ul>
-<li>把用户的行为作为他生活的一部分，在真是的场景下进行观察</li>
-<li>User：目标用户有哪些行为和表现？（目标用户是谁？）</li>
-</ul>
-</li>
-<li><strong>三体</strong>：<ul>
-<li>体验到用户所体验到的所有，挖掘客户潜在的真正感受、想法、思考</li>
-<li>Insight：用户有这样的需求的内心情感是？</li>
-</ul>
-</li>
-</ul>
-<p><strong>目标</strong>：如何明确 Need 让 User 满足 Insight。</p>
-<h1 id="2-创新思维工具"><a href="#2-创新思维工具" class="headerlink" title="2. 创新思维工具"></a>2. 创新思维工具</h1><p>创新思维工具箱</p>
-<h2 id="2-1-拆解要素"><a href="#2-1-拆解要素" class="headerlink" title="2.1. 拆解要素"></a>2.1. 拆解要素</h2><h2 id="2-2-强制关联"><a href="#2-2-强制关联" class="headerlink" title="2.2. 强制关联"></a>2.2. 强制关联</h2><ul>
-<li>楼梯 + 钢琴 &#x3D; 创意楼梯</li>
-<li>字典 + 语音合成 + 液晶屏幕 &#x3D; 电子英语词典</li>
-</ul>
-<h2 id="2-3-反转思维"><a href="#2-3-反转思维" class="headerlink" title="2.3. 反转思维"></a>2.3. 反转思维</h2><p>“刻意”打破现有规定！</p>
-<h1 id="3-创新着陆"><a href="#3-创新着陆" class="headerlink" title="3. 创新着陆"></a>3. 创新着陆</h1><p><b><font color="#7E3D76" style="">四种解决方案原型</font></b></p>
-<ul>
-<li>理论原型</li>
-<li>虚拟原型（伪造解决方案）</li>
-<li>最小化可行原型（MVP）</li>
-<li>最小化卓越产品</li>
-</ul>
-<p><b><font color="#7E3D76" style="">三种测试</font></b></p>
-<ul>
-<li>惊喜测试</li>
-<li>NPS 测试</li>
-<li>付款测试</li>
-</ul>
-<p><b><font color="#7E3D76" style="">创新着陆步骤</font></b></p>
-<ul>
-<li>解决方案（头脑风暴） &#x3D;&#x3D; 功能和解决方案变化 &#x3D;&#x3D;&gt;&gt;</li>
-<li>理论原型 &#x3D;&#x3D; 惊喜测试 &#x3D;&#x3D;&gt;&gt;</li>
-<li>虚拟原型 &#x3D;&#x3D; 惊喜、净推荐值和付款测试 &#x3D;&#x3D;&gt;&gt;</li>
-<li>最小化可行原型 &#x3D;&#x3D; 付款或净推荐值测试 &#x3D;&#x3D;&gt;&gt;</li>
-<li>最小化卓越产品</li>
-</ul>
-<p>推荐书目：《创新者的方法》</p>
-]]></content>
-      <categories>
-        <category>成长</category>
-      </categories>
-      <tags>
-        <tag>职场笔记</tag>
       </tags>
   </entry>
 </search>

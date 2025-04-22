@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haoleeson.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="p4i 作为 Barefoot P4 开发工具链中的重要一部分，可用于SDE P4程序编译后的各资源分配情况查看，本文记录p4i的安装与简单使用方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="p4i的安装与使用简介">
+<meta property="og:url" content="https://haoleeson.cn/2023/01/16/P4iInstallAndUsage/index.html">
+<meta property="og:site_name" content="Haoleeson&#39;s Notes">
+<meta property="og:description" content="p4i 作为 Barefoot P4 开发工具链中的重要一部分，可用于SDE P4程序编译后的各资源分配情况查看，本文记录p4i的安装与简单使用方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-16T02:30:45.000Z">
+<meta property="article:modified_time" content="2023-01-16T02:30:45.000Z">
+<meta property="article:author" content="haoleeson">
+<meta property="article:tag" content="SDE">
+<meta property="article:tag" content="Network">
+<meta property="article:tag" content="Barefoot">
+<meta property="article:tag" content="P4">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://haoleeson.cn/2023/01/16/P4iInstallAndUsage/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haoleeson.cn/2023/01/16/P4iInstallAndUsage/","path":"2023/01/16/P4iInstallAndUsage/","title":"p4i的安装与使用简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>p4i的安装与使用简介 | Haoleeson's Notes</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Haoleeson's Notes</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85-P4i"><span class="nav-text">1. 安装 P4i</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%90%AF%E5%8A%A8-P4i"><span class="nav-text">2. 启动 P4i</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MAC-%E6%9C%AC%E5%9C%B0%E5%88%9B%E5%BB%BAssh-%E9%80%9A%E9%81%93%E5%88%B0%E8%BF%9C%E7%AB%AF-3000-%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="nav-text">3. MAC 本地创建ssh 通道到远端 3000 端口映射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%B8%8A%E4%BC%A0-p4i-license-%E4%BB%85%E9%A6%96%E6%AC%A1"><span class="nav-text">4. 上传 p4i license(仅首次)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-faketime-within-the-docker"><span class="nav-text">5. faketime within the docker</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="haoleeson"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">haoleeson</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haoleeson" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haoleeson" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haoleeson.cn/2023/01/16/P4iInstallAndUsage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="haoleeson">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoleeson's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          p4i的安装与使用简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2023-01-16 10:30:45" itemprop="dateCreated datePublished" datetime="2023-01-16T10:30:45+08:00">2023-01-16</time>
+    </span>
+
+  
+    <span id="/2023/01/16/P4iInstallAndUsage/" class="post-meta-item leancloud_visitors" data-flag-title="p4i的安装与使用简介" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>p4i 作为 Barefoot P4 开发工具链中的重要一部分，可用于SDE P4程序编译后的各资源分配情况查看，本文记录p4i的安装与简单使用方法。</p>
+<a id="more"></a>
+
+<blockquote>
+<p>架构：</p>
+<ul>
+<li>BOE 容器：编译 SDE</li>
+<li>BOE 中：启动 p4i</li>
+<li>MAC 电脑：创建到 BOE 端口映射，本地访问映射端口</li>
+</ul>
+</blockquote>
+<h1 id="1-安装-P4i"><a href="#1-安装-P4i" class="headerlink" title="1. 安装 P4i"></a>1. 安装 P4i</h1><blockquote>
+<p>$SDE&#x2F;pkgsrc&#x2F;p4i&#x2F; 包含 p4i for Linux&#x2F;MacOS 安装包</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 检查 p4i 安装包 [sde9.3.2]</span></span><br><span class="line">docker exec -it bf_sde_9_3_2_simulation ls -l /sde/bf-sde-9.3.2/pkgsrc/p4i/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查 p4i 安装包 [sde9.9.0]</span></span><br><span class="line">docker exec -it bf_sde_9_9_0_simulation ls -l /sde/bf-sde-9.9.0/pkgsrc/p4i/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 从外部拷出容器中 p4i 安装包 [sde9.3.2]</span></span><br><span class="line">docker cp bf_sde_9_3_2_simulation:/sde/bf-sde-9.3.2/pkgsrc/p4i/ /home/username/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 从外部拷出容器中 p4i 安装包 [sde9.9.0]</span></span><br><span class="line">docker cp bf_sde_9_9_0_simulation:/sde/bf-sde-9.9.0/pkgsrc/p4i/ /home/username/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">  安装 p4i</span></span><br><span class="line">sudo dpkg -i /home/username/p4i/p4i.linux.deb</span><br><span class="line"><span class="meta">#</span><span class="bash"> check</span></span><br><span class="line">sudo dpkg -l | grep p4i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修复安装依赖组件缺失问题 （e.g. libgbm-dev, libasound-dev, libasound2-dev, libnotify4, libxss1, xdg-utils, libappindicator3-1）</span></span><br><span class="line">sudo apt --fix-broken install</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 再次尝试安装 p4i</span></span><br><span class="line">sudo dpkg -i ~/p4i/p4i.linux.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 xvfb （解决P4i运行时会报错段错误，无图形化界面）</span></span><br><span class="line">sudo apt install xvfb</span><br><span class="line">sudo apt install libgbm1 libasound2</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> check</span></span><br><span class="line">which p4i</span><br></pre></td></tr></table></figure>
+
+<p>备注：如果Debian 9系统遇到spawn xdg-open ENOENT错误，可以sudo apt-get install xdg-utils解决</p>
+<h1 id="2-启动-P4i"><a href="#2-启动-P4i" class="headerlink" title="2. 启动 P4i"></a>2. 启动 P4i</h1><p>直接运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xvfb-run p4i</span><br><span class="line"><span class="meta">#</span><span class="bash"> 默认 localhost:3000</span></span><br></pre></td></tr></table></figure>
+
+<p>从编译容器拷贝manifest.json等文件后运行<br>（start_p4i.sh）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># Extra manifest.json and run p4i</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"></span><br><span class="line"><span class="bash"><span class="comment"># sde 9.3.2</span></span></span><br><span class="line">SDE_CONTAINER_NAME=&#x27;sde_9_3_2_build&#x27;</span><br><span class="line">SRC_P4I_MANIFESTS_DIR=&#x27;/sde/bf-sde-9.3.2/build/switch-p4-16/p4src/switch/&#x27;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 确保容器中已经生成了 *.tar.bz</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> /opt/bf-sde/install/bin/bf-p4c --std p4-16 --target tofino --arch tna -o ./switch --bf-rt-schema ./switch/bf-rt.json -g -Xp4c=<span class="string">&#x27;--disable-power-check&#x27;</span> -I /p4xgw/pkgsrc/switch-p4-16/p4src/shared/ /p4xgw/pkgsrc/switch-p4-16/p4src/switch-tofino/switch_tofino_xgw.p4</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> rgw</span></span><br><span class="line">/sde/bf-sde-9.3.2/install/bin/bf-p4c --std p4-16 --target tofino --arch tna -o ./switch --bf-rt-schema ./switch/bf-rt.json -g -Xp4c=&#x27;--disable-power-check&#x27; -I /sde/bf-sde-9.3.2/pkgsrc/switch-p4-16/p4src/shared/ /sde/bf-sde-9.3.2/pkgsrc/switch-p4-16/p4src/switch-tofino/switch_tofino_p4gw.p4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> sde 9.9.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SDE_CONTAINER_NAME=<span class="string">&#x27;bf_sde_9_9_0_simulation&#x27;</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SRC_P4I_MANIFESTS_DIR=<span class="string">&#x27;/sde/bf-sde-9.9.0/build/pkgsrc/switch-p4-16/p4src/switch/&#x27;</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 确保容器中已经生成了 *.tar.bz2</span></span><br><span class="line">/sde/bf-sde-9.9.0/install/bin/bf-p4c --std p4-16 --target tofino --arch tna -o ./switch --bf-rt-schema ./switch/bf-rt.json -g --archive -DXGW_PROFILE /sde/bf-sde-9.3.2/pkgsrc/switch-p4-16/p4src/switch-tofino/switch.p4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">P4I_MANIFESTS_DIR=&#x27;/data00/home/username/.p4i_manifests&#x27;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Check <span class="keyword">if</span> sde container is running</span></span><br><span class="line">is_sde_container_running=$(docker ps | grep $SDE_CONTAINER_NAME &gt; /dev/null; echo $?)</span><br><span class="line">echo &quot;is_sde_container_running=$is_sde_container_running&quot;</span><br><span class="line">if [ &quot;$is_sde_container_running&quot; == &quot;0&quot; ]; then</span><br><span class="line">    is_comparing=$(docker exec -it $SDE_CONTAINER_NAME ps -ef | grep p4c-barefoot &gt; /dev/null; echo $?)</span><br><span class="line">    echo &quot;is_comparing=$is_comparing&quot;</span><br><span class="line">    # check if sde container is comparing</span><br><span class="line">    if [ &quot;$is_comparing&quot; == &quot;0&quot; ]; then</span><br><span class="line">        echo &quot;Container $SDE_CONTAINER_NAME is comparing now, start p4i failed !!!&quot;</span><br><span class="line">        exit 1</span><br><span class="line">    else</span><br><span class="line">        # stop sde container</span><br><span class="line">        echo &quot;Container $SDE_CONTAINER_NAME is not comparing, stop it to run p4i.&quot;</span><br><span class="line">        docker stop $SDE_CONTAINER_NAME</span><br><span class="line">        sleep 1</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> copy container manifest.json</span></span><br><span class="line">if [ -d &quot;$P4I_MANIFESTS_DIR/switch/&quot; ]; then</span><br><span class="line">    rm -rf $P4I_MANIFESTS_DIR/switch/ &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">docker cp $SDE_CONTAINER_NAME:$SRC_P4I_MANIFESTS_DIR $P4I_MANIFESTS_DIR/</span><br><span class="line"></span><br><span class="line">sleep 1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> start p4i</span></span><br><span class="line">xvfb-run p4i</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="3-MAC-本地创建ssh-通道到远端-3000-端口映射"><a href="#3-MAC-本地创建ssh-通道到远端-3000-端口映射" class="headerlink" title="3. MAC 本地创建ssh 通道到远端 3000 端口映射"></a>3. MAC 本地创建ssh 通道到远端 3000 端口映射</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh username@A.B.C.D -L 127.0.0.1:1234:127.0.0.1:3000</span><br><span class="line"><span class="meta">#</span><span class="bash"> MacOS 浏览器访问 127.0.0.1:1234</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-上传-p4i-license-仅首次"><a href="#4-上传-p4i-license-仅首次" class="headerlink" title="4. 上传 p4i license(仅首次)"></a>4. 上传 p4i license(仅首次)</h1><blockquote>
+<p>无 license 10min 后 p4i 自动退出</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ~/Downloads/d1aba014-e594-41dc-b871-81a665d3c701.info username@A.B.C.D:/home/username/.local/p4i/</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-faketime-within-the-docker"><a href="#5-faketime-within-the-docker" class="headerlink" title="5. faketime within the docker"></a>5. faketime within the docker</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// https://102no.com/2019/11/28/libfaketime-docker-change/</span><br><span class="line">// in dev-box</span><br><span class="line">git clone https://github.com/wolfcw/libfaketime.git</span><br><span class="line">cd libfaketime  &amp;&amp; make install</span><br><span class="line">docker cp /usr/local/lib/faketime/libfaketime.so.1 gw-9.9-container:/usr/local/lib</span><br><span class="line"></span><br><span class="line">// in docker</span><br><span class="line">chmod +x /usr/local/lib/libfaketime.so.1</span><br><span class="line">sudo su tiger</span><br><span class="line">export LD_PRELOAD=/usr/local/lib/libfaketime.so.1 FAKETIME=&quot;-15d&quot;</span><br><span class="line">xvfb-run install/bin/p4i</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\02\28\BfshellUsefullCmds\" rel="bookmark">Bfshell Useful Commands</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\01\23\Common_acronyms_for_data_center_network_DCN\" rel="bookmark">数据中心网络DCN常见缩写词</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\23\EthernetAndMac\" rel="bookmark">以太帧与MAC</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\20\OSISevenLevelModel\" rel="bookmark">OSI七层网络模型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\01\27\OpenConfigNorthboundInterface\" rel="bookmark">OpenConfig北向接口简介</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SDE/" rel="tag"><i class="fa fa-tag"></i> SDE</a>
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+              <a href="/tags/Barefoot/" rel="tag"><i class="fa fa-tag"></i> Barefoot</a>
+              <a href="/tags/P4/" rel="tag"><i class="fa fa-tag"></i> P4</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/12/ImplementationOfSkipListByCpp/" rel="prev" title="基于 C++ 的 SkipList 数据结构设计与编码实现">
+                  <i class="fa fa-chevron-left"></i> 基于 C++ 的 SkipList 数据结构设计与编码实现
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/28/BfshellUsefullCmds/" rel="next" title="Bfshell Useful Commands">
+                  Bfshell Useful Commands <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">haoleeson</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://haoleeson.cn/2023/01/16/P4iInstallAndUsage/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

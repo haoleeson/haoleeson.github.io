@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -316,6 +316,9 @@
 <h1 id="10-按需下业务表项"><a href="#10-按需下业务表项" class="headerlink" title="10. 按需下业务表项"></a>10. 按需下业务表项</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">bfshell&gt;</span><span class="bash"> bfrt_python</span></span><br><span class="line">bfrt</span><br><span class="line"></span><br><span class="line">switch.pipe.SwitchIngress.tunnel.dst_classifyv4.add_with_local_region_hit(0x1000064,31)</span><br><span class="line"></span><br><span class="line">switch.servicepipe1.TableServiceEgress.tunnel_rewrite.set_gw_ip.set_default_with_set_gw_src_ip(0xc0c0c01,0xc0c0c010000000000000000)</span><br><span class="line">switch.servicepipe1.tunnel_encap_1.add_with_encap_ipv4_vxlan(0b01,0x12b5)</span><br><span class="line">switch.tablepipe23.TableIngress.tunnel_match.eip_to_eid.add_with_eip_hit(1,0x1000064,0x0007,0x0007)</span><br><span class="line">switch.tablepipe23.TableIngress.tunnel_match.eip_info.add_with_set_eip_info(0x0007,0x0,0xC0A80003,0x0007e6,0xA000005)</span><br><span class="line">switch.tablepipe23.TableIngress.tunnel_match.eid_add_bridge.add_with_encap_tunnel4in4(0x0007,0)</span><br><span class="line">switch.tablepipe23.TableIngress.tunnel_match.eip_in_meter.add_with_set_eip_in_color(0x0007)</span><br><span class="line">switch.tablepipe23.TableIngress.tunnel_match.eip_in_drop.add_with_in_drop_count(0x0007)</span><br></pre></td></tr></table></figure>
 
 <h1 id="11-bfshell-抓包"><a href="#11-bfshell-抓包" class="headerlink" title="11. bfshell 抓包"></a>11. bfshell 抓包</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建 snapshot（获取返回句柄 0x2581）</span></span><br><span class="line">snap-create -d 0 -p 2 -s 0 -e 11 -i 0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> </span></span><br><span class="line"><span class="meta">#</span><span class="bash"> snap-trig-add -h 0x141 -n hdr_ipv4_dst_addr  -v 0xc0a80000 -m 0x1fff0000</span></span><br><span class="line"></span><br><span class="line">snap-trig-add -h 0x2581 -n local_md_ingress_port -v 0x140 -m 0x1ff</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 开启抓包</span></span><br><span class="line">snap-state-set -h 0x2581 -e 1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭抓包</span></span><br><span class="line">snap-state-set -h 0x2581 -e 0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看抓包结果</span></span><br><span class="line">snap-capture-get -h 0x2581</span><br></pre></td></tr></table></figure>
+
+<p>注： 当bfshell要执行的命令较多时，也直接传入文件执行批量命令内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/bfn/install/bin/bfshell -b /root/multiple_cmds</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -324,6 +327,9 @@
       
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2024\04\24\P4PtfTest\" rel="bookmark">P4 PTF 测试简介</a></div>
+    </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2023\01\16\P4iInstallAndUsage\" rel="bookmark">p4i的安装与使用</a></div>
     </li>
@@ -335,9 +341,6 @@
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2021\07\20\OSISevenLevelModel\" rel="bookmark">OSI七层网络模型</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2022\01\27\OpenConfigNorthboundInterface\" rel="bookmark">OpenConfig北向接口简介</a></div>
     </li>
   </ul>
 
@@ -359,6 +362,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2024/04/24/P4PtfTest/" rel="next" title="P4 PTF 测试简介">
+                  P4 PTF 测试简介 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

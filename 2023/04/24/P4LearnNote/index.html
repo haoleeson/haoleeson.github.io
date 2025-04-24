@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haoleeson.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="intel 收购 Barefoot 后推出的可编程交换机芯片 Tofino 所采用的编程语言为P4，本文记录P4基础及常用抓包方法等笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="P4学习笔记">
+<meta property="og:url" content="https://haoleeson.cn/2023/04/24/P4LearnNote/index.html">
+<meta property="og:site_name" content="Haoleeson&#39;s Notes">
+<meta property="og:description" content="intel 收购 Barefoot 后推出的可编程交换机芯片 Tofino 所采用的编程语言为P4，本文记录P4基础及常用抓包方法等笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-24T01:21:45.000Z">
+<meta property="article:modified_time" content="2023-04-24T01:21:45.000Z">
+<meta property="article:author" content="haoleeson">
+<meta property="article:tag" content="Network">
+<meta property="article:tag" content="P4">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://haoleeson.cn/2023/04/24/P4LearnNote/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haoleeson.cn/2023/04/24/P4LearnNote/","path":"2023/04/24/P4LearnNote/","title":"P4学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>P4学习笔记 | Haoleeson's Notes</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Haoleeson's Notes</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-landmark fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-hourglass-start fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-P4%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-text">1. P4基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.1. 变量类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.1.1. 常用类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E6%B4%BE%E7%94%9F%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.1.2. 派生类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-%E5%8F%82%E6%95%B0%E6%96%B9%E5%90%91"><span class="nav-text">1.1.3. 参数方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-L-values-vs-I-values"><span class="nav-text">1.1.4. L-values vs I-values</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-text">1.2. 基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E6%94%AF%E6%8C%81%E8%BF%90%E7%AE%97%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.2.1. 支持运算类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E6%94%AF%E6%8C%81%E8%AF%AD%E6%B3%95%E9%80%BB%E8%BE%91"><span class="nav-text">1.2.2. 支持语法逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-P4-%E6%9F%A5%E7%9C%8B-VLAN-subinterface-%E8%A1%A8%E9%A1%B9"><span class="nav-text">1.2.3. P4 查看 VLAN subinterface 表项</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PTF%E6%9F%A5%E7%9C%8Bswitchd%E8%A1%A8%E9%A1%B9"><span class="nav-text">2. PTF查看switchd表项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-PTF%E6%B5%8B%E8%AF%95%E6%9F%A5%E7%9C%8B-switchd-%E8%A1%A8%E9%A1%B9"><span class="nav-text">2.1. PTF测试查看 switchd 表项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-PTF-%E6%9F%A5%E7%9C%8B%E8%A1%A8%E9%A1%B9"><span class="nav-text">2.2. PTF 查看表项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-snapshot%E6%8A%93%E5%8C%85%E7%A4%BA%E4%BE%8B"><span class="nav-text">3. snapshot抓包示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%9C%A8-table-%E4%B8%AD%E6%B7%BB%E5%8A%A0%E8%A1%A8%EF%BC%88%E6%89%A7%E8%A1%8C%E9%80%BB%E8%BE%91-%E6%9D%A1%E4%BB%B6-action%EF%BC%89"><span class="nav-text">3.1. 在 table 中添加表（执行逻辑: 条件 + action）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E5%88%A0%E8%A1%A8"><span class="nav-text">3.1.1. 删表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E6%B7%BB%E5%8A%A0%E8%A1%A8"><span class="nav-text">3.1.2. 添加表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%9C%A8-table-%E4%B8%AD%E6%B7%BB%E5%8A%A0%E8%A1%A8%EF%BC%88%E6%89%A7%E8%A1%8C%E9%80%BB%E8%BE%91-%E6%9D%A1%E4%BB%B6-action%EF%BC%89"><span class="nav-text">3.2. 在 table 中添加表（执行逻辑: 条件 + action）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%88%A0%E8%A1%A8"><span class="nav-text">3.2.1. 删表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E6%B7%BB%E5%8A%A0%E8%A1%A8"><span class="nav-text">3.2.2. 添加表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-snapshort-%E6%8A%93%E5%8C%85"><span class="nav-text">3.3. snapshort 抓包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E5%88%A0%E9%99%A4%E6%97%A7-snapshort-%E5%8F%A5%E6%9F%84"><span class="nav-text">3.3.1. 删除旧 snapshort 句柄</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E5%88%9B%E5%BB%BA-snapshot%EF%BC%88%E8%8E%B7%E5%8F%96%E8%BF%94%E5%9B%9E%E5%8F%A5%E6%9F%84%EF%BC%89"><span class="nav-text">3.3.2. 创建 snapshot（获取返回句柄）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-%E5%88%9B%E5%BB%BA%E6%8A%93%E5%8C%85%E8%A7%A6%E5%8F%91%E5%99%A8-%E8%AE%BE%E7%BD%AE%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="nav-text">3.3.3. 创建抓包触发器 (设置触发条件)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-1-%E6%9F%A5%E7%9C%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E5%AD%97%E6%AE%B5%E5%8F%AF%E6%8A%93"><span class="nav-text">3.3.3.1. 查看有哪些字段可抓</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-4-%E5%BC%80%E5%90%AF%E6%8A%93%E5%8C%85"><span class="nav-text">3.3.4. 开启抓包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-5-%E6%9F%A5%E7%9C%8B%E6%8A%93%E5%8C%85%E7%BB%93%E6%9E%9C"><span class="nav-text">3.3.5. 查看抓包结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-6-%E5%81%9C%E6%AD%A2%E6%8A%93%E5%8C%85"><span class="nav-text">3.3.6. 停止抓包</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BC%96%E8%AF%91%E5%99%A8-flexible-%E5%BE%88%E9%87%8D%E8%A6%81"><span class="nav-text">4. 为什么编译器 flexible 很重要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-P4%E7%BC%96%E8%AF%91%E4%B8%AD%E5%B8%B8%E8%A7%81PHV%E3%80%81ALU%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E9%94%99%E8%AF%AF%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF"><span class="nav-text">5. P4编译中常见PHV、ALU资源分配错误问题解决思路</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="haoleeson"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">haoleeson</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haoleeson" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haoleeson" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haoleeson.cn/2023/04/24/P4LearnNote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="haoleeson">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoleeson's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          P4学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2023-04-24 09:21:45" itemprop="dateCreated datePublished" datetime="2023-04-24T09:21:45+08:00">2023-04-24</time>
+    </span>
+
+  
+    <span id="/2023/04/24/P4LearnNote/" class="post-meta-item leancloud_visitors" data-flag-title="P4学习笔记" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>intel 收购 Barefoot 后推出的可编程交换机芯片 Tofino 所采用的编程语言为P4，本文记录P4基础及常用抓包方法等笔记。</p>
+<a id="more"></a>
+
+
+
+<h1 id="1-P4基础语法"><a href="#1-P4基础语法" class="headerlink" title="1. P4基础语法"></a>1. P4基础语法</h1><h2 id="1-1-变量类型"><a href="#1-1-变量类型" class="headerlink" title="1.1. 变量类型"></a>1.1. 变量类型</h2><blockquote>
+<p>P4 是一种静态类型的语言</p>
+</blockquote>
+<h3 id="1-1-1-常用类型"><a href="#1-1-1-常用类型" class="headerlink" title="1.1.1. 常用类型"></a>1.1.1. 常用类型</h3><p>void、error、string、match_kind、bool、int、Bit-strings、Fixed-width</p>
+<h3 id="1-1-2-派生类型"><a href="#1-1-2-派生类型" class="headerlink" title="1.1.2. 派生类型"></a>1.1.2. 派生类型</h3><p>enum、header、header stacks、struct、header_union、tuple、type specialization 、extern、parser、control、package</p>
+<h3 id="1-1-3-参数方向"><a href="#1-1-3-参数方向" class="headerlink" title="1.1.3. 参数方向"></a>1.1.3. 参数方向</h3><p>每个参数都需要标记方向：</p>
+<ul>
+<li>in， 只读</li>
+<li>out， 未标记、视作无方法或函数体的值</li>
+<li>inout， both in and out</li>
+<li>‘No direction’ <ul>
+<li>编译阶段值</li>
+<li>只能在控制平台设置的“行为参数”</li>
+<li>能被其他“调用行为”直接设置的值，如同局部变量</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-1-4-L-values-vs-I-values"><a href="#1-1-4-L-values-vs-I-values" class="headerlink" title="1.1.4. L-values vs I-values"></a>1.1.4. L-values vs I-values</h3><ul>
+<li>L-values: 出现在赋值操作左侧、或作为 out 和 inout 函数参数（代表“存储”）</li>
+</ul>
+<h2 id="1-2-基本语法"><a href="#1-2-基本语法" class="headerlink" title="1.2. 基本语法"></a>1.2. 基本语法</h2><h3 id="1-2-1-支持运算类型"><a href="#1-2-1-支持运算类型" class="headerlink" title="1.2.1. 支持运算类型"></a>1.2.1. 支持运算类型</h3><ul>
+<li>算术运算（arithmetic operations）：+, -, *</li>
+<li>逻辑运算（logical operations）：~, &amp;, |, ^, &gt;&gt;, &lt;&lt;</li>
+<li>特殊运算（non-standard operations）：</li>
+<li>数列的切割（bit slicing）：[m;l]</li>
+<li>比特的叠加（bit concatenation）：++</li>
+</ul>
+<h3 id="1-2-2-支持语法逻辑"><a href="#1-2-2-支持语法逻辑" class="headerlink" title="1.2.2. 支持语法逻辑"></a>1.2.2. 支持语法逻辑</h3><ul>
+<li><p>if-else</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (x == <span class="number">123</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>switch</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (t.<span class="built_in">apply</span>().action_run) &#123;</span><br><span class="line">	action1: &#123;...&#125;</span><br><span class="line">	action2: &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-2-3-P4-查看-VLAN-subinterface-表项"><a href="#1-2-3-P4-查看-VLAN-subinterface-表项" class="headerlink" title="1.2.3. P4 查看 VLAN subinterface 表项"></a>1.2.3. P4 查看 VLAN subinterface 表项</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it syncd /opt/bfn/install/bin/bfshell</span><br><span class="line">bf_switch</span><br><span class="line">show hostif handle 2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-PTF查看switchd表项"><a href="#2-PTF查看switchd表项" class="headerlink" title="2. PTF查看switchd表项"></a>2. PTF查看switchd表项</h1><h2 id="2-1-PTF测试查看-switchd-表项"><a href="#2-1-PTF测试查看-switchd-表项" class="headerlink" title="2.1. PTF测试查看 switchd 表项"></a>2.1. PTF测试查看 switchd 表项</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">bfshell&gt;</span><span class="bash"> bf_switch</span></span><br><span class="line">bf_switch:0&gt; show hostif all</span><br><span class="line">bf_switch:0&gt; show route all</span><br><span class="line">bf_switch:0&gt; show neighbor all</span><br><span class="line">bf_switch:0&gt; show nexthop all</span><br><span class="line">bf_switch:0&gt; show rif all</span><br><span class="line">bf_switch:0&gt; show vrf all</span><br><span class="line">bf_switch:0&gt; show rmac_group all</span><br><span class="line">bf_switch:0&gt; show mtu all</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-PTF-查看表项"><a href="#2-2-PTF-查看表项" class="headerlink" title="2.2. PTF 查看表项"></a>2.2. PTF 查看表项</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">bfshell&gt;</span><span class="bash"> bfrt_python</span></span><br><span class="line"><span class="meta">bfrt_root&gt;</span><span class="bash">bfrt</span></span><br><span class="line"><span class="meta">bfrt&gt;</span><span class="bash"> switch</span></span><br><span class="line">bfrt.switch&gt; pipe</span><br><span class="line">bfrt.switch.pipe&gt; SwitchEgress</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">...</span></span><br></pre></td></tr></table></figure>
+
+<p>bfrt.switch.pipe.SwitchEgress.rewrite.egress_bd.bd_mapping</p>
+<p>bfrt.switch.pipe.SwitchEgress.mtu</p>
+<p>bfrt.switch.pipe.SwitchIngress.smac</p>
+<p>switch_bridged_metadata_h</p>
+<h1 id="3-snapshot抓包示例"><a href="#3-snapshot抓包示例" class="headerlink" title="3. snapshot抓包示例"></a>3. snapshot抓包示例</h1><p>control: 类<br>table： 函数 （if else）<br>key: 入参（需关注参数）<br>action: 子函数 （一般在 table 上实现&#x2F;被调用）</p>
+<p>entry 中删表：</p>
+<h2 id="3-1-在-table-中添加表（执行逻辑-条件-action）"><a href="#3-1-在-table-中添加表（执行逻辑-条件-action）" class="headerlink" title="3.1. 在 table 中添加表（执行逻辑: 条件 + action）"></a>3.1. 在 table 中添加表（执行逻辑: 条件 + action）</h2><h3 id="3-1-1-删表"><a href="#3-1-1-删表" class="headerlink" title="3.1.1. 删表"></a>3.1.1. 删表</h3><p>delete(表名)</p>
+<h3 id="3-1-2-添加表"><a href="#3-1-2-添加表" class="headerlink" title="3.1.2. 添加表"></a>3.1.2. 添加表</h3><p>add_with_<function>()</p>
+<p>添加表项（添加执行逻辑）</p>
+<p>gw: get way 硬件</p>
+<p>Inhibited 抑制（硬件匹配，但代码逻辑抑制gw ）</p>
+<p>entry 中删表：</p>
+<h2 id="3-2-在-table-中添加表（执行逻辑-条件-action）"><a href="#3-2-在-table-中添加表（执行逻辑-条件-action）" class="headerlink" title="3.2. 在 table 中添加表（执行逻辑: 条件 + action）"></a>3.2. 在 table 中添加表（执行逻辑: 条件 + action）</h2><p>当前是 “agent” 来「替人为添加这些 逻辑」</p>
+<h3 id="3-2-1-删表"><a href="#3-2-1-删表" class="headerlink" title="3.2.1. 删表"></a>3.2.1. 删表</h3><p>delete(表名)</p>
+<h3 id="3-2-2-添加表"><a href="#3-2-2-添加表" class="headerlink" title="3.2.2. 添加表"></a>3.2.2. 添加表</h3><p>add_with_<function>()</p>
+<p>添加表项（添加执行逻辑）</p>
+<h2 id="3-3-snapshort-抓包"><a href="#3-3-snapshort-抓包" class="headerlink" title="3.3. snapshort 抓包"></a>3.3. snapshort 抓包</h2><blockquote>
+<p>两个方向</p>
+<ol>
+<li>看进出口，有无丢包</li>
+<li>看 Table info <strong>哪些 hit</strong> 哪些没 hit，关心的哪张表</li>
+</ol>
+</blockquote>
+<p>&#x2F;opt&#x2F;bfn&#x2F;install&#x2F;bin&#x2F;bfshell</p>
+<p>进入 pipe_mgr</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ucli</span><br><span class="line">pipe_mgr</span><br><span class="line"></span><br><span class="line">bf-sde.pipe_mgr &gt; </span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-1-删除旧-snapshort-句柄"><a href="#3-3-1-删除旧-snapshort-句柄" class="headerlink" title="3.3.1. 删除旧 snapshort 句柄"></a>3.3.1. 删除旧 snapshort 句柄</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 删除旧 snapshort （若有）</span></span><br><span class="line">snap-delete -h 0x581</span><br><span class="line">snap-delete -h 0x1583</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Ingress</span></span></span><br><span class="line">snap-delete -h 0x2581</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Egress</span></span></span><br><span class="line">snap-delete -h 0x2583</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Ingress</span></span></span><br><span class="line">snap-delete -h 0x3581</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Egress</span></span></span><br><span class="line">snap-delete -h 0x3583</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-2-创建-snapshot（获取返回句柄）"><a href="#3-3-2-创建-snapshot（获取返回句柄）" class="headerlink" title="3.3.2. 创建 snapshot（获取返回句柄）"></a>3.3.2. 创建 snapshot（获取返回句柄）</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> -i 0 是 Ingress, 1 是 Egress</span></span><br><span class="line">snap-create -d 0 -p 0 -s 0 -e 11 -i 0</span><br><span class="line">snap-create -d 0 -p 1 -s 0 -e 11 -i 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Ingress</span></span></span><br><span class="line">snap-create -d 0 -p 2 -s 0 -e 11 -i 0</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Egress</span></span></span><br><span class="line">snap-create -d 0 -p 2 -s 0 -e 11 -i 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Ingress</span></span></span><br><span class="line">snap-create -d 0 -p 3 -s 0 -e 11 -i 0</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Egress</span></span></span><br><span class="line">snap-create -d 0 -p 3 -s 0 -e 11 -i 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-3-创建抓包触发器-设置触发条件"><a href="#3-3-3-创建抓包触发器-设置触发条件" class="headerlink" title="3.3.3. 创建抓包触发器 (设置触发条件)"></a>3.3.3. 创建抓包触发器 (设置触发条件)</h3><h4 id="3-3-3-1-查看有哪些字段可抓"><a href="#3-3-3-1-查看有哪些字段可抓" class="headerlink" title="3.3.3.1. 查看有哪些字段可抓"></a>3.3.3.1. 查看有哪些字段可抓</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> PS 可通过 查看可用哪些「PHV 资源」 **可抓**</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -i 0 是 Ingress, 1 是 Egress</span></span><br><span class="line">phv-dump -d 0 -p 1 -s 0 -i 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Ingress</span></span></span><br><span class="line">phv-dump -d 0 -p 2 -s 0 -i 0</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Egress</span></span></span><br><span class="line">phv-dump -d 0 -p 2 -s 0 -i 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Ingress</span></span></span><br><span class="line">phv-dump -d 0 -p 3 -s 0 -i 0</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Egress</span></span></span><br><span class="line">phv-dump -d 0 -p 3 -s 0 -i 1</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 抓特定 DIP 10.0.0.32（0xA000020）</span></span><br><span class="line">snap-trig-add -h 0x581 -n hdr_ipv4_dst_addr  -v 0xA000020 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash"> 抓特定 DIP 1.0.0.100 (0x1000064)</span></span><br><span class="line">snap-trig-add -h 0x2581 -n hdr_ipv4_dst_addr  -v 0x1000064 -m 0xffffffff</span><br><span class="line">snap-trig-add -h 0x2581 -n hdr_ipv4_dst_addr  -v 0xAE3C384 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash">   172.20.0.1  0xAC140001</span></span><br><span class="line">snap-trig-add -h 0x2581 -n hdr_ipv4_dst_addr  -v 0xAC140001 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash"> 抓特定 DIP 1.0.0.100 (0x1000064)</span></span><br><span class="line">snap-trig-add -h 0x1583 -n hdr_inner_ipv4_dst_addr  -v 0x1000064 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash"> pipe2 Ingress 抓特定 DIP 100.106.182.121 (0x646AB679)</span></span><br><span class="line">snap-trig-add -h 0x2581 -n hdr_inner_ipv4_dst_addr  -v 0x646AB679 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash"> pipe2 Egress 抓特定 DIP 100.106.182.121 (0x646AB679)</span></span><br><span class="line">snap-trig-add -h 0x2583 -n hdr_ipv4_dst_addr  -v 0x646AB679 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash"> pipe3 Ingress 抓特定 DIP 100.106.182.121 (0x646AB679)</span></span><br><span class="line">snap-trig-add -h 0x3581 -n hdr_ipv4_dst_addr  -v 0x646AB679 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash"> pipe3 Egress 抓特定 DIP 100.106.182.121 (0x646AB679)</span></span><br><span class="line">snap-trig-add -h 0x3583 -n hdr_inner_ipv4_dst_addr  -v 0x646AB679 -m 0xffffffff</span><br><span class="line"><span class="meta">#</span><span class="bash"> pipe3 Egress 抓特定 DIP 100.106.182.121 (0x646AB679)</span></span><br><span class="line">snap-trig-add -h 0x3583 -n hdr_ipv4_dst_addr  -v 0xC0A81E01 -m 0xffffffff</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 抓特定端口</span></span><br><span class="line">snap-trig-add -h 0x1583 -n local_md_ingress_port -v 0x144 -m 0x1ff</span><br><span class="line"><span class="meta">#</span><span class="bash"> 抓送往 FPGA 33 口报文</span></span><br><span class="line">snap-trig-add -h 0x2583 -n local_md_egress_port -v 0x134 -m 0x1ff</span><br><span class="line"><span class="meta">#</span><span class="bash"> 抓特定状态</span></span><br><span class="line">snap-trig-add -h 0x1583 -n hdr_table_1_result_valid  -v 0x1 -m 0xf</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-4-开启抓包"><a href="#3-3-4-开启抓包" class="headerlink" title="3.3.4. 开启抓包"></a>3.3.4. 开启抓包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> check 当前抓包配置</span></span><br><span class="line">snap-cfg-dump -h 0x2581</span><br><span class="line"></span><br><span class="line">snap-state-set -h 0x581 -e 1</span><br><span class="line">snap-state-set -h 0x1583 -e 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Ingress</span></span></span><br><span class="line">snap-state-set -h 0x2581 -e 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Egress</span></span></span><br><span class="line">snap-state-set -h 0x2583 -e 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Ingress</span></span></span><br><span class="line">snap-state-set -h 0x3581 -e 1</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Egress</span></span></span><br><span class="line">snap-state-set -h 0x3583 -e 1</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-5-查看抓包结果"><a href="#3-3-5-查看抓包结果" class="headerlink" title="3.3.5. 查看抓包结果"></a>3.3.5. 查看抓包结果</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">snap-capture-get -h 0x581</span><br><span class="line">snap-capture-get -h 0x1583</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Ingress</span></span></span><br><span class="line">snap-capture-get -h 0x2581</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Egress</span></span></span><br><span class="line">snap-capture-get -h 0x2583</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Ingress</span></span></span><br><span class="line">snap-capture-get -h 0x3581</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Egress</span></span></span><br><span class="line">snap-capture-get -h 0x3583</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-6-停止抓包"><a href="#3-3-6-停止抓包" class="headerlink" title="3.3.6. 停止抓包"></a>3.3.6. 停止抓包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">snap-state-set -h 0x1583 -e 0</span><br><span class="line">snap-state-set -h 0x581 -e 0</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Ingress</span></span></span><br><span class="line">snap-state-set -h 0x2581 -e ~~0~~</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe2 Egress</span></span></span><br><span class="line">snap-state-set -h 0x2583 -e 0</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Ingress</span></span></span><br><span class="line">snap-state-set -h 0x3581 -e 0</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># pipe3 Egress</span></span></span><br><span class="line">snap-state-set -h 0x3583 -e 0</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="4-为什么编译器-flexible-很重要"><a href="#4-为什么编译器-flexible-很重要" class="headerlink" title="4. 为什么编译器 flexible 很重要"></a>4. 为什么编译器 flexible 很重要</h1><p>flexible 加在哪儿？ （PHV、ALU、ALC 实现）<br>变量初始化</p>
+<p>编译宏 – 结构体</p>
+<p>注解  @flexible 自动优化变量结构&#x2F;字节序&#x2F;panding</p>
+<p>编译器优化，两个结构体的不同变量（同大小），编译器放到了同一个存储空间</p>
+<p>修饰符：让编译器不做优化</p>
+<p>（pa_mutually_exclusive(“ingress”, “lkp.mpls_lookup_label”, “lkp.ip_src_addr”)）</p>
+<h1 id="5-P4编译中常见PHV、ALU资源分配错误问题解决思路"><a href="#5-P4编译中常见PHV、ALU资源分配错误问题解决思路" class="headerlink" title="5. P4编译中常见PHV、ALU资源分配错误问题解决思路"></a>5. P4编译中常见PHV、ALU资源分配错误问题解决思路</h1><p>P4编译遇到PHV和ALU资源冲突问题解决思路</p>
+<ol>
+<li>struct 中尽量小 bit 成员变量在前</li>
+<li>拆 action。拆解有多个 key、parameter 的 action 到多个子 action（一个赋值对应一个 ALU）</li>
+<li>通过 in hash 降维？</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\02\28\BfshellUsefullCmds\" rel="bookmark">Bfshell常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2024\04\24\P4PtfTest\" rel="bookmark">P4 PTF 测试简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\01\16\P4iInstallAndUsage\" rel="bookmark">p4i的安装与使用</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2022\01\23\Common_acronyms_for_data_center_network_DCN\" rel="bookmark">数据中心网络DCN常见缩写词</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\23\EthernetAndMac\" rel="bookmark">以太帧与MAC</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+              <a href="/tags/P4/" rel="tag"><i class="fa fa-tag"></i> P4</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/28/BfshellUsefullCmds/" rel="prev" title="Bfshell常用命令">
+                  <i class="fa fa-chevron-left"></i> Bfshell常用命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/24/P4PtfTest/" rel="next" title="P4 PTF 测试简介">
+                  P4 PTF 测试简介 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">haoleeson</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://haoleeson.cn/2023/04/24/P4LearnNote/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

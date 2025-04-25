@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/my-avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/my-favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/my-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/my-logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haoleeson.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Go 的 pprof 是一个内置的性能分析工具，用于帮助开发者诊断程序的性能问题，如 CPU 占用、内存泄漏、协程阻塞等。它通过采样和生成报告，定位代码中的性能瓶颈。pprof 结合简洁的命令和可视化工具，显著提升了 Go 程序的调优效率，是性能优化的必备工具。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go pprof性能分析工具">
+<meta property="og:url" content="https://haoleeson.cn/2024/06/26/GoPprofToolUsage/index.html">
+<meta property="og:site_name" content="Haoleeson&#39;s Notes">
+<meta property="og:description" content="Go 的 pprof 是一个内置的性能分析工具，用于帮助开发者诊断程序的性能问题，如 CPU 占用、内存泄漏、协程阻塞等。它通过采样和生成报告，定位代码中的性能瓶颈。pprof 结合简洁的命令和可视化工具，显著提升了 Go 程序的调优效率，是性能优化的必备工具。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-06-26T11:53:45.000Z">
+<meta property="article:modified_time" content="2024-06-26T11:53:45.000Z">
+<meta property="article:author" content="haoleeson">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://haoleeson.cn/2024/06/26/GoPprofToolUsage/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haoleeson.cn/2024/06/26/GoPprofToolUsage/","path":"2024/06/26/GoPprofToolUsage/","title":"Go pprof性能分析工具"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Go pprof性能分析工具 | Haoleeson's Notes</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Haoleeson's Notes</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Record growth and enjoy life!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-house fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-cloud fa-fw"></i>云标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-timeline fa-fw"></i>时间轴</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录
+        </li>
+        <li class="sidebar-nav-overview">
+          概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="nav-text">1. 核心功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%90%AF%E7%94%A8-pprof"><span class="nav-text">2. 启用 pprof</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%B8%B8%E7%94%A8%E5%88%86%E6%9E%90%E7%B1%BB%E5%9E%8B%E5%8F%8A%E7%AB%AF%E7%82%B9"><span class="nav-text">3. 常用分析类型及端点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8-go-tool-pprof"><span class="nav-text">4. 使用 go tool pprof</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">5. 应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%85%B6%E4%BB%96%E6%96%B9%E5%BC%8F"><span class="nav-text">6. 其他方式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="haoleeson"
+      src="/images/my-avatar.png">
+  <p class="site-author-name" itemprop="name">haoleeson</p>
+  <div class="site-description" itemprop="description">记录成长，享受生活！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">主题</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">关键词</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haoleeson" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haoleeson" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friendly links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://reuixiy.github.io/" title="https:&#x2F;&#x2F;reuixiy.github.io&#x2F;" rel="noopener" target="_blank">reuixiy</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://notes.iissnan.com/" title="https:&#x2F;&#x2F;notes.iissnan.com&#x2F;" rel="noopener" target="_blank">IIssNan</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sunxiaohang.github.io/" title="https:&#x2F;&#x2F;sunxiaohang.github.io&#x2F;" rel="noopener" target="_blank">sunxiaohang</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haoleeson.cn/2024/06/26/GoPprofToolUsage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my-avatar.png">
+      <meta itemprop="name" content="haoleeson">
+      <meta itemprop="description" content="记录成长，享受生活！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoleeson's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go pprof性能分析工具
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">编写</span>
+
+      <time title="创建：2024-06-26 19:53:45" itemprop="dateCreated datePublished" datetime="2024-06-26T19:53:45+08:00">2024-06-26</time>
+    </span>
+
+  
+    <span id="/2024/06/26/GoPprofToolUsage/" class="post-meta-item leancloud_visitors" data-flag-title="Go pprof性能分析工具" title="浏览">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">浏览：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Go 的 pprof 是一个内置的性能分析工具，用于帮助开发者诊断程序的性能问题，如 CPU 占用、内存泄漏、协程阻塞等。它通过采样和生成报告，定位代码中的性能瓶颈。pprof 结合简洁的命令和可视化工具，显著提升了 Go 程序的调优效率，是性能优化的必备工具。</p>
+<a id="more"></a>
+
+<h1 id="1-核心功能"><a href="#1-核心功能" class="headerlink" title="1. 核心功能"></a>1. 核心功能</h1><ul>
+<li>CPU分析：识别消耗最多 CPU 时间的函数。</li>
+<li>内存分析：检测内存分配和泄漏。</li>
+<li>阻塞分析：查找导致协程（goroutine）阻塞的代码。</li>
+<li>协程分析：查看当前所有协程的堆栈信息。</li>
+</ul>
+<h1 id="2-启用-pprof"><a href="#2-启用-pprof" class="headerlink" title="2. 启用 pprof"></a>2. 启用 pprof</h1><p>在程序中导入 net&#x2F;http&#x2F;pprof 包，并启动 HTTP 服务（如监听:9381）：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> _ <span class="string">&quot;net/http/pprof&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        log.Println(http.ListenAndServe(<span class="string">&quot;localhost:9381&quot;</span>, <span class="literal">nil</span>))</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="comment">// 程序逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问 <a target="_blank" rel="noopener" href="http://localhost:9381/debug/pprof/">http://localhost:9381/debug/pprof/</a> 可查看分析入口。</p>
+<h1 id="3-常用分析类型及端点"><a href="#3-常用分析类型及端点" class="headerlink" title="3. 常用分析类型及端点"></a>3. 常用分析类型及端点</h1><ul>
+<li>CPU 分析：&#x2F;debug&#x2F;pprof&#x2F;profile（默认采样 30 秒）。</li>
+<li>内存分析：&#x2F;debug&#x2F;pprof&#x2F;heap。</li>
+<li>协程阻塞分析：&#x2F;debug&#x2F;pprof&#x2F;block。</li>
+<li>当前协程状态：&#x2F;debug&#x2F;pprof&#x2F;goroutine。</li>
+</ul>
+<h1 id="4-使用-go-tool-pprof"><a href="#4-使用-go-tool-pprof" class="headerlink" title="4. 使用 go tool pprof"></a>4. 使用 go tool pprof</h1><p>通过命令行工具抓取数据并分析：</p>
+<ol>
+<li>实时分析：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gobgpd 中的 pprof 服务端口, 一般为 9381</span></span><br><span class="line">PPROF_PORT=9381</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> CPU 分析</span></span><br><span class="line">go tool pprof http://localhost:$PPROF_PORT/debug/pprof/profile</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 内存分析</span></span><br><span class="line">go tool pprof http://localhost:$PPROF_PORT/debug/pprof/heap</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看当前内存使用最多的 10 个函数</span></span><br><span class="line">echo -e &quot;top 10\nexit&quot; | go tool pprof -inuse_space http://localhost:$&#123;PPROF_PORT&#125;/debug/pprof/heap</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看当前内存使用最多的 20 个函数调用链 (子函数的值会累加到父函数)</span></span><br><span class="line">echo -e &quot;top 20 -cum\nexit&quot; | go tool pprof -inuse_space http://localhost:$&#123;PPROF_PORT&#125;/debug/pprof/heap</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看累积分配内存较多的 20 个函数</span></span><br><span class="line">echo -e &quot;top 20\nexit&quot; | go tool pprof -alloc_space http://localhost:$&#123;PPROF_PORT&#125;/debug/pprof/heap</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看累积分配内存较多的 20 个函数调用链 (子函数的值会累加到父函数)</span></span><br><span class="line">echo -e &quot;top 20 -cum\nexit&quot; | go tool pprof -alloc_space http://localhost:$&#123;PPROF_PORT&#125;/debug/pprof/heap</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>交互命令示例：</p>
+<ul>
+<li>top 10：查看前 10 耗时&#x2F;内存分配的函数。</li>
+<li>web：生成调用关系图（需安装 Graphviz）。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &#x27;command -v dot &gt;/dev/null 2&gt;&amp;1 || apt install -y graphviz&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li>生成火焰图：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 生成火焰图</span></span><br><span class="line">go tool pprof -http=:$&#123;PPROF_PORT&#125; profile.pprof</span><br><span class="line">go tool pprof -alloc_space -cum -svg http://localhost:$&#123;PPROF_PORT&#125;/debug/pprof/heap</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>浏览器打开后，选择 Flame Graph 视图即可。</p>
+<h1 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. 应用场景</h1><ul>
+<li>优化 CPU 使用：定位高耗时函数。</li>
+<li>排查内存泄漏：分析堆内存分配趋势。</li>
+<li>解决协程阻塞：发现锁竞争或 I&#x2F;O 等待问题。</li>
+<li>并发调试：查看协程堆栈状态。</li>
+</ul>
+<h1 id="6-其他方式"><a href="#6-其他方式" class="headerlink" title="6. 其他方式"></a>6. 其他方式</h1><ul>
+<li>测试中生成 Profile：使用 go test -cpuprofile 或 -memprofile。</li>
+<li>手动采集数据：通过 runtime&#x2F;pprof 包写入文件（适用于非 HTTP 服务）。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/24/P4PtfTest/" rel="prev" title="P4 PTF 测试简介">
+                  <i class="fa fa-chevron-left"></i> P4 PTF 测试简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">haoleeson</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"bCgWJUrF9NMLpHldLlFkJNUG-gzGzoHsz","app_key":"TLdQDR7gG7YiqEflCiR8wmz3","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://haoleeson.cn/2024/06/26/GoPprofToolUsage/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

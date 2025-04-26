@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"haoleeson.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. 硬件类 本地日志：&#x2F;var&#x2F;log&#x2F;syslog  1.1. 电源 插入 12# 初始化时默认打印2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is plugged in. vendor: ARTE">
+<meta name="description" content="本文记录一些SONiC硬件、端口、协议、系统类典型日志，便于快速定位问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sonic各类告警日志梳理">
 <meta property="og:url" content="https://haoleeson.cn/2022/02/14/sonicLogs/index.html">
 <meta property="og:site_name" content="Haoleeson&#39;s Notes">
-<meta property="og:description" content="1. 硬件类 本地日志：&#x2F;var&#x2F;log&#x2F;syslog  1.1. 电源 插入 12# 初始化时默认打印2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is plugged in. vendor: ARTE">
+<meta property="og:description" content="本文记录一些SONiC硬件、端口、协议、系统类典型日志，便于快速定位问题。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://haoleeson.cn/uploads/BGP_state.png">
 <meta property="article:published_time" content="2022-02-14T14:30:45.000Z">
@@ -165,7 +165,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -176,7 +176,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -281,7 +281,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="1-硬件类"><a href="#1-硬件类" class="headerlink" title="1. 硬件类"></a>1. 硬件类</h1><blockquote>
+        <p>本文记录一些SONiC硬件、端口、协议、系统类典型日志，便于快速定位问题。</p>
+<a id="more"></a>
+
+<h1 id="1-硬件类"><a href="#1-硬件类" class="headerlink" title="1. 硬件类"></a>1. 硬件类</h1><blockquote>
 <p>本地日志：&#x2F;var&#x2F;log&#x2F;syslog</p>
 </blockquote>
 <h2 id="1-1-电源"><a href="#1-1-电源" class="headerlink" title="1.1. 电源"></a>1.1. 电源</h2><ul>
@@ -292,12 +295,10 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂无操作日志，日志代码如下：</span></span><br><span class="line">logger.log_warning(device + &#x27; is pulled out. &#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 预估拔出电源日志</span></span><br><span class="line">2022-02-14 17:56:02.609340 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :pluggable_dev_log:- Psu2 is pulled out.</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>异常</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 异常也可能为四种异常（<span class="string">&#x27;no power&#x27;</span>, <span class="string">&#x27;thermal error&#x27;</span>, <span class="string">&#x27;fan error&#x27;</span>, <span class="string">&#x27;vol error&#x27;</span>）的任意组合，共 15 种情况：</span></span><br><span class="line">2022-02-14 17:56:02.614955 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu2 is alarm: no power</span><br><span class="line">2021-12-22 03:42:27.825952 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu1 is alarm: from normal to no power, vol error</span><br></pre></td></tr></table></figure></li>
-</ul>
-<a id="more"></a>
-
-<ul>
-<li>正常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时也会打印</span></span><br><span class="line">2022-02-14 17:56:02.596387 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu1 is normal</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 异常也可能为四种异常（<span class="string">&#x27;no power&#x27;</span>, <span class="string">&#x27;thermal error&#x27;</span>, <span class="string">&#x27;fan error&#x27;</span>, <span class="string">&#x27;vol error&#x27;</span>）的任意组合，共 15 种情况：</span></span><br><span class="line">2022-02-14 17:56:02.614955 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu2 is alarm: no power</span><br><span class="line">2021-12-22 03:42:27.825952 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu1 is alarm: from normal to no power, vol error</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>正常</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化时也会打印</span></span><br><span class="line">2022-02-14 17:56:02.596387 HOSTNAME &lt;local2.warning&gt; WARNING pmon#hwmgrd: :dev_alarm_log:- Psu1 is normal</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="1-2-风扇"><a href="#1-2-风扇" class="headerlink" title="1.2. 风扇"></a>1.2. 风扇</h2><ul>
 <li><p>插入</p>

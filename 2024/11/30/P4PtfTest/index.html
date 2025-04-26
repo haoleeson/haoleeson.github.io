@@ -24,12 +24,12 @@
 <meta name="description" content="P4 PTF 作为 Barefoot P4 开发工具链中的重要一部分，可用于自动化测试基于Barefoot提供标准交换机功能的P4 SDE程序自定义开发后的基础功能，如交换机基础二三层功能测试、及自定义数据面功能，本文记录 P4 PTF 测试的常用测试方法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P4 PTF 测试简介">
-<meta property="og:url" content="https://haoleeson.cn/2024/04/24/P4PtfTest/index.html">
+<meta property="og:url" content="https://haoleeson.cn/2024/11/30/P4PtfTest/index.html">
 <meta property="og:site_name" content="Haoleeson&#39;s Notes">
 <meta property="og:description" content="P4 PTF 作为 Barefoot P4 开发工具链中的重要一部分，可用于自动化测试基于Barefoot提供标准交换机功能的P4 SDE程序自定义开发后的基础功能，如交换机基础二三层功能测试、及自定义数据面功能，本文记录 P4 PTF 测试的常用测试方法。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-04-23T16:41:45.000Z">
-<meta property="article:modified_time" content="2024-04-23T16:41:45.000Z">
+<meta property="article:published_time" content="2024-11-29T16:41:45.000Z">
+<meta property="article:modified_time" content="2024-11-29T16:41:45.000Z">
 <meta property="article:author" content="haoleeson">
 <meta property="article:tag" content="SDE">
 <meta property="article:tag" content="Network">
@@ -38,11 +38,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://haoleeson.cn/2024/04/24/P4PtfTest/">
+<link rel="canonical" href="https://haoleeson.cn/2024/11/30/P4PtfTest/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haoleeson.cn/2024/04/24/P4PtfTest/","path":"2024/04/24/P4PtfTest/","title":"P4 PTF 测试简介"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haoleeson.cn/2024/11/30/P4PtfTest/","path":"2024/11/30/P4PtfTest/","title":"P4 PTF 测试简介"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>P4 PTF 测试简介 | Haoleeson's Notes</title>
@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">关键词</span></a>
       </div>
   </nav>
@@ -238,7 +238,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://haoleeson.cn/2024/04/24/P4PtfTest/">
+    <link itemprop="mainEntityOfPage" href="https://haoleeson.cn/2024/11/30/P4PtfTest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my-avatar.png">
@@ -262,11 +262,11 @@
       </span>
       <span class="post-meta-item-text">编写</span>
 
-      <time title="创建：2024-04-24 00:41:45" itemprop="dateCreated datePublished" datetime="2024-04-24T00:41:45+08:00">2024-04-24</time>
+      <time title="创建：2024-11-30 00:41:45" itemprop="dateCreated datePublished" datetime="2024-11-30T00:41:45+08:00">2024-11-30</time>
     </span>
 
   
-    <span id="/2024/04/24/P4PtfTest/" class="post-meta-item leancloud_visitors" data-flag-title="P4 PTF 测试简介" title="浏览">
+    <span id="/2024/11/30/P4PtfTest/" class="post-meta-item leancloud_visitors" data-flag-title="P4 PTF 测试简介" title="浏览">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -285,9 +285,9 @@
         <p>P4 PTF 作为 Barefoot P4 开发工具链中的重要一部分，可用于自动化测试基于Barefoot提供标准交换机功能的P4 SDE程序自定义开发后的基础功能，如交换机基础二三层功能测试、及自定义数据面功能，本文记录 P4 PTF 测试的常用测试方法。</p>
 <a id="more"></a>
 
-<h1 id="1-创建模拟器容器"><a href="#1-创建模拟器容器" class="headerlink" title="1. 创建模拟器容器"></a>1. 创建模拟器容器</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> build 镜像</span></span><br><span class="line">docker build -t sde_build_image_simple:v9.3.2 . --no-cache</span><br><span class="line">docker build -t sde_build_image_simple:v9.9.0 . --no-cache</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建容器 9.9.0（独立网络）</span></span><br><span class="line">docker run -dit --name bf_sde_9_9_0_simulation --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /sys/devices/system/node:/sys/devices/system/node \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -w /sde/ \</span><br><span class="line">    -p 10990:22 -p 3000:3000 sde_build_image_simple:v9.9.0 bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建容器 9.3.2（独立网络）</span></span><br><span class="line">docker run -dit --name bf_sde_9_3_2_simulation --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /sys/devices/system/node:/sys/devices/system/node \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -v /home/lihao.213/code/bf-sde-9.3.2-upgrade-sai:/root/bf-sde-9.3.2-upgrade-sai:rw \</span><br><span class="line">    -w /sde/ \</span><br><span class="line">    -p 10932:22 -p 4000:4000 sde_build_image_simple:v9.3.2 bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建容器 9.3.2（独立网络）</span></span><br><span class="line">docker run -dit --name ptf_sde_9_3_2 --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /sys/devices/system/node:/sys/devices/system/node \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -v /home/lihao.213/code/bf-sde-9.3.2-upgrade-sai-with-ptf-updating:/root/bf-sde-9.3.2-upgrade-sai:rw \</span><br><span class="line">    -v /home/lihao.213/my_scripts:/root/my_scripts:rw \</span><br><span class="line">    -w /root/ \</span><br><span class="line">    -p 11932:22 -p 4100:4100 sde_build_image_simple:v9.3.2 bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入容器</span></span><br><span class="line">docker exec -it bf_sde_9_9_0_simulation bash</span><br><span class="line">docker exec -it bf_sde_9_3_2_simulation bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 注：运行模拟器前要先将 bf-sde/install/lib 中的 libpltfm_mgr.so 文件删除或重命名</span></span><br></pre></td></tr></table></figure>
+<h1 id="1-创建模拟器容器"><a href="#1-创建模拟器容器" class="headerlink" title="1. 创建模拟器容器"></a>1. 创建模拟器容器</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> build 镜像</span></span><br><span class="line">docker build -t sde_build_image_simple:v9.3.2 . --no-cache</span><br><span class="line">docker build -t sde_build_image_simple:v9.9.0 . --no-cache</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建容器 9.9.0（独立网络）</span></span><br><span class="line">docker run -dit --name bf_sde_9_9_0_simulation --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /sys/devices/system/node:/sys/devices/system/node \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -w /sde/ \</span><br><span class="line">    -p 10990:22 -p 3000:3000 sde_build_image_simple:v9.9.0 bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建容器 9.3.2（独立网络）</span></span><br><span class="line">docker run -dit --name bf_sde_9_3_2_simulation --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /sys/devices/system/node:/sys/devices/system/node \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -v /home/haoleeson/code/bf-sde-9.3.2-upgrade-sai:/root/bf-sde-9.3.2-upgrade-sai:rw \</span><br><span class="line">    -w /sde/ \</span><br><span class="line">    -p 10932:22 -p 4000:4000 sde_build_image_simple:v9.3.2 bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建容器 9.3.2（独立网络）</span></span><br><span class="line">docker run -dit --name ptf_sde_9_3_2 --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /sys/devices/system/node:/sys/devices/system/node \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -v /home/haoleeson/code/bf-sde-9.3.2-upgrade-sai-with-ptf-updating:/root/bf-sde-9.3.2-upgrade-sai:rw \</span><br><span class="line">    -v /home/haoleeson/my_scripts:/root/my_scripts:rw \</span><br><span class="line">    -w /root/ \</span><br><span class="line">    -p 11932:22 -p 4100:4100 sde_build_image_simple:v9.3.2 bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入容器</span></span><br><span class="line">docker exec -it bf_sde_9_9_0_simulation bash</span><br><span class="line">docker exec -it bf_sde_9_3_2_simulation bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 注：运行模拟器前要先将 bf-sde/install/lib 中的 libpltfm_mgr.so 文件删除或重命名</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="2-创建可远程-ssh-登录的容器-9-9-0（独立网络）"><a href="#2-创建可远程-ssh-登录的容器-9-9-0（独立网络）" class="headerlink" title="2. 创建可远程 ssh 登录的容器 9.9.0（独立网络）"></a>2. 创建可远程 ssh 登录的容器 9.9.0（独立网络）</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">HOST_CODE_DIR=&#x27;/home/lihao.213/code/bf-sde-9.9.0-igw-xlt&#x27; &amp;&amp; \</span><br><span class="line">CONTAIN_CODE_DIR=&#x27;/root/bf-sde-9.9.0-igw-xlt&#x27; &amp;&amp; \</span><br><span class="line">docker run -dit --name bf_sde_9_9_0_simulation --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -v $&#123;HOST_CODE_DIR&#125;:$&#123;CONTAIN_CODE_DIR&#125;:rw \</span><br><span class="line">    -w /root \</span><br><span class="line">    -p 10990:22 -p 3000:3000 sde_build_image_simple:v9.9.0 bash</span><br><span class="line"></span><br><span class="line">docker exec -it bf_sde_9_9_0_simulation bash</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 ssh</span></span><br><span class="line">apt-get install -y --force-yes ssh</span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置 /etc/ssh/sshd_config 修改 Port 口，允许</span></span><br><span class="line">vi /etc/ssh/sshd_config</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行 sshd</span></span><br><span class="line">sudo /etc/init.d/ssh start</span><br><span class="line"><span class="meta">#</span><span class="bash"> 重启 ssh 服务</span></span><br><span class="line">service ssh restart</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除 root 密码</span></span><br><span class="line">passwd -d root</span><br><span class="line"><span class="meta">#</span><span class="bash"> 验证登录</span></span><br><span class="line">exit</span><br><span class="line">ssh -p 10990 root@localhost</span><br></pre></td></tr></table></figure>
+<h1 id="2-创建可远程-ssh-登录的容器-9-9-0（独立网络）"><a href="#2-创建可远程-ssh-登录的容器-9-9-0（独立网络）" class="headerlink" title="2. 创建可远程 ssh 登录的容器 9.9.0（独立网络）"></a>2. 创建可远程 ssh 登录的容器 9.9.0（独立网络）</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">HOST_CODE_DIR=&#x27;/home/haoleeson/code/bf-sde-9.9.0-igw-xlt&#x27; &amp;&amp; \</span><br><span class="line">CONTAIN_CODE_DIR=&#x27;/root/bf-sde-9.9.0-igw-xlt&#x27; &amp;&amp; \</span><br><span class="line">docker run -dit --name bf_sde_9_9_0_simulation --privileged \</span><br><span class="line">    -v /sys/bus/pci/devices:/sys/bus/pci/devices \</span><br><span class="line">    -v /sys/kernel/mm/hugepages:/sys/kernel/mm/hugepages \</span><br><span class="line">    -v /usr/share/zoneinfo:/usr/share/zoneinfo:ro \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -v $&#123;HOST_CODE_DIR&#125;:$&#123;CONTAIN_CODE_DIR&#125;:rw \</span><br><span class="line">    -w /root \</span><br><span class="line">    -p 10990:22 -p 3000:3000 sde_build_image_simple:v9.9.0 bash</span><br><span class="line"></span><br><span class="line">docker exec -it bf_sde_9_9_0_simulation bash</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装 ssh</span></span><br><span class="line">apt-get install -y --force-yes ssh</span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置 /etc/ssh/sshd_config 修改 Port 口，允许</span></span><br><span class="line">vi /etc/ssh/sshd_config</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行 sshd</span></span><br><span class="line">sudo /etc/init.d/ssh start</span><br><span class="line"><span class="meta">#</span><span class="bash"> 重启 ssh 服务</span></span><br><span class="line">service ssh restart</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除 root 密码</span></span><br><span class="line">passwd -d root</span><br><span class="line"><span class="meta">#</span><span class="bash"> 验证登录</span></span><br><span class="line">exit</span><br><span class="line">ssh -p 10990 root@localhost</span><br></pre></td></tr></table></figure>
 
 
 <h1 id="3-编译"><a href="#3-编译" class="headerlink" title="3. 编译"></a>3. 编译</h1><h2 id="3-1-环境装备"><a href="#3-1-环境装备" class="headerlink" title="3.1. 环境装备"></a>3.1. 环境装备</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> BF_SDE_9_9_0 代码</span></span><br><span class="line">cd /sde/bf-sde-9.9.0</span><br><span class="line"><span class="meta">#</span><span class="bash"> BF_SDE_9_3_2 代码</span></span><br><span class="line">cd /sde/bf-sde-9.3.2</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置 BF-SDE 环境变量</span></span><br><span class="line">cd /sde/bf-sde-9.9.0; source /etc/profile &amp;&amp; source $SDE/scripts/set_sde.bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装依赖 （首次需要，下方「首次编译」也会执行这部分代码 ）</span></span><br><span class="line">cd $SDE/p4studio</span><br><span class="line">./install-p4studio-dependencies.sh</span><br><span class="line">./p4studio dependencies install</span><br></pre></td></tr></table></figure>
@@ -336,7 +336,7 @@
       <div class="popular-posts-title"><a href="\2023\01\16\P4iInstallAndUsage\" rel="bookmark">p4i的安装与使用</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2023\04\24\P4LearnNote\" rel="bookmark">P4学习笔记</a></div>
+      <div class="popular-posts-title"><a href="\2023\12\24\P4LearnNote\" rel="bookmark">P4学习笔记</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2022\01\23\Common_acronyms_for_data_center_network_DCN\" rel="bookmark">数据中心网络DCN常见缩写词</a></div>
@@ -359,13 +359,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/04/24/P4LearnNote/" rel="prev" title="P4学习笔记">
-                  <i class="fa fa-chevron-left"></i> P4学习笔记
+                <a href="/2024/06/26/GoPprofToolUsage/" rel="prev" title="Go pprof性能分析工具">
+                  <i class="fa fa-chevron-left"></i> Go pprof性能分析工具
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2024/06/26/GoPprofToolUsage/" rel="next" title="Go pprof性能分析工具">
-                  Go pprof性能分析工具 <i class="fa fa-chevron-right"></i>
+                <a href="/2025/03/10/H3CSwitchUsefullCmd/" rel="next" title="H3C交换机常用命令">
+                  H3C交换机常用命令 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -420,7 +420,7 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://haoleeson.cn/2024/04/24/P4PtfTest/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://haoleeson.cn/2024/11/30/P4PtfTest/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 
 </body>

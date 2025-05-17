@@ -296,7 +296,7 @@
 <p>备注：</p>
 <ul>
 <li>编译 SONiC 版本需确保当前登录用户已加入 <b><font color="#7E3D76" style="">docker</font></b> 组</li>
-<li>查询当前 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表的命令为： <code>sudo cat /etc/group | grep docker</code> </li>
+<li>查询当前 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表的命令为： <code>sudo cat /etc/group | grep docker</code></li>
 <li>若当前登录用户不在 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表中，则需添加到 <b><font color="#7E3D76" style="">docker</font></b> 组用户列表，命令为：  <code>sudo usermod -aG docker $&#123;当前用户名&#125; </code></li>
 </ul>
 </blockquote>
@@ -335,7 +335,7 @@
 <li>短板：用完要关闭需要先按Ctrl+A，再按Ctrl+K来杀掉进程；可能遇到在关闭后&#x2F;dev路径没有Serial文件而无法使用的情况。</li>
 </ul>
 </li>
-<li>minicom 串口工具连接串口设备： <code>minicom -c on</code> <ul>
+<li>minicom 串口工具连接串口设备： <code>minicom -c on</code><ul>
 <li>优势：使用便捷，仅需一次配置，后续自动调用连接配置；稳定性好；支持热插拔；功能丰富。</li>
 </ul>
 </li>
@@ -413,7 +413,6 @@
 <p><b><font color="#7E3D76" style="">3. 拷贝 SONiC 安装镜像到 ONIE 系统的 &#x2F;tmp 路径</font></b><br></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp admin@4.5.6.7:/home/admin/sonic.bin /tmp/</span><br></pre></td></tr></table></figure>
 
-
 <p><b><font color="#7E3D76" style="">4. 通过 onie-nos-install 安装 SONiC 镜像</font></b><br></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onie-nos-install /tmp/sonic.bin</span><br></pre></td></tr></table></figure>
 
@@ -438,7 +437,7 @@
 <ol start="2">
 <li><b><font color="#7E3D76" style="">打开“零配置部署”功能（Zero Touch Provisioning，ZTP）</font></b></li>
 </ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 若 ztp 服务未开启，需执行下方命令开启 ZTP 服务</span></span><br><span class="line">sudo systemctl start ztp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 备注：</span></span><br><span class="line">sudo update-rc.d -f ztp remove      # 禁止 ZTP 服务开启自启  </span><br><span class="line">sudo update-rc.d ztp enable 2 3 4 5 # 开启 ZTP 服务开机自启</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 若 ztp 服务未开启，需执行下方命令开启 ZTP 服务</span></span><br><span class="line">sudo systemctl start ztp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 备注：</span></span><br><span class="line">sudo update-rc.d -f ztp remove      # 禁止 ZTP 服务开启自启</span><br><span class="line">sudo update-rc.d ztp enable 2 3 4 5 # 开启 ZTP 服务开机自启</span><br></pre></td></tr></table></figure>
 <ul>
 <li>若设备缺失配置文件<code>/etc/sonic/config_db.json</code>且启动时 ztp 服务已开启，执行 <code>ip addr | grep eth0</code> 将能看到已自动获取的 IP（eg.10.0.0.2）</li>
 <li>若此时无 IP，执行下方 3(a) 步即可配置IP并生成配置文件。</li>

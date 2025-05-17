@@ -303,8 +303,6 @@
 <h2 id="1-6-查看-logrotate-的切分状态记录"><a href="#1-6-查看-logrotate-的切分状态记录" class="headerlink" title="1.6. 查看 logrotate 的切分状态记录"></a>1.6. 查看 logrotate 的切分状态记录</h2><p>logrotate 自身的日志：<code>/var/lib/logrotate/status</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/logrotate/status</span><br></pre></td></tr></table></figure>
 
-
-
 <h1 id="2-cron-是否正常工作？"><a href="#2-cron-是否正常工作？" class="headerlink" title="2. cron 是否正常工作？"></a>2. cron 是否正常工作？</h1><h2 id="2-1-检查有无安装-cron"><a href="#2-1-检查有无安装-cron" class="headerlink" title="2.1. 检查有无安装 cron"></a>2.1. 检查有无安装 cron</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /usr/sbin/cron</span><br></pre></td></tr></table></figure>
 
 <h2 id="2-2-检测-cron-运行状态"><a href="#2-2-检测-cron-运行状态" class="headerlink" title="2.2. 检测 cron 运行状态"></a>2.2. 检测 cron 运行状态</h2><h3 id="2-2-1-检查-cron-计划任务工具是否正在运行"><a href="#2-2-1-检查-cron-计划任务工具是否正在运行" class="headerlink" title="2.2.1. 检查 cron 计划任务工具是否正在运行"></a>2.2.1. 检查 cron 计划任务工具是否正在运行</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep cron | grep -v grep</span><br></pre></td></tr></table></figure>

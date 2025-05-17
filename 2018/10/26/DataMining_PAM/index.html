@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"haoleeson.cn","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类1.1. PAM算法简介 PAM方法于1987年提出，用于l1范数和其他距离的工作。  k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离">
+<meta name="description" content="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类1.1. PAM算法简介 PAM方法于1987年提出，用于l1范数和其他距离的工作。 k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PAM算法——数据挖掘">
 <meta property="og:url" content="https://haoleeson.cn/2018/10/26/DataMining_PAM/index.html">
 <meta property="og:site_name" content="Haoleeson&#39;s Notes">
-<meta property="og:description" content="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类1.1. PAM算法简介 PAM方法于1987年提出，用于l1范数和其他距离的工作。  k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离">
+<meta property="og:description" content="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类1.1. PAM算法简介 PAM方法于1987年提出，用于l1范数和其他距离的工作。 k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://haoleeson.cn/uploads/DataMining_PAM.png">
 <meta property="og:image" content="https://haoleeson.cn/uploads/DataMining_Pam_result_k=3_iteration=10.png">
@@ -289,7 +289,7 @@
         <img data-src="../../../../uploads/DataMining_PAM.png" class="full-image" />
 
 <h1 id="1-实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类"><a href="#1-实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类" class="headerlink" title="1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类"></a>1. 实现PAM算法对部分含有高斯噪声的waveform数据集进行聚类</h1><h2 id="1-1-PAM算法简介"><a href="#1-1-PAM算法简介" class="headerlink" title="1.1. PAM算法简介"></a>1.1. PAM算法简介</h2><ul>
-<li>PAM方法于1987年提出，用于l1范数和其他距离的工作。 </li>
+<li>PAM方法于1987年提出，用于l1范数和其他距离的工作。</li>
 <li>k-medoid是一种经典的聚类分割技术，它将n个对象的数据集聚为k个聚类，假设聚类的数量k是先验的。如果未知，则可以使用诸如轮廓的方法来确定k。 与k均值相比，它对噪声和异常值更具鲁棒性，因为它最小化了成对差异的总和，而不是欧几里德距离的平方和。</li>
 <li>可以将medoid定义为群集的对象，其与群集中的所有对象的平均差异最小。即，它是群集中位于最中心的点（迭代选取最中心的点，而非Kmeans的中心计算值，抗噪声能力更强）。</li>
 </ul>

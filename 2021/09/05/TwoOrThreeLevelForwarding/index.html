@@ -390,7 +390,6 @@
     </tr>
 </table> -->
 
-
 <p>当 <b><font color="red" style="">PC_A Ping PC_B</font></b> 时，即发起 ICMP 请求时，涉及的三层转发处理流程如下（假设主机均暂未建立任何硬件转发表项）：</p>
 <!-- **【1】**  **PC_A进行目标IP网段与自身的异同判断**:  -->
 <p><b><font color="#7E3D76" style="">【1】 PC_A判断目标IP网段与自身的异同: </font></b></p>
@@ -748,7 +747,6 @@
     </tr>
 </table>
 
-
 <p><strong>L3_SW</strong>的ARP缓存表内容如下：</p>
 <table border="1" cellspacing="1" style="border: 1ps dotted #666" >
     <tr>
@@ -925,7 +923,6 @@
         <td align="center">/</td>
     </tr>
 </table>
-
 
 <p><strong>L3_SW</strong>收到<strong>PC_B</strong>的ARP应答报文后，<strong>L3_SW</strong>学习到<strong>PC_B</strong>的MAC地址并添加到ARP缓存表（三层表项，注：此后对三层交换机L3_SW来说，L3_SW到PC_A或PC_B的三层表项均已学习到，这样后续PC_A和PC_B之间经过交换机L3_SW互发报文时，可直接通过交换机芯片进行硬件三层转发）。<br>此时<strong>L3_SW</strong>的ARP缓存表内容如下：</p>
 <table border="1" cellspacing="1" style="border: 1ps dotted #666" >

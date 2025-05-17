@@ -478,7 +478,7 @@
 </ul>
 <h3 id="2-8-2-快速写"><a href="#2-8-2-快速写" class="headerlink" title="2.8.2. 快速写"></a>2.8.2. 快速写</h3><ul>
 <li>如果一次写成功，那么下一次写的时候就跳过准备过程，直接进入接受阶段</li>
-<li>Megastore没有使用专门的主服务器，而是使用leaders </li>
+<li>Megastore没有使用专门的主服务器，而是使用leaders</li>
 <li>leader主要是来裁决哪个写入的值可以获取0号提议</li>
 <li>客户端、网络及Bigtable的故障都会导致一个写操作处于不确定的状态</li>
 </ul>

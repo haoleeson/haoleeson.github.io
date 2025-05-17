@@ -287,7 +287,7 @@
 
 <ul>
 <li>设备上是否配置 远程日志服务器IP （检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -A 2 &#x27;remote syslog server&#x27; /etc/rsyslog.conf</span><br></pre></td></tr></table></figure></li>
-<li>日志服务器不可达？（检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping $(grep -A 1 &#x27;remote syslog server&#x27; /etc/rsyslog.conf  | tail -n +2) </span><br></pre></td></tr></table></figure></li>
+<li>日志服务器不可达？（检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping $(grep -A 1 &#x27;remote syslog server&#x27; /etc/rsyslog.conf  | tail -n +2)</span><br></pre></td></tr></table></figure></li>
 <li>防火墙 配置？514 端口未打开？（检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -L -n</span><br><span class="line">sudo lsof -i:514</span><br></pre></td></tr></table></figure></li>
 <li>设备无异常日志输出？ （检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo grep -E &#x27;NOTICE|WARNING|ERROR&#x27; /var/log/syslog | grep local2 | tail -20</span><br></pre></td></tr></table></figure></li>
 </ul>
@@ -296,7 +296,7 @@
 <li>Rsyslog 服务未运行？（检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status rsyslog | grep Active</span><br></pre></td></tr></table></figure></li>
 <li>防火墙 配置？514 端口未打开？（检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -L -n</span><br><span class="line">sudo lsof -i:514</span><br></pre></td></tr></table></figure></li>
 <li>Rsyslog 配置中 $UDPServerAddress 127.0.0.1 被打开了？服务器端需注释，否则只能接收本地日志（检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#x27;UDPServerAddress&#x27; /etc/rsyslog.conf</span><br></pre></td></tr></table></figure></li>
-<li>服务器端配置了日志全转发？ （检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -A 2 &#x27;remote syslog server&#x27; /etc/rsyslog.conf </span><br></pre></td></tr></table></figure></li>
+<li>服务器端配置了日志全转发？ （检查指令）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -A 2 &#x27;remote syslog server&#x27; /etc/rsyslog.conf</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -308,10 +308,10 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\08\23\Logrotate\" rel="bookmark">logrotate日志轮转工具简介</a></div>
+      <div class="popular-posts-title"><a href="\2021\09\03\LogrotateTroubleshootingNote\" rel="bookmark">logrotate 日志轮转未生效排障思路总结</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\09\03\LogrotateTroubleshootingNote\" rel="bookmark">logrotate 日志轮转未生效排障思路总结</a></div>
+      <div class="popular-posts-title"><a href="\2021\08\23\Logrotate\" rel="bookmark">logrotate日志轮转工具简介</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2021\08\24\SyslogSelfDiagnosisAndCommonProblems\" rel="bookmark">Syslog 模块的故障自检方法及常见已知问题</a></div>

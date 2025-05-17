@@ -335,7 +335,7 @@
 <ul>
 <li>monit 检测到总磁盘使用率过高告警<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-17 16:52:06.521099 HOSTNAME &lt;local2.err&gt; ERR monit[641]: &#x27;root-overlay&#x27; space usage 91.3% matches resource limit [space usage&gt;90.0%]</span><br></pre></td></tr></table></figure></li>
 </ul>
-<!-- 
+<!--
 
 磁盘不可写异常（ XorPlus 设备）
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Jan 1 11:44:33 100.122.166.72 HOSTNAME : [RTRMGR xorp_rtrmgr]Failed to save file /pica/config/pica_startup.boot: File /pica/config/pica_startup.boot.tmp exists, and can not be overwritten.#012Read-only file system</span><br></pre></td></tr></table></figure>
@@ -377,7 +377,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2022-02-14 12:40:34.344832 HOSTNAME &lt;local2.warning&gt; WARNING swss#orchagent: :- setHostVlanAdminState: OperStatus of L3Interface Vlan40 changed to down</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h1 id="3-协议类异常"><a href="#3-协议类异常" class="headerlink" title="3. 协议类异常"></a>3. 协议类异常</h1><h2 id="3-1-BGP"><a href="#3-1-BGP" class="headerlink" title="3.1. BGP"></a>3.1. BGP</h2><blockquote>
-<p>模块代码： <code>src/HOSTNAME-frr/frr/bgpd/</code> </p>
+<p>模块代码： <code>src/HOSTNAME-frr/frr/bgpd/</code></p>
 </blockquote>
 <ul>
 <li>异常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 暂未找到异常日志，日志代码如下：</span></span><br><span class="line">zlog_err(&quot;BGPd daemon failed: %s&quot;, strerror(errno));</span><br><span class="line">zlog_err(&quot;getsockopt of SO_SNDBUF failed %s\n&quot;, safe_strerror(errno));</span><br><span class="line">zlog_err(&quot;couldn&#x27;t create af structure for peer %s&quot;, peer-&gt;host);</span><br><span class="line">zlog_err (&quot;bgp_connect_success peer&#x27;s fd is negative value %d&quot;,</span><br></pre></td></tr></table></figure></li>
@@ -418,13 +418,13 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2022-02-13 00:19:45.015599 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from Established to Clearing</span><br><span class="line">2022-02-13 00:19:45.128939 HOSTNAME &lt;local2.notice&gt; NOTICE bgp#bgpd[45]: 10.166.0.66 went from Clearing to Idle</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="3-2-OSPF【未支持】"><a href="#3-2-OSPF【未支持】" class="headerlink" title="3.2. OSPF【未支持】"></a>3.2. OSPF【未支持】</h2><blockquote>
-<p>模块代码： <code>src/HOSTNAME-frr/frr/ospfd</code>、 <code>src/HOSTNAME-frr/frr/ospf6d</code> </p>
+<p>模块代码： <code>src/HOSTNAME-frr/frr/ospfd</code>、 <code>src/HOSTNAME-frr/frr/ospf6d</code></p>
 </blockquote>
 <ul>
 <li>异常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 未启用，异常代码</span></span><br><span class="line">printf(&quot;Connecting to OSPF daemon on %s failed!\n&quot;, args[1]);</span><br><span class="line">vty_out (vty, &quot;   OSPF not enabled on this interface%s&quot;, VNL);</span><br><span class="line">flog_err(EC_OSPF_INIT_FAIL, &quot;OSPF instance init failed: %s&quot;, strerror(errno));</span><br><span class="line">flog_err(EC_LIB_SOCKET, &quot;%s: ospf_sock_init is unable to open a socket&quot;, __func__);</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="3-3-ISIS【未支持】"><a href="#3-3-ISIS【未支持】" class="headerlink" title="3.3. ISIS【未支持】"></a>3.3. ISIS【未支持】</h2><blockquote>
-<p>模块代码： <code>src/HOSTNAME-frr/frr/isisd</code> </p>
+<p>模块代码： <code>src/HOSTNAME-frr/frr/isisd</code></p>
 </blockquote>
 <ul>
 <li>异常<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 未启用，异常代码</span></span><br><span class="line">flog_err(EC_ISIS_CONFIG, &quot;Could not bring up %s because of invalid config.&quot;, circuit-&gt;interface-&gt;name);</span><br><span class="line">flog_err(EC_ISIS_CONFIG, &quot;Clearing config for %s. Please re-examine it.&quot;, circuit-&gt;interface-&gt;name);</span><br></pre></td></tr></table></figure></li>

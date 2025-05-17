@@ -292,9 +292,7 @@
 <p>（1）第一次出现临时表被当做正常表项的监控记录如下图：</p>
 <img data-src="../../../../uploads/The_first_time_a_temporary_table_appears_as_a_monitoring_record_of_a_normal_table_item.png" class="full-image" />
 
-
 <a id="more"></a>
-
 
 <p>由上图中</p>
 <ul>
@@ -307,7 +305,7 @@
 </ul>
 <p>可知是 key 多了 n 个下划线，且 TableBase 及 TableName_KeySet 创建实例时入参 <strong>tableName</strong> 就已经多了 n 个下划线。进而可推知在</p>
 <ul>
-<li><code>ProducerStateTable : TableBase(tableName), TableName_KeySet(tableName)...</code> </li>
+<li><code>ProducerStateTable : TableBase(tableName), TableName_KeySet(tableName)...</code></li>
 <li>或 <code>ConsumerStateTable : ConsumerStateTable(tableName), TableName_KeySet(tableName)</code><br>创建实例时，其 入参 <strong>tableName</strong> 就已包含  n 个下划线</li>
 </ul>
 <p>（2）第一次异常监测： <code>ProducerStateTable::set()</code> 的入参key已多出冗余下划线前缀：</p>
